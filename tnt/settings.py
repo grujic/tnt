@@ -39,9 +39,12 @@ INSTALLED_APPS = (
     'south',
     'userprofile',
     'tnt.apps.dashboard',
+    'bootstrap3',
 )
 
 AUTH_USER_MODEL = 'userprofile.MyUser'
+
+LOGIN_REDIRECT_URL = '/home/'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -63,7 +66,7 @@ WSGI_APPLICATION = 'tnt.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.path.join(BASE_DIR, 'tnt_db'),
+        'NAME': 'tnt_db',
         'USER': 'tnt',
         'PASSWORD': 'tnt',
         'HOST': ''

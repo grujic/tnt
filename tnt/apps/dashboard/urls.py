@@ -4,11 +4,10 @@ from django.contrib.auth.decorators import login_required
 import views
 
 urlpatterns = patterns('',
-    url(r'^login$', \
-        views.login, \
-        name='login'),
+    url(r'^login[/]?$', \
+        'django.contrib.auth.views.login'),
 
-    url(r'^home$', \
+    url(r'^home[/]?$', \
         views.home, \
         name='home'),
 )
