@@ -66,7 +66,7 @@ WSGI_APPLICATION = 'tnt.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tnt_db',
+        'NAME': 'tnt_database',
         'USER': 'tnt',
         'PASSWORD': 'tnt',
         'HOST': ''
