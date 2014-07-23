@@ -198,7 +198,7 @@
   </div>
 
   <div class="progress">
-    <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
+    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
         Setup progress
     </div>
   </div>
@@ -206,6 +206,21 @@
   <div class="panel-body">
     <h4>Ground state</h4>
     <p>Do you want to calculate the ground state of this Hamiltonian?</p>
+
+    <div class="btn-group">
+      <button type="button" class="btn btn-default active">Yes, calculate and save ground state</button>
+      <button type="button" class="btn btn-default">No, no ground state for me</button>
+    </div>
+
+    <hr>
+
+    <h4>Time evolution</h4>
+    <p>Do you want to calculate dynamical evolution of this system?</p>
+
+    <div class="btn-group">
+      <button type="button" class="btn btn-default">Yes</button>
+      <button type="button" class="btn btn-default active">No</button>
+    </div>
 
     <hr>
 
@@ -220,6 +235,51 @@
     </div>
   </div>
 </div>
-<!-- End of Ground state calculation specification -->
+<!-- End of Ground state and time evolution calculation specification -->
+
+<!-- Time evolution specification -->
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Time evolution</h3>
+  </div>
+
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%;">
+        Setup progress
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <h4>Initial state - base state</h4>
+    <p>Choose the initial state you want to evolve from. You can choose from the following given states, and optionally you can apply transformations by applying operators below. </p>
+
+    <div class="row">
+        <div class="col-md-3">
+            <button type="button" class="btn btn-default form-control hamiltonian-operator-btn">\[ \sum_j \sigma_j^z \]<br><i>Description</i></button>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-default form-control hamiltonian-operator-btn">\[ \sum_{j} \sigma_j^z \sigma_{j'}^z \]</button>
+        </div>
+    </div>
+
+    <hr>
+
+    <h4>Initial state - transformation</h4>
+    <p>Now </p>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6">
+            <button type="button" class="btn btn-default form-control ">Back</button>
+        </div>
+
+        <div class="col-md-6">
+            <button type="button" class="btn btn-success form-control ">Next</button>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- End of Time evolution specification -->
 
 {% endblock %}
