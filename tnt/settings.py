@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'userprofile',
     'tnt.apps.dashboard',
     'bootstrap3',
+    'rest_framework',
 )
 
 AUTH_USER_MODEL = 'userprofile.MyUser'
