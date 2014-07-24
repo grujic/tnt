@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 # TNT imports
 from tnt.spatial_functions_defs import spatial_fns
+from tnt.hamiltonnian_operator_defs import operators
 
 # Django rest framework imports
 from rest_framework.decorators import api_view
@@ -12,10 +13,17 @@ from rest_framework.reverse import reverse
 # Create your views here.
 @api_view(('GET',))
 def api_root(request, format=None):
+	# The API 'root' providing info on available data sources
 
     return Response({
+        
         'spatial_functions': \
         reverse('api:spatial_functions', \
+        request=request, \
+        format=format),
+
+		'hamiltonian_operators': \
+        reverse('api:hamiltonian_operators', \
         request=request, \
         format=format),
 
@@ -28,5 +36,15 @@ def spatial_functions(request):
     """
 
     response = Response({'spatial_fns': spatial_fns}, status=status.HTTP_200_OK)    # R1gt
+
+    return response
+
+@api_view(['GET'])
+def hamiltonian_operators(request):
+    """
+    Return a list of the available Hamiltonian operators. 
+    """
+
+    response = Response({'operators': operators}, status=status.HTTP_200_OK)    # R1gt
 
     return response

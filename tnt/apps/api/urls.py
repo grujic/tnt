@@ -13,5 +13,10 @@ urlpatterns = patterns('',
         views.spatial_functions, \
         name='spatial_functions'),
 
+    ### Info on available Hamiltonian operators ###
+    url(r'^hamiltonian_operators[/]?$', \
+        views.hamiltonian_operators, \
+        name='hamiltonian_operators'),
+
 )
 
