@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'south',
     'userprofile',
     'tnt.apps.dashboard',
+    'tnt.apps.api',
     'bootstrap3',
     'rest_framework',
 )

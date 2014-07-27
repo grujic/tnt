@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 import views
 
 urlpatterns = patterns('',
+
     url(r'^login[/]?$', \
         'django.contrib.auth.views.login'),
 
@@ -11,12 +12,15 @@ urlpatterns = patterns('',
         views.logout_view,
         name='logout_view'),
 
-    url(r'^home[/]?$', \
+    # User home view, showing their past calculations and ability to start a new one
+    # What they see when they first log in
+    url(r'^[/]?$', \
         views.home, \
         name='home'),
 
-    url(r'^form_wizard_example[/]?$', \
-        views.form_wizard_example, \
-        name='form_wizard_example'),
+    # Set up a new calculationne
+    url(r'^new_calculation[/]?$', \
+        views.new_calculation, \
+        name='new_calculation'),
 
 )

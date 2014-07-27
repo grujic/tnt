@@ -3,6 +3,7 @@ from django.shortcuts import render
 # TNT imports
 from tnt.spatial_functions_defs import spatial_fns
 from tnt.hamiltonnian_operator_defs import operators
+from tnt.blank_calculation import blank_calculation_template
 
 # Django rest framework imports
 from rest_framework.decorators import api_view
@@ -46,5 +47,15 @@ def hamiltonian_operators(request):
     """
 
     response = Response({'operators': operators}, status=status.HTTP_200_OK)    # R1gt
+
+    return response
+
+@api_view(['GET'])
+def blank_calculation(request):
+    """
+    Return an example of a blank calculation, i.e. a JSON structure with all field names present but nothing filled out. 
+    Functions as a template for new calculations. 
+    """
+    response = Response(blank_calculation_template, status=status.HTTP_200_OK)    # R1gt
 
     return response

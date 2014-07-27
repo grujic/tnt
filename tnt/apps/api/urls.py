@@ -18,5 +18,10 @@ urlpatterns = patterns('',
         views.hamiltonian_operators, \
         name='hamiltonian_operators'),
 
+    ### Example JSON structure representing a blank calculation to use as a template ###
+    url(r'^blank_calculation[/]?$', \
+        views.blank_calculation, \
+        name='blank_calculation'),
+
 )
 

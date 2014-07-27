@@ -13,11 +13,12 @@ def logout_view(request):
     return HttpResponseRedirect('/login/')
 
 def home(request):
-
+    # Users's home page showing previous calculations and ability to create a new one
     return render(request, \
                   'dashboard/home.html')
 
-def form_wizard_example(request):
-
+def new_calculation(request):
+    # Page to define a new calculation
     return render(request, \
-                  'dashboard/home.html')
+                  'dashboard/new_calculation.html')
+
