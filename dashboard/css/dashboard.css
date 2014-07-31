@@ -109,6 +109,10 @@ body {
   height: 100px;
 }
 
-.new-calculation-btn {
+.expectation-operator-btn {
   height: 100px;
+}
+
+.new-calculation-btn {
+  height: 80px;
 }

@@ -23,4 +23,9 @@ urlpatterns = patterns('',
         views.new_calculation, \
         name='new_calculation'),
 
+    # FAQ page
+    url(r'^faq[/]?$', \
+        views.faq, \
+        name='faq'),
+
 )

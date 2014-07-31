@@ -22,3 +22,7 @@ def new_calculation(request):
     return render(request, \
                   'dashboard/new_calculation.html')
 
+def faq(request):
+    # Page for FAQ
+    return render(request, \
+                  'dashboard/faq.html')

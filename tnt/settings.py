@@ -46,7 +46,7 @@ INSTALLED_APPS = (
 
 AUTH_USER_MODEL = 'userprofile.MyUser'
 
-LOGIN_REDIRECT_URL = '/home/'
+LOGIN_REDIRECT_URL = '/'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
