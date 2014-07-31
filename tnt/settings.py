@@ -39,13 +39,14 @@ INSTALLED_APPS = (
     'south',
     'userprofile',
     'tnt.apps.dashboard',
+    'tnt.apps.api',
     'bootstrap3',
     'rest_framework',
 )
 
 AUTH_USER_MODEL = 'userprofile.MyUser'
 
-LOGIN_REDIRECT_URL = '/home/'
+LOGIN_REDIRECT_URL = '/'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

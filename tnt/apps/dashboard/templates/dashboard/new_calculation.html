@@ -1,0 +1,326 @@
+{% extends "dashboard/page_template.html" %}
+
+{% block content %}
+
+{% block handlebars_scripts %}
+
+  {% include "dashboard/handlebars_templates/hamiltonian_operator_template.html" %}
+
+  {% include "dashboard/handlebars_templates/hamiltonian_term_template.html" %}
+
+  {% include "dashboard/handlebars_templates/initial_base_states_template.html" %}  
+      
+{% endblock %}
+
+<div id="new_calculation_basic_setup" class="new-calculation-step">
+
+  <div class="jumbotron">
+    <h1>Set up your system </h1>
+    <p>Define some basic properties of the system you're simulating</p>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Basic system setup</h3>
+    </div>
+
+    <div class="panel-body">
+
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
+            Setup progress
+        </div>
+      </div>
+
+      <h4>System type</h4>
+      <p>Choose the type of system you want to simulate.</p>
+
+      <!-- <div class="btn-group">
+        <button type="button" class="btn btn-default active">Spin 1 / 2</button>
+        <button type="button" class="btn btn-default" disabled="disabled">Bosonic</button>
+        <button type="button" class="btn btn-default" disabled="disabled">Fermionic</button>
+      </div> -->
+
+      <div class="row">
+          <div class="col-md-4">
+              <button type="button" class="btn btn-default form-control active">Spin 1 / 2</button>
+          </div>
+
+          <div class="col-md-4">
+              <button type="button" class="btn btn-default form-control" disabled="disabled">Bosonic <span class="text-warning">(Coming soon)</span></button>
+          </div>
+
+          <div class="col-md-4">
+              <button type="button" class="btn btn-default form-control" disabled="disabled">Fermionic <span class="text-warning">(Coming soon)</span></button>
+          </div>
+      </div>
+
+      <hr>
+
+      <h4>System Size</h4>
+      <p>How many sites in your system?</p>
+      <input type="number" class="" placeholder="10">
+
+      <hr>
+
+      <h4>Simulation truncation parameters</h4>
+      <p>Choose an upper bound for \[ \chi \]. This parameter controls the degree of quantum correlations the simulation captures. </p>
+      <input type="number" class="" placeholder="20">
+
+      <hr>
+
+      <div class="row">  <!-- back next controls -->
+          <div class="col-md-6">
+              <button type="button" class="btn btn-default form-control ">Back</button>
+          </div>
+
+          <div class="col-md-6">
+              <button type="button" class="btn btn-success form-control ">Next</button>
+          </div>
+      </div>  <!-- End of back next controls -->
+
+    </div>
+  </div>
+
+</div> <!-- End of div new_calculation_basic_setup -->
+
+
+<div id="new_calculation_define_hamiltonian" class="new-calculation-step">
+
+  <div class="jumbotron">
+    <h1>Define your Hamiltonian </h1>
+    <p>Build it up step by step by choosing from the predefined operators below</p>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Available operators</h3>
+    </div>
+
+    <div class="panel-body">
+
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+            Setup progress
+        </div>
+      </div>
+
+      <p>Select from the following menu to add another Hamiltonian term. Then customise it by choosing a functional form for its coefficients (defaults to constant across the system). </p>
+
+      <div id="new_calculation_available_hamiltonian_operators">
+
+      </div>
+
+      <!-- <div class="row">
+          <div class="col-md-3">
+              <button
+               type="button" 
+               class="btn btn-default form-control hamiltonian-operator-btn">
+                <i>Description</i>
+                \[ \sum_j \sigma_j^z \]
+                <br>
+              </button>
+          </div>
+          <div class="col-md-3">
+              <button
+               type="button" 
+               class="btn btn-default form-control hamiltonian-operator-btn">
+                <i>Description</i>
+                \[ \sum_{j} \sigma_j^z \sigma_{j'}^z \]
+                <br>
+              </button>
+          </div>
+      </div> -->
+
+      <hr>
+
+      <h2>Hamiltonian H = </h2>
+
+      <div id="no_hamiltonian_terms_added_yet_warning" class="alert alert-info" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
+
+      <div id="hamiltonian_terms_container">
+      </div>
+
+      <hr>
+
+      <div class="row">  <!-- back next controls -->
+          <div class="col-md-6">
+              <button type="button" class="btn btn-default form-control ">Back</button>
+          </div>
+
+          <div class="col-md-6">
+              <button type="button" class="btn btn-success form-control ">Next</button>
+          </div>
+      </div>  <!-- End of back next controls -->
+
+    </div>  <!-- End of panel body -->
+
+  </div>  <!-- End of panel -->
+
+</div>  <!-- End of div new_calculation_basic_setup -->
+
+<!-- Ground state calculation specification -->
+<div id="new_calculation_ground_state" class="new-calculation-step">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Ground state calculation</h3>
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+          Setup progress
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <h4>Ground state</h4>
+      <p>Do you want to calculate the ground state of this Hamiltonian?</p>
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-default active">Yes, calculate and save ground state</button>
+        <button type="button" class="btn btn-default">No, no ground state for me</button>
+      </div>
+
+      <hr>
+
+      <h4>Time evolution</h4>
+      <p>Do you want to calculate dynamical evolution of this system?</p>
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-default">Yes</button>
+        <button type="button" class="btn btn-default active">No</button>
+      </div>
+
+      <hr>
+
+      <div class="row">
+          <div class="col-md-6">
+              <button type="button" class="btn btn-default form-control ">Back</button>
+          </div>
+
+          <div class="col-md-6">
+              <button type="button" class="btn btn-success form-control ">Next</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div> <!-- End of Ground state and time evolution calculation specification -->
+
+<!-- Initial state specification -->
+<div id="new_calculation_initial_state" class="new-calculation-step">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Initial state</h3>
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%;">
+          Setup progress
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <h4>Initial state - base state</h4>
+      <p>Choose the initial state you want to evolve from. You can choose from the following given states, and optionally you can apply transformations by applying operators below. </p>
+
+      <div id="new_calculation_available_initial_base_states">
+      </div>
+
+      <hr>
+
+      <h4>Initial state - transformation</h4>
+      
+      <p>Now choose a transformation to tailor your initial state (optional). </p>
+
+      <div class="alert alert-warning" role="alert" id="no_initial_state_transformations_added_yet_warning">You haven't specified any transformations on your chosen initial base state. </div>
+
+
+
+      <hr>
+
+      <div class="row">
+          <div class="col-md-6">
+              <button type="button" class="btn btn-default form-control ">Back</button>
+          </div>
+
+          <div class="col-md-6">
+              <button type="button" class="btn btn-success form-control ">Next</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Time evolution specification -->
+
+<!-- Time evolution specification -->
+<div id="new_calculation_expectation_operators" class="new-calculation-step">
+
+  <div class="jumbotron">
+    <h1>Expectation values</h1>
+    <p>What do you want to calculate?</p>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Available expectation operators</h3>
+    </div>
+
+    <div class="panel-body">
+
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+            Setup progress
+        </div>
+      </div>
+
+      <div class="alert alert-warning" role="alert">You haven't specified any operators to calculate expectation values for yet!</div>
+
+      <p>Select from the following menu to add another operator you wish to calculate expectation values for. </p>
+
+      <div class="row">
+          <div class="col-md-3">
+              <button
+               type="button" 
+               class="btn btn-default form-control expectation-operator-btn">
+                <i>Description</i>
+                \[ \sigma_j^z \]
+                <br>
+              </button>
+          </div>
+          <div class="col-md-3">
+              <button
+               type="button" 
+               class="btn btn-default form-control hamiltonian-operator-btn">
+                <i>Description</i>
+                \[ \sum_{j} \sigma_j^z \sigma_{j'}^z \]
+                <br>
+              </button>
+          </div>
+      </div>
+
+      <hr>
+
+      <div class="row">  <!-- back next controls -->
+          <div class="col-md-6">
+              <button type="button" class="btn btn-default form-control ">Back</button>
+          </div>
+
+          <div class="col-md-6">
+              <button type="button" class="btn btn-success form-control ">Next</button>
+          </div>
+      </div>  <!-- End of back next controls -->
+
+    </div>  <!-- End of panel body -->
+
+  </div>  <!-- End of panel -->
+
+</div> <!-- End of div new_calculation_expectation_operators -->
+
+<script>
+  window.user = {};
+  window.user.email = "{{user.email}}";
+  window.user.id = "{{user.id}}";
+</script>
+
+{% endblock %}

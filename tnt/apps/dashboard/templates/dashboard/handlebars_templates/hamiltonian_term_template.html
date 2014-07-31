@@ -1,0 +1,77 @@
+{% verbatim %}
+
+<script id="hamiltonian-term-template" type="text/x-handlebars-template"> 
+
+<div class="row">  <!-- A Hamiltonian term representation -->
+  <div class="col-md-1" style="padding-top: 70px;">
+    <i class="fa fa-plus-circle fa-5x"></i> 
+  </div>
+
+  <div class="col-md-11">
+
+    <div class="panel panel-default alert alert-dismissible">
+      <div class="panel-body">
+        
+        <div class="row">
+          
+          <div class="col-md-3">
+            <h3>{{function_description}}</h3>
+            <p>\[ {{function_tex_str}} \]</p>
+          </div>
+          
+          <div class="col-md-9">
+            <h3>Spatial dependence</h3>
+            
+            <div class="row">
+              
+              <div class="col-md-4"> <!-- Define the kind of spatial dependence-->
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Constant <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Constant</a></li>
+                    <li><a href="#">Sin</a></li>
+                    <li><a href="#">Step</a></li>
+                  </ul>
+                </div>
+              </div>  <!-- End of define the kind of spatial dependence-->
+                        
+              <div class="col-md-8">  <!-- Spatial dependence parameters -->
+
+                <h4>Spatial Parameters</h4>
+
+                <form class="form-horizontal" role="form">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">k</label>
+                    <div class="col-sm-10">
+                      <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                    <div class="col-sm-10">
+                      <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                    </div>
+                  </div>
+                </form>
+
+              </div>  <!-- End of Spatial dependence parameters -->
+
+            </div>
+
+          </div>  <!-- End of spatial definitions box -->
+
+        </div>  <!-- End of row -->
+
+      </div>  <!-- End of panel body -->
+
+    </div>  <!-- End of panel -->
+
+  </div>
+
+</div>  <!-- End of A Hamiltonian term representation -->
+
+</script>
+
+{% endverbatim %}
