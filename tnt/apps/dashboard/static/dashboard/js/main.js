@@ -40,11 +40,10 @@ var tnt = {
 						tnt.add_hamiltonian_term($(this).data("operator-id"));
 					});
 
-
-				tnt.render_mathjax();
-
 			}
-		);
+		).done(function() {
+    		tnt.render_mathjax();
+  		});
 
 	}, // End of render_available_hamiltonian_operators
 
@@ -65,10 +64,12 @@ var tnt = {
 				var source = $("#initial-base-states-template").html();
 				var template = Handlebars.compile(source);
 				$("#new_calculation_available_initial_base_states").html(template(filtered_data));
-				MathJax.Hub.Typeset(); 
+				tnt.render_mathjax(); 
 
 			}
-		);
+		).done(function() {
+    		tnt.render_mathjax();
+  		});
 
 	}, // End of render_available_initial_base_states
 
@@ -106,7 +107,7 @@ var tnt = {
 	initialise_new_calculation_define_hamiltonian: function () {
 		// 
 		tnt.render_available_hamiltonian_operators();
-		tnt.clear_all_new_calculation_stages();
+		// tnt.clear_all_new_calculation_stages();
 		$("#new_calculation_define_hamiltonian").css('display', 'block');
 
 	}, 
@@ -128,7 +129,7 @@ var tnt = {
 	initialise_new_calculation_initial_state: function () {
 		// 
 		tnt.render_available_initial_base_states(); 	// Draw the choices available
-		tnt.clear_all_new_calculation_stages(); // Clear all panels
+		// tnt.clear_all_new_calculation_stages(); // Clear all panels
 		$("#new_calculation_initial_state").css('display', 'block'); 	// Make this panel visible
 	}, 
 
