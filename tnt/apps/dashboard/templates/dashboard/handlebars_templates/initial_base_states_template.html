@@ -1,0 +1,20 @@
+{% verbatim %}
+
+<script id="initial-base-states-template" type="text/x-handlebars-template"> 
+        
+		<div class="row">
+			{{#states}}
+		        <div class="col-md-3">
+		            <button type="button" 
+		             class="btn btn-default form-control hamiltonian-operator-btn"
+		              data-initial-base-state-id="{{initial_base_state_id}}">\[{{function_tex_str}}\]
+		              	<br>
+		              	<i>{{function_description}}</i></button>
+		        </div>
+	        {{/states}}
+	        
+	    </div>
+
+</script>
+
+{% endverbatim %}

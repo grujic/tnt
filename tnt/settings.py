@@ -39,12 +39,14 @@ INSTALLED_APPS = (
     'south',
     'userprofile',
     'tnt.apps.dashboard',
+    'tnt.apps.api',
     'bootstrap3',
+    'rest_framework',
 )
 
 AUTH_USER_MODEL = 'userprofile.MyUser'
 
-LOGIN_REDIRECT_URL = '/home/'
+LOGIN_REDIRECT_URL = '/'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -86,6 +88,17 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Absolute path to the directory static files should be collected to.
+# Don't put anything in this directory yourself; store your static files
+# in apps' "static/" subdirectories and in STATICFILES_DIRS.
+# Example: "/home/media/media.lawrence.com/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'collectedstatic/')
+
+# Absolute path to the directory static files should be collected to.
+# Don't put anything in this directory yourself; store your static files
+# in apps' "static/" subdirectories and in STATICFILES_DIRS.
+# Example: "/home/media/media.lawrence.com/static/"
+STATIC_ROOT = os.path.join(BASE_PATH, 'collectedstatic/')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
