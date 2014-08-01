@@ -317,10 +317,15 @@
 
 </div> <!-- End of div new_calculation_expectation_operators -->
 
-<script>
-  window.user = {};
-  window.user.email = "{{user.email}}";
-  window.user.id = "{{user.id}}";
-</script>
+{% endblock %}
+
+{% block end_of_body_scripts %}
+  <script>
+    window.user = {};
+    window.user.email = "{{user.email}}";
+    window.user.id = "{{user.id}}";
+    tnt.initialise_new_calculation_initial_state();
+    tnt.initialise_new_calculation_define_hamiltonian();
+  </script>
 
 {% endblock %}
