@@ -18,6 +18,11 @@ urlpatterns = patterns('',
         views.hamiltonian_operators, \
         name='hamiltonian_operators'),
 
+    ### Info on available expectation value operators ###
+    url(r'^expectation_operators[/]?$', \
+        views.expectation_operators, \
+        name='expectation_operators'),
+
     ### Example JSON structure representing a blank calculation to use as a template ###
     url(r'^blank_calculation[/]?$', \
         views.blank_calculation, \

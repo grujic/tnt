@@ -107,7 +107,7 @@ var tnt = {
 	initialise_new_calculation_define_hamiltonian: function () {
 		// 
 		tnt.render_available_hamiltonian_operators();
-		// tnt.clear_all_new_calculation_stages();
+		tnt.clear_all_new_calculation_stages();
 		$("#new_calculation_define_hamiltonian").css('display', 'block');
 
 	}, 
