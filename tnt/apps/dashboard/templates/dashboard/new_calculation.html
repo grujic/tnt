@@ -75,7 +75,7 @@
           </div>
 
           <div class="col-md-6">
-              <button type="button" class="btn btn-success form-control ">Next</button>
+              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
           </div>
       </div>  <!-- End of back next controls -->
 
@@ -149,7 +149,7 @@
           </div>
 
           <div class="col-md-6">
-              <button type="button" class="btn btn-success form-control ">Next</button>
+              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
           </div>
       </div>  <!-- End of back next controls -->
 
@@ -200,9 +200,10 @@
           </div>
 
           <div class="col-md-6">
-              <button type="button" class="btn btn-success form-control ">Next</button>
+              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
           </div>
       </div>
+
     </div>
   </div>
 </div> <!-- End of Ground state and time evolution calculation specification -->
@@ -245,7 +246,7 @@
           </div>
 
           <div class="col-md-6">
-              <button type="button" class="btn btn-success form-control ">Next</button>
+              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
           </div>
       </div>
     </div>
@@ -307,7 +308,7 @@
           </div>
 
           <div class="col-md-6">
-              <button type="button" class="btn btn-success form-control ">Next</button>
+              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
           </div>
       </div>  <!-- End of back next controls -->
 
@@ -324,7 +325,11 @@
     window.user = {};
     window.user.email = "{{user.email}}";
     window.user.id = "{{user.id}}";
-    tnt.initialise_new_calculation_define_hamiltonian();
+    console.log("Stored logged in user details");
+
+    tnt.initialise_new_calculation_basic_setup_step();  // Display the first screen of the setup process
+    tnt.initialise_blank_calculation(); // Set up a 'blank' calculation which we will fill in sequentially
+    
   </script>
 
 {% endblock %}

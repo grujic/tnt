@@ -23,6 +23,11 @@ urlpatterns = patterns('',
         views.new_calculation, \
         name='new_calculation'),
 
+    # See all your calculations
+    url(r'^calculations[/]?$', \
+        views.calculations, \
+        name='calculations'),
+
     # FAQ page
     url(r'^faq[/]?$', \
         views.faq, \

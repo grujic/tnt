@@ -22,6 +22,11 @@ def new_calculation(request):
     return render(request, \
                   'dashboard/new_calculation.html')
 
+def calculations(request):
+    # See all your calculations
+    return render(request, \
+                  'dashboard/calculations.html')
+
 def faq(request):
     # Page for FAQ
     return render(request, \
