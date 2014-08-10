@@ -22,6 +22,8 @@ def api_root(request, format=None):
 
     return Response({
         
+        ### START OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
+
         'spatial_functions': \
         reverse('api:spatial_functions', \
         request=request, \
@@ -52,7 +54,20 @@ def api_root(request, format=None):
         request=request, \
         format=format),
 
+        ### END OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
+
+        'save_calculation': \
+        reverse('api:save_calculation', \
+        request=request, \
+        format=format),
+
+        ### START OF API CALLS FOR info on calculations ###
+
+        ### END OF API CALLS FOR info on calculations ###
+
     })
+
+### START OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
 
 @api_view(['GET'])
 def spatial_functions(request):
@@ -111,3 +126,36 @@ def initial_state_modifiers(request):
     response = Response(initial_state_modifiers_list, status=status.HTTP_200_OK)    # R1gt
 
     return response
+
+### END OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
+
+### START OF API CALLS FOR info on calculations ###
+
+@api_view(['GET'])
+def show_calculation(request, calculation_id):
+    """
+    Return JSON representation of a stored calculation ###
+    """
+    response = Response({'id': calculation_id}, status=status.HTTP_200_OK)    # R1gt
+
+    return response
+
+@api_view(['POST'])
+def delete_calculation(request):
+    """
+    Delete calculation with the given ID ###
+    """
+    response = Response('', status=status.HTTP_200_OK)    # R1gt
+
+    return response
+
+@api_view(['POST'])
+def save_calculation(request):
+    """
+    Save calculation which is POSTed to this URL ###
+    """
+    response = Response('', status=status.HTTP_200_OK)    # R1gt
+
+    return response
+
+### END OF API CALLS FOR info on calculations ###

@@ -12,9 +12,24 @@ var tnt = {
 				window.calculation = data;
 				window.calculation.meta_info.user.email = window.user.email;
 	  			window.calculation.meta_info.user.id = window.user.id;
+	  			console.log("Initialised blank calculation. ");
+	  			console.log(window.calculation);
 			}
 		);
 	}, // End of initialise_blank_calculation
+
+	load_spatial_function_definitions: function() {
+		// Make an API call and 
+		console.log("Loading spatial function definitions...");
+		$.get('/api/v1.0/spatial_functions', 
+			function(data) {
+				window.spatial_fns = data;
+			}
+		).done(function() {
+    		console.log("Loaded spatial function definitions");
+  		});
+
+	},	// End of load_spatial_function_definitions
 
 	render_available_hamiltonian_operators: function () {
 		// If window.calculation_type is not defined, render all available operators, otherwise filter
@@ -46,7 +61,6 @@ var tnt = {
   		});
 
 	}, // End of render_available_hamiltonian_operators
-
 
 	render_available_initial_base_states: function () {
 		// If window.calculation_type is not defined, render all available initial base states, otherwise filter
@@ -93,54 +107,90 @@ var tnt = {
 	// Following is a list of functions that verify data input and also set up the various data input panels for a new calculation
 	initialise_new_calculation_basic_setup_step: function () {
 		// 
+		console.log("Initialising new calculation basic setup input");
 		tnt.clear_all_new_calculation_stages();
 		$("#new_calculation_basic_setup").css('display', 'block');
+
+		$("#new_calculation_basic_setup .btn-next-step").click(
+			tnt.validate_new_calculation_basic_setup_step
+		);
 
 	}, 
 
 	validate_new_calculation_basic_setup_step: function () {
 		// 
-		tnt.clear_all_new_calculation_stages();
-		$("#new_calculation_basic_setup").css('display', 'block');
+		tnt.initialise_new_calculation_define_hamiltonian();
+
 	}, 
 
 	initialise_new_calculation_define_hamiltonian: function () {
 		// 
+		console.log("Initialising new calculation Hamiltonian input");
+		
 		tnt.render_available_hamiltonian_operators();
+		
 		tnt.clear_all_new_calculation_stages();
+		
 		$("#new_calculation_define_hamiltonian").css('display', 'block');
+		
+		$("#new_calculation_define_hamiltonian .btn-next-step").click(
+			tnt.validate_new_calculation_define_hamiltonian
+		);
 
 	}, 
 
 	validate_new_calculation_define_hamiltonian: function () {
 		// 
+		tnt.initialise_new_calculation_ground_state();
 	}, 
 
 	initialise_new_calculation_ground_state: function () {
 		// 
+		console.log("Initialising new calculation ground state input");
 		tnt.clear_all_new_calculation_stages();
 		$("#new_calculation_ground_state").css('display', 'block');
+
+		$("#new_calculation_ground_state .btn-next-step").click(
+			tnt.validate_new_calculation_ground_state
+		);
 	}, 
 
 	validate_new_calculation_ground_state: function () {
 		// 
+		tnt.initialise_new_calculation_initial_state();
 	}, 
 
 	initialise_new_calculation_initial_state: function () {
 		// 
+		console.log("Initialising new calculation initial state input");
 		tnt.render_available_initial_base_states(); 	// Draw the choices available
-		// tnt.clear_all_new_calculation_stages(); // Clear all panels
+		tnt.clear_all_new_calculation_stages(); // Clear all panels
+
 		$("#new_calculation_initial_state").css('display', 'block'); 	// Make this panel visible
+
+		$("#new_calculation_initial_state .btn-next-step").click(
+			tnt.validate_new_calculation_initial_state
+		);
+
 	}, 
 
 	validate_new_calculation_initial_state: function () {
 		// 
+		tnt.initialise_new_calculation_expectation_operators();
 	}, 
 
 	initialise_new_calculation_time_evolution: function () {
 		// 
+		console.log("Initialising new calculation time evolution input");
+		
 		tnt.clear_all_new_calculation_stages();
+		
 		$("#new_calculation_time_evolution").css('display', 'block');
+
+		$("#new_calculation_time_evolution .btn-next-step").click(
+			tnt.validate_new_calculation_time_evolution
+		);
+
 	}, 
 
 	validate_new_calculation_time_evolution: function () {
@@ -149,8 +199,14 @@ var tnt = {
 
 	initialise_new_calculation_expectation_operators: function () {
 		// 
+		console.log("Initialising new calculation expectation value input");
 		tnt.clear_all_new_calculation_stages();
 		$("#new_calculation_expectation_operators").css('display', 'block');
+
+		$("#new_calculation_expectation_operators .btn-next-step").click(
+			tnt.validate_new_calculation_time_expectation_operators
+		);
+
 	}, 
 
 	validate_new_calculation_time_expectation_operators: function () {
