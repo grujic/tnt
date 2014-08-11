@@ -1,0 +1,115 @@
+{% extends "dashboard/page_template.html" %}
+
+{% block content %}
+
+  {% block handlebars_scripts %}
+        
+  {% endblock %}  <!-- End of block handlebars_scripts -->
+
+<div class="jumbotron">
+  <h1>Results: Calculation name</h1>
+  <pExplore calculated expectation values in the browser, or download full results</p>
+  <p><a href="#" class="btn btn-primary btn-lg" role="button">Download results</a></p>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Available expectation operators</h3>
+  </div>
+
+  <div class="panel-body">
+
+    <p>What do you want to plot?</p>
+
+    <div class="row">
+        <div class="col-md-3">
+            <button
+             type="button" 
+             class="btn btn-default form-control expectation-operator-btn">
+              <i>Description</i>
+              \[ \sigma_j^z \]
+              <br>
+            </button>
+        </div>
+        <div class="col-md-3">
+            <button
+             type="button" 
+             class="btn btn-default form-control hamiltonian-operator-btn">
+              <i>Description</i>
+              \[ \sigma_j^x \]
+              <br>
+            </button>
+        </div>
+    </div>
+
+    <hr>
+
+    <!--Space for graph -->
+    <div id="plot_div" 
+         style="min-width: 310px; height: 400px; margin: 0 auto">
+    </div>
+
+
+  </div>  <!-- End of panel body -->
+
+</div>  <!-- End of panel -->
+
+
+
+{% endblock %} <!-- End of block content -->
+
+{% block end_of_body_scripts %}
+  
+  <script src="{{ STATIC_URL }}dashboard/js/highcharts.js"></script>
+        
+  <script src="{{ STATIC_URL }}dashboard/js/plotting_fns.js"></script>
+
+  <script>
+    // Pull in this calculation's JSON representation
+
+    // Find the expectation values calculated
+    $('#plot_div').highcharts({
+        title: {
+            text: 'MOCK DATA Expectation values for Calculation name',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Source: TNT LIbrary',
+            x: -20
+        },
+        
+        yAxis: {
+            title: {
+                text: 'Expectation values <O>'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '°C'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: '\sigma^z',
+            data: [{'x': 1, 'y': 7.0}, {'x': 2, 'y': 6.9}, {'x': 3, 'y': 9.5}, {'x': 4, 'y': 14.5}, {'x': 5, 'y': 18.2}, {'x': 6, 'y': 21.5}, {'x': 7, 'y': 25.2}, {'x': 8, 'y': 26.5}, {'x': 9, 'y': 23.3}, {'x': 10, 'y': 18.3}, {'x': 11, 'y': 13.9}, {'x': 12, 'y': 9.6}]
+        },{
+            name: 'Re(\sigma^x)',
+            data: [{'x': 1, 'y': -0.2}, {'x': 2, 'y': 0.8}, {'x': 3, 'y': 5.7}, {'x': 4, 'y': 11.3}, {'x': 5, 'y': 17.0}, {'x': 6, 'y': 22.0}, {'x': 7, 'y': 24.8}, {'x': 8, 'y': 24.1}, {'x': 9, 'y': 20.1}, {'x': 10, 'y': 14.1}, {'x': 11, 'y': 8.6}, {'x': 12, 'y': 2.5}]
+        },{
+            name: 'Im(\sigma^x)',
+            data: [{'x': 1, 'y': -0.9}, {'x': 2, 'y': 0.6}, {'x': 3, 'y': 3.5}, {'x': 4, 'y': 8.4}, {'x': 5, 'y': 13.5}, {'x': 6, 'y': 17.0}, {'x': 7, 'y': 18.6}, {'x': 8, 'y': 17.9}, {'x': 9, 'y': 14.3}, {'x': 10, 'y': 9.0}, {'x': 11, 'y': 3.9}, {'x': 12, 'y': 1.0}]
+        }
+        ]
+    });
+
+  </script>
+
+{% endblock %}

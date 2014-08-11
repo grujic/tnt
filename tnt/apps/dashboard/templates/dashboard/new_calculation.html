@@ -2,16 +2,6 @@
 
 {% block content %}
 
-{% block handlebars_scripts %}
-
-  {% include "dashboard/handlebars_templates/hamiltonian_operator_template.html" %}
-
-  {% include "dashboard/handlebars_templates/hamiltonian_term_template.html" %}
-
-  {% include "dashboard/handlebars_templates/initial_base_states_template.html" %}  
-      
-{% endblock %}
-
 <div id="new_calculation_basic_setup" class="new-calculation-step">
 
   <div class="jumbotron">
@@ -43,15 +33,15 @@
 
       <div class="row">
           <div class="col-md-4">
-              <button type="button" class="btn btn-default form-control active">Spin 1 / 2</button>
+              <button type="button" data-system-type="spin" class="btn btn-system-type btn-default form-control active">Spin 1 / 2</button>
           </div>
 
           <div class="col-md-4">
-              <button type="button" class="btn btn-default form-control" disabled="disabled">Bosonic <span class="text-warning">(Coming soon)</span></button>
+              <button type="button" data-system-type="bosonic" class="btn btn-system-type btn-default form-control" disabled="disabled">Bosonic <span class="text-warning">(Coming soon)</span></button>
           </div>
 
           <div class="col-md-4">
-              <button type="button" class="btn btn-default form-control" disabled="disabled">Fermionic <span class="text-warning">(Coming soon)</span></button>
+              <button type="button" data-system-type="fermionic" class="btn btn-system-type btn-default form-control" disabled="disabled">Fermionic <span class="text-warning">(Coming soon)</span></button>
           </div>
       </div>
 
@@ -59,13 +49,14 @@
 
       <h4>System Size</h4>
       <p>How many sites in your system?</p>
-      <input type="number" class="" placeholder="10">
+      <input id="system_size" type="number" class="" placeholder="10" value="10">
 
       <hr>
 
       <h4>Simulation truncation parameters</h4>
       <p>Choose an upper bound for \[ \chi \]. This parameter controls the degree of quantum correlations the simulation captures. </p>
-      <input type="number" class="" placeholder="20">
+
+      <input id="chi_value" type="number" class="" placeholder="20" value="20">
 
       <hr>
 
@@ -174,22 +165,31 @@
     </div>
 
     <div class="panel-body">
+      
       <h4>Ground state</h4>
       <p>Do you want to calculate the ground state of this Hamiltonian?</p>
 
-      <div class="btn-group">
-        <button type="button" class="btn btn-default active">Yes, calculate and save ground state</button>
-        <button type="button" class="btn btn-default">No, no ground state for me</button>
+      <div id="ground_state_calculation_choice" class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary">
+          <input type="radio" name="options" data-calculate-ground-state="true">Yes, calculate and save ground state
+        </label>
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" data-calculate-ground-state="false" checked>No
+        </label>
       </div>
 
       <hr>
 
       <h4>Time evolution</h4>
-      <p>Do you want to calculate dynamical evolution of this system?</p>
+      <p>Do you want to calculate dynamical evolution of your system?</p>
 
-      <div class="btn-group">
-        <button type="button" class="btn btn-default">Yes</button>
-        <button type="button" class="btn btn-default active">No</button>
+      <div id="time_evolution_choice" class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" data-calculate-time-evolution="true" checked>Yes
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" data-calculate-time-evolution="false">No
+        </label>
       </div>
 
       <hr>
@@ -206,7 +206,42 @@
 
     </div>
   </div>
-</div> <!-- End of Ground state and time evolution calculation specification -->
+</div> <!-- End of Ground state calculation specification -->
+
+<!-- Time evolution calculation specification -->
+<div id="new_calculation_time_evolution" class="new-calculation-step">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Time evolution</h3>
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+          Setup progress
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <h4>Time evolution</h4>
+
+      <hr>
+
+      <div class="row">
+          <div class="col-md-6">
+              <button type="button" class="btn btn-default form-control ">Back</button>
+          </div>
+
+          <div class="col-md-6">
+              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
+          </div>
+      </div>
+
+    </div> <!-- End of panel body -->
+
+  </div> <!-- End of panel -->
+
+</div> <!-- End of Time evolution calculation specification -->
 
 <!-- Initial state specification -->
 <div id="new_calculation_initial_state" class="new-calculation-step">
@@ -279,25 +314,8 @@
 
       <p>Select from the following menu to add another operator you wish to calculate expectation values for. </p>
 
-      <div class="row">
-          <div class="col-md-3">
-              <button
-               type="button" 
-               class="btn btn-default form-control expectation-operator-btn">
-                <i>Description</i>
-                \[ \sigma_j^z \]
-                <br>
-              </button>
-          </div>
-          <div class="col-md-3">
-              <button
-               type="button" 
-               class="btn btn-default form-control hamiltonian-operator-btn">
-                <i>Description</i>
-                \[ \sum_{j} \sigma_j^z \sigma_{j'}^z \]
-                <br>
-              </button>
-          </div>
+      <div id="new_calculation_available_expectation_operators">
+
       </div>
 
       <hr>
@@ -327,9 +345,25 @@
     window.user.id = "{{user.id}}";
     console.log("Stored logged in user details");
 
+    tnt.load_spatial_function_definitions();
+
     tnt.initialise_new_calculation_basic_setup_step();  // Display the first screen of the setup process
     tnt.initialise_blank_calculation(); // Set up a 'blank' calculation which we will fill in sequentially
     
   </script>
 
+{% endblock %}
+
+{% block handlebars_scripts %}
+
+  {% include "dashboard/handlebars_templates/hamiltonian_operator_template.html" %}
+
+  {% include "dashboard/handlebars_templates/hamiltonian_term_template.html" %}
+
+  {% include "dashboard/handlebars_templates/initial_base_states_template.html" %}  
+
+  {% include "dashboard/handlebars_templates/spatial_dependence_template.html" %}  
+
+  {% include "dashboard/handlebars_templates/expectation_operators_template.html" %}    
+      
 {% endblock %}

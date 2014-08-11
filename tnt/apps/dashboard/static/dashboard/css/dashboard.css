@@ -109,6 +109,10 @@ body {
   height: 100px;
 }
 
+.initial-state-btn {
+  height: 100px;
+}
+
 .expectation-operator-btn {
   height: 100px;
 }

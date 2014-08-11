@@ -1,8 +1,80 @@
 {% verbatim %}
 
+<script id="spatial-function-parameter-input-template" type="text/x-handlebars-template"> 
+  <p>\[ {{function_tex_str}} \] </p>
+  <form class="form-horizontal" role="form">
+    {{#parameters}}
+      <div class="form-group">
+        <label for="inputEmail3" class="col-sm-2 control-label">{{parameter_tex_str}}</label>
+        <div class="col-sm-10">
+          <input type="number" class="form-control" id="parameter_{{parameter_id}}" placeholder="0" value="0">            
+        </div>
+      </div>
+    {{/parameters}}
+  </form>
+</script>
+
+<script id="spatial-function-input-template" type="text/x-handlebars-template"> 
+
+  <div id="spatial_function_input_skeleton_row" class="row">
+                
+    <div class="col-md-4"> <!-- Define the kind of spatial dependence-->
+
+      <h4>Spatial function</h4>
+
+      <div class="btn-group spatial-function-btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          Constant <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          {{#spatial_fns}}
+            <li><a href="#" class="spatial-fn-choice" data-spatial-function-id="{{spatial_fn_id}}">{{function_description}}</a></li>
+          {{/spatial_fns}}
+        </ul>
+      </div>
+    </div>  <!-- End of define the kind of spatial dependence-->
+              
+    <div class="col-md-8">  <!-- Spatial dependence parameters -->
+
+      <h4>Spatial Parameters</h4>
+      <div class="spatial_function_parameter_input_form">
+        
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">k</label>
+            <div class="col-sm-10">
+
+              <input type="number" class="form-control" id="parameter_1" placeholder="0" value="0">            
+            </div>
+          </div>
+        </form>
+
+      </div>
+
+    </div>  <!-- End of Spatial dependence parameters -->
+
+  </div>
+
+</script>
+
+<script>
+
+
+    Handlebars.registerHelper("spatial_function_input", function(id) {
+        
+        var source = $("#spatial-function-input-template").html();
+        var template = Handlebars.compile(source);
+        
+        // return new Handlebars.SafeString(template(window.spatial_fns));
+        return new Handlebars.SafeString(template(window.spatial_fns));
+
+    });
+
+</script>
+
 <script id="hamiltonian-term-template" type="text/x-handlebars-template"> 
 
-<div class="row">  <!-- A Hamiltonian term representation -->
+<div id="hamiltonian-term-{{uuid}}" class="row">  <!-- A Hamiltonian term representation -->
   <div class="col-md-1" style="padding-top: 70px;">
     <i class="fa fa-plus-circle fa-5x"></i> 
   </div>
@@ -17,48 +89,13 @@
           <div class="col-md-3">
             <h3>{{function_description}}</h3>
             <p>\[ {{function_tex_str}} \]</p>
+            <button type="button" class="btn btn-danger form-control remove-hamiltonian-term-btn">Remove</button>
           </div>
           
           <div class="col-md-9">
             <h3>Spatial dependence</h3>
             
-            <div class="row">
-              
-              <div class="col-md-4"> <!-- Define the kind of spatial dependence-->
-                <div class="btn-group">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    Constant <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Constant</a></li>
-                    <li><a href="#">Sin</a></li>
-                    <li><a href="#">Step</a></li>
-                  </ul>
-                </div>
-              </div>  <!-- End of define the kind of spatial dependence-->
-                        
-              <div class="col-md-8">  <!-- Spatial dependence parameters -->
-
-                <h4>Spatial Parameters</h4>
-
-                <form class="form-horizontal" role="form">
-                  <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">k</label>
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-                    <div class="col-sm-10">
-                      <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-                    </div>
-                  </div>
-                </form>
-
-              </div>  <!-- End of Spatial dependence parameters -->
-
-            </div>
+            {{spatial_function_input uuid}}
 
           </div>  <!-- End of spatial definitions box -->
 

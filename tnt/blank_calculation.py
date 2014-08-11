@@ -22,7 +22,8 @@ blank_calculation_template = \
 			'time_step': None,
 			'num_time_steps': None,
 			'system_type': None,
-			'calculation_type': None
+			'calculation_type': None, 
+			'calculate_ground_state': None
 		},
 
 		'hamiltonian': {
