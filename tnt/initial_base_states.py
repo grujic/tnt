@@ -12,7 +12,7 @@ initial_base_states_list = \
 
 	# Spin system - all spins up
 	{
-		'initial_base_state_id': 1, \
+		'initial_base_state_id': 2, \
 		'function_tex_str': '| 	\uparrow 	\uparrow \cdots \uparrow \rangle', \
 		'function_description': 'All spins up', \
 		'system_type': 'spin'

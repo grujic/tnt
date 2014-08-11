@@ -28,6 +28,11 @@ urlpatterns = patterns('',
         views.calculations, \
         name='calculations'),
 
+    # Explore a calculation's expectation values etc in the browser
+    url(r'^calculation/explore/(?P<calculation_id>[^/]+)[/]?$', \
+        views.explore_calculation, \
+        name='explore_calculation'),    
+
     # FAQ page
     url(r'^faq[/]?$', \
         views.faq, \

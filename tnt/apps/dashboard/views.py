@@ -27,6 +27,13 @@ def calculations(request):
     return render(request, \
                   'dashboard/calculations.html')
 
+def explore_calculation(request, calculation_id):
+    # Explore a calculation's expectation values etc in the browser
+    return render(request, \
+                  'dashboard/explore_calculation.html')
+
+
+
 def faq(request):
     # Page for FAQ
     return render(request, \
