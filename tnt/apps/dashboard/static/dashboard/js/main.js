@@ -77,6 +77,22 @@ var tnt = {
 			);
 	},
 
+	attach_click_fn_to_remove_hamiltonian_terms: function () {
+		// When an initial base state is chosen, need to make that button active and all others not
+		$(".remove-hamiltonian-term-btn")
+			.click(
+				function (e) {
+					var hamiltonian_term_containing_div = $(this).closest('.hamiltonian-term');
+					$(hamiltonian_term_containing_div).remove();
+
+					// If there are no more Hamiltonian terms left, add back in the warning sign
+					if ($('.hamiltonian-term').length == 0) {
+						$("#no_hamiltonian_terms_added_yet_warning").css("display", "block");
+					}
+				}
+			);
+	},
+
 	attach_click_fn_to_expectation_operator_choices: function () {
 		// When an expectation operator is chosen, need to toggle it's 'active' class
 		$(".expectation-operator-btn")
@@ -169,7 +185,11 @@ var tnt = {
 		var template = Handlebars.compile(source);
 		$("#hamiltonian_terms_container").append(template(hamiltonian_operator));
 		$("#no_hamiltonian_terms_added_yet_warning").css('display', 'none');
-		tnt.attach_click_fn_to_spatial_fn_choices();
+		
+		tnt.attach_click_fn_to_spatial_fn_choices();	// Attach logic for changing spatial function input
+
+		tnt.attach_click_fn_to_remove_hamiltonian_terms();
+
 		tnt.render_mathjax();
 	},
 
@@ -188,10 +208,20 @@ var tnt = {
 					}
 				)[0];
 
-				// When clicked, change the
+				// When clicked, change the input form elements to the relevant ones for this spatial function choice
 				var source = $("#spatial-function-parameter-input-template").html();
 				var template = Handlebars.compile(source);
-				$(".spatial_function_parameter_input_form").html(template(relevant_spatial_function));
+
+				// console.log($(this).closest('.hamiltonian-term').data("hamiltonian-term-id"));
+				console.log($(this).closest('.hamiltonian-term'));
+
+				var hamiltonian_term_containing_div = $(this).closest('.hamiltonian-term');
+
+				var spatial_function_parameter_input_form = $(hamiltonian_term_containing_div)
+					.find('.spatial_function_parameter_input_form');
+
+
+				$(spatial_function_parameter_input_form).html(template(relevant_spatial_function));
 
 				console.log($(this));
 				console.log($(this).parent());
@@ -258,6 +288,28 @@ var tnt = {
 
 	validate_new_calculation_define_hamiltonian: function () {
 		// 
+		_.each($('.hamiltonian-term'), 
+	       function (term) {
+	           console.log("Next term: ");
+	           var hamiltonian_operator_id = $(term).data("hamiltonian-operator-id");
+	           console.log("Term with Hamiltonian operator ID: " + hamiltonian_operator_id);
+	           var hamiltonian_operator = _.filter(
+	                                          window.hamiltonian_operators.operators, 
+	                                          function (operator) {
+	                                              return operator['operator_id'] == parseInt(hamiltonian_operator_id)
+	                                          }
+	                                      )[0];
+	           console.log(hamiltonian_operator);
+	           var spatial_function_parameter_input_form  = $(term).find('.spatial_function_parameter_input_form');
+	           _.each($(spatial_function_parameter_input_form).find('.form-control'), 
+	               function(el) { 
+	                   console.log("Parameter ID: " + $(el).data("parameter-id"));
+	                   console.log("Has value " + $(el).val());
+	               }
+	           );
+	       }
+		); 	// End of loop over Hamiltonian terms
+
 		tnt.initialise_new_calculation_ground_state();
 	}, 
 
@@ -380,8 +432,39 @@ var tnt = {
 		);
 
 		window.calculation.setup.expectation_values.operators = selected_expectation_operators;
-		
+
 	}, 
 	
 
 } 	// End of tnt namespace
+
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
