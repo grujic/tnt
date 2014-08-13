@@ -1,3 +1,8 @@
+import json
+import uuid
+import datetime
+import time
+
 from django.shortcuts import render
 
 # TNT imports
@@ -14,6 +19,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.reverse import reverse
+
+from tnt.apps.api.models import Calculation
 
 # Create your views here.
 @api_view(('GET',))
@@ -154,6 +161,42 @@ def save_calculation(request):
     """
     Save calculation which is POSTed to this URL ###
     """
+    calculation_json = request.DATA.get('calculation')
+    if calculation_json is not None:
+        calculation = json.loads(calculation_json)
+
+    print("A")
+
+    calculation_id = str(uuid.uuid4())
+    calculation['meta_info']['id'] = calculation_id
+
+    print("B")
+
+    date_created = datetime.datetime.now()
+    time_created = int(time.time())
+
+    print("C")
+
+    calculation['meta_info']['date_created'] = time_created
+
+    print("D")
+
+    print calculation
+
+    calculation_obj = Calculation(id=calculation_id, \
+                                  user_id=request.user.id, \
+                                  time_created=date_created, \
+                                  status='saved', \
+                                  setup=json.dumps(calculation))
+
+    print("E")
+
+    calculation_obj.save()
+
+    print("F")
+
+    print("G")
+
     response = Response('', status=status.HTTP_200_OK)    # R1gt
 
     return response
