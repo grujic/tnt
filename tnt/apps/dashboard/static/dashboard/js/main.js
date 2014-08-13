@@ -147,7 +147,7 @@ var tnt = {
 		// render the available expectation value operators
 		console.log("Loading available expectation value operators");
 
-		$.get("/api/v1.0/expectation_operators", 
+		$.get("/api/v1.0/hamiltonian_operators", 
 			function (data) {
 
 				if (window.calculation.setup.system.calculation_type === null) {
@@ -301,6 +301,7 @@ var tnt = {
 	                                      )[0];
 	           console.log(hamiltonian_operator);
 	           var spatial_function_parameter_input_form  = $(term).find('.spatial_function_parameter_input_form');
+	           // Loop over the spatial function parameters for this term
 	           _.each($(spatial_function_parameter_input_form).find('.form-control'), 
 	               function(el) { 
 	                   console.log("Parameter ID: " + $(el).data("parameter-id"));
