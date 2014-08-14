@@ -22,16 +22,14 @@
 
       <h4>Spatial function</h4>
 
-      <div class="btn-group spatial-function-btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-          Constant <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          {{#spatial_fns}}
-            <li><a href="#" class="spatial-fn-choice" data-spatial-function-id="{{spatial_fn_id}}">{{function_description}}</a></li>
-          {{/spatial_fns}}
-        </ul>
-      </div>
+      <select class="spatial-function-btn-group">
+        {{#spatial_fns}}
+            <option value="{{spatial_fn_id}}" class="spatial-fn-choice" data-spatial-function-id="{{spatial_fn_id}}">
+              {{function_description}}
+            </option>
+        {{/spatial_fns}}
+      </select>
+
     </div>  <!-- End of define the kind of spatial dependence-->
               
     <div class="col-md-8">  <!-- Spatial dependence parameters -->

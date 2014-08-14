@@ -185,19 +185,24 @@ var tnt = {
 		var template = Handlebars.compile(source);
 		$("#hamiltonian_terms_container").append(template(hamiltonian_operator));
 		$("#no_hamiltonian_terms_added_yet_warning").css('display', 'none');
-		
-		tnt.attach_click_fn_to_spatial_fn_choices();	// Attach logic for changing spatial function input
-
+	
 		tnt.attach_click_fn_to_remove_hamiltonian_terms();
+
+		// $('select').selectpicker();
+
+		tnt.attach_click_fn_to_spatial_fn_choices();	// Attach logic for changing spatial function input
 
 		tnt.render_mathjax();
 	},
 
 	attach_click_fn_to_spatial_fn_choices: function () {
 		// Attach a click listener to the list elements representing different spatial function variations, updating parameter input fields accordingly
-		$(".spatial-fn-choice").click(
+		$(".spatial-function-btn-group").on("change", 
 			function (e) {
-				var selected_spatial_function_id = parseInt($(this).data("spatial-function-id"));
+
+				// var selected_spatial_function_id = parseInt($(this).closest(".btn-group").siblings("select").val());
+				var selected_spatial_function_id = $(this).val();
+				console.log("selected_spatial_function_id"); 
 				console.log(selected_spatial_function_id); 
 				
 				// Get info on the selected spatial function
@@ -212,9 +217,6 @@ var tnt = {
 				var source = $("#spatial-function-parameter-input-template").html();
 				var template = Handlebars.compile(source);
 
-				// console.log($(this).closest('.hamiltonian-term').data("hamiltonian-term-id"));
-				console.log($(this).closest('.hamiltonian-term'));
-
 				var hamiltonian_term_containing_div = $(this).closest('.hamiltonian-term');
 
 				var spatial_function_parameter_input_form = $(hamiltonian_term_containing_div)
@@ -222,9 +224,6 @@ var tnt = {
 
 
 				$(spatial_function_parameter_input_form).html(template(relevant_spatial_function));
-
-				console.log($(this));
-				console.log($(this).parent());
 
 				e.preventDefault();
 			}
@@ -291,6 +290,9 @@ var tnt = {
 		_.each($('.hamiltonian-term'), 
 	       function (term) {
 	           console.log("Next term: ");
+
+	           window.term = term;
+
 	           var hamiltonian_operator_id = $(term).data("hamiltonian-operator-id");
 	           console.log("Term with Hamiltonian operator ID: " + hamiltonian_operator_id);
 	           var hamiltonian_operator = _.filter(
@@ -299,15 +301,43 @@ var tnt = {
 	                                              return operator['operator_id'] == parseInt(hamiltonian_operator_id)
 	                                          }
 	                                      )[0];
+	           console.log("hamiltonian_operator: ");
 	           console.log(hamiltonian_operator);
-	           var spatial_function_parameter_input_form  = $(term).find('.spatial_function_parameter_input_form');
+
+	           // Now get the spatial function ID:
+	           var spatial_function_id = parseInt($(term).find("select").val());	// 0 ordering
+	           
+	           // Get the corresponding spatial function dict representation
+	           var spatial_function = _.filter(
+	                                          window.spatial_fns.spatial_fns, 
+	                                          function (spatial_fn) {
+	                                              return spatial_fn['spatial_fn_id'] == parseInt(spatial_function_id)
+	                                          }
+	                                      )[0];
+
+	           console.log("spatial_function: ");
+	           console.log(spatial_function);
+
+	           // Now get the values for each of the parameters for the spatial function variation
+	           var spatial_function_parameter_input_form = $(term).find('.spatial_function_parameter_input_form');
+	           
 	           // Loop over the spatial function parameters for this term
 	           _.each($(spatial_function_parameter_input_form).find('.form-control'), 
 	               function(el) { 
-	                   console.log("Parameter ID: " + $(el).data("parameter-id"));
-	                   console.log("Has value " + $(el).val());
+	                   var spatial_function_parameter_id = $(el).data("parameter-id");
+	                   console.log("Parameter ID: " + spatial_function_parameter_id);
+	                   var spatial_function_parameter_val = $(el).val()
+	                   console.log("Has value " + spatial_function_parameter_val);
+
+	                   spatial_function.parameters[spatial_function_parameter_id - 1]['value'] = spatial_function_parameter_val;
+	                   window.spatial_function = spatial_function;
 	               }
 	           );
+
+	           //
+	           hamiltonian_operator['spatial_function'] = spatial_function;
+	           window.calculation.setup.hamiltonian.terms.push(hamiltonian_operator);
+			   
 	       }
 		); 	// End of loop over Hamiltonian terms
 
