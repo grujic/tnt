@@ -9,54 +9,64 @@
   <p><a href="/faq/" class="btn btn-primary btn-lg" role="button">Or, read our FAQ</a></p>
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Name: asdadsdasasdag</h3>
-    </div>
+<div id="user_calculations">
 
-    <div class="panel-body">
-
-      <div class="row">
-      	
-      	<div class="col-md-6">
-      		
-      		<p>Date created: XXXXX</p>
-
-      		<p>Date run: XXXXX</p>
-
-      		<p>Date finished: XXXXX</p>
-
-      	</div>
-
-      	<div class="col-md-6">
-      		Status
-      	</div>
-
-      </div>
-
-      <hr>
-
-      <div class="row">  
-          <div class="col-md-3">
-              <a href="/calculation/explore/123" role="button" class="btn btn-default form-control ">Explore</a>
-          </div>
-
-          <div class="col-md-3">
-              <a role="button" class="btn btn-default form-control ">Download / Run</a>
-          </div>
-
-          <div class="col-md-3">
-              <a role="button" class="btn btn-default form-control ">Parameters</a>
-          </div>
-
-          <div class="col-md-3">
-              <a role="button" class="btn btn-danger form-control ">Delete</a>
-          </div>
-
-      </div>  
-
-    </div> <!-- End of panel body -->
+  <div class="alert alert-info" role="alert">Loading your calculations...</div>
 
 </div>
 
+{% endblock %}
+
+{% block end_of_body_scripts %}
+  <script>
+    window.user = {};
+    window.user.email = "{{user.email}}";
+    window.user.id = "{{user.id}}";
+    console.log("Stored logged in user details");
+
+    $.get('/api/v1.0/calculations', 
+      function (calculations) {
+        
+        window.calculations = calculations;
+
+        if (calculations.calculations.length == 0) {
+          $("#user_calculations").html("<h1>You don't have any calculations yet</h1>");
+        } else {
+          var source = $("#user-calculations-template").html();
+          var template = Handlebars.compile(source);
+          $("#user_calculations").html(template(calculations));
+        }
+
+      }
+    ).done(function() {
+        $(".btn-delete-calculation")
+          .click(
+            function() {
+                
+                var this_calculation_info_panel = $(this).closest(".panel-calculation-info");
+                var calculation_id = $(this_calculation_info_panel).data("calculation-id");
+                console.log(calculation_id);
+
+                $.post(
+                  '/api/v1.0/calculation/delete/' + calculation_id, 
+                  function (data) { 
+                    console.log(data); 
+                  }
+                ).done(function () {
+                  window.location = '/';
+                });
+            }
+        );
+    });
+
+    
+    
+  </script>
+
+{% endblock %}
+
+{% block handlebars_scripts %}
+
+  {% include "dashboard/handlebars_templates/user_calculations_template.html" %}
+      
 {% endblock %}

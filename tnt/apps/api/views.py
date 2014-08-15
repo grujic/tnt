@@ -137,6 +137,17 @@ def initial_state_modifiers(request):
 ### END OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
 
 ### START OF API CALLS FOR info on calculations ###
+@api_view(['GET'])
+def calculations(request):
+    """
+    Return JSON representations for all this users' calculations ###
+    """
+    response = Response({ \
+      'calculations': [json.loads(calculation.setup) for calculation in Calculation.objects.filter(user_id=request.user.id)] \
+      }, \
+      status=status.HTTP_200_OK)
+
+    return response
 
 @api_view(['GET'])
 def show_calculation(request, calculation_id):
@@ -157,11 +168,15 @@ def show_calculation(request, calculation_id):
     return response
 
 @api_view(['POST'])
-def delete_calculation(request):
+def delete_calculation(request, calculation_id):
     """
     Delete calculation with the given ID ###
     """
-    response = Response('', status=status.HTTP_200_OK)    # R1gt
+    try:
+        Calculation.objects.filter(id=calculation_id).delete()
+        response = Response('OK', status=status.HTTP_200_OK)    # R1gt
+    except:
+        response = Response('Not found', status=status.HTTP_404_NOT_FOUND)    # R1gt
 
     return response
 
