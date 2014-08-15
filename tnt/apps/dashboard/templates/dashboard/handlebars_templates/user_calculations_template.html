@@ -1,0 +1,61 @@
+{% verbatim %}
+
+<script id="user-calculations-template" type="text/x-handlebars-template"> 
+
+    {{#calculations}}
+
+        <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
+          <div class="panel-heading">
+            <h3 class="panel-title">Name: {{meta_info.id}}</h3>
+          </div>
+
+          <div class="panel-body">
+
+            <div class="row">
+            	
+            	<div class="col-md-6">
+            		
+            		<p>Date created: XXXXX</p>
+
+            		<p>Date run: XXXXX</p>
+
+            		<p>Date finished: XXXXX</p>
+
+            	</div>
+
+            	<div class="col-md-6">
+            		Status
+            	</div>
+
+            </div>
+
+            <hr>
+
+            <div class="row">  
+                <div class="col-md-3">
+                    <a href="/calculation/explore/{{meta_info.id}}" role="button" class="btn btn-default form-control ">Explore</a>
+                </div>
+
+                <div class="col-md-3">
+                    <a role="button" class="btn btn-default form-control ">Download / Run</a>
+                </div>
+
+                <div class="col-md-3">
+                    <a href="/api/v1.0/calculation/show/{{meta_info.id}}" role="button" class="btn btn-default form-control ">Parameters</a>
+                </div>
+
+                <div class="col-md-3">
+                    <a role="button" class="btn btn-danger form-control btn-delete-calculation">Delete</a>
+                </div>
+
+            </div>  
+
+          </div> <!-- End of panel body -->
+
+        </div>  <!-- End of panel -->
+
+    {{/calculations}}
+
+</script>
+
+{% endverbatim %}

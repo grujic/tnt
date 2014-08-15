@@ -45,6 +45,11 @@ urlpatterns = patterns('',
     ### START OF API CALLS FOR info about calculations ###
 
     ### Return JSON representation of a stored calculation ###
+
+    url(r'^calculations[/]?$', \
+        views.calculations, \
+        name='calculations'),
+
     url(r'^calculation/show/(?P<calculation_id>[^/]+)[/]?$', \
         views.show_calculation, \
         name='show_calculation'),

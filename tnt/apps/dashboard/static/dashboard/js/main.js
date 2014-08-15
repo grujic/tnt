@@ -471,6 +471,22 @@ var tnt = {
 		console.log("Initialising confirmation stage");
 		tnt.clear_all_new_calculation_stages();
 
+		$("#submit_calculation").click(
+			function () {
+				$.post(
+					'/api/v1.0/calculation/save', 
+					{
+						'calculation': JSON.stringify(window.calculation)
+					}, 
+					function (data) {
+						console.log(data);
+					}
+				).done(function() {
+		    		console.log("Submitted calculation!");
+		  		});
+			}
+		);
+
 		$("#new_calculation_confirm").css('display', 'block');
 
 	}, 
