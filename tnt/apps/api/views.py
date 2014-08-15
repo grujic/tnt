@@ -143,7 +143,16 @@ def show_calculation(request, calculation_id):
     """
     Return JSON representation of a stored calculation ###
     """
-    response = Response({'id': calculation_id}, status=status.HTTP_200_OK)    # R1gt
+
+    print("calculation_id = ")
+    print(calculation_id)
+
+    calculation = Calculation.objects.filter(id=calculation_id)
+
+    if len(calculation) > 0:
+        response = Response({'calculation': json.loads(calculation[0].setup)}, status=status.HTTP_200_OK)
+    else:
+        response = Response('Not found', status=status.HTTP_404_NOT_FOUND)
 
     return response
 
@@ -161,9 +170,12 @@ def save_calculation(request):
     """
     Save calculation which is POSTed to this URL ###
     """
+
     calculation_json = request.DATA.get('calculation')
     if calculation_json is not None:
         calculation = json.loads(calculation_json)
+
+    print calculation_json
 
     print("A")
 
@@ -197,7 +209,7 @@ def save_calculation(request):
 
     print("G")
 
-    response = Response('', status=status.HTTP_200_OK)    # R1gt
+    response = Response('OK', status=status.HTTP_200_OK)    # R1gt
 
     return response
 
