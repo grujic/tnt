@@ -359,23 +359,15 @@ var tnt = {
 	validate_new_calculation_ground_state: function () {
 		// 
 
-		var calculate_ground_state = $("label.active input", "#ground_state_calculation_choice")
-			.data("calculate-ground-state");
+		var calculate_ground_state = parseInt($("label.active input", "#ground_state_calculation_choice")
+			.data("calculate-ground-state"));
 
-		if (calculate_ground_state == "true") {
-			window.calculation.setup.system.calculate_ground_state = true;
-		} else {
-			window.calculation.setup.system.calculate_ground_state = false;
-		}
+		window.calculation.setup.system.calculate_ground_state = calculate_ground_state;
 
-		var calculate_time_evolution_choice = $("label.active input", "#time_evolution_choice")
-			.data("calculate-time-evolution");
+		var calculate_time_evolution_choice = parseInt($("label.active input", "#time_evolution_choice")
+			.data("calculate-time-evolution"));
 
-		if (calculate_time_evolution_choice == "true") {
-			window.calculation.setup.system.calculation_type = "time_evolution";
-		} else {
-			window.calculation.setup.system.calculate_ground_state = "ground_state";
-		}
+		window.calculation.setup.system.calculate_time_evolution = calculate_time_evolution_choice;
 
 		console.log("Validated new calculation ground state input");
 
@@ -395,7 +387,14 @@ var tnt = {
 
 	validate_new_calculation_time_evolution: function () {
 		// 
+		var num_time_steps = parseInt($("#input_num_time_steps").val())
+		var time_step_size = parseFloat($("#input_time_step_size").val());
+
+		window.calculation.setup.system.num_time_steps = num_time_steps;
+		window.calculation.setup.system.time_step = time_step_size;
+
 		tnt.initialise_new_calculation_initial_state();
+
 	}, 
 
 	initialise_new_calculation_initial_state: function () {
@@ -426,9 +425,8 @@ var tnt = {
 
 		window.calculation.setup.initial_state.base_state = initial_base_state;
 
-
-
 		tnt.initialise_new_calculation_expectation_operators();
+
 	}, 
 
 	initialise_new_calculation_expectation_operators: function () {
@@ -464,7 +462,31 @@ var tnt = {
 
 		window.calculation.setup.expectation_values.operators = selected_expectation_operators;
 
+		tnt.initialise_new_calculation_confirmation();
+
 	}, 
+
+	initialise_new_calculation_confirmation: function () {
+
+		console.log("Initialising confirmation stage");
+		tnt.clear_all_new_calculation_stages();
+
+		$("#new_calculation_confirm").css('display', 'block');
+
+	}, 
+
+	submit_calculation: function () {
+		// We POST the calculation structure to the server for saving and processing
+		$.post('/api/v1.0/calculation/save', 
+			{
+				'calculation': JSON.stringify(window.calculation)
+			}, 
+			function (data) {
+				console.log(data);
+			}
+		);
+
+	}
 	
 
 } 	// End of tnt namespace
