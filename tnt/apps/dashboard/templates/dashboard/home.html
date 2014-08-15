@@ -30,7 +30,7 @@
         window.calculations = calculations;
 
         if (calculations.calculations.length == 0) {
-          $("#user_calculations").html("<h1>You don't have any calculations yet</h1>");
+          $("#user_calculations").html("<h1>You don't have any calculations yet</h1><p>They'll appear here once you've set them up</p>");
         } else {
           var source = $("#user-calculations-template").html();
           var template = Handlebars.compile(source);

@@ -483,6 +483,7 @@ var tnt = {
 					}
 				).done(function() {
 		    		console.log("Submitted calculation!");
+		    		window.location = '/';
 		  		});
 			}
 		);
