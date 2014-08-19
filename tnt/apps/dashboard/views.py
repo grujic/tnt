@@ -1,6 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
+from django.core.context_processors import csrf
+
+from django.http import HttpResponseRedirect
+
+from userprofile.models import MyUser
 
 # Create your views here.
 def login(request):
@@ -11,6 +16,37 @@ def login(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/login/')
+
+def landing(request):
+    state = "Please enter an email and password..."
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        print("username = ")
+        print(username)
+
+        print("password = ")
+        print(password)
+
+        try:
+            
+            MyUser.objects.create_user(email, password=password)
+            user = authenticate(username=email, password=password)
+            
+
+            login(request, user)
+            state = "You're successfully logged in!"
+            return HttpResponseRedirect('/')
+
+        except IntegrityError:  # User name already in DB
+            state = "Email " + email + " already exists, try another"
+
+    args = {}
+    args.update(csrf(request))
+    args['state'] = state
+
+    return render(request, 'dashboard/landing.html', args)
 
 def home(request):
     # Users's home page showing previous calculations and ability to create a new one
