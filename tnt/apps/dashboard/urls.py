@@ -12,6 +12,10 @@ urlpatterns = patterns('',
         views.logout_view,
         name='logout_view'),
 
+    url(r'^landing[/]?$', \
+        views.landing,
+        name='landing'),
+
     # User home view, showing their past calculations and ability to start a new one
     # What they see when they first log in
     url(r'^[/]?$', \
