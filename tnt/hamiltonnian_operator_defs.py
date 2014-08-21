@@ -1,8 +1,7 @@
 # This file defines the operators available for building the system Hamiltonian
 
 operators = \
-[
-	
+[	
 	
 	# Sigma X
 	{
@@ -13,7 +12,8 @@ operators = \
 		'U1_invariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True
+		'use_for_expectation': True, \
+		'two_site': False
 	},
 	
 	# Sigma Y
@@ -25,7 +25,8 @@ operators = \
 		'U1_invariant': False, \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True
+		'use_for_expectation': True, \
+		'two_site': False
 	},
 	
 	# Sigma Z
@@ -37,7 +38,8 @@ operators = \
 		'U1_invariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True
+		'use_for_expectation': True, \
+		'two_site': False
 	}, 
 
 	# XX coupling
@@ -49,7 +51,8 @@ operators = \
 		'U1_invariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True
+		'use_for_expectation': True, \
+		'two_site': True
 	}, 
 
 	# YY coupling
@@ -61,7 +64,8 @@ operators = \
 		'U1_invariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True
+		'use_for_expectation': True, \
+		'two_site': True
 	}, 
 
 	# ZZ coupling
@@ -73,7 +77,8 @@ operators = \
 		'U1_invariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True
+		'use_for_expectation': True, \
+		'two_site': True
 	}, 
 	
 	# Hopping
@@ -85,7 +90,8 @@ operators = \
 		'U1_invariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True
+		'use_for_expectation': True, \
+		'two_site': True
 	}, 
 	
 	# Hopping with phase change
@@ -97,7 +103,8 @@ operators = \
 		'U1_invariant': True, \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True
+		'use_for_expectation': True, \
+		'two_site': True
 	}, 
 	
 	# XY coupling
@@ -109,7 +116,8 @@ operators = \
 		'U1_invariant': False, \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True
+		'use_for_expectation': True, \
+		'two_site': True
 	}, 
 	
 	# YX coupling
@@ -121,7 +129,8 @@ operators = \
 		'U1_invariant': False, \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True
+		'use_for_expectation': True, \
+		'two_site': True
 	}, 
 	
 	# YZ coupling
@@ -133,7 +142,8 @@ operators = \
 		'U1_invariant': False, \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True
+		'use_for_expectation': True, \
+		'two_site': True
 	}, 
 	
 	# ZY coupling
@@ -145,7 +155,8 @@ operators = \
 		'U1_invariant': False, \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True
+		'use_for_expectation': True, \
+		'two_site': True
 	}, 
 	
 	# ZX coupling
@@ -157,7 +168,8 @@ operators = \
 		'U1_invariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True
+		'use_for_expectation': True, \
+		'two_site': True
 	}, 
 	
 	# XZ coupling
@@ -169,7 +181,8 @@ operators = \
 		'U1_invariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True
+		'use_for_expectation': True, \
+		'two_site': True
 	}
 
 ]
