@@ -7,7 +7,7 @@ operators = \
 	{
 		'operator_id': 1, \
 		'function_tex_str': '\sum_j \hat{S}_j^x', \
-		'function_description': 'Sigma X', \
+		'function_description': 'Sx', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
 		'complex': False, \
@@ -20,7 +20,7 @@ operators = \
 	{
 		'operator_id': 2, \
 		'function_tex_str': '\sum_j \hat{S}_j^y', \
-		'function_description': 'Sigma Y', \
+		'function_description': 'Sy', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
 		'complex': True, \
@@ -33,7 +33,7 @@ operators = \
 	{
 		'operator_id': 3, \
 		'function_tex_str': '\sum_j \hat{S}_j^z', \
-		'function_description': 'Sigma Z', \
+		'function_description': 'Sz', \
 		'term_type': 'spin', \
 		'U1_invariant': True, \
 		'complex': False, \
