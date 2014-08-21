@@ -50,6 +50,8 @@ AUTH_USER_MODEL = 'userprofile.MyUser'
 
 LOGIN_REDIRECT_URL = '/'
 
+LOGIN_URL = '/login/'
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

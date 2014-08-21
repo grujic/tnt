@@ -6,15 +6,15 @@ import views
 urlpatterns = patterns('',
 
     url(r'^login[/]?$', \
-        'django.contrib.auth.views.login'),
+        'django.contrib.auth.views.login', {'template_name': 'dashboard/signin.html'}),
 
     url(r'^logout[/]?$', \
         views.logout_view,
         name='logout_view'),
 
-    url(r'^landing[/]?$', \
-        views.landing,
-        name='landing'),
+    url(r'^signup[/]?$', \
+        views.signup,
+        name='signup'),
 
     # User home view, showing their past calculations and ability to start a new one
     # What they see when they first log in
