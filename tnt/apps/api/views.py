@@ -2,6 +2,11 @@ import json
 import uuid
 import datetime
 import time
+import requests
+
+from tnt.settings import bose_base_url
+
+
 
 from django.shortcuts import render
 
@@ -190,25 +195,15 @@ def save_calculation(request):
     if calculation_json is not None:
         calculation = json.loads(calculation_json)
 
-    print calculation_json
-
-    print("A")
-
     calculation_id = str(uuid.uuid4())
     calculation['meta_info']['id'] = calculation_id
 
-    print("B")
+    calculation['meta_info']['status'] = 'saved'
 
     date_created = datetime.datetime.now()
     time_created = int(time.time())
 
-    print("C")
-
     calculation['meta_info']['date_created'] = time_created
-
-    print("D")
-
-    print calculation
 
     calculation_obj = Calculation(id=calculation_id, \
                                   user_id=request.user.id, \
@@ -216,13 +211,50 @@ def save_calculation(request):
                                   status='saved', \
                                   setup=json.dumps(calculation))
 
-    print("E")
-
     calculation_obj.save()
 
-    print("F")
+    response = Response('OK', status=status.HTTP_200_OK)    # R1gt
 
-    print("G")
+    return response
+
+@api_view(['POST'])
+def run_calculation(request):
+    """
+    Run calculation which is POST'ed to this URL and we POST it to the bose server's API ###
+    """
+
+    calculation_id = request.DATA.get('calculation_id')
+
+    print calculation_id
+
+    calculation_obj = Calculation.objects.filter(id=calculation_id)[0]
+
+    print calculation_obj
+
+    print calculation_obj.setup
+
+    calculation = json.loads(calculation_obj.setup)
+
+    print calculation
+
+    # Make a call posting this to the BOSE server
+    bose_run_url = bose_base_url + '/api/v1.0/calculation/run'
+
+    resp = requests.post(bose_run_url, data={'calculation': json.dumps(calculation)})
+
+    print(resp.content)
+
+    calculation_obj.time_run = datetime.datetime.now()
+
+    calculation_obj.status = 'running'
+
+    calculation['meta_info']['date_run'] = int(time.time())
+
+    calculation['meta_info']['status'] = 'running'
+
+    calculation_obj.setup = json.dumps(calculation)
+
+    calculation_obj.save()
 
     response = Response('OK', status=status.HTTP_200_OK)    # R1gt
 

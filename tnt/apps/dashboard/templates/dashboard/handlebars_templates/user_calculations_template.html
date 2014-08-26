@@ -1,5 +1,26 @@
 {% verbatim %}
 
+<script>
+
+
+    Handlebars.registerHelper("timestamp_to_human_date", function(timestamp) {
+        
+        if (timestamp === null) {
+            
+            return "None";
+
+        } else {
+
+            var date = new Date(timestamp*1000);
+            
+            return date.toLocaleString();
+
+        }
+
+    });
+
+</script>
+
 <script id="user-calculations-template" type="text/x-handlebars-template"> 
 
     {{#calculations}}
@@ -15,16 +36,16 @@
             	
             	<div class="col-md-6">
             		
-            		<p>Date created: XXXXX</p>
+            		<p>Date created: {{timestamp_to_human_date meta_info.date_created}}</p>
 
-            		<p>Date run: XXXXX</p>
+            		<p>Date run: {{timestamp_to_human_date meta_info.date_run}}</p>
 
             		<p>Date finished: XXXXX</p>
 
             	</div>
 
             	<div class="col-md-6">
-            		Status
+            		Status: {{meta_info.status}}
             	</div>
 
             </div>
@@ -37,7 +58,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <a role="button" class="btn btn-default form-control ">Download / Run</a>
+                    <a role="button" class="btn btn-default form-control run-calculation-button" data-loading-text="Starting..." data-calculation-id="{{meta_info.id}}">Download / Run</a>
                 </div>
 
                 <div class="col-md-3">

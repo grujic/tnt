@@ -121,3 +121,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+### Project specific settings ###
+# bose_base_url = 'http://127.0.0.1:8888'   # Local development
+bose_base_url = 'http://bose.physics.ox.ac.uk:8080'    # Bose server
