@@ -64,6 +64,10 @@ urlpatterns = patterns('',
         views.save_calculation, \
         name='save_calculation'),    
 
+    url(r'^calculation/run[/]?$', \
+    views.run_calculation, \
+    name='run_calculation'),
+
     ### END OF API CALLS FOR info about calculations ###
 
     ### START OF API CALLS FOR info about users ###

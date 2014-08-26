@@ -1,6 +1,12 @@
 // Namespace for tnt
 var tnt = {
 
+	timestamp_to_human_date: function (timestamp) {
+		var date = new Date(timestamp*1000);
+		return date.toLocaleString();
+
+	},
+
 	render_mathjax: function () {
 		MathJax.Hub.Typeset(); 
 	},
@@ -338,8 +344,13 @@ var tnt = {
 
 		// Now process any extra info to do with the system type
 		if (system_type == "spin") {
+			
+			console.log("System type = spin");
+
 			var spin_magnitude = $(".btn-system-type-extra-info-spin.active")
 									.data("spin-magnitude");
+
+			console.log("Spin magnitude = " + spin_magnitude);
 
 			window.calculation.setup.system.system_type.extra_info['spin_magnitude'] = spin_magnitude;
 
@@ -611,6 +622,19 @@ var tnt = {
 			}
 		);
 
+	}, 
+
+	run_calculation: function(calculation_id) {
+		// Run the calculation with the given ID
+		$.post(
+			"/api/v1.0/calculation/run", 
+			{
+				'calculation_id': calculation_id
+			}
+		).done(function() {
+    		// This will update statuses to running... etc
+    		location.reload();
+  		});
 	}
 	
 

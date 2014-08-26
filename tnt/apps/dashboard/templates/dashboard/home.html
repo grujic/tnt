@@ -35,6 +35,18 @@
           var source = $("#user-calculations-template").html();
           var template = Handlebars.compile(source);
           $("#user_calculations").html(template(calculations));
+
+          // Attach functions to 'Run...' buttons
+          $(".run-calculation-button")
+            .click(
+              function(el) {
+                $(this).button('loading');
+                var calculation_id = $(this).data('calculation-id'); 
+                console.log("Running calculation " + calculation_id); 
+                tnt.run_calculation(calculation_id);
+              }
+            );
+
         }
 
       }

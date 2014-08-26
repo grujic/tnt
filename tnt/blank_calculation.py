@@ -11,7 +11,8 @@ blank_calculation_template = \
 		'date_created': None, 
 		'finished': False, 
 		'id': None,
-		'name': None
+		'name': None, 
+		'status': None
 	},
 
 	'setup': {
