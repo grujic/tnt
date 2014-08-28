@@ -19,6 +19,34 @@
 
     });
 
+    Handlebars.registerHelper("render_action_button", function(status, calculation_id) {
+        
+        if (status == 'running') {
+
+            var action_button_classes = 'btn-default download-calculation-button';
+            var action_button_data_loading_text = 'Starting...';
+            var action_button_text = 'Download';
+
+        } else if (status == 'saved') {
+
+            var action_button_classes = 'btn-info run-calculation-button';
+            var action_button_data_loading_text = 'Starting...';
+            var action_button_text = 'Run';
+
+        } else if (status == 'finished') {
+
+            var action_button_classes = 'btn-default run-calculation-button';
+            var action_button_data_loading_text = 'Starting...';
+            var action_button_text = 'Download';
+
+        }
+
+        var action_button_html = '<a role="button" class="btn form-control ' + action_button_classes + '" data-loading-text="' + action_button_data_loading_text + '" data-calculation-id="' + calculation_id + '">' + action_button_text + '</a>';
+
+        return new Handlebars.SafeString(action_button_html);
+
+    });
+
 </script>
 
 <script id="user-calculations-template" type="text/x-handlebars-template"> 
@@ -58,7 +86,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <a role="button" class="btn btn-default form-control run-calculation-button" data-loading-text="Starting..." data-calculation-id="{{meta_info.id}}">Download / Run</a>
+                    {{render_action_button meta_info.status meta_info.id}}
                 </div>
 
                 <div class="col-md-3">
@@ -66,7 +94,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <a role="button" class="btn btn-danger form-control btn-delete-calculation">Delete</a>
+                    <a role="button" class="btn btn-danger form-control btn-delete-calculation" data-calculation-id="{{meta_info.id}}">Delete</a>
                 </div>
 
             </div>  

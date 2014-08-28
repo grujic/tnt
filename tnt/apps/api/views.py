@@ -142,6 +142,13 @@ def initial_state_modifiers(request):
 ### END OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
 
 ### START OF API CALLS FOR info on calculations ###
+
+# Helper functions
+def check_on_running_calculations(user_id):
+    # We find the calculations of the User that have status 'running'
+    pass
+
+
 @api_view(['GET'])
 def calculations(request):
     """

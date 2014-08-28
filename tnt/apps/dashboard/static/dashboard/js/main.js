@@ -637,6 +637,11 @@ var tnt = {
   		});
 	}, 
 
+
+	download_calculation: function(calculation_id) {
+		// Download a JSON file to the User's computer
+	}, 
+
 	// Plotting and 'exploring' functions
 
 	load_expectation_val_results: function(calculation_id) {
