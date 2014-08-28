@@ -1,6 +1,12 @@
 // Namespace for tnt
 var tnt = {
 
+	timestamp_to_human_date: function (timestamp) {
+		var date = new Date(timestamp*1000);
+		return date.toLocaleString();
+
+	},
+
 	render_mathjax: function () {
 		MathJax.Hub.Typeset(); 
 	},
@@ -43,14 +49,37 @@ var tnt = {
 				if (window.calculation.setup.system.calculation_type === null) {
 					var filtered_data = data;
 				} else {
-					var filtered_data = {'operators': _.filter(data.operators, function(el) {return el['term_type'] == window.calculation.setup.system.calculation_type; })};
+					var filtered_data = 
+						{'operators': 
+							_.filter(
+								data.operators, 
+								function(el) {
+									return el['term_type'] == window.calculation.setup.system.calculation_type; 
+								}
+							)
+						};
+				}
+
+				// Now check if number conservation is being enforced
+				if ( parseInt(window.calculation.setup.system.number_conservation) == 1 ) {
+					var filtered_data = 
+						{'operators': 
+							_.filter(
+								filtered_data.operators, 
+								function (el) { 
+									return el['U1_invariant']; 
+								}
+							) 
+						};
 				}
 
 				// Keep this data available:
 				window.hamiltonian_operators = filtered_data;
 
 				var source = $("#hamiltonian-operator-template").html();
+				
 				var template = Handlebars.compile(source);
+
 				$("#new_calculation_available_hamiltonian_operators").html(template(filtered_data));
 				
 				$(".hamiltonian-operator-btn")
@@ -145,7 +174,7 @@ var tnt = {
 
 	render_available_expectation_operators: function () {
 		// render the available expectation value operators
-		console.log("Loading available expectation value operators");
+		console.log("Loading available expectation value operators...");
 
 		$.get("/api/v1.0/hamiltonian_operators", 
 			function (data) {
@@ -153,14 +182,55 @@ var tnt = {
 				if (window.calculation.setup.system.calculation_type === null) {
 					var filtered_data = data;
 				} else {
-					var filtered_data = {'operators': _.filter(data.operators, function(el) {return el['term_type'] == window.calculation.setup.system.calculation_type;})};
+					var filtered_data = 
+						{
+							'operators': 
+							 _.filter(
+							 	data.operators, 
+							 	function(el) {
+							 		return el['term_type'] == window.calculation.setup.system.calculation_type;
+							 	}
+							 )
+						};
 				}
 
 				window.expectation_operators = filtered_data;
 
-				var source = $("#expectation_operators-template").html();
-				var template = Handlebars.compile(source);
-				$("#new_calculation_available_expectation_operators").html(template(window.expectation_operators));
+				// Separate operators into single- and two-site expectation operators
+				var single_site_expectation_operators = 
+					{
+						'operators': 
+						_.filter(
+							window.expectation_operators.operators, 
+							function (el) {
+								return el.two_site == false; 
+							}
+						)
+					};
+
+				var two_site_expectation_operators = 
+					{
+						'operators': 
+						_.filter(
+							window.expectation_operators.operators, 
+							function (el) {
+								return el.two_site == true; 
+							}
+						)
+					};
+
+				var single_site_source = $("#expectation-operators-single-site-template").html();
+				var single_site_template = Handlebars.compile(single_site_source);
+
+				var two_site_source = $("#expectation-operators-two-site-template").html();
+				var two_site_template = Handlebars.compile(two_site_source);
+				
+				// Render single- and two- site operators separately
+				$("#new_calculation_available_expectation_operators_single_site")
+					.html(single_site_template(single_site_expectation_operators));
+
+				$("#new_calculation_available_expectation_operators_two_site")
+					.html(two_site_template(two_site_expectation_operators));
 
 				tnt.attach_click_fn_to_expectation_operator_choices();
 
@@ -235,10 +305,23 @@ var tnt = {
 		$(".new-calculation-step").css('display', 'none');
 	},
 
+	review_all_new_calculation_stages: function() {
+		// Set display: none for each of the 'pages' of the new calculation setup
+		$(".new-calculation-step").css('display', 'block');
+	},
+
 	// Following is a list of functions that verify data input and also set up the various data input panels for a new calculation
 	initialise_new_calculation_basic_setup_step: function () {
 		// 
 		console.log("Initialising new calculation basic setup input");
+
+		// Make sure that we can only have one spin type selected at a time
+		$(".btn-system-type-extra-info-spin")
+			.click(function (el) { 
+				$(".btn-system-type-extra-info-spin").removeClass("active"); 
+				$(this).addClass("active"); 
+			}
+		);
 
 		tnt.clear_all_new_calculation_stages();
 		$("#new_calculation_basic_setup").css('display', 'block');
@@ -253,11 +336,31 @@ var tnt = {
 		// 
 		var system_type = $(".btn-system-type.active").data("system-type"); // From the selected button, find system type
 
-		window.calculation.setup.system.system_type = system_type;	// Update the calculation
+		window.calculation.setup.system.system_type.name = system_type;	// Update the calculation
 
 		var system_size = parseInt($("#system_size").val());	// How many sites?
 
 		window.calculation.setup.system.system_size = system_size;	// Update the calculation
+
+		// Now process any extra info to do with the system type
+		if (system_type == "spin") {
+			
+			console.log("System type = spin");
+
+			var spin_magnitude = $(".btn-system-type-extra-info-spin.active")
+									.data("spin-magnitude");
+
+			console.log("Spin magnitude = " + spin_magnitude);
+
+			window.calculation.setup.system.system_type.extra_info['spin_magnitude'] = spin_magnitude;
+
+		}
+		
+		// Now let's see if the user wants to enforce number conservation:
+		var enforce_number_conservation = parseInt($("label.active input", "#number_conservation_choice")
+			.data("number-conservation"));
+
+		window.calculation.setup.system.number_conservation = enforce_number_conservation;
 
 		var chi = parseInt($("#chi_value").val());	// \chi
 
@@ -445,7 +548,9 @@ var tnt = {
 	}, 
 
 	validate_new_calculation_expectation_operators: function () {
-		// 
+		// Check that everything's OK and add the selected exp vals into the calculation JSON structure
+		
+
 		var selected_expectation_operator_ids = _.map(
 			$(".expectation-operator-btn.active"), 
 			function (el) {
@@ -456,11 +561,25 @@ var tnt = {
 		var selected_expectation_operators = _.filter(
 			window.expectation_operators.operators, 
 			function(el) {
-				return _.contains(selected_expectation_operator_ids , el['operator_id']);
+				return _.contains(
+					selected_expectation_operator_ids, 
+					el['operator_id']);
 			}
 		);
 
 		window.calculation.setup.expectation_values.operators = selected_expectation_operators;
+
+		// Now we want to add in the extra information required for two-site operators
+		_.each(
+			window.calculation.setup.expectation_values.operators, 
+			function (operator) {
+				if (operator.two_site == true) {
+					var selector = '.two-site-expectation-type-choice[data-expectation-operator-id="' + operator.operator_id.toString() + '"]'; 
+					var expectation_value_type = $(selector).val(); 
+					operator['exp_val_type'] = expectation_value_type; 
+				}
+			}
+		);
 
 		tnt.initialise_new_calculation_confirmation();
 
@@ -503,10 +622,35 @@ var tnt = {
 			}
 		);
 
-	}
+	}, 
+
+	run_calculation: function(calculation_id) {
+		// Run the calculation with the given ID
+		$.post(
+			"/api/v1.0/calculation/run", 
+			{
+				'calculation_id': calculation_id
+			}
+		).done(function() {
+    		// This will update statuses to running... etc
+    		location.reload();
+  		});
+	}, 
+
+	// Plotting and 'exploring' functions
+
+	load_expectation_val_results: function(calculation_id) {
+		// Make a request to the server and pull in the exp val results for this calculation, then set them as a global variable
+		// window.expectation_values = ;
+	},
+
+
+
 	
 
 } 	// End of tnt namespace
+
+// AJAX functions and dealing with cross-site origin requests
 
 // using jQuery
 function getCookie(name) {
