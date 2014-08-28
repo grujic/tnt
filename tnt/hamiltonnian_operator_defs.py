@@ -90,7 +90,7 @@ operators = \
 		'U1_invariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True, \
+		'use_for_expectation': False, \
 		'two_site': True
 	}, 
 	
@@ -103,7 +103,7 @@ operators = \
 		'U1_invariant': True, \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
-		'use_for_expectation': True, \
+		'use_for_expectation': False, \
 		'two_site': True
 	}, 
 	
@@ -123,7 +123,7 @@ operators = \
 	# YX coupling
 	{
 		'operator_id': 10, \
-		'function_tex_str': "\sum_{j} \sigma_j^y \sigma_{j+1}^x", \
+		'function_tex_str': "\sum_{j} \hat{S}_j^y \hat{S}_{j+1}^x", \
 		'function_description': 'YX Coupling', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
