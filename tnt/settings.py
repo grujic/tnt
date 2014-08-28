@@ -124,3 +124,5 @@ STATICFILES_FINDERS = (
 ### Project specific settings ###
 # bose_base_url = 'http://127.0.0.1:8888'   # Local development
 bose_base_url = 'http://bose.physics.ox.ac.uk:8080'    # Bose server
+
+json_results_relative_dir = '/json_results/'

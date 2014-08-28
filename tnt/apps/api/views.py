@@ -4,9 +4,10 @@ import datetime
 import time
 import requests
 
-from tnt.settings import bose_base_url
-
-
+from tnt.settings import \
+    bose_base_url, \
+    json_results_relative_dir, \
+    BASE_DIR
 
 from django.shortcuts import render
 
@@ -145,9 +146,42 @@ def initial_state_modifiers(request):
 
 # Helper functions
 def check_on_running_calculations(user_id):
-    # We find the calculations of the User that have status 'running'
-    pass
+    # We find the calculations of the User that have status 'running' and see if they're finished yet
+    running_calculations = Calculation.objects.filter(user_id=user_id, status='running')
 
+    for running_calculation in running_calculations:
+
+        print("Checking on status of running calculation with ID " + running_calculation.id + "...")
+
+        # Assemble a URL to query for the results of this calculation if they exist
+        request_url = bose_base_url + '/api/v1.0/calculation/results/' + running_calculation.id
+
+        print("Requesting info from " + request_url)
+
+        # Get the response from Bose
+        resp = requests.get(request_url)
+
+        # Check the status code - if it's 200 then there's data inside, i.e. calculation has finished and results are saved on Bose
+        if resp.status_code == 200:
+
+            json_save_filename = BASE_DIR + json_results_relative_dir + running_calculation.id + '.json'
+
+            print("Writing JSON results for calculation to file " + json_save_filename + "...")
+
+            open(json_save_filename, 'w').write(resp.content)
+
+            print("Wrote JSON results for calculation to file " + json_save_filename)
+
+            running_calculation.status = 'finished'
+
+            # Annoying and clunky but also have to update the status in the JSON representation of the calculations
+            setup = json.loads(running_calculation.setup)
+            setup['meta_info']['status'] = 'finished'
+
+            running_calculation.setup = json.dumps(setup)
+
+            # We've updated the status of the calculation - now resave it!
+            running_calculation.save()
 
 @api_view(['GET'])
 def calculations(request):
@@ -248,6 +282,8 @@ def run_calculation(request):
     bose_run_url = bose_base_url + '/api/v1.0/calculation/run'
 
     resp = requests.post(bose_run_url, data={'calculation': json.dumps(calculation)})
+
+    print("Bose response: ")
 
     print(resp.content)
 
