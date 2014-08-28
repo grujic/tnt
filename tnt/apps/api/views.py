@@ -188,6 +188,9 @@ def calculations(request):
     """
     Return JSON representations for all this users' calculations ###
     """
+
+    check_on_running_calculations(request.user.id)
+
     response = Response({ \
       'calculations': [json.loads(calculation.setup) for calculation in Calculation.objects.filter(user_id=request.user.id)] \
       }, \

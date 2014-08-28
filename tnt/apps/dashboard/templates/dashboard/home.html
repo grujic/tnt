@@ -32,8 +32,10 @@
         if (calculations.calculations.length == 0) {
           $("#user_calculations").html("<h1>You don't have any calculations yet</h1><p>They'll appear here once you've set them up</p>");
         } else {
+          
           var source = $("#user-calculations-template").html();
           var template = Handlebars.compile(source);
+          
           $("#user_calculations").html(template(calculations));
 
           // Attach functions to 'Run...' buttons
@@ -47,16 +49,17 @@
               }
             );
 
-          // Attach functions to 'Run...' buttons
-          $(".download-calculation-button")
-            .click(
-              function(el) {
-                $(this).button('loading');
-                var calculation_id = $(this).data('calculation-id'); 
-                console.log("Downloading calculation " + calculation_id); 
-                tnt.download_calculation(calculation_id);
-              }
-            );
+          // Attach Download links to 'download' buttons
+          _($(".download-calculation-button"))
+            .each(function(el) {
+              var calculation_id = $(el).data('calculation-id'); 
+              console.log("Attaching download link for calculation " + calculation_id);
+              console.log(calculation_id);
+              var this_calculation_download_url = '/media/' + calculation_id + '.json'
+              console.log(this_calculation_download_url);
+              $(el).attr("href", this_calculation_download_url);
+            }
+          );
 
         }
 
