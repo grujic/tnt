@@ -635,10 +635,26 @@ var tnt = {
     		// This will update statuses to running... etc
     		location.reload();
   		});
-	}
+	}, 
+
+	// Plotting and 'exploring' functions
+
+	load_expectation_val_results: function(calculation_id) {
+		// Make a request to the server and pull in the exp val results for this calculation, then set them as a global variable
+		// window.expectation_values = ;
+	},
+
+	plot_single_site_expectation_val_fn_time: function(expectation_operator_id, site) {
+		// 
+	},
+
+
+
 	
 
 } 	// End of tnt namespace
+
+// AJAX functions and dealing with cross-site origin requests
 
 // using jQuery
 function getCookie(name) {
