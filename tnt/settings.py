@@ -75,7 +75,7 @@ DATABASES = {
         'NAME': 'tnt_database',
         'USER': 'tnt',
         'PASSWORD': 'tnt',
-        'HOST': ''
+        'HOST': 'localhost'
     }
 }
 
