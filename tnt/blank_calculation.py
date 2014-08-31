@@ -11,7 +11,8 @@ blank_calculation_template = \
 		'date_created': None, 
 		'finished': False, 
 		'id': None,
-		'name': None
+		'name': None, 
+		'status': None
 	},
 
 	'setup': {
@@ -21,8 +22,13 @@ blank_calculation_template = \
 			'system_size': None,
 			'time_step': None,
 			'num_time_steps': None,
-			'system_type': None,
-			'calculation_type': None
+			'system_type': {
+				'name': None, 
+				'extra_info': {
+				}
+			},
+			'calculation_type': None, 
+			'calculate_ground_state': None
 		},
 
 		'hamiltonian': {

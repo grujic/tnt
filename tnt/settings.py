@@ -50,6 +50,8 @@ AUTH_USER_MODEL = 'userprofile.MyUser'
 
 LOGIN_REDIRECT_URL = '/'
 
+LOGIN_URL = '/login/'
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -90,12 +92,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'json_results/')
+
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'collectedstatic/')
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
@@ -119,3 +122,9 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+### Project specific settings ###
+# bose_base_url = 'http://127.0.0.1:8888'   # Local development
+bose_base_url = 'http://bose.physics.ox.ac.uk:8080'    # Bose server
+
+json_results_relative_dir = '/json_results/'

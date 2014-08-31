@@ -6,11 +6,15 @@ import views
 urlpatterns = patterns('',
 
     url(r'^login[/]?$', \
-        'django.contrib.auth.views.login'),
+        'django.contrib.auth.views.login', {'template_name': 'dashboard/signin.html'}),
 
     url(r'^logout[/]?$', \
         views.logout_view,
         name='logout_view'),
+
+    url(r'^signup[/]?$', \
+        views.signup,
+        name='signup'),
 
     # User home view, showing their past calculations and ability to start a new one
     # What they see when they first log in
@@ -22,6 +26,16 @@ urlpatterns = patterns('',
     url(r'^new_calculation[/]?$', \
         views.new_calculation, \
         name='new_calculation'),
+
+    # See all your calculations
+    url(r'^calculations[/]?$', \
+        views.calculations, \
+        name='calculations'),
+
+    # Explore a calculation's expectation values etc in the browser
+    url(r'^calculation/explore/(?P<calculation_id>[^/]+)[/]?$', \
+        views.explore_calculation, \
+        name='explore_calculation'),    
 
     # FAQ page
     url(r'^faq[/]?$', \

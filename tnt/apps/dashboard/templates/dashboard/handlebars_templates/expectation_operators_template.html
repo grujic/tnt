@@ -1,0 +1,46 @@
+{% verbatim %}
+
+<script id="expectation-operators-single-site-template" type="text/x-handlebars-template"> 
+        
+		<div class="row">
+			{{#operators}}
+		        <div class="col-md-3">
+		            <button type="button" 
+		             class="btn btn-default form-control expectation-operator-btn"
+		             data-expectation-operator-id="{{operator_id}}">
+					     <i>{{function_description}}</i>
+		                 \[{{function_tex_str}}\]
+		            </button>
+		        </div>
+	        {{/operators}}
+	        
+	    </div>
+
+</script>
+
+<script id="expectation-operators-two-site-template" type="text/x-handlebars-template"> 
+        
+		<div class="row">
+			{{#operators}}
+		        <div class="col-md-3" style="padding-bottom: 20px;">
+		            <button type="button" 
+		             class="btn btn-default form-control expectation-operator-btn"
+		             data-expectation-operator-id="{{operator_id}}">
+					     <i>{{function_description}}</i>
+		                 \[{{function_tex_str}}\]
+		            </button>
+		            <select 
+		            	class="form-control two-site-expectation-type-choice" 
+		            	data-expectation-operator-id="{{operator_id}}">
+					  <option value="nearest neighbor">Nearest neighbor</option>
+					  <option value="center all other">Center-all other</option>
+					  <option value="all other pairs">All other pairs</option>
+					</select>
+		        </div>
+	        {{/operators}}
+	        
+	    </div>
+
+</script>
+
+{% endverbatim %}

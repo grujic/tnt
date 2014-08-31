@@ -8,6 +8,8 @@ urlpatterns = patterns('',
         views.api_root, \
         name='api_root'),
 
+    ### START OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
+
     ### Info on available spatial dependences ###
     url(r'^spatial_functions[/]?$', \
         views.spatial_functions, \
@@ -37,6 +39,40 @@ urlpatterns = patterns('',
     url(r'^initial_state_modifiers[/]?$', \
         views.initial_state_modifiers, \
         name='initial_state_modifiers'),
+
+    ### END OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
+
+    ### START OF API CALLS FOR info about calculations ###
+
+    ### Return JSON representation of a stored calculation ###
+
+    url(r'^calculations[/]?$', \
+        views.calculations, \
+        name='calculations'),
+
+    url(r'^calculation/show/(?P<calculation_id>[^/]+)[/]?$', \
+        views.show_calculation, \
+        name='show_calculation'),
+
+    ### Delete calculation with the given ID ###
+    url(r'^calculation/delete/(?P<calculation_id>[^/]+)[/]?$', \
+        views.delete_calculation, \
+        name='delete_calculation'),
+
+    ### Save calculation which is POSTed to this URL ###
+    url(r'^calculation/save[/]?$', \
+        views.save_calculation, \
+        name='save_calculation'),    
+
+    url(r'^calculation/run[/]?$', \
+    views.run_calculation, \
+    name='run_calculation'),
+
+    ### END OF API CALLS FOR info about calculations ###
+
+    ### START OF API CALLS FOR info about users ###
+
+    ### END OF API CALLS FOR info about users ###
 
 )
 

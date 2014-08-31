@@ -1,0 +1,58 @@
+{% extends "dashboard/landing_base.html" %}
+
+{% block landing_action_button %}
+  <a href="/login/" type="button" class="btn btn-primary btn-lg" role="button">Sign in</a>
+{% endblock %}
+
+{% block content %}
+
+  <div id="signup" class="row">
+
+    <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 " >
+        <div class="text-center top-margin" >
+           <h1>Sign up</h1>
+            <p class="">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec enim sapien. Aliquam erat volutpat.
+             Quisque eu ante at tortor imperdiet gravida nec sed turpis. Phasellus augue augue.                        
+            </p>
+        </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    
+    <div class="col-md-3"></div>
+
+    <div class="col-md-6">
+      
+      <div class="alert alert-info">{{state}}</div>
+
+      <form role="form" method="post">
+
+        {% csrf_token %}
+
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}" />
+        {% else %}
+            <input type="hidden" name="next" value="/" />
+        {% endif %}
+
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Your email">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-default">Sign up</button>
+      </form>
+
+    </div>
+
+    <div class="col-md-3"></div>
+
+  </div>  <!-- End of signup row -->
+
+{% endblock %}

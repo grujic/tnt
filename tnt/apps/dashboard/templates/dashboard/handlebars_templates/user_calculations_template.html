@@ -1,0 +1,110 @@
+{% verbatim %}
+
+<script>
+
+
+    Handlebars.registerHelper("timestamp_to_human_date", function(timestamp) {
+        
+        if (timestamp === null) {
+            
+            return "None";
+
+        } else {
+
+            var date = new Date(timestamp*1000);
+            
+            return date.toLocaleString();
+
+        }
+
+    });
+
+    Handlebars.registerHelper("render_action_button", function(status, calculation_id) {
+        
+        if (status == 'running') {
+
+            var action_button_classes = 'btn-default download-calculation-button';
+            var action_button_data_loading_text = 'Starting...';
+            var action_button_text = 'Download';
+
+        } else if (status == 'saved') {
+
+            var action_button_classes = 'btn-info run-calculation-button';
+            var action_button_data_loading_text = 'Starting...';
+            var action_button_text = 'Run';
+
+        } else if (status == 'finished') {
+
+            var action_button_classes = 'btn-default download-calculation-button';
+            var action_button_data_loading_text = 'Starting...';
+            var action_button_text = 'Download';
+
+        }
+
+        var action_button_html = '<a role="button" class="btn form-control ' + action_button_classes + '" data-loading-text="' + action_button_data_loading_text + '" data-calculation-id="' + calculation_id + '">' + action_button_text + '</a>';
+
+        return new Handlebars.SafeString(action_button_html);
+
+    });
+
+</script>
+
+<script id="user-calculations-template" type="text/x-handlebars-template"> 
+
+    {{#calculations}}
+
+        <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
+          <div class="panel-heading">
+            <h3 class="panel-title">Name: {{meta_info.id}}</h3>
+          </div>
+
+          <div class="panel-body">
+
+            <div class="row">
+            	
+            	<div class="col-md-6">
+            		
+            		<p>Date created: {{timestamp_to_human_date meta_info.date_created}}</p>
+
+            		<p>Date run: {{timestamp_to_human_date meta_info.date_run}}</p>
+
+            		<p>Date finished: XXXXX</p>
+
+            	</div>
+
+            	<div class="col-md-6">
+            		Status: {{meta_info.status}}
+            	</div>
+
+            </div>
+
+            <hr>
+
+            <div class="row">  
+                <div class="col-md-3">
+                    <a href="/calculation/explore/{{meta_info.id}}" role="button" class="btn btn-default form-control ">Explore</a>
+                </div>
+
+                <div class="col-md-3">
+                    {{render_action_button meta_info.status meta_info.id}}
+                </div>
+
+                <div class="col-md-3">
+                    <a href="/api/v1.0/calculation/show/{{meta_info.id}}" role="button" class="btn btn-default form-control ">Parameters</a>
+                </div>
+
+                <div class="col-md-3">
+                    <a role="button" class="btn btn-danger form-control btn-delete-calculation" data-calculation-id="{{meta_info.id}}">Delete</a>
+                </div>
+
+            </div>  
+
+          </div> <!-- End of panel body -->
+
+        </div>  <!-- End of panel -->
+
+    {{/calculations}}
+
+</script>
+
+{% endverbatim %}
