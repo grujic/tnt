@@ -70,7 +70,8 @@ def calculations(request):
 def explore_calculation(request, calculation_id):
     # Explore a calculation's expectation values etc in the browser
     return render(request, \
-                  'dashboard/explore_calculation.html')
+                  'dashboard/explore_calculation.html', \
+                  {'calculation_id': calculation_id})
 
 def faq(request):
     # Page for FAQ
