@@ -59,6 +59,11 @@ urlpatterns = patterns('',
         views.delete_calculation, \
         name='delete_calculation'),
 
+    ### Get a list of the URLs at which we can find the image files for the results of a calculation ###
+    url(r'^calculation/img_results_urls/(?P<calculation_id>[^/]+)[/]?$', \
+        views.get_expectation_img_urls, \
+        name='get_expectation_img_urls'),
+
     ### Save calculation which is POSTed to this URL ###
     url(r'^calculation/save[/]?$', \
         views.save_calculation, \
