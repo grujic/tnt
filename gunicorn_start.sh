@@ -26,7 +26,7 @@ test -d $RUNDIR || mkdir -p $RUNDIR
 
 cd $DJANGODIR
 
-exec /home/tom/.virtualenvs/tnt/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
+exec /home/ubuntu/.virtualenvs/tnt/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
   --name $NAME \
   --workers $NUM_WORKERS \
   --log-level=debug \
