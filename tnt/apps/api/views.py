@@ -1,13 +1,18 @@
+import os
+import urllib
 import json
 import uuid
 import datetime
 import time
 import requests
 
+import glob
+
 from tnt.settings import \
     bose_base_url, \
     json_results_relative_dir, \
-    BASE_DIR
+    BASE_DIR, \
+    MEDIA_ROOT
 
 from django.shortcuts import render
 
@@ -151,6 +156,8 @@ def check_on_running_calculations(user_id):
 
     for running_calculation in running_calculations:
 
+        calculation_id = running_calculation.id
+
         print("Checking on status of running calculation with ID " + running_calculation.id + "...")
 
         # Assemble a URL to query for the results of this calculation if they exist
@@ -183,6 +190,36 @@ def check_on_running_calculations(user_id):
             # We've updated the status of the calculation - now resave it!
             running_calculation.save()
 
+            # Now save the images to the MEDIA ROOT
+
+            results = json.loads(resp.content)
+
+            expectation_plot_urls = results['expectation_value_plots']
+
+            print("We have to fetch the following URLs: " + ', \n'.join(expectation_plot_urls))
+
+            for expectation_plot_url in expectation_plot_urls:
+
+                print("Fetching image for calculation results at " + expectation_plot_url)
+
+                filename = expectation_plot_url.split('/')[-1]
+
+                print("Save filename for this image is " + filename)
+
+                save_directory = MEDIA_ROOT + calculation_id + '/'
+
+                print("Save directory = " + save_directory)
+
+                if not os.path.exists(save_directory):
+                    print("Creating directory " + save_directory)
+                    os.makedirs(save_directory)
+
+                save_filename = save_directory + filename
+
+                print("Saving to " + save_filename)
+
+                urllib.urlretrieve(expectation_plot_url, save_filename)
+
 @api_view(['GET'])
 def calculations(request):
     """
@@ -193,6 +230,21 @@ def calculations(request):
 
     response = Response({ \
       'calculations': [json.loads(calculation.setup) for calculation in Calculation.objects.filter(user_id=request.user.id)] \
+      }, \
+      status=status.HTTP_200_OK)
+
+    return response
+
+@api_view(['GET'])
+def get_expectation_img_urls(request, calculation_id):
+    """
+    The URLs at which we will find expectation value images
+    """
+    expectation_value_filenames = glob.glob(MEDIA_ROOT + calculation_id + "/*")
+    expectation_value_urls = [{'url': '/media/' + calculation_id + '/' + filename.split('/')[-1]} for filename in expectation_value_filenames]
+
+    response = Response({ \
+      'url_data': expectation_value_urls \
       }, \
       status=status.HTTP_200_OK)
 

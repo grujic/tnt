@@ -7,12 +7,12 @@
   {% endblock %}  <!-- End of block handlebars_scripts -->
 
 <div class="jumbotron">
-  <h1>Results: Calculation name</h1>
+  <h1>Results: {{calculation_id}}</h1>
   <pExplore calculated expectation values in the browser, or download full results</p>
   <p><a href="#" class="btn btn-primary btn-lg" role="button">Download results</a></p>
 </div>
 
-<div class="panel panel-default">
+<!-- <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">Available expectation operators</h3>
   </div>
@@ -45,6 +45,29 @@
     <hr>
 
     <!--Space for graph -->
+    <!-- <div id="plot_div" 
+         style="min-width: 310px; height: 400px; margin: 0 auto">
+    </div>
+
+
+  </div>  <!-- End of panel body -->
+
+<!-- </div>  End of panel -->
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Expectation operator evolutions</h3>
+  </div>
+
+  <div class="panel-body">
+
+    <div id="expectation_value_imgs" class="row">
+      
+    </div>
+
+    <hr>
+
+    <!--Space for graph -->
     <div id="plot_div" 
          style="min-width: 310px; height: 400px; margin: 0 auto">
     </div>
@@ -53,8 +76,6 @@
   </div>  <!-- End of panel body -->
 
 </div>  <!-- End of panel -->
-
-
 
 {% endblock %} <!-- End of block content -->
 
@@ -66,6 +87,23 @@
 
   <script>
     window.calculation_id = "{{calculation_id}}"; // Django passes this in
+
+    $.get(
+      '/api/v1.0/calculation/img_results_urls/' + window.calculation_id, 
+      function(data) {
+        console.log("Expectation value img URL data: ");
+
+        _.each(
+          data.url_data, 
+          function (el) {
+            console.log(el.url); 
+            $("#expectation_value_imgs").append("<img src='" + el.url + "'>");
+          }
+        );
+
+      }
+    );
+
 
     // Pull in this calculation's expectation value results
     $.get(
