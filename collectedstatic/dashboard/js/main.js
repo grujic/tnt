@@ -255,6 +255,7 @@ var tnt = {
 		var template = Handlebars.compile(source);
 		$("#hamiltonian_terms_container").append(template(hamiltonian_operator));
 		$("#no_hamiltonian_terms_added_yet_warning").css('display', 'none');
+
 		tnt.attach_click_fn_to_remove_hamiltonian_terms();
 
 		// $('select').selectpicker();
@@ -268,6 +269,8 @@ var tnt = {
 		// Attach a click listener to the list elements representing different spatial function variations, updating parameter input fields accordingly
 		$(".spatial-function-btn-group").on("change",
 			function (e) {
+
+				// var selected_spatial_function_id = parseInt($(this).closest(".btn-group").siblings("select").val());
 				var selected_spatial_function_id = $(this).val();
 				console.log("selected_spatial_function_id");
 				console.log(selected_spatial_function_id);
@@ -344,8 +347,9 @@ var tnt = {
 
 			console.log("System type = spin");
 
-			var spin_magnitude = $(".btn-system-type-extra-info-spin.active")
-									.data("spin-magnitude");
+            console.log($('#system_type_extra_info_spins_choice').val());
+
+            var spin_magnitude = $("#system_type_extra_info_spins_choice").val();
 
 			console.log("Spin magnitude = " + spin_magnitude);
 
@@ -546,6 +550,8 @@ var tnt = {
 
 	validate_new_calculation_expectation_operators: function () {
 		// Check that everything's OK and add the selected exp vals into the calculation JSON structure
+
+
 		var selected_expectation_operator_ids = _.map(
 			$(".expectation-operator-btn.active"),
 			function (el) {
@@ -632,12 +638,117 @@ var tnt = {
   		});
 	},
 
+
+	download_calculation: function(calculation_id) {
+		// Download a JSON file to the User's computer
+	},
+
 	// Plotting and 'exploring' functions
 
 	load_expectation_val_results: function(calculation_id) {
 		// Make a request to the server and pull in the exp val results for this calculation, then set them as a global variable
 		// window.expectation_values = ;
+		console.log("Loading expectaion value data for calculaton " + calculation_id);
+		$.get(
+			'/media/' + calculation_id + '.json',
+			function (data) {
+				window.expval_data = data;
+			}
+		).done(function() {
+			console.log("Successfully loaded expectaion value data for calculaton " + calculation_id);
+			// Find which
+		    window.calculated_expectation_operator_ids = _.pluck(
+		      window.expval_data.results.data.evolved.operators,
+		      'operator_id');
+	  		});
+
 	},
+
+	get_data_single_site_expectation_val_fn_time: function(expectation_operator_id, site, re_or_im) {
+		// Get data in the right form to be plotted by Highcharts for a given operator and site
+		// Pass in 're' or 'im' for re_or_im
+
+		var data_this_operator = _.filter(
+			window.expval_data.results.data.evolved.operators,
+			function (el) {
+				return el['operator_id'] == expectation_operator_id;
+			}
+		)[0];
+
+		var data = _.map(
+				data_this_operator.vals,
+				function(el) {
+					return {
+						'x': el['time'],
+						'y': el[re_or_im][site]
+					};
+				}
+			);
+
+		// Get info about this operator
+		var expectation_operator = _.filter(
+			window.expectation_operators,
+			function (el) {
+				return el['operator_id'] == expectation_operator_id;
+			}
+		)[0];
+
+
+
+		return {
+			name: expectation_operator['function_description'],
+			data: data
+		};
+
+	},
+
+
+	plot_series: function (series_data) {
+
+      $('#plot_div').highcharts({
+          title: {
+              text: 'MOCK DATA Expectation values for Calculation name',
+              x: -20 //center
+          },
+          subtitle: {
+              text: 'Source: TNT LIbrary',
+              x: -20
+          },
+
+          yAxis: {
+              title: {
+                  text: 'Expectation values <O>'
+              },
+              plotLines: [{
+                  value: 0,
+                  width: 1,
+                  color: '#808080'
+              }]
+          },
+          tooltip: {
+              valueSuffix: '°C'
+          },
+          legend: {
+              layout: 'vertical',
+              align: 'right',
+              verticalAlign: 'middle',
+              borderWidth: 0
+          },
+          series: series_data
+      });
+
+    },
+
+	plot_single_site_expectation_val_fn_time: function(expectation_operator_id, site, re_or_im) {
+		//
+
+		var time_series = get_data_single_site_expectation_val_fn_time(expectation_operator_id, site, re_or_im);
+
+	},
+
+
+
+
 
 } 	// End of tnt namespace
 
