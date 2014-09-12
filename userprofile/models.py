@@ -40,6 +40,8 @@ class MyUser(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
+    full_name = models.TextField()
+
     objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
@@ -74,7 +76,7 @@ class MyUser(AbstractBaseUser):
 
 
 #from django.db import models
-#from django.contrib.auth.models import AbstractUser
+#fro django.contrib.auth.models import AbstractUser
 
 #class MyUser(AbstractUser):
     ## Simulation history details

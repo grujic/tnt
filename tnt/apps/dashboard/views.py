@@ -19,22 +19,28 @@ def logout_view(request):
     return HttpResponseRedirect('/login/')
 
 def signup(request):
-    state = "Please enter an email and password..."
+    state = "Please enter your details..."
     if request.method == 'POST':
+
         email = request.POST.get('email')
         password = request.POST.get('password')
+        full_name = request.POST.get('full_name')
+        about = request.POST.get('about')
 
         print("email = ")
         print(email)
+
+        print("full_name= ")
+        print(full_name)
 
         print("password = ")
         print(password)
 
         try:
-            
+
             MyUser.objects.create_user(email, password=password)
             user = authenticate(username=email, password=password)
-            
+
             login(request, user)
             state = "You're successfully logged in!"
             return HttpResponseRedirect('/')
