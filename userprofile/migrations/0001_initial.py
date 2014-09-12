@@ -16,6 +16,8 @@ class Migration(SchemaMigration):
             ('email', self.gf('django.db.models.fields.EmailField')(unique=True, max_length=255)),
             ('is_active', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('is_admin', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('full_name', self.gf('django.db.models.fields.TextField')(default='', null=True, blank=True)),
+            ('about', self.gf('django.db.models.fields.TextField')(default='', null=True, blank=True)),
         ))
         db.send_create_signal(u'userprofile', ['MyUser'])
 
@@ -28,7 +30,9 @@ class Migration(SchemaMigration):
     models = {
         u'userprofile.myuser': {
             'Meta': {'object_name': 'MyUser'},
+            'about': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'email': ('django.db.models.fields.EmailField', [], {'unique': 'True', 'max_length': '255'}),
+            'full_name': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'is_admin': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
