@@ -39,9 +39,23 @@
             var action_button_data_loading_text = 'Starting...';
             var action_button_text = 'Download';
 
+        } else if (status == 'error') {
+
+            var action_button_classes = 'btn-default download-calculation-button';
+            var action_button_data_loading_text = 'Error!';
+            var action_button_text = 'Error!';
+
         }
 
-        var action_button_html = '<a role="button" class="btn form-control ' + action_button_classes + '" data-loading-text="' + action_button_data_loading_text + '" data-calculation-id="' + calculation_id + '">' + action_button_text + '</a>';
+        var action_button_html = '<a role="button" class="btn form-control ' + action_button_classes + 
+            '" data-loading-text="' + action_button_data_loading_text + 
+            '" data-calculation-id="' + calculation_id;
+
+        if (status == 'error') {
+            action_button_html = action_button_html + '" disabled="disabled" ';
+        }
+
+        action_button_html = action_button_html + '">' + action_button_text + '</a>';
 
         return new Handlebars.SafeString(action_button_html);
 

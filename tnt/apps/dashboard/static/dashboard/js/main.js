@@ -347,8 +347,7 @@ var tnt = {
 
 			console.log("System type = spin");
 
-			var spin_magnitude = $(".btn-system-type-extra-info-spin.active")
-									.data("spin-magnitude");
+			var spin_magnitude = parseInt($("#system_type_extra_info_spins_choice").val());
 
 			console.log("Spin magnitude = " + spin_magnitude);
 

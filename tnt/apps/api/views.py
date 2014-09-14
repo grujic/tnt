@@ -169,7 +169,18 @@ def check_on_running_calculations(user_id):
         resp = requests.get(request_url)
 
         # Check the status code - if it's 200 then there's data inside, i.e. calculation has finished and results are saved on Bose
-        if resp.status_code == 200:
+        if resp.status_code == 500:     # There's been an error
+            running_calculation.status = 'error'
+
+            setup = json.loads(running_calculation.setup)
+            setup['meta_info']['status'] = 'error'
+
+            running_calculation.setup = json.dumps(setup)
+
+            # We've updated the status of the calculation - now resave it!
+            running_calculation.save()
+
+        elif resp.status_code == 200:
 
             json_save_filename = BASE_DIR + json_results_relative_dir + running_calculation.id + '.json'
 
@@ -219,6 +230,15 @@ def check_on_running_calculations(user_id):
                 print("Saving to " + save_filename)
 
                 urllib.urlretrieve(expectation_plot_url, save_filename)
+
+            # Now fetch the MAT results
+            mat_results_url = results['mat_results_url']
+            print("Fetching MAT results for calculation results at " + expectation_plot_url)
+            filename = mat_results_url.split('/')[-1]
+            save_directory = MEDIA_ROOT + calculation_id + '/'
+            save_filename = save_directory + filename
+            print("Saving to " + save_filename)
+            urllib.urlretrieve(mat_results_url, save_filename)
 
 @api_view(['GET'])
 def calculations(request):
