@@ -207,20 +207,6 @@
 
       <hr>
 
-      <h4>Time evolution</h4>
-      <p>Do you want to calculate dynamical evolution of your system?</p>
-
-      <div id="time_evolution_choice" class="btn-group" data-toggle="buttons">
-        <label class="btn btn-primary active">
-          <input type="radio" name="options" data-calculate-time-evolution=1 checked>Yes
-        </label>
-        <label class="btn btn-primary">
-          <input type="radio" name="options" data-calculate-time-evolution=0>No
-        </label>
-      </div>
-
-      <hr>
-
       <div class="row new-calculation-step-navigation">
           <div class="col-md-6">
               <button type="button" class="btn btn-default btn-back-step form-control ">Back</button>
@@ -254,20 +240,37 @@
 
       <hr>
 
-      <form class="form-horizontal" role="form">
-        <div class="form-group">
-          <label for="input_num_time_steps" class="col-sm-2 control-label">Number of time steps</label>
-          <div class="col-sm-10">
-            <input type="number" class="form-control" id="input_num_time_steps" placeholder="100" value="100">
+      <p>Do you want to calculate dynamical evolution of your system?</p>
+
+      <div id="time_evolution_choice" class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" data-calculate-time-evolution=1 checked>Yes
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" data-calculate-time-evolution=0>No
+        </label>
+      </div>
+
+      <hr>
+
+      <div id="time_evolution_time_step_specification">
+        
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="input_num_time_steps" class="col-sm-2 control-label">Number of time steps</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="input_num_time_steps" placeholder="100" value="100">
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="input_time_step_size" class="col-sm-2 control-label">Time step size</label>
-          <div class="col-sm-10">
-            <input type="number" class="form-control" id="input_time_step_size" placeholder="0.01" value="0.01">
+          <div class="form-group">
+            <label for="input_time_step_size" class="col-sm-2 control-label">Time step size</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="input_time_step_size" placeholder="0.01" value="0.01">
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+
+      </div>
 
       <hr>
 
@@ -437,7 +440,6 @@
     tnt.initialise_new_calculation_basic_setup_step();  // Display the first screen of the setup process
     tnt.initialise_blank_calculation(); // Set up a 'blank' calculation which we will fill in sequentially
 
-     console.log($("#sidebar_new_calculation"));
     $("#sidebar_new_calculation").addClass("active");
     
   </script>
