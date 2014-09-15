@@ -2,6 +2,19 @@
 
 <script>
 
+    Handlebars.registerHelper("btn_disabled", function(status) {
+        
+        if ( (status == 'running') || (status == 'error') || (status == 'saved') ) {
+            
+            return '" disabled="disabled" ';
+
+        } else {
+            
+            return '';
+
+        }
+
+    });
 
     Handlebars.registerHelper("timestamp_to_human_date", function(timestamp) {
         
@@ -25,7 +38,7 @@
 
             var action_button_classes = 'btn-default download-calculation-button';
             var action_button_data_loading_text = 'Starting...';
-            var action_button_text = 'Download';
+            var action_button_text = 'Download MAT';
 
         } else if (status == 'saved') {
 
@@ -37,7 +50,7 @@
 
             var action_button_classes = 'btn-default download-calculation-button';
             var action_button_data_loading_text = 'Starting...';
-            var action_button_text = 'Download';
+            var action_button_text = 'Download MAT';
 
         } else if (status == 'error') {
 
@@ -51,7 +64,8 @@
             '" data-loading-text="' + action_button_data_loading_text + 
             '" data-calculation-id="' + calculation_id;
 
-        if (status == 'error') {
+        // Want some buttons to be disabled 
+        if ( (status == 'error') || (status == 'running') ) {
             action_button_html = action_button_html + '" disabled="disabled" ';
         }
 
@@ -96,7 +110,7 @@
 
             <div class="row">  
                 <div class="col-md-3">
-                    <a href="/calculation/explore/{{meta_info.id}}" role="button" class="btn btn-default form-control ">Explore</a>
+                    <a href="/calculation/explore/{{meta_info.id}}" {{btn_disabled meta_info.status}} role="button" class="btn btn-default form-control ">Explore</a>
                 </div>
 
                 <div class="col-md-3">

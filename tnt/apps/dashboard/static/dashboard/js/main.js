@@ -476,11 +476,6 @@ var tnt = {
 
 		window.calculation.setup.system.calculate_ground_state = calculate_ground_state;
 
-		var calculate_time_evolution_choice = parseInt($("label.active input", "#time_evolution_choice")
-			.data("calculate-time-evolution"));
-
-		window.calculation.setup.system.calculate_time_evolution = calculate_time_evolution_choice;
-
 		console.log("Validated new calculation ground state input");
 
 		tnt.initialise_new_calculation_time_evolution();
@@ -491,6 +486,22 @@ var tnt = {
 		console.log("Initialising new calculation ground state input");
 		tnt.clear_all_new_calculation_stages();
 		$("#new_calculation_time_evolution").css('display', 'block');
+
+		// Add a function so that if the user chooses not to calculate time evolution, we don't display inputs for time step info
+		$("#time_evolution_choice input")
+			.change(
+				function () {
+					console.log('test' + $(this).data('calculate-time-evolution'));
+					console.log($(this));
+					if ($(this).data('calculate-time-evolution') == 0) { 
+						console.log("We're not calculating time evolution");
+						$('#time_evolution_time_step_specification').css('display', 'none'); 
+					} else {
+						console.log("We are calculating time evolution");
+						$('#time_evolution_time_step_specification').css('display', 'block'); 
+					}
+				}
+			);
 
 		$("#new_calculation_time_evolution .btn-next-step").click(
 			tnt.validate_new_calculation_time_evolution
@@ -504,11 +515,23 @@ var tnt = {
 
 	validate_new_calculation_time_evolution: function () {
 		//
-		var num_time_steps = parseInt($("#input_num_time_steps").val())
-		var time_step_size = parseFloat($("#input_time_step_size").val());
+		
+		var calculate_time_evolution_choice = parseInt($("label.active input", "#time_evolution_choice")
+			.data("calculate-time-evolution"));
 
-		window.calculation.setup.system.num_time_steps = num_time_steps;
-		window.calculation.setup.system.time_step = time_step_size;
+		window.calculation.setup.system.calculate_time_evolution = calculate_time_evolution_choice;
+
+		console.log("Are we calculating time evolution? " + calculate_time_evolution_choice);
+
+		if (calculate_time_evolution_choice == 1) {
+
+			var num_time_steps = parseInt($("#input_num_time_steps").val())
+			var time_step_size = parseFloat($("#input_time_step_size").val());
+
+			window.calculation.setup.system.num_time_steps = num_time_steps;
+			window.calculation.setup.system.time_step = time_step_size;
+
+		}
 
 		tnt.initialise_new_calculation_initial_state();
 

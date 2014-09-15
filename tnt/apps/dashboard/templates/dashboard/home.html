@@ -55,7 +55,7 @@
               var calculation_id = $(el).data('calculation-id'); 
               console.log("Attaching download link for calculation " + calculation_id);
               console.log(calculation_id);
-              var this_calculation_download_url = '/media/' + calculation_id + '.json'
+              var this_calculation_download_url = '/media/' + calculation_id + '/' + calculation_id + '.mat';
               console.log(this_calculation_download_url);
               $(el).attr("href", this_calculation_download_url);
             }
