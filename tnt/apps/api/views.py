@@ -232,7 +232,8 @@ def check_on_running_calculations(user_id):
                 urllib.urlretrieve(expectation_plot_url, save_filename)
 
             # Now fetch the MAT results
-            mat_results_url = results['mat_results_url']
+            print results
+            mat_results_url = results['mat_results_URL']
             print("Fetching MAT results for calculation results at " + expectation_plot_url)
             filename = mat_results_url.split('/')[-1]
             save_directory = MEDIA_ROOT + calculation_id + '/'
