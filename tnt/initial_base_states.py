@@ -2,6 +2,14 @@
 
 initial_base_states_list = \
 [
+	# Use the calculated ground state as the initial state
+	{
+		'initial_base_state_id': 0, \
+		'function_tex_str': '|\Psi \rangle', \
+		'function_description': 'Ground state', \
+		'system_type': 'all'
+	}, 
+
 	# Spin system - all spins down
 	{
 		'initial_base_state_id': 1, \
@@ -32,6 +40,6 @@ initial_base_states_list = \
 		'function_tex_str': '| 	\uparrow \downarrow \uparrow \downarrow \cdots \uparrow \downarrow \rangle', \
 		'function_description': 'Alternating spins', \
 		'system_type': 'spin'
-	}
+	}, 
 
 ]
