@@ -76,11 +76,24 @@ var tnt = {
 				// Keep this data available:
 				window.hamiltonian_operators = filtered_data;
 
+				// We use these same palette of operators to modify initial states - filter 
+				// appropriately and store them here rather than making an identical call later
+				window.initial_state_modifier_operators = 
+					{
+						'operators': 
+						_.filter(
+							window.hamiltonian_operators.operators, 
+							function(el) { 
+								return el['use_for_transform'] == true; 
+							}
+						)
+					};
+
 				var source = $("#hamiltonian-operator-template").html();
 
 				var template = Handlebars.compile(source);
 
-				$("#new_calculation_available_hamiltonian_operators").html(template(filtered_data));
+				$("#new_calculation_available_hamiltonian_operators").html(template(window.hamiltonian_operators));
 
 				$(".hamiltonian-operator-btn")
 					.click(function() {
@@ -94,6 +107,11 @@ var tnt = {
   		});
 
 	}, // End of render_available_hamiltonian_operators
+
+	render_available_intitial_state_modifier_operators: function () {
+		// Transformations we can apply to the base state
+
+	},
 
 	attach_click_fn_to_initial_base_state_choices: function () {
 		// When an initial base state is chosen, need to make that button active and all others not
@@ -145,14 +163,37 @@ var tnt = {
 				if (window.calculation.setup.system.calculation_type === null) {
 					var filtered_data = data;
 				} else {
-					var filtered_data = {'states': _.filter(data.states, function(el) {return el['system_type'] == window.calculation.setup.system.calculation_type})};
+					var filtered_data = 
+						{
+							'states': 
+							_.filter(
+								data.states, 
+								function(el) {
+									return ( (el['system_type'] == window.calculation.setup.system.calculation_type ) || (el['system_type'] == 'all') ); 
+								}
+							) 
+						};
 				}
 
 				window.initial_base_states = filtered_data;
 
+				// If we're not calculating the ground state, then exlude it as a possibility for an intitial state
+				if (window.calculation.setup.system.calculate_ground_state == 0) {
+					window.initial_base_states = 
+					{
+						'states': 
+						_.filter(
+							window.initial_base_states.states, 
+							function(el) {
+								return el['initial_base_state_id'] > 0; 
+							}
+						)
+					};
+				}
+
 				var source = $("#initial-base-states-template").html();
 				var template = Handlebars.compile(source);
-				$("#new_calculation_available_initial_base_states").html(template(filtered_data));
+				$("#new_calculation_available_initial_base_states").html(template(window.initial_base_states));
 
 				$(".initial-state-btn")
 					.first()
@@ -246,7 +287,13 @@ var tnt = {
 		// Add a visual representation of a Hamiltonian term to the screen, and render any user input elements necessary (e.g. inputs for spatial parameter values)
 
 		// First get the right operator
-		var hamiltonian_operator = _.filter(window.hamiltonian_operators.operators, function (el) {return el.operator_id == operator_id;})[0];
+		var hamiltonian_operator = 
+			_.filter(
+				window.hamiltonian_operators.operators, 
+				function (el) {
+					return el.operator_id == operator_id;
+				}
+			)[0];
 
 		// Hack for now: add in a unique identifier so we can refer to this element and its children easily
 		hamiltonian_operator['uuid'] = tnt.generate_unique_id();
@@ -263,6 +310,7 @@ var tnt = {
 		tnt.attach_click_fn_to_spatial_fn_choices();	// Attach logic for changing spatial function input
 
 		tnt.render_mathjax();
+		
 	},
 
 	attach_click_fn_to_spatial_fn_choices: function () {
@@ -294,6 +342,8 @@ var tnt = {
 
 
 				$(spatial_function_parameter_input_form).html(template(relevant_spatial_function));
+
+				tnt.render_mathjax();
 
 				e.preventDefault();
 			}

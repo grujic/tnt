@@ -13,6 +13,7 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
+		'use_for_transform': True, \
 		'two_site': False
 	},
 	
@@ -26,6 +27,7 @@ operators = \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
+		'use_for_transform': True, \
 		'two_site': False
 	},
 	
@@ -39,6 +41,7 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
+		'use_for_transform': True, \
 		'two_site': False
 	}, 
 
@@ -52,6 +55,7 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
+		'use_for_transform': True, \
 		'two_site': True
 	}, 
 
@@ -65,6 +69,7 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
+		'use_for_transform': True, \
 		'two_site': True
 	}, 
 
@@ -78,6 +83,7 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
+		'use_for_transform': True, \
 		'two_site': True
 	}, 
 	
@@ -91,6 +97,7 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
+		'use_for_transform': True, \
 		'two_site': True
 	}, 
 	
@@ -104,6 +111,7 @@ operators = \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
+		'use_for_transform': True, \
 		'two_site': True
 	}, 
 	
@@ -117,6 +125,7 @@ operators = \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
+		'use_for_transform': True, \
 		'two_site': True
 	}, 
 	
@@ -130,6 +139,7 @@ operators = \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
+		'use_for_transform': True, \
 		'two_site': True
 	}, 
 	
@@ -143,6 +153,7 @@ operators = \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
+		'use_for_transform': True, \
 		'two_site': True
 	}, 
 	
@@ -156,6 +167,7 @@ operators = \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
+		'use_for_transform': True, \
 		'two_site': True
 	}, 
 	
@@ -169,6 +181,7 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
+		'use_for_transform': True, \
 		'two_site': True
 	}, 
 	
@@ -182,6 +195,7 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
+		'use_for_transform': True, \
 		'two_site': True
 	}
 
