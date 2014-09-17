@@ -98,7 +98,10 @@ var tnt = {
 				$(".hamiltonian-operator-btn")
 					.click(function() {
 						console.log($(this).data("operator-id"));
-						tnt.add_hamiltonian_term($(this).data("operator-id"));
+						tnt.add_hamiltonian_term(
+							$(this).data("operator-id"), 
+							"#hamiltonian_terms_container"
+						);
 					});
 
 			}
@@ -283,7 +286,7 @@ var tnt = {
 
 	}, // End of render_available_initial_base_states
 
-	add_hamiltonian_term: function(operator_id) {
+	add_hamiltonian_term: function(operator_id, term_container_selector) {
 		// Add a visual representation of a Hamiltonian term to the screen, and render any user input elements necessary (e.g. inputs for spatial parameter values)
 
 		// First get the right operator
@@ -300,7 +303,7 @@ var tnt = {
 
 		var source = $("#hamiltonian-term-template").html();
 		var template = Handlebars.compile(source);
-		$("#hamiltonian_terms_container").append(template(hamiltonian_operator));
+		$(term_container_selector).append(template(hamiltonian_operator));
 		$("#no_hamiltonian_terms_added_yet_warning").css('display', 'none');
 
 		tnt.attach_click_fn_to_remove_hamiltonian_terms();
@@ -310,7 +313,7 @@ var tnt = {
 		tnt.attach_click_fn_to_spatial_fn_choices();	// Attach logic for changing spatial function input
 
 		tnt.render_mathjax();
-		
+
 	},
 
 	attach_click_fn_to_spatial_fn_choices: function () {
@@ -452,12 +455,16 @@ var tnt = {
 
 	           var hamiltonian_operator_id = $(term).data("hamiltonian-operator-id");
 	           console.log("Term with Hamiltonian operator ID: " + hamiltonian_operator_id);
-	           var hamiltonian_operator = _.filter(
+	           var this_hamiltonian_operator = _.filter(
 	                                          window.hamiltonian_operators.operators,
 	                                          function (operator) {
 	                                              return operator['operator_id'] == parseInt(hamiltonian_operator_id)
 	                                          }
 	                                      )[0];
+
+	           // Need a deep clone of this object
+	           var hamiltonian_operator = _.cloneDeep(this_hamiltonian_operator);
+
 	           console.log("hamiltonian_operator: ");
 	           console.log(hamiltonian_operator);
 
@@ -465,12 +472,15 @@ var tnt = {
 	           var spatial_function_id = parseInt($(term).find("select").val());	// 0 ordering
 
 	           // Get the corresponding spatial function dict representation
-	           var spatial_function = _.filter(
+	           var this_spatial_function = _.filter(
 	                                          window.spatial_fns.spatial_fns,
 	                                          function (spatial_fn) {
 	                                              return spatial_fn['spatial_fn_id'] == parseInt(spatial_function_id)
 	                                          }
 	                                      )[0];
+
+	           // Deep clone
+	           var spatial_function = _.cloneDeep(this_spatial_function);
 
 	           console.log("spatial_function: ");
 	           console.log(spatial_function);
@@ -487,13 +497,19 @@ var tnt = {
 	                   console.log("Has value " + spatial_function_parameter_val);
 
 	                   spatial_function.parameters[spatial_function_parameter_id - 1]['value'] = spatial_function_parameter_val;
-	                   window.spatial_function = spatial_function;
+
+	                   console.log('spatial function this term: ');
+	                   console.log(spatial_function);
+
 	               }
 	           );
 
 	           //
 	           hamiltonian_operator['spatial_function'] = spatial_function;
 	           window.calculation.setup.hamiltonian.terms.push(hamiltonian_operator);
+
+	           console.log("first hamiltonian term up to now: ");
+	           console.log(window.calculation.setup.hamiltonian.terms[0].spatial_function.parameters[0].value);
 
 	       }
 		); 	// End of loop over Hamiltonian terms
