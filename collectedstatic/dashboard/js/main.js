@@ -76,16 +76,32 @@ var tnt = {
 				// Keep this data available:
 				window.hamiltonian_operators = filtered_data;
 
+				// We use these same palette of operators to modify initial states - filter 
+				// appropriately and store them here rather than making an identical call later
+				window.initial_state_modifier_operators = 
+					{
+						'operators': 
+						_.filter(
+							window.hamiltonian_operators.operators, 
+							function(el) { 
+								return el['use_for_transform'] == true; 
+							}
+						)
+					};
+
 				var source = $("#hamiltonian-operator-template").html();
 
 				var template = Handlebars.compile(source);
 
-				$("#new_calculation_available_hamiltonian_operators").html(template(filtered_data));
+				$("#new_calculation_available_hamiltonian_operators").html(template(window.hamiltonian_operators));
 
 				$(".hamiltonian-operator-btn")
 					.click(function() {
 						console.log($(this).data("operator-id"));
-						tnt.add_hamiltonian_term($(this).data("operator-id"));
+						tnt.add_hamiltonian_term(
+							$(this).data("operator-id"), 
+							"#hamiltonian_terms_container"
+						);
 					});
 
 			}
@@ -94,6 +110,11 @@ var tnt = {
   		});
 
 	}, // End of render_available_hamiltonian_operators
+
+	render_available_intitial_state_modifier_operators: function () {
+		// Transformations we can apply to the base state
+
+	},
 
 	attach_click_fn_to_initial_base_state_choices: function () {
 		// When an initial base state is chosen, need to make that button active and all others not
@@ -145,14 +166,37 @@ var tnt = {
 				if (window.calculation.setup.system.calculation_type === null) {
 					var filtered_data = data;
 				} else {
-					var filtered_data = {'states': _.filter(data.states, function(el) {return el['system_type'] == window.calculation.setup.system.calculation_type})};
+					var filtered_data = 
+						{
+							'states': 
+							_.filter(
+								data.states, 
+								function(el) {
+									return ( (el['system_type'] == window.calculation.setup.system.calculation_type ) || (el['system_type'] == 'all') ); 
+								}
+							) 
+						};
 				}
 
 				window.initial_base_states = filtered_data;
 
+				// If we're not calculating the ground state, then exlude it as a possibility for an intitial state
+				if (window.calculation.setup.system.calculate_ground_state == 0) {
+					window.initial_base_states = 
+					{
+						'states': 
+						_.filter(
+							window.initial_base_states.states, 
+							function(el) {
+								return el['initial_base_state_id'] > 0; 
+							}
+						)
+					};
+				}
+
 				var source = $("#initial-base-states-template").html();
 				var template = Handlebars.compile(source);
-				$("#new_calculation_available_initial_base_states").html(template(filtered_data));
+				$("#new_calculation_available_initial_base_states").html(template(window.initial_base_states));
 
 				$(".initial-state-btn")
 					.first()
@@ -242,18 +286,24 @@ var tnt = {
 
 	}, // End of render_available_initial_base_states
 
-	add_hamiltonian_term: function(operator_id) {
+	add_hamiltonian_term: function(operator_id, term_container_selector) {
 		// Add a visual representation of a Hamiltonian term to the screen, and render any user input elements necessary (e.g. inputs for spatial parameter values)
 
 		// First get the right operator
-		var hamiltonian_operator = _.filter(window.hamiltonian_operators.operators, function (el) {return el.operator_id == operator_id;})[0];
+		var hamiltonian_operator = 
+			_.filter(
+				window.hamiltonian_operators.operators, 
+				function (el) {
+					return el.operator_id == operator_id;
+				}
+			)[0];
 
 		// Hack for now: add in a unique identifier so we can refer to this element and its children easily
 		hamiltonian_operator['uuid'] = tnt.generate_unique_id();
 
 		var source = $("#hamiltonian-term-template").html();
 		var template = Handlebars.compile(source);
-		$("#hamiltonian_terms_container").append(template(hamiltonian_operator));
+		$(term_container_selector).append(template(hamiltonian_operator));
 		$("#no_hamiltonian_terms_added_yet_warning").css('display', 'none');
 
 		tnt.attach_click_fn_to_remove_hamiltonian_terms();
@@ -263,6 +313,7 @@ var tnt = {
 		tnt.attach_click_fn_to_spatial_fn_choices();	// Attach logic for changing spatial function input
 
 		tnt.render_mathjax();
+
 	},
 
 	attach_click_fn_to_spatial_fn_choices: function () {
@@ -295,6 +346,8 @@ var tnt = {
 
 				$(spatial_function_parameter_input_form).html(template(relevant_spatial_function));
 
+				tnt.render_mathjax();
+
 				e.preventDefault();
 			}
 		)
@@ -306,7 +359,7 @@ var tnt = {
 	},
 
 	review_all_new_calculation_stages: function() {
-		// Set display: none for each of the 'pages' of the new calculation setup
+		// Set display: block for each of the 'pages' of the new calculation setup
 		$(".new-calculation-step").css('display', 'block');
 	},
 
@@ -347,9 +400,7 @@ var tnt = {
 
 			console.log("System type = spin");
 
-            console.log($('#system_type_extra_info_spins_choice').val());
-
-            var spin_magnitude = $("#system_type_extra_info_spins_choice").val();
+			var spin_magnitude = parseInt($("#system_type_extra_info_spins_choice").val());
 
 			console.log("Spin magnitude = " + spin_magnitude);
 
@@ -387,6 +438,11 @@ var tnt = {
 			tnt.validate_new_calculation_define_hamiltonian
 		);
 
+		$("#new_calculation_define_hamiltonian .btn-back-step").click(
+			tnt.initialise_new_calculation_basic_setup_step
+		);
+
+
 	},
 
 	validate_new_calculation_define_hamiltonian: function () {
@@ -399,12 +455,16 @@ var tnt = {
 
 	           var hamiltonian_operator_id = $(term).data("hamiltonian-operator-id");
 	           console.log("Term with Hamiltonian operator ID: " + hamiltonian_operator_id);
-	           var hamiltonian_operator = _.filter(
+	           var this_hamiltonian_operator = _.filter(
 	                                          window.hamiltonian_operators.operators,
 	                                          function (operator) {
 	                                              return operator['operator_id'] == parseInt(hamiltonian_operator_id)
 	                                          }
 	                                      )[0];
+
+	           // Need a deep clone of this object
+	           var hamiltonian_operator = _.cloneDeep(this_hamiltonian_operator);
+
 	           console.log("hamiltonian_operator: ");
 	           console.log(hamiltonian_operator);
 
@@ -412,12 +472,15 @@ var tnt = {
 	           var spatial_function_id = parseInt($(term).find("select").val());	// 0 ordering
 
 	           // Get the corresponding spatial function dict representation
-	           var spatial_function = _.filter(
+	           var this_spatial_function = _.filter(
 	                                          window.spatial_fns.spatial_fns,
 	                                          function (spatial_fn) {
 	                                              return spatial_fn['spatial_fn_id'] == parseInt(spatial_function_id)
 	                                          }
 	                                      )[0];
+
+	           // Deep clone
+	           var spatial_function = _.cloneDeep(this_spatial_function);
 
 	           console.log("spatial_function: ");
 	           console.log(spatial_function);
@@ -434,13 +497,19 @@ var tnt = {
 	                   console.log("Has value " + spatial_function_parameter_val);
 
 	                   spatial_function.parameters[spatial_function_parameter_id - 1]['value'] = spatial_function_parameter_val;
-	                   window.spatial_function = spatial_function;
+
+	                   console.log('spatial function this term: ');
+	                   console.log(spatial_function);
+
 	               }
 	           );
 
 	           //
 	           hamiltonian_operator['spatial_function'] = spatial_function;
 	           window.calculation.setup.hamiltonian.terms.push(hamiltonian_operator);
+
+	           console.log("first hamiltonian term up to now: ");
+	           console.log(window.calculation.setup.hamiltonian.terms[0].spatial_function.parameters[0].value);
 
 	       }
 		); 	// End of loop over Hamiltonian terms
@@ -458,6 +527,11 @@ var tnt = {
 		$("#new_calculation_ground_state .btn-next-step").click(
 			tnt.validate_new_calculation_ground_state
 		);
+
+		$("#new_calculation_ground_state .btn-back-step").click(
+			tnt.initialise_new_calculation_define_hamiltonian
+		);
+
 	},
 
 	validate_new_calculation_ground_state: function () {
@@ -467,11 +541,6 @@ var tnt = {
 			.data("calculate-ground-state"));
 
 		window.calculation.setup.system.calculate_ground_state = calculate_ground_state;
-
-		var calculate_time_evolution_choice = parseInt($("label.active input", "#time_evolution_choice")
-			.data("calculate-time-evolution"));
-
-		window.calculation.setup.system.calculate_time_evolution = calculate_time_evolution_choice;
 
 		console.log("Validated new calculation ground state input");
 
@@ -484,18 +553,51 @@ var tnt = {
 		tnt.clear_all_new_calculation_stages();
 		$("#new_calculation_time_evolution").css('display', 'block');
 
+		// Add a function so that if the user chooses not to calculate time evolution, we don't display inputs for time step info
+		$("#time_evolution_choice input")
+			.change(
+				function () {
+					console.log('test' + $(this).data('calculate-time-evolution'));
+					console.log($(this));
+					if ($(this).data('calculate-time-evolution') == 0) { 
+						console.log("We're not calculating time evolution");
+						$('#time_evolution_time_step_specification').css('display', 'none'); 
+					} else {
+						console.log("We are calculating time evolution");
+						$('#time_evolution_time_step_specification').css('display', 'block'); 
+					}
+				}
+			);
+
 		$("#new_calculation_time_evolution .btn-next-step").click(
 			tnt.validate_new_calculation_time_evolution
 		);
+
+		$("#new_calculation_time_evolution .btn-back-step").click(
+			tnt.initialise_new_calculation_ground_state
+		);
+
 	},
 
 	validate_new_calculation_time_evolution: function () {
 		//
-		var num_time_steps = parseInt($("#input_num_time_steps").val())
-		var time_step_size = parseFloat($("#input_time_step_size").val());
+		
+		var calculate_time_evolution_choice = parseInt($("label.active input", "#time_evolution_choice")
+			.data("calculate-time-evolution"));
 
-		window.calculation.setup.system.num_time_steps = num_time_steps;
-		window.calculation.setup.system.time_step = time_step_size;
+		window.calculation.setup.system.calculate_time_evolution = calculate_time_evolution_choice;
+
+		console.log("Are we calculating time evolution? " + calculate_time_evolution_choice);
+
+		if (calculate_time_evolution_choice == 1) {
+
+			var num_time_steps = parseInt($("#input_num_time_steps").val())
+			var time_step_size = parseFloat($("#input_time_step_size").val());
+
+			window.calculation.setup.system.num_time_steps = num_time_steps;
+			window.calculation.setup.system.time_step = time_step_size;
+
+		}
 
 		tnt.initialise_new_calculation_initial_state();
 
@@ -511,6 +613,10 @@ var tnt = {
 
 		$("#new_calculation_initial_state .btn-next-step").click(
 			tnt.validate_new_calculation_initial_state
+		);
+
+		$("#new_calculation_initial_state .btn-back-step").click(
+			tnt.initialise_new_calculation_time_evolution
 		);
 
 	},
@@ -545,6 +651,11 @@ var tnt = {
 		$("#new_calculation_expectation_operators .btn-next-step").click(
 			tnt.validate_new_calculation_expectation_operators
 		);
+
+		$("#new_calculation_expectation_operators .btn-back-step").click(
+			tnt.initialise_new_calculation_initial_state
+		);
+
 
 	},
 
@@ -609,6 +720,10 @@ var tnt = {
 		);
 
 		$("#new_calculation_confirm").css('display', 'block');
+
+		$("#new_calculation_confirm .btn-back-step").click(
+			tnt.initialise_new_calculation_expectation_operators
+		);
 
 	},
 
