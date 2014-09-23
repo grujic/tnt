@@ -207,6 +207,22 @@
 
       <hr>
 
+      <div id="ground_state_precision_specification" style="display: none;">
+        
+        <p>Enter the precision with which you want to find the ground state. The number below is a convergence parameter - if the ground state energy on successive 'sweeps' do not differ by more than this fractional amount, the calculation is stopped. </p>
+
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="input_ground_state_precision" class="col-sm-2 control-label">Precision = 10^-</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="input_ground_state_precision" placeholder="4" value="4">
+            </div>
+          </div>
+        </form>
+
+      </div>
+
+
       <div class="row new-calculation-step-navigation">
           <div class="col-md-6">
               <button type="button" class="btn btn-default btn-back-step form-control ">Back</button>
@@ -316,9 +332,14 @@
       
       <p>Now choose a transformation to tailor your initial state (optional). </p>
 
-      <div class="alert alert-warning" role="alert" id="no_initial_state_transformations_added_yet_warning">You haven't specified any transformations on your chosen initial base state. </div>
+      <div class="alert alert-warning" role="alert" id="no_initial_state_transformations_added_yet_warning">NOTE THESE MODIFIERS ARE NOT HOOKED UP TO THE UNDERLYING CODE BASE YET! COMING SOON... </div>
 
       <div id="initial_state_modifier_operators_container">
+      </div>
+
+      <hr>
+
+      <div id="initial_state_modifier_operators_terms">
       </div>
 
       <hr>
