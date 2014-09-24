@@ -105,7 +105,7 @@ spatial_fns = \
 	# Rectangular function
 	{
 		'spatial_fn_id': 6, \
-		'function_tex_str': 'A \mathrm{rect}\left(\frac{j-j_c}{w}\right)', \
+		'function_tex_str': 'A \mathrm{rect}((j-j_c)/w)', \
 		'function_description': 'Rectangular function', \
 		'parameters': [{
 			'parameter_id': 1, \
