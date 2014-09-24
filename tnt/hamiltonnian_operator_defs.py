@@ -44,10 +44,38 @@ operators = \
 		'use_for_transform': True, \
 		'two_site': False
 	}, 
+	
+	# Sigma +
+	{
+		'operator_id': 4, \
+		'function_tex_str': '\hat{S}_j^+', \
+		'function_description': 'S+', \
+		'term_type': 'spin', \
+		'U1_invariant': False, \
+		'complex': False, \
+		'use_for_hamiltonian': False, \
+		'use_for_expectation': False, \
+		'use_for_transform': True, \
+		'two_site': False
+	}, 
+	
+	# Sigma -
+	{
+		'operator_id': 5, \
+		'function_tex_str': '\hat{S}_j^-', \
+		'function_description': 'S-', \
+		'term_type': 'spin', \
+		'U1_invariant': False, \
+		'complex': False, \
+		'use_for_hamiltonian': False, \
+		'use_for_expectation': False, \
+		'use_for_transform': True, \
+		'two_site': False
+	}, 
 
 	# XX coupling
 	{
-		'operator_id': 4, \
+		'operator_id': 6, \
 		'function_tex_str': "\hat{S}_j^x \hat{S}_{j+1}^x", \
 		'function_description': 'XX Coupling', \
 		'term_type': 'spin', \
@@ -61,7 +89,7 @@ operators = \
 
 	# YY coupling
 	{
-		'operator_id': 5, \
+		'operator_id': 7, \
 		'function_tex_str': "\hat{S}_j^y \hat{S}_{j+1}^y", \
 		'function_description': 'YY Coupling', \
 		'term_type': 'spin', \
@@ -75,7 +103,7 @@ operators = \
 
 	# ZZ coupling
 	{
-		'operator_id': 6, \
+		'operator_id': 8, \
 		'function_tex_str': "\hat{S}_j^z \hat{S}_{j+1}^z", \
 		'function_description': 'ZZ Coupling', \
 		'term_type': 'spin', \
@@ -89,7 +117,7 @@ operators = \
 	
 	# Hopping
 	{
-		'operator_id': 7, \
+		'operator_id': 9, \
 		'function_tex_str': "\hat{S}_j^+ \hat{S}_{j+1}^- + \mathrm{h.c.}", \
 		'function_description': 'Hopping', \
 		'term_type': 'spin', \
@@ -103,7 +131,7 @@ operators = \
 	
 	# Hopping with phase change
 	{
-		'operator_id': 8, \
+		'operator_id': 10, \
 		'function_tex_str': "\mathrm{i}\hat{S}_j^+ \hat{S}_{j+1}^- + \mathrm{h.c.}", \
 		'function_description': 'Hopping with phase change', \
 		'term_type': 'spin', \
@@ -117,7 +145,7 @@ operators = \
 	
 	# XY coupling
 	{
-		'operator_id': 9, \
+		'operator_id': 11, \
 		'function_tex_str': "\hat{S}_j^x \hat{S}_{j+1}^y", \
 		'function_description': 'XY Coupling', \
 		'term_type': 'spin', \
@@ -131,7 +159,7 @@ operators = \
 	
 	# YX coupling
 	{
-		'operator_id': 10, \
+		'operator_id': 12, \
 		'function_tex_str': "\hat{S}_j^y \hat{S}_{j+1}^x", \
 		'function_description': 'YX Coupling', \
 		'term_type': 'spin', \
@@ -145,7 +173,7 @@ operators = \
 	
 	# YZ coupling
 	{
-		'operator_id': 11, \
+		'operator_id': 13, \
 		'function_tex_str': "\hat{S}_j^y \hat{S}_{j+1}^z", \
 		'function_description': 'YZ Coupling', \
 		'term_type': 'spin', \
@@ -159,7 +187,7 @@ operators = \
 	
 	# ZY coupling
 	{
-		'operator_id': 12, \
+		'operator_id': 14, \
 		'function_tex_str': "\hat{S}_j^z \hat{S}_{j+1}^y", \
 		'function_description': 'ZY Coupling', \
 		'term_type': 'spin', \
@@ -173,7 +201,7 @@ operators = \
 	
 	# ZX coupling
 	{
-		'operator_id': 13, \
+		'operator_id': 15, \
 		'function_tex_str': "\hat{S}_j^z \hat{S}_{j+1}^x", \
 		'function_description': 'ZX Coupling', \
 		'term_type': 'spin', \
@@ -187,7 +215,7 @@ operators = \
 	
 	# XZ coupling
 	{
-		'operator_id': 14, \
+		'operator_id': 16, \
 		'function_tex_str': "\hat{S}_j^x \hat{S}_{j+1}^z", \
 		'function_description': 'XZ Coupling', \
 		'term_type': 'spin', \
