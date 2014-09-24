@@ -1,8 +1,8 @@
 # This file defines the operators available for building the system Hamiltonian
 
 operators = \
-[	
-	
+[
+
 	# Sigma X
 	{
 		'operator_id': 1, \
@@ -13,10 +13,10 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
-		'use_for_transform': True, \
+		'use_for_transform': False, \
 		'two_site': False
 	},
-	
+
 	# Sigma Y
 	{
 		'operator_id': 2, \
@@ -27,10 +27,10 @@ operators = \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
-		'use_for_transform': True, \
+		'use_for_transform': False, \
 		'two_site': False
 	},
-	
+
 	# Sigma Z
 	{
 		'operator_id': 3, \
@@ -41,10 +41,10 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
-		'use_for_transform': True, \
+		'use_for_transform': False, \
 		'two_site': False
-	}, 
-	
+	},
+
 	# Sigma +
 	{
 		'operator_id': 4, \
@@ -57,8 +57,8 @@ operators = \
 		'use_for_expectation': False, \
 		'use_for_transform': True, \
 		'two_site': False
-	}, 
-	
+	},
+
 	# Sigma -
 	{
 		'operator_id': 5, \
@@ -71,7 +71,7 @@ operators = \
 		'use_for_expectation': False, \
 		'use_for_transform': True, \
 		'two_site': False
-	}, 
+	},
 
 	# XX coupling
 	{
@@ -83,9 +83,9 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
-		'use_for_transform': True, \
+		'use_for_transform': False, \
 		'two_site': True
-	}, 
+	},
 
 	# YY coupling
 	{
@@ -97,9 +97,9 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
-		'use_for_transform': True, \
+		'use_for_transform': False, \
 		'two_site': True
-	}, 
+	},
 
 	# ZZ coupling
 	{
@@ -111,10 +111,10 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
-		'use_for_transform': True, \
+		'use_for_transform': False, \
 		'two_site': True
-	}, 
-	
+	},
+
 	# Hopping
 	{
 		'operator_id': 9, \
@@ -125,10 +125,10 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
-		'use_for_transform': True, \
+		'use_for_transform': False, \
 		'two_site': True
-	}, 
-	
+	},
+
 	# Hopping with phase change
 	{
 		'operator_id': 10, \
@@ -139,10 +139,10 @@ operators = \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
-		'use_for_transform': True, \
+		'use_for_transform': False, \
 		'two_site': True
-	}, 
-	
+	},
+
 	# XY coupling
 	{
 		'operator_id': 11, \
@@ -153,10 +153,10 @@ operators = \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
-		'use_for_transform': True, \
+		'use_for_transform': False, \
 		'two_site': True
-	}, 
-	
+	},
+
 	# YX coupling
 	{
 		'operator_id': 12, \
@@ -167,10 +167,10 @@ operators = \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
-		'use_for_transform': True, \
+		'use_for_transform': False, \
 		'two_site': True
-	}, 
-	
+	},
+
 	# YZ coupling
 	{
 		'operator_id': 13, \
@@ -181,10 +181,10 @@ operators = \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
-		'use_for_transform': True, \
+		'use_for_transform': False, \
 		'two_site': True
-	}, 
-	
+	},
+
 	# ZY coupling
 	{
 		'operator_id': 14, \
@@ -195,10 +195,10 @@ operators = \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
-		'use_for_transform': True, \
+		'use_for_transform': False, \
 		'two_site': True
-	}, 
-	
+	},
+
 	# ZX coupling
 	{
 		'operator_id': 15, \
@@ -209,10 +209,10 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
-		'use_for_transform': True, \
+		'use_for_transform': False, \
 		'two_site': True
-	}, 
-	
+	},
+
 	# XZ coupling
 	{
 		'operator_id': 16, \
@@ -223,7 +223,7 @@ operators = \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
-		'use_for_transform': True, \
+		'use_for_transform': False, \
 		'two_site': True
 	}
 
