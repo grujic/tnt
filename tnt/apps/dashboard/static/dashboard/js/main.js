@@ -83,7 +83,7 @@ var tnt = {
 						_.filter(
 							window.all_operators.operators, 
 							function(el) { 
-								return el['use_for_expectation'] == true; 
+								return el['use_for_hamiltonian'] == true; 
 							}
 						)
 					};
