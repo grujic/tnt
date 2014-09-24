@@ -288,7 +288,7 @@ operators = \
 	# p-quadrature
 	{
 		'operator_id': 24, \
-		'function_tex_str': "\mathrm{i} \left( \hat{b}_{j}^{\dagger}-\hat{b}_{j} \right)", \
+		'function_tex_str': "\mathrm{i} ( \hat{b}_{j}^{\dagger}-\hat{b}_{j} )", \
 		'function_description': 'p-quadrature', \
 		'term_type': 'bosonic', \
 		'U1_invariant': False, \
