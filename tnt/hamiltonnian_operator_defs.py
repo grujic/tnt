@@ -225,7 +225,7 @@ operators = \
 		'use_for_expectation': True, \
 		'use_for_transform': True, \
 		'two_site': True
-	}
+	},
 	
 	###################### Bosonic terms start here ####################################
 	
@@ -241,7 +241,7 @@ operators = \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
 		'two_site': False
-	}
+	},
 	
 	# On-site interaction
 	{
@@ -255,7 +255,7 @@ operators = \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
 		'two_site': False
-	}
+	},
 	
 	# Coherent driving
 	{
@@ -269,7 +269,7 @@ operators = \
 		'use_for_expectation': False, \
 		'use_for_transform': False, \
 		'two_site': False
-	}
+	},
 	
 	# x-quadrature
 	{
@@ -283,7 +283,7 @@ operators = \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
 		'two_site': False
-	}
+	},
 	
 	# p-quadrature
 	{
@@ -297,7 +297,7 @@ operators = \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
 		'two_site': False
-	}
+	},
 	
 	# Creation
 	{
@@ -311,7 +311,7 @@ operators = \
 		'use_for_expectation': False, \
 		'use_for_transform': True, \
 		'two_site': False
-	}
+	},
 	
 	# Annihilation
 	{
@@ -325,7 +325,7 @@ operators = \
 		'use_for_expectation': False, \
 		'use_for_transform': True, \
 		'two_site': False
-	}
+	},
 	
 	# N-squared
 	{
@@ -339,7 +339,7 @@ operators = \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
 		'two_site': False
-	}
+	},
 	
 	# Hopping
 	{
@@ -353,7 +353,7 @@ operators = \
 		'use_for_expectation': False, \
 		'use_for_transform': False, \
 		'two_site': True
-	}
+	},
 	
 	# Density-density
 	{
@@ -367,7 +367,7 @@ operators = \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
 		'two_site': True
-	}
+	},
 	
 	# Parametric driving
 	{
@@ -381,7 +381,7 @@ operators = \
 		'use_for_expectation': False, \
 		'use_for_transform': False, \
 		'two_site': True
-	}
+	},
 	
 	# Bdagb
 	{
