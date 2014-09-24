@@ -133,7 +133,7 @@ var tnt = {
 		$("#initial_state_modifier_operators_container")
 			.html(template(window.initial_state_modifier_operators));
 
-		$(".hamiltonian-operator-btn")
+		$("#initial_state_modifier_operators_container .hamiltonian-operator-btn")
 			.click(function() {
 				console.log("ID of base state modifer chosen: ");
 				console.log($(this).data("operator-id"));
@@ -194,7 +194,6 @@ var tnt = {
 		$.get("/api/v1.0/initial_base_states",
 			function (data) {
 
-
 				if (window.calculation.setup.system.system_type === null) {
 					var filtered_data = data;
 				} else {
@@ -204,7 +203,7 @@ var tnt = {
 							_.filter(
 								data.states, 
 								function(el) {
-									return ( (el['system_type'] == window.calculation.setup.system.calculation_type ) || (el['system_type'] == 'all') ); 
+									return ( (el['system_type'] == window.calculation.setup.system.system_type.name ) || (el['system_type'] == 'all') ); 
 								}
 							) 
 						};
@@ -249,71 +248,71 @@ var tnt = {
 
 	render_available_expectation_operators: function () {
 		// render the available expectation value operators
-		console.log("Loading available expectation value operators...");
+		console.log("Rendering available expectation value operators...");
 
-		$.get("/api/v1.0/hamiltonian_operators",
-			function (data) {
-
-				if (window.calculation.setup.system.calculation_type === null) {
-					var filtered_data = data;
-				} else {
-					var filtered_data =
-						{
-							'operators':
-							 _.filter(
-							 	data.operators,
-							 	function(el) {
-							 		return el['term_type'] == window.calculation.setup.system.calculation_type;
-							 	}
-							 )
-						};
+		window.expectation_operators = {
+			'operators': 
+			_.filter(
+				window.all_operators.operators, 
+				function (el) {
+					return (el['use_for_expectation'] == true)
 				}
+			)
+		};
 
-				window.expectation_operators = filtered_data;
+		console.log("Filtered all operators to the expectation operators");
 
-				// Separate operators into single- and two-site expectation operators
-				var single_site_expectation_operators =
-					{
-						'operators':
-						_.filter(
-							window.expectation_operators.operators,
-							function (el) {
-								return el.two_site == false;
-							}
-						)
-					};
+		// Separate operators into single- and two-site expectation operators
+		var single_site_expectation_operators =
+			{
+				'operators':
+				_.filter(
+					window.expectation_operators.operators,
+					function (el) {
+						return el.two_site == false;
+					}
+				)
+			};
 
-				var two_site_expectation_operators =
-					{
-						'operators':
-						_.filter(
-							window.expectation_operators.operators,
-							function (el) {
-								return el.two_site == true;
-							}
-						)
-					};
+		console.log("Filtered expectation operators to single site ones");
 
-				var single_site_source = $("#expectation-operators-single-site-template").html();
-				var single_site_template = Handlebars.compile(single_site_source);
+		var two_site_expectation_operators =
+			{
+				'operators':
+				_.filter(
+					window.expectation_operators.operators,
+					function (el) {
+						return el.two_site == true;
+					}
+				)
+			};
 
-				var two_site_source = $("#expectation-operators-two-site-template").html();
-				var two_site_template = Handlebars.compile(two_site_source);
+		console.log("Filtered expectation operators to two site ones");
 
-				// Render single- and two- site operators separately
-				$("#new_calculation_available_expectation_operators_single_site")
-					.html(single_site_template(single_site_expectation_operators));
+		var single_site_source = $("#expectation-operators-single-site-template").html();
+		var single_site_template = Handlebars.compile(single_site_source);
 
-				$("#new_calculation_available_expectation_operators_two_site")
-					.html(two_site_template(two_site_expectation_operators));
+		var two_site_source = $("#expectation-operators-two-site-template").html();
+		var two_site_template = Handlebars.compile(two_site_source);
 
-				tnt.attach_click_fn_to_expectation_operator_choices();
+		
 
-			}
-		).done(function() {
-    		console.log("Loaded available expectation value operators");
-    		tnt.render_mathjax();
-  		});
+		// Render single- and two- site operators separately
+		$("#new_calculation_available_expectation_operators_single_site")
+			.html(single_site_template(single_site_expectation_operators));
+
+		console.log("Rendered single site operators");
+
+		$("#new_calculation_available_expectation_operators_two_site")
+			.html(two_site_template(two_site_expectation_operators));
+
+		console.log("Rendered two site operators");
+
+		tnt.attach_click_fn_to_expectation_operator_choices();
+
+		console.log("Attached click functions to exp op choices");
+
+		tnt.render_mathjax();
 
 	}, // End of render_available_initial_base_states
 
@@ -323,7 +322,7 @@ var tnt = {
 		// First get the right operator
 		var hamiltonian_operator = 
 			_.filter(
-				window.hamiltonian_operators.operators, 
+				window.all_operators.operators, 
 				function (el) {
 					return el.operator_id == operator_id;
 				}
@@ -512,20 +511,31 @@ var tnt = {
 		// (or more generally quantum operator) term, and we get back a 
 		// JSON struct describing the term's spatial dependence etc
 
+		console.log("Converting an operator GUI element into JSON...");
+
 		var hamiltonian_operator_id = $(term).data("hamiltonian-operator-id");
 		           
+		console.log("hamiltonian_operator_id: ");
+		console.log(hamiltonian_operator_id);
+
 		var this_hamiltonian_operator = _.filter(
-		                              window.hamiltonian_operators.operators,
+		                              window.all_operators.operators,
 		                              function (operator) {
 		                                  return operator['operator_id'] == parseInt(hamiltonian_operator_id)
 		                              }
 		                          )[0];
+
+		console.log("this_hamiltonian_operator: ");
+		console.log(this_hamiltonian_operator);
 
 		// Need a deep clone of this object
 		var hamiltonian_operator = _.cloneDeep(this_hamiltonian_operator);
 
 		// Now get the spatial function ID:
 		var spatial_function_id = parseInt($(term).find("select").val());	// 0 ordering
+
+		console.log("spatial_function_id: ");
+		console.log(spatial_function_id);
 
 		// Get the corresponding spatial function dict representation
 		var this_spatial_function = _.filter(
@@ -741,8 +751,12 @@ var tnt = {
 
 	validate_new_calculation_initial_state: function () {
 		//
+		console.log("Validating the initial state choices...");
+
 		var initial_base_state_choice = $(".initial-state-btn.active")
 			.data("initial-base-state-id");
+
+		console.log("initial_base_state_choice: " + initial_base_state_choice);
 
 		var initial_base_state = _.filter(
 			window.initial_base_states.states,
@@ -751,6 +765,9 @@ var tnt = {
 			}
 		)[0];
 
+		console.log("initial_base_state: ");
+		console.log(initial_base_state);
+
 		window.calculation.setup.initial_state.base_state = initial_base_state;
 
 		// Now we look for modifiers to the base state:
@@ -758,7 +775,7 @@ var tnt = {
 	       function (term) {
 
 	       	   var operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
-	           
+
 	           window
 	           .calculation
 	           .setup
@@ -779,10 +796,16 @@ var tnt = {
 		
 		tnt.clear_all_new_calculation_stages();
 
+		console.log("All calculation stages cleared..");
+
 		tnt.render_available_expectation_operators();
+
+		console.log("Rendered available expectation operators");
 
 		$("#new_calculation_expectation_operators")
 			.css('display', 'block');
+
+		console.log("made exp op stage visible");
 
 		$("#new_calculation_expectation_operators .btn-next-step").click(
 			tnt.validate_new_calculation_expectation_operators
@@ -793,14 +816,16 @@ var tnt = {
 		// What comes before this stage depends on calculation parameters:
 		if (window.calculation.setup.system.calculate_time_evolution == 1) {
 			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_initial_state;
+			console.log("A1");
 		} else  {
 			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_time_evolution;
+			console.log("A2");
 		}
 
 		console.log("B");
 
 		$("#new_calculation_expectation_operators .btn-back-step").click(
-			previous_stage_initialisation_fn()
+			previous_stage_initialisation_fn
 		);
 
 		console.log("C");
