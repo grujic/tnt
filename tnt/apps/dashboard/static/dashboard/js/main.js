@@ -93,7 +93,8 @@ var tnt = {
 
 				var template = Handlebars.compile(source);
 
-				$("#new_calculation_available_hamiltonian_operators").html(template(window.hamiltonian_operators));
+				$("#new_calculation_available_hamiltonian_operators")
+					.html(template(window.hamiltonian_operators));
 
 				$(".hamiltonian-operator-btn")
 					.click(function() {
@@ -113,6 +114,25 @@ var tnt = {
 
 	render_available_intitial_state_modifier_operators: function () {
 		// Transformations we can apply to the base state
+		var source = $("#hamiltonian-operator-template").html();
+
+		var template = Handlebars.compile(source);
+
+		$("#initial_state_modifier_operators_container")
+			.html(template(window.initial_state_modifier_operators));
+
+		$(".hamiltonian-operator-btn")
+			.click(function() {
+				console.log("ID of base state modifer chosen: ");
+				console.log($(this).data("operator-id"));
+
+				tnt.add_hamiltonian_term(
+					$(this).data("operator-id"), 
+					"#initial_state_modifier_operators_terms"
+				);
+			});
+
+		tnt.render_mathjax();
 
 	},
 
@@ -445,71 +465,71 @@ var tnt = {
 
 	},
 
+	convert_operator_gui_element_into_hamiltonian_term_json: function (term) {
+		// We pass in a jquery wrapped gui representation of a hamiltonian 
+		// (or more generally quantum operator) term, and we get back a 
+		// JSON struct describing the term's spatial dependence etc
+
+		var hamiltonian_operator_id = $(term).data("hamiltonian-operator-id");
+		           
+		var this_hamiltonian_operator = _.filter(
+		                              window.hamiltonian_operators.operators,
+		                              function (operator) {
+		                                  return operator['operator_id'] == parseInt(hamiltonian_operator_id)
+		                              }
+		                          )[0];
+
+		// Need a deep clone of this object
+		var hamiltonian_operator = _.cloneDeep(this_hamiltonian_operator);
+
+		// Now get the spatial function ID:
+		var spatial_function_id = parseInt($(term).find("select").val());	// 0 ordering
+
+		// Get the corresponding spatial function dict representation
+		var this_spatial_function = _.filter(
+		                              window.spatial_fns.spatial_fns,
+		                              function (spatial_fn) {
+		                                  return spatial_fn['spatial_fn_id'] == parseInt(spatial_function_id)
+		                              }
+		                          )[0];
+
+		// Deep clone
+		var spatial_function = _.cloneDeep(this_spatial_function);
+
+		// Now get the values for each of the parameters for the spatial function variation
+		var spatial_function_parameter_input_form = $(term).find('.spatial_function_parameter_input_form');
+
+		// Loop over the spatial function parameters for this term
+		_.each($(spatial_function_parameter_input_form).find('.form-control'),
+		   function(el) {
+		       var spatial_function_parameter_id = $(el).data("parameter-id");
+		       
+		       var spatial_function_parameter_val = $(el).val()
+
+		       spatial_function.parameters[spatial_function_parameter_id - 1]['value'] = spatial_function_parameter_val;
+
+		   }
+		);
+
+		//
+		hamiltonian_operator['spatial_function'] = spatial_function;
+
+		return hamiltonian_operator;
+	}, 
+
 	validate_new_calculation_define_hamiltonian: function () {
 		//
 		_.each($('.hamiltonian-term'),
 	       function (term) {
-	           console.log("Next term: ");
 
-	           window.term = term;
-
-	           var hamiltonian_operator_id = $(term).data("hamiltonian-operator-id");
-	           console.log("Term with Hamiltonian operator ID: " + hamiltonian_operator_id);
-	           var this_hamiltonian_operator = _.filter(
-	                                          window.hamiltonian_operators.operators,
-	                                          function (operator) {
-	                                              return operator['operator_id'] == parseInt(hamiltonian_operator_id)
-	                                          }
-	                                      )[0];
-
-	           // Need a deep clone of this object
-	           var hamiltonian_operator = _.cloneDeep(this_hamiltonian_operator);
-
-	           console.log("hamiltonian_operator: ");
-	           console.log(hamiltonian_operator);
-
-	           // Now get the spatial function ID:
-	           var spatial_function_id = parseInt($(term).find("select").val());	// 0 ordering
-
-	           // Get the corresponding spatial function dict representation
-	           var this_spatial_function = _.filter(
-	                                          window.spatial_fns.spatial_fns,
-	                                          function (spatial_fn) {
-	                                              return spatial_fn['spatial_fn_id'] == parseInt(spatial_function_id)
-	                                          }
-	                                      )[0];
-
-	           // Deep clone
-	           var spatial_function = _.cloneDeep(this_spatial_function);
-
-	           console.log("spatial_function: ");
-	           console.log(spatial_function);
-
-	           // Now get the values for each of the parameters for the spatial function variation
-	           var spatial_function_parameter_input_form = $(term).find('.spatial_function_parameter_input_form');
-
-	           // Loop over the spatial function parameters for this term
-	           _.each($(spatial_function_parameter_input_form).find('.form-control'),
-	               function(el) {
-	                   var spatial_function_parameter_id = $(el).data("parameter-id");
-	                   console.log("Parameter ID: " + spatial_function_parameter_id);
-	                   var spatial_function_parameter_val = $(el).val()
-	                   console.log("Has value " + spatial_function_parameter_val);
-
-	                   spatial_function.parameters[spatial_function_parameter_id - 1]['value'] = spatial_function_parameter_val;
-
-	                   console.log('spatial function this term: ');
-	                   console.log(spatial_function);
-
-	               }
-	           );
-
-	           //
-	           hamiltonian_operator['spatial_function'] = spatial_function;
-	           window.calculation.setup.hamiltonian.terms.push(hamiltonian_operator);
-
-	           console.log("first hamiltonian term up to now: ");
-	           console.log(window.calculation.setup.hamiltonian.terms[0].spatial_function.parameters[0].value);
+	       	   var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
+	           
+	           window
+	           .calculation
+	           .setup
+	           .hamiltonian
+	           .terms
+	           .push(hamiltonian_operator);
 
 	       }
 		); 	// End of loop over Hamiltonian terms
@@ -524,6 +544,28 @@ var tnt = {
 		tnt.clear_all_new_calculation_stages();
 		$("#new_calculation_ground_state").css('display', 'block');
 
+		// Add a function so that if the user chooses not to calculate time evolution, we don't display inputs for time step info
+		$("#ground_state_calculation_choice input")
+			.change(
+				function () {
+					
+					console.log('test' + $(this).data('calculate-ground-state'));
+					console.log($(this));
+					
+					if ($(this).data('calculate-ground-state') == 0) { 
+						console.log("We're not calculating the ground state");
+						$('#ground_state_precision_specification')
+							.css('display', 'none'); 
+					} else {
+						console.log("We are calculating the ground state");
+						$('#ground_state_precision_specification')
+							.css('display', 'block'); 
+					}
+
+				}
+			);
+
+		// Navigation
 		$("#new_calculation_ground_state .btn-next-step").click(
 			tnt.validate_new_calculation_ground_state
 		);
@@ -540,7 +582,20 @@ var tnt = {
 		var calculate_ground_state = parseInt($("label.active input", "#ground_state_calculation_choice")
 			.data("calculate-ground-state"));
 
-		window.calculation.setup.system.calculate_ground_state = calculate_ground_state;
+		window
+		.calculation
+		.setup
+		.system
+		.calculate_ground_state = calculate_ground_state;
+
+		// Ground state precision:
+		var log_ground_state_precision = parseFloat($("#input_ground_state_precision").val());
+
+		window
+		.calculation
+		.setup
+		.system
+		.log_ground_state_precision = log_ground_state_precision;
 
 		console.log("Validated new calculation ground state input");
 
@@ -549,7 +604,7 @@ var tnt = {
 
 	initialise_new_calculation_time_evolution: function () {
 		//
-		console.log("Initialising new calculation ground state input");
+		console.log("Initialising new calculation time evolution input");
 		tnt.clear_all_new_calculation_stages();
 		$("#new_calculation_time_evolution").css('display', 'block');
 
@@ -585,7 +640,11 @@ var tnt = {
 		var calculate_time_evolution_choice = parseInt($("label.active input", "#time_evolution_choice")
 			.data("calculate-time-evolution"));
 
-		window.calculation.setup.system.calculate_time_evolution = calculate_time_evolution_choice;
+		window
+		.calculation
+		.setup
+		.system
+		.calculate_time_evolution = calculate_time_evolution_choice;
 
 		console.log("Are we calculating time evolution? " + calculate_time_evolution_choice);
 
@@ -599,7 +658,21 @@ var tnt = {
 
 		}
 
-		tnt.initialise_new_calculation_initial_state();
+		// We work out what to display next
+		if (calculate_time_evolution_choice == 1) {
+			var next_stage_initialisation_fn = tnt.initialise_new_calculation_initial_state;
+		} else  {
+			// var next_stage_initialisation_fn = tnt.initialise_new_calculation_expectation_operators;
+			// TODO was getting weird behaviour when above line is not commented out, leaving like this for now :(
+			var next_stage_initialisation_fn = tnt.initialise_new_calculation_initial_state;
+		}
+
+		console.log("next_stage_initialisation_fn = ");
+		console.log(next_stage_initialisation_fn);
+
+		window.next_stage_initialisation_fn = next_stage_initialisation_fn;
+
+		next_stage_initialisation_fn();
 
 	},
 
@@ -607,6 +680,9 @@ var tnt = {
 		//
 		console.log("Initialising new calculation initial state input");
 		tnt.render_available_initial_base_states(); 	// Draw the choices available
+
+		tnt.render_available_intitial_state_modifier_operators();
+
 		tnt.clear_all_new_calculation_stages(); // Clear all panels
 
 		$("#new_calculation_initial_state").css('display', 'block'); 	// Make this panel visible
@@ -635,6 +711,22 @@ var tnt = {
 
 		window.calculation.setup.initial_state.base_state = initial_base_state;
 
+		// Now we look for modifiers to the base state:
+		_.each($('#initial_state_modifier_operators_terms .hamiltonian-term'),
+	       function (term) {
+
+	       	   var operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
+	           
+	           window
+	           .calculation
+	           .setup
+	           .initial_state
+	           .applied_operators
+	           .push(operator);
+
+	       }
+		); 	// End of loop over Hamiltonian terms
+
 		tnt.initialise_new_calculation_expectation_operators();
 
 	},
@@ -642,26 +734,39 @@ var tnt = {
 	initialise_new_calculation_expectation_operators: function () {
 		//
 		console.log("Initialising new calculation expectation value input");
+		
 		tnt.clear_all_new_calculation_stages();
 
 		tnt.render_available_expectation_operators();
 
-		$("#new_calculation_expectation_operators").css('display', 'block');
+		$("#new_calculation_expectation_operators")
+			.css('display', 'block');
 
 		$("#new_calculation_expectation_operators .btn-next-step").click(
 			tnt.validate_new_calculation_expectation_operators
 		);
 
+		console.log("A");
+
+		// What comes before this stage depends on calculation parameters:
+		if (window.calculation.setup.system.calculate_time_evolution == 1) {
+			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_initial_state;
+		} else  {
+			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_time_evolution;
+		}
+
+		console.log("B");
+
 		$("#new_calculation_expectation_operators .btn-back-step").click(
-			tnt.initialise_new_calculation_initial_state
+			previous_stage_initialisation_fn()
 		);
 
+		console.log("C");
 
 	},
 
 	validate_new_calculation_expectation_operators: function () {
 		// Check that everything's OK and add the selected exp vals into the calculation JSON structure
-
 
 		var selected_expectation_operator_ids = _.map(
 			$(".expectation-operator-btn.active"),
