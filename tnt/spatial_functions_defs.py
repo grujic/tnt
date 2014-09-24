@@ -59,7 +59,7 @@ spatial_fns = \
 	# A sin dependence on system size
 	{
 		'spatial_fn_id': 4, \
-		'function_tex_str': 'A_0 + A \sin \left( k j + \phi \right)', \
+		'function_tex_str': 'A_0 + A \sin ( k j + \phi )', \
 		'function_description': 'Sinusoidal', \
 		'parameters': [{
 			'parameter_id': 1, \
