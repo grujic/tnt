@@ -11,7 +11,7 @@ spatial_fns = \
 			'parameter_id': 1, \
 			'parameter_tex_str': 'k', \
 			'parameter_name': 'Contant value', \
-			'value': None
+			'value': 1
 		}]
 	},
 	
@@ -52,14 +52,14 @@ spatial_fns = \
 			'parameter_id': 3, \
 			'parameter_tex_str': 'j_c', \
 			'parameter_name': 'Centre', \
-			'value': None
+			'value': 0
 		}]
 	},
 
 	# A sin dependence on system size
 	{
 		'spatial_fn_id': 4, \
-		'function_tex_str': 'A_0 + A \sin \left ( k j + \phi \right )', \
+		'function_tex_str': 'A_0 + A \sin \left( k j + \phi \right)', \
 		'function_description': 'Sinusoidal', \
 		'parameters': [{
 			'parameter_id': 1, \
@@ -98,6 +98,47 @@ spatial_fns = \
 			'parameter_id': 2, \
 			'parameter_tex_str': 'j_s', \
 			'parameter_name': 'Step position', \
+			'value': None
+		}]
+	}
+	
+	# Rectangular function
+	{
+		'spatial_fn_id': 6, \
+		'function_tex_str': 'A \mathrm{rect}\left(\frac{j-j_c}{w}\right)', \
+		'function_description': 'Rectangular function', \
+		'parameters': [{
+			'parameter_id': 1, \
+			'parameter_tex_str': 'A', \
+			'parameter_name': 'Maximum value', \
+			'value': 1
+		},{
+			'parameter_id': 2, \
+			'parameter_tex_str': 'j_c', \
+			'parameter_name': 'Centre', \
+			'value': None
+		},{
+			'parameter_id': 3, \
+			'parameter_tex_str': 'w', \
+			'parameter_name': 'Width', \
+			'value': None
+		}]
+	}
+	
+	# Delta function
+	{
+		'spatial_fn_id': 7, \
+		'function_tex_str': 'A \delta(j-j_c)', \
+		'function_description': 'Delta function', \
+		'parameters': [{
+			'parameter_id': 1, \
+			'parameter_tex_str': 'A', \
+			'parameter_name': 'Maximum value', \
+			'value': 1
+		},{
+			'parameter_id': 2, \
+			'parameter_tex_str': 'j_c', \
+			'parameter_name': 'Centre', \
 			'value': None
 		}]
 	}
