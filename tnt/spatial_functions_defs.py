@@ -100,7 +100,7 @@ spatial_fns = \
 			'parameter_name': 'Step position', \
 			'value': None
 		}]
-	}
+	},
 	
 	# Rectangular function
 	{
@@ -123,7 +123,7 @@ spatial_fns = \
 			'parameter_name': 'Width', \
 			'value': None
 		}]
-	}
+	},
 	
 	# Delta function
 	{
