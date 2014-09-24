@@ -41,5 +41,22 @@ initial_base_states_list = \
 		'function_description': 'Alternating spins', \
 		'system_type': 'spin'
 	}, 
+	
+	# Boson system - all sites occupied
+	{
+		'initial_base_state_id': 5, \
+		'function_tex_str': "| 	1 1 \cdots 1 \rangle", \
+		'function_description': 'All sites occupied', \
+		'system_type': 'bosonic'
+	}, 
+	
+	# Boson system - vacuum
+	{
+		'initial_base_state_id': 6, \
+		'function_tex_str': "| 	0 0 \cdots 0 \rangle", \
+		'function_description': 'All sites unoccupied', \
+		'system_type': 'bosonic'
+	}, 
+	
 
 ]
