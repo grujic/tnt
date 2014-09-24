@@ -46,6 +46,7 @@ var tnt = {
 		$.get("/api/v1.0/hamiltonian_operators",
 			function (data) {
 
+				// First filter to operators corresponding to the chosen system type
 				if (window.calculation.setup.system.system_type === null) {
 					var filtered_data = data;
 				} else {
@@ -74,7 +75,18 @@ var tnt = {
 				}
 
 				// Keep this data available:
-				window.hamiltonian_operators = filtered_data;
+				window.all_operators = filtered_data;
+
+				window.hamiltonian_operators = 
+					{
+						'operators': 
+						_.filter(
+							window.all_operators.operators, 
+							function(el) { 
+								return el['use_for_expectation'] == true; 
+							}
+						)
+					};
 
 				// We use these same palette of operators to modify initial states - filter 
 				// appropriately and store them here rather than making an identical call later
@@ -82,7 +94,7 @@ var tnt = {
 					{
 						'operators': 
 						_.filter(
-							window.hamiltonian_operators.operators, 
+							window.all_operators.operators, 
 							function(el) { 
 								return el['use_for_transform'] == true; 
 							}
