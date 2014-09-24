@@ -46,7 +46,7 @@ var tnt = {
 		$.get("/api/v1.0/hamiltonian_operators",
 			function (data) {
 
-				if (window.calculation.setup.system.calculation_type === null) {
+				if (window.calculation.setup.system.system_type === null) {
 					var filtered_data = data;
 				} else {
 					var filtered_data =
@@ -54,7 +54,7 @@ var tnt = {
 							_.filter(
 								data.operators,
 								function(el) {
-									return el['term_type'] == window.calculation.setup.system.calculation_type;
+									return el['term_type'] == window.calculation.setup.system.system_type;
 								}
 							)
 						};
@@ -388,6 +388,27 @@ var tnt = {
 		//
 		console.log("Initialising new calculation basic setup input");
 
+		$(".btn-system-type")
+			.click(function(el) {
+				$(".btn-system-type").removeClass("active");
+				$(this).addClass("active");
+
+				var chosen_system_type = $(this).data("system-type");
+				console.log("Chosen system type = " + chosen_system_type);
+
+				// Hide all extra input panels
+				$(".system_type_extra_info").css("display", "none");
+
+				// Choose what extra inputs to reveal:
+				if (chosen_system_type == "spin") {
+					$("#system_type_extra_info_spins").css("display", "block");
+				} else if (chosen_system_type == "bosonic") {
+					$("#system_type_extra_info_bosons").css("display", "block");
+				}
+
+			}
+		);
+
 		// Make sure that we can only have one spin type selected at a time
 		$(".btn-system-type-extra-info-spin")
 			.click(function (el) {
@@ -425,6 +446,16 @@ var tnt = {
 			console.log("Spin magnitude = " + spin_magnitude);
 
 			window.calculation.setup.system.system_type.extra_info['spin_magnitude'] = spin_magnitude;
+
+		} else if (system_type == "bosonic") {
+
+			console.log("System type = bosonic");
+
+			var bosonic_truncation = parseInt($("#system_type_extra_info_bosons_choice").val());
+
+			console.log("Bosonic truncation parameter = " + bosonic_truncation);
+
+			window.calculation.setup.system.system_type.extra_info['bosonic_truncation'] = bosonic_truncation;
 
 		}
 
