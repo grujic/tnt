@@ -183,7 +183,7 @@ var tnt = {
 			function (data) {
 
 
-				if (window.calculation.setup.system.calculation_type === null) {
+				if (window.calculation.setup.system.system_type === null) {
 					var filtered_data = data;
 				} else {
 					var filtered_data = 
@@ -200,7 +200,7 @@ var tnt = {
 
 				window.initial_base_states = filtered_data;
 
-				// If we're not calculating the ground state, then exlude it as a possibility for an intitial state
+				// If we're not calculating the ground state, then exclude it as a possibility for an intitial state
 				if (window.calculation.setup.system.calculate_ground_state == 0) {
 					window.initial_base_states = 
 					{
@@ -223,7 +223,6 @@ var tnt = {
 					.addClass("active");
 
 				tnt.attach_click_fn_to_initial_base_state_choices();
-
 
 				tnt.render_mathjax();
 
