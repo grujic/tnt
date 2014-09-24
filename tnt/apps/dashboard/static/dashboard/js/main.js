@@ -54,7 +54,7 @@ var tnt = {
 							_.filter(
 								data.operators,
 								function(el) {
-									return el['term_type'] == window.calculation.setup.system.system_type;
+									return el['term_type'] == window.calculation.setup.system.system_type.name;
 								}
 							)
 						};
