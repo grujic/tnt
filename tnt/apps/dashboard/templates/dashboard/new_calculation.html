@@ -138,7 +138,14 @@
         </div>
       </div>
 
-      <p>Select from the following menu to add another Hamiltonian term. Then customise it by choosing a functional form for its coefficients (defaults to constant across the system). </p>
+      <p>Select from the following menu to add another Hamiltonian term. 
+      Then customise it by choosing a functional form for its coefficients (defaults to constant across the system). 
+      Each term will be used to form the Hamiltonian as 
+      \[ 
+      H = \sum_{j=0}^{L-1}\sum_o^{n_o}\f_{o}(j)\hat{o}_{j} + \sum_{j=0}^{L-2}\sum_t^{n_t}\f_{t}(j)\hat{t}_{j,j+1},
+      \]
+      where \( f_{o,t}(j) \) is the chosen spatial function for the onsite or two-site term \( o,t \).
+      </p>
 
       <div id="new_calculation_available_hamiltonian_operators">
 
@@ -346,9 +353,15 @@
       <h4>Initial state - transformation</h4>
       
       <p>Now choose a transformation to tailor your initial state (optional). </p>
-
-      <div class="alert alert-warning" role="alert" id="no_initial_state_transformations_added_yet_warning">NOTE THESE MODIFIERS ARE NOT HOOKED UP TO THE UNDERLYING CODE BASE YET! COMING SOON... </div>
-
+      
+      <p>Each term will be used to form the total site-wide operator as 
+      \[ 
+      \hat{O} = \sum_{j=0}^{L-1}\sum_o^{n_o}\f_{o}(j)\hat{o}_{j} + \sum_{j=0}^{L-2}\sum_t^{n_t}\f_{t}(j)\hat{t}_{j,j+1},
+      \]
+      where \( f_{o,t}(j) \) is the chosen spatial function for the onsite or two-site term \( o,t \).
+      </p>
+      
+      
       <div id="initial_state_modifier_operators_container">
       </div>
 
