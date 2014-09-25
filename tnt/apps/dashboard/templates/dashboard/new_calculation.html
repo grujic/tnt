@@ -122,7 +122,7 @@
 
   <div class="jumbotron">
     <h1>Define your Hamiltonian </h1>
-    <p>Build it up step by step by choosing from the predefined operators below. One site operators are summed over all sites. Two site operators are summed over all nearest neighbour pairs.</p>
+    <p>Build it up step by step by choosing from the predefined operators below.</p>
   </div>
 
   <div class="panel panel-default">
@@ -138,11 +138,10 @@
         </div>
       </div>
 
-      <p>Select from the following menu to add another Hamiltonian term. 
-      Then customise it by choosing a functional form for its coefficients (defaults to constant across the system). 
+      <p>Select from the following menu to add another Hamiltonian term, then customise it by choosing a functional form for its coefficients (defaults to constant across the system). 
       Each term will be used to form the Hamiltonian as 
       \[ 
-      H = \sum_{j=0}^{L-1}\sum_o^{n_o}\f_{o}(j)\hat{o}_{j} + \sum_{j=0}^{L-2}\sum_t^{n_t}\f_{t}(j)\hat{t}_{j,j+1},
+      H = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j} + \sum_{j=0}^{L-2}\sum_t^{n_t}f_{t}(j)\hat{t}_{j,j+1},
       \]
       where \( f_{o,t}(j) \) is the chosen spatial function for the onsite or two-site term \( o,t \).
       </p>
@@ -356,7 +355,7 @@
       
       <p>Each term will be used to form the total site-wide operator as 
       \[ 
-      \hat{O} = \sum_{j=0}^{L-1}\sum_o^{n_o}\f_{o}(j)\hat{o}_{j} + \sum_{j=0}^{L-2}\sum_t^{n_t}\f_{t}(j)\hat{t}_{j,j+1},
+      \hat{O} = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j} + \sum_{j=0}^{L-2}\sum_t^{n_t}f_{t}(j)\hat{t}_{j,j+1},
       \]
       where \( f_{o,t}(j) \) is the chosen spatial function for the onsite or two-site term \( o,t \).
       </p>
