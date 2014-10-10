@@ -11,7 +11,8 @@ spatial_fns = \
 			'parameter_id': 1, \
 			'parameter_tex_str': 'k', \
 			'parameter_name': 'Contant value', \
-			'value': 1
+			'value': None, \
+			'parameter_default_value': 1
 		}]
 	},
 	
@@ -24,12 +25,14 @@ spatial_fns = \
 			'parameter_id': 1, \
 			'parameter_tex_str': 'a', \
 			'parameter_name': 'Offset', \
-			'value': None
+			'value': None, \
+			'parameter_default_value': 0
 		},{
 			'parameter_id': 2, \
 			'parameter_tex_str': 'b', \
 			'parameter_name': 'Gradient', \
-			'value': None
+			'value': None, \
+			'parameter_default_value': 1
 		}]
 	},
 	
@@ -42,17 +45,20 @@ spatial_fns = \
 			'parameter_id': 1, \
 			'parameter_tex_str': 'a', \
 			'parameter_name': 'Offset', \
-			'value': None
+			'value': None, \
+			'parameter_default_value': 0
 		},{
 			'parameter_id': 2, \
 			'parameter_tex_str': 'b', \
 			'parameter_name': 'Scaling', \
-			'value': None
+			'value': None, \
+			'parameter_default_value': 1
 		},{
 			'parameter_id': 3, \
 			'parameter_tex_str': 'j_c', \
 			'parameter_name': 'Centre', \
-			'value': 0
+			'value': None, \
+			'parameter_default_value': 5
 		}]
 	},
 
@@ -65,22 +71,26 @@ spatial_fns = \
 			'parameter_id': 1, \
 			'parameter_tex_str': 'A_0', \
 			'parameter_name': 'Mean value', \
-			'value': None
+			'value': None, \
+			'parameter_default_value': 0
 		},{
 			'parameter_id': 2, \
 			'parameter_tex_str': 'A', \
 			'parameter_name': 'Amplitude', \
-			'value': None
+			'value': None, \
+			'parameter_default_value': 1
 		},{
 			'parameter_id': 3, \
 			'parameter_tex_str': 'k', \
 			'parameter_name': 'Wave vector', \
-			'value': None
+			'value': None, \
+			'parameter_default_value': 5
 		},{
 			'parameter_id': 4, \
 			'parameter_tex_str': '\phi', \
 			'parameter_name': 'Phase shift', \
-			'value': None
+			'value': None, \
+			'parameter_default_value': 0
 		}]
 	}, 
 	
@@ -93,12 +103,14 @@ spatial_fns = \
 			'parameter_id': 1, \
 			'parameter_tex_str': 'A', \
 			'parameter_name': 'Maximum value', \
-			'value': 1
+			'value': None, \
+			'parameter_default_value': 1
 		},{
 			'parameter_id': 2, \
 			'parameter_tex_str': 'j_s', \
 			'parameter_name': 'Step position', \
-			'value': None
+			'value': None, \
+			'parameter_default_value': 5
 		}]
 	},
 	
@@ -111,17 +123,20 @@ spatial_fns = \
 			'parameter_id': 1, \
 			'parameter_tex_str': 'A', \
 			'parameter_name': 'Maximum value', \
-			'value': 1
+			'value': None, \
+			'parameter_default_value': 1
 		},{
 			'parameter_id': 2, \
 			'parameter_tex_str': 'j_c', \
 			'parameter_name': 'Centre', \
-			'value': None
+			'value': None, \
+			'parameter_default_value': 5
 		},{
 			'parameter_id': 3, \
 			'parameter_tex_str': 'w', \
 			'parameter_name': 'Width', \
-			'value': None
+			'value': None, \
+			'parameter_default_value': 1
 		}]
 	},
 	
@@ -134,12 +149,14 @@ spatial_fns = \
 			'parameter_id': 1, \
 			'parameter_tex_str': 'A', \
 			'parameter_name': 'Maximum value', \
-			'value': 1
+			'value': None, \
+			'parameter_default_value': 1
 		},{
 			'parameter_id': 2, \
 			'parameter_tex_str': 'j_c', \
 			'parameter_name': 'Centre', \
-			'value': None
+			'value': None, \
+			'parameter_default_value': 5
 		}]
 	}
 ]
