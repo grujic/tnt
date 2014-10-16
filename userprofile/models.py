@@ -40,8 +40,9 @@ class MyUser(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
-    #full_name = models.TextField(blank=True, null=True, default='')
-    #about = models.TextField(blank=True, null=True, default='')
+    full_name = models.TextField(blank=True, null=True, default='')
+    affiliation = models.TextField(blank=True, null=True, default='')
+    about = models.TextField(blank=True, null=True, default='')
 
     objects = MyUserManager()
 
