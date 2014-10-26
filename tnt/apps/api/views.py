@@ -39,7 +39,7 @@ def api_root(request, format=None):
 	# The API 'root' providing info on available data sources
 
     return Response({
-        
+
         ### START OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
 
         'spatial_functions': \
@@ -100,7 +100,7 @@ def spatial_functions(request):
 @api_view(['GET'])
 def hamiltonian_operators(request):
     """
-    Return a list of the available Hamiltonian operators. 
+    Return a list of the available Hamiltonian operators.
     """
 
     response = Response({'operators': hamiltonnian_operator_defs.operators}, status=status.HTTP_200_OK)    # R1gt
@@ -110,7 +110,7 @@ def hamiltonian_operators(request):
 @api_view(['GET'])
 def expectation_operators(request):
     """
-    Return a list of the available Hamiltonian operators. 
+    Return a list of the available Hamiltonian operators.
     """
 
     response = Response({'operators': expectation_value_operator_defs.operators}, status=status.HTTP_200_OK)    # R1gt
@@ -120,8 +120,8 @@ def expectation_operators(request):
 @api_view(['GET'])
 def blank_calculation(request):
     """
-    Return an example of a blank calculation, i.e. a JSON structure with all field names present but nothing filled out. 
-    Functions as a template for new calculations. 
+    Return an example of a blank calculation, i.e. a JSON structure with all field names present but nothing filled out.
+    Functions as a template for new calculations.
     """
     response = Response(blank_calculation_template, status=status.HTTP_200_OK)    # R1gt
 
@@ -195,6 +195,8 @@ def check_on_running_calculations(user_id):
             # Annoying and clunky but also have to update the status in the JSON representation of the calculations
             setup = json.loads(running_calculation.setup)
             setup['meta_info']['status'] = 'finished'
+
+            setup['meta_info']['finished'] = json.loads(resp.content)['finish_time']
 
             running_calculation.setup = json.dumps(setup)
 
@@ -312,8 +314,16 @@ def save_calculation(request):
     if calculation_json is not None:
         calculation = json.loads(calculation_json)
 
+
     calculation_id = str(uuid.uuid4())
     calculation['meta_info']['id'] = calculation_id
+
+    print("meta_info:")
+    print calculation['meta_info']
+
+    # Deal with the name that the user has provided, or not
+    if calculation['meta_info']['name'] in [None, '']:
+        calculation['meta_info']['name'] = calculation_id   # Default to the calculation ID if nothing explicitly input
 
     calculation['meta_info']['status'] = 'saved'
 
@@ -323,6 +333,7 @@ def save_calculation(request):
     calculation['meta_info']['date_created'] = time_created
 
     calculation_obj = Calculation(id=calculation_id, \
+                                  name=calculation['meta_info']['name'], \
                                   user_id=request.user.id, \
                                   time_created=date_created, \
                                   status='saved', \

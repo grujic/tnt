@@ -77,26 +77,26 @@ var tnt = {
 				// Keep this data available:
 				window.all_operators = filtered_data;
 
-				window.hamiltonian_operators = 
+				window.hamiltonian_operators =
 					{
-						'operators': 
+						'operators':
 						_.filter(
-							window.all_operators.operators, 
-							function(el) { 
-								return el['use_for_hamiltonian'] == true; 
+							window.all_operators.operators,
+							function(el) {
+								return el['use_for_hamiltonian'] == true;
 							}
 						)
 					};
 
-				// We use these same palette of operators to modify initial states - filter 
+				// We use these same palette of operators to modify initial states - filter
 				// appropriately and store them here rather than making an identical call later
-				window.initial_state_modifier_operators = 
+				window.initial_state_modifier_operators =
 					{
-						'operators': 
+						'operators':
 						_.filter(
-							window.all_operators.operators, 
-							function(el) { 
-								return el['use_for_transform'] == true; 
+							window.all_operators.operators,
+							function(el) {
+								return el['use_for_transform'] == true;
 							}
 						)
 					};
@@ -112,7 +112,7 @@ var tnt = {
 					.click(function() {
 						console.log($(this).data("operator-id"));
 						tnt.add_hamiltonian_term(
-							$(this).data("operator-id"), 
+							$(this).data("operator-id"),
 							"#hamiltonian_terms_container"
 						);
 					});
@@ -139,7 +139,7 @@ var tnt = {
 				console.log($(this).data("operator-id"));
 
 				tnt.add_hamiltonian_term(
-					$(this).data("operator-id"), 
+					$(this).data("operator-id"),
 					"#initial_state_modifier_operators_terms"
 				);
 			});
@@ -197,15 +197,15 @@ var tnt = {
 				if (window.calculation.setup.system.system_type === null) {
 					var filtered_data = data;
 				} else {
-					var filtered_data = 
+					var filtered_data =
 						{
-							'states': 
+							'states':
 							_.filter(
-								data.states, 
+								data.states,
 								function(el) {
-									return ( (el['system_type'] == window.calculation.setup.system.system_type.name ) || (el['system_type'] == 'all') ); 
+									return ( (el['system_type'] == window.calculation.setup.system.system_type.name ) || (el['system_type'] == 'all') );
 								}
-							) 
+							)
 						};
 				}
 
@@ -213,13 +213,13 @@ var tnt = {
 
 				// If we're not calculating the ground state, then exclude it as a possibility for an intitial state
 				if (window.calculation.setup.system.calculate_ground_state == 0) {
-					window.initial_base_states = 
+					window.initial_base_states =
 					{
-						'states': 
+						'states':
 						_.filter(
-							window.initial_base_states.states, 
+							window.initial_base_states.states,
 							function(el) {
-								return el['initial_base_state_id'] > 0; 
+								return el['initial_base_state_id'] > 0;
 							}
 						)
 					};
@@ -251,9 +251,9 @@ var tnt = {
 		console.log("Rendering available expectation value operators...");
 
 		window.expectation_operators = {
-			'operators': 
+			'operators':
 			_.filter(
-				window.all_operators.operators, 
+				window.all_operators.operators,
 				function (el) {
 					return (el['use_for_expectation'] == true)
 				}
@@ -295,7 +295,7 @@ var tnt = {
 		var two_site_source = $("#expectation-operators-two-site-template").html();
 		var two_site_template = Handlebars.compile(two_site_source);
 
-		
+
 
 		// Render single- and two- site operators separately
 		$("#new_calculation_available_expectation_operators_single_site")
@@ -320,9 +320,9 @@ var tnt = {
 		// Add a visual representation of a Hamiltonian term to the screen, and render any user input elements necessary (e.g. inputs for spatial parameter values)
 
 		// First get the right operator
-		var hamiltonian_operator = 
+		var hamiltonian_operator =
 			_.filter(
-				window.all_operators.operators, 
+				window.all_operators.operators,
 				function (el) {
 					return el.operator_id == operator_id;
 				}
@@ -438,6 +438,12 @@ var tnt = {
 
 	validate_new_calculation_basic_setup_step: function () {
 		//
+
+        // Get the name the user has input, even if it's blank:
+        window.calculation.meta_info.name = $("#calculation_name").val();
+
+        console.log("Calculation name is :" + window.calculation.meta_info.name);
+
 		var system_type = $(".btn-system-type.active").data("system-type"); // From the selected button, find system type
 
 		window.calculation.setup.system.system_type.name = system_type;	// Update the calculation
@@ -507,14 +513,14 @@ var tnt = {
 	},
 
 	convert_operator_gui_element_into_hamiltonian_term_json: function (term) {
-		// We pass in a jquery wrapped gui representation of a hamiltonian 
-		// (or more generally quantum operator) term, and we get back a 
+		// We pass in a jquery wrapped gui representation of a hamiltonian
+		// (or more generally quantum operator) term, and we get back a
 		// JSON struct describing the term's spatial dependence etc
 
 		console.log("Converting an operator GUI element into JSON...");
 
 		var hamiltonian_operator_id = $(term).data("hamiltonian-operator-id");
-		           
+
 		console.log("hamiltonian_operator_id: ");
 		console.log(hamiltonian_operator_id);
 
@@ -555,7 +561,7 @@ var tnt = {
 		_.each($(spatial_function_parameter_input_form).find('.form-control'),
 		   function(el) {
 		       var spatial_function_parameter_id = $(el).data("parameter-id");
-		       
+
 		       var spatial_function_parameter_val = $(el).val()
 
 		       spatial_function.parameters[spatial_function_parameter_id - 1]['value'] = spatial_function_parameter_val;
@@ -567,7 +573,7 @@ var tnt = {
 		hamiltonian_operator['spatial_function'] = spatial_function;
 
 		return hamiltonian_operator;
-	}, 
+	},
 
 	validate_new_calculation_define_hamiltonian: function () {
 		//
@@ -575,7 +581,7 @@ var tnt = {
 	       function (term) {
 
 	       	   var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
-	           
+
 	           window
 	           .calculation
 	           .setup
@@ -600,18 +606,18 @@ var tnt = {
 		$("#ground_state_calculation_choice input")
 			.change(
 				function () {
-					
+
 					console.log('test' + $(this).data('calculate-ground-state'));
 					console.log($(this));
-					
-					if ($(this).data('calculate-ground-state') == 0) { 
+
+					if ($(this).data('calculate-ground-state') == 0) {
 						console.log("We're not calculating the ground state");
 						$('#ground_state_precision_specification')
-							.css('display', 'none'); 
+							.css('display', 'none');
 					} else {
 						console.log("We are calculating the ground state");
 						$('#ground_state_precision_specification')
-							.css('display', 'block'); 
+							.css('display', 'block');
 					}
 
 				}
@@ -666,12 +672,12 @@ var tnt = {
 				function () {
 					console.log('test' + $(this).data('calculate-time-evolution'));
 					console.log($(this));
-					if ($(this).data('calculate-time-evolution') == 0) { 
+					if ($(this).data('calculate-time-evolution') == 0) {
 						console.log("We're not calculating time evolution");
-						$('#time_evolution_time_step_specification').css('display', 'none'); 
+						$('#time_evolution_time_step_specification').css('display', 'none');
 					} else {
 						console.log("We are calculating time evolution");
-						$('#time_evolution_time_step_specification').css('display', 'block'); 
+						$('#time_evolution_time_step_specification').css('display', 'block');
 					}
 				}
 			);
@@ -688,7 +694,7 @@ var tnt = {
 
 	validate_new_calculation_time_evolution: function () {
 		//
-		
+
 		var calculate_time_evolution_choice = parseInt($("label.active input", "#time_evolution_choice")
 			.data("calculate-time-evolution"));
 
@@ -793,7 +799,7 @@ var tnt = {
 	initialise_new_calculation_expectation_operators: function () {
 		//
 		console.log("Initialising new calculation expectation value input");
-		
+
 		tnt.clear_all_new_calculation_stages();
 
 		console.log("All calculation stages cleared..");

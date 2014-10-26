@@ -18,7 +18,7 @@
 
     Handlebars.registerHelper("timestamp_to_human_date", function(timestamp) {
         
-        if (timestamp === null) {
+        if ( (timestamp === null) || (timestamp == 0) || (timestamp == false) ) {
             
             return "None";
 
@@ -83,7 +83,7 @@
 
         <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
           <div class="panel-heading">
-            <h3 class="panel-title">Name: {{meta_info.id}}</h3>
+              <h3 class="panel-title">Name: {{meta_info.name}} <span class="pull-right">ID: {{meta_info.id}}</span></h3>
           </div>
 
           <div class="panel-body">
@@ -96,7 +96,7 @@
 
             		<p>Date run: {{timestamp_to_human_date meta_info.date_run}}</p>
 
-            		<p>Date finished: XXXXX</p>
+            		<p>Date finished: {{timestamp_to_human_date meta_info.finished}}</p>
 
             	</div>
 
