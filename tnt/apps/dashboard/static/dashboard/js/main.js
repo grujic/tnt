@@ -183,6 +183,15 @@ var tnt = {
 
 					$(this).toggleClass("active");
 
+                    if ( $(".expectation-operator-btn.active").length > 0) {
+                        $("#no_expectation_operators_added_yet_warning").css("display", "none");
+
+                    } else {
+
+                        $("#no_expectation_operators_added_yet_warning").css("display", "block");
+
+                    }
+
 					e.preventDefault();
 
 				}
@@ -294,8 +303,6 @@ var tnt = {
 
 		var two_site_source = $("#expectation-operators-two-site-template").html();
 		var two_site_template = Handlebars.compile(two_site_source);
-
-
 
 		// Render single- and two- site operators separately
 		$("#new_calculation_available_expectation_operators_single_site")
