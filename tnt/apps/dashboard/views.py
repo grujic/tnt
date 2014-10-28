@@ -25,6 +25,7 @@ def signup(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         full_name = request.POST.get('full_name')
+        affiliation = request.POST.get('affiliation')
         about = request.POST.get('about')
 
         print("email = ")
@@ -38,7 +39,12 @@ def signup(request):
 
         try:
 
-            MyUser.objects.create_user(email, password=password)
+            new_user = MyUser.objects.create_user(email, password=password)
+            new_user.affiliation = affiliation
+            new_user.about = about
+            new_user.full_name = full_name
+            new_user.save()
+
             user = authenticate(username=email, password=password)
 
             login(request, user)

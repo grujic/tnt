@@ -38,7 +38,10 @@ blank_calculation_template = \
 
 		'initial_state': {
 			'base_state': {},
-			'applied_operators': []
+			'applied_operators': {
+                'type': None,
+                'applied_operators': []
+            }
 		},
 
 		'expectation_values': {

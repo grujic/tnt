@@ -750,6 +750,24 @@ var tnt = {
 
 		tnt.clear_all_new_calculation_stages(); // Clear all panels
 
+        $("#initial_state_modifier_sum_or_product_choice")
+            .on("change",
+                function (e) {
+                    if ( $(this).val() == "sum") {
+
+                        $("#initial_state_modifier_explain_text_sum").css("display", "block");
+                        $("#initial_state_modifier_explain_text_product").css("display", "none");
+
+                    } else if ( $(this).val() == "product") {
+
+                        $("#initial_state_modifier_explain_text_sum").css("display", "none");
+                        $("#initial_state_modifier_explain_text_product").css("display", "block");
+
+                    }
+                    console.log($(this).val());
+                }
+        );
+
 		$("#new_calculation_initial_state").css('display', 'block'); 	// Make this panel visible
 
 		$("#new_calculation_initial_state .btn-next-step").click(
@@ -781,7 +799,26 @@ var tnt = {
 		console.log("initial_base_state: ");
 		console.log(initial_base_state);
 
-		window.calculation.setup.initial_state.base_state = initial_base_state;
+		window
+        .calculation
+        .setup
+        .initial_state
+        .base_state = initial_base_state;
+
+        // See what kind of initial state modifier the user has selected,  a sum or a product
+        window
+        .calculation
+        .setup
+        .initial_state
+        .applied_operators
+        .type = $("#initial_state_modifier_sum_or_product_choice").val();
+
+        window
+        .calculation
+        .setup
+        .initial_state
+        .applied_operators
+        .applied_operators = [];
 
 		// Now we look for modifiers to the base state:
 		_.each($('#initial_state_modifier_operators_terms .hamiltonian-term'),
@@ -793,6 +830,7 @@ var tnt = {
 	           .calculation
 	           .setup
 	           .initial_state
+	           .applied_operators
 	           .applied_operators
 	           .push(operator);
 

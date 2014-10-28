@@ -336,22 +336,37 @@
       
       <p>Now choose a transformation to tailor your initial state (optional).
       You can choose to apply the operator to the initial state as a <b>product</b> of terms or a <b>sum</b> of terms using the drop-down below.</p>
+
+
+        <select id="initial_state_modifier_sum_or_product_choice">
+
+            <option value="sum">Sum</option>
+            <option value="product">Product</option>
+
+        </select>
+
+      <div class="panel panel-default">
+
+        <div class="panel-body">
+
+            <p id="initial_state_modifier_explain_text_sum">If you choose a <b>sum</b> of terms, the chosen operators will be used to form the total site-wide operator as 
+            \[ 
+            \hat{O} = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j},
+            \]
+            where there are \( n_o \) on-site terms \( \hat{o} \), and where \( f_{o}(j) \) is the chosen spatial function for the onsite term \( \hat{o} \).
+            </p>
+            
+            <p id="initial_state_modifier_explain_text_product" style="display: none;">If you choose a <b>product</b> of terms, the chosen operators will be used to form the total site-wide operator as 
+            \[ 
+            \hat{O} = \prod_{j=0}^{L-1}\prod_o^{n_o}f_{o}(j)\hat{o}_{j},
+            \]
+            where there are \( n_o \) on-site terms \( \hat{o} \), and where \( f_{o}(j) \) is the chosen spatial function for the onsite term \( \hat{o} \). Note the operators will be applied to the base state in the order that they are chosen.
+            </p>
       
-      <p>If you choose a <b>sum</b> of terms, the chosen operators will be used to form the total site-wide operator as 
-      \[ 
-      \hat{O} = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j},
-      \]
-      where there are \( n_o \) on-site terms \( \hat{o} \), and where \( f_{o}(j) \) is the chosen spatial function for the onsite term \( \hat{o} \).
-      </p>
-      
-      <p>If you choose a <b>product</b> of terms, the chosen operators will be used to form the total site-wide operator as 
-      \[ 
-      \hat{O} = \prod_{j=0}^{L-1}\prod_o^{n_o}f_{o}(j)\hat{o}_{j},
-      \]
-      where there are \( n_o \) on-site terms \( \hat{o} \), and where \( f_{o}(j) \) is the chosen spatial function for the onsite term \( \hat{o} \). Note the operators will be applied to the base state in the order that they are chosen.
-      </p>
-      
-      
+        </div>
+
+      </div>
+
       <div id="initial_state_modifier_operators_container">
       </div>
 
