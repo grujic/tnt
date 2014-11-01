@@ -182,16 +182,15 @@
 
       <hr>
 
-      <div id="ground_state_precision_specification" style="display: none;">
-        
+      <div id="ground_state_extra_info_specification" style="display: none;">
+
+        <h5>Precision</h5>
+
         <p>Enter the precision with which you want to find the ground state. The number below is a convergence parameter - if the ground state energy on successive 'sweeps' do not differ by more than this fractional amount, the calculation is stopped. </p>
 
         <form class="form-horizontal" role="form">
           <div class="form-group">
             <label for="input_ground_state_precision" class="col-sm-2 control-label">Precision = 10^-</label>
-
-
-
             <div class="col-sm-10">
 
                 <select id="input_ground_state_precision_choice" class="form-control">
@@ -202,8 +201,37 @@
           </div>
         </form>
 
-      </div>
+        <hr>
+    
+        <h5>Quantum number conservation</h5>
+        <p>Is your calculation quantum number conserving?</p>
 
+        <div id="number_conservation_choice" class="btn-group" data-toggle="buttons">
+          <label class="btn btn-primary">
+            <input type="radio" name="options" data-number-conservation=1>Yes
+          </label>
+          <label class="btn btn-primary active">
+            <input type="radio" name="options" data-number-conservation=0 checked>No
+          </label>
+        </div>
+
+        <div id="ground_state_quantum_number_info" style="display: none;">
+
+            <p>
+                Enter the quantum number. The possible values have been enumerated for you. 
+            </p>
+
+            <form class="form-inline" role="form">
+                <select id="quantum_number_ground_state_choice" class="form-control">
+
+                </select>
+            </form>
+
+        </div>
+
+        <hr>
+
+      </div> <!-- End of ground_state_extra_info_specification -->
 
       <div class="row new-calculation-step-navigation">
           <div class="col-md-6">

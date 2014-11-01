@@ -29,7 +29,11 @@ blank_calculation_template = \
 				}
 			},
 			'calculation_type': None,
-			'calculate_ground_state': None
+			'calculate_ground_state': None,
+            'number_conservation': {
+                'apply_qn': None,
+                'qn': None
+            }
 		},
 
 		'hamiltonian': {

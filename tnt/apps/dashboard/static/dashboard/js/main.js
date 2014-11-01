@@ -28,6 +28,20 @@ var tnt = {
 		return Math.round(1000000000*Math.random()) + "";
 	},
 
+    set_up_numeric_range_dropdown: function(dropdown_id, dropdown_min, dropdown_max, dropdown_default) {
+        for (var i=dropdown_min; i<dropdown_max+1; i++)
+        {
+            var select=document.getElementById(dropdown_id);
+            var option = document.createElement("OPTION");
+            select.options.add(option);
+            option.text = i;
+            option.value = i;
+            if (i == dropdown_default) {
+                option.selected = true;
+            }
+        }
+    },
+
 	initialise_blank_calculation: function () {
 		// Pull in the blank template for a calculation and set window.calculaton = the template
 		$.get('/api/v1.0/blank_calculation',
@@ -419,30 +433,20 @@ var tnt = {
 		console.log("Initialising new calculation basic setup input");
 
         // Set up the selectors for system size
-        for (var i=tnt.system_size_min; i<tnt.system_size_max+1; i++)
-        {
-            var select=document.getElementById("system_size_choice");
-            var option = document.createElement("OPTION");
-            select.options.add(option);
-            option.text = i;
-            option.value = i;
-            if (i == tnt.system_size_default) {
-                option.selected = true;
-            }
-        }
+        tnt.set_up_numeric_range_dropdown(
+            "system_size_choice",
+            tnt.system_size_min,
+            tnt.system_size_max,
+            tnt.system_size_default
+        );
 
         // Set up the selectors for chi
-        for (var i=tnt.chi_min; i<tnt.chi_max+1; i++)
-        {
-            var select=document.getElementById("chi_choice");
-            var option = document.createElement("OPTION");
-            select.options.add(option);
-            option.text = i;
-            option.value = i;
-            if (i == tnt.chi_default) {
-                option.selected = true;
-            }
-        }
+        tnt.set_up_numeric_range_dropdown(
+            "chi_choice",
+            tnt.chi_min,
+            tnt.chi_max,
+            tnt.chi_default
+        );
 
 		$(".btn-system-type")
 			.click(function(el) {
@@ -562,15 +566,6 @@ var tnt = {
 
         }
 
-		// Now let's see if the user wants to enforce number conservation:
-		var enforce_number_conservation = parseInt($("label.active input", "#number_conservation_choice")
-			.data("number-conservation"));
-
-		window
-        .calculation
-        .setup
-        .system
-        .number_conservation = enforce_number_conservation;
 
 		var chi = parseInt($("#chi_choice").val());	// \chi
 
@@ -711,9 +706,76 @@ var tnt = {
             }
         }
 
+        // Initialise the possible choices for the quantum number, depending on system type
+        var system_type = window
+                          .calculation
+                          .setup
+                          .system
+                          .system_type
+                          .name;
+
+        var system_size = window.calculation
+                            .setup
+                            .system
+                            .system_size;
+
+        if (system_type == "spin") {
+
+            var spin_magnitude = window.calculation
+                                .setup
+                                .system
+                                .system_type
+                                .extra_info
+                                .spin_magnitude;
 
 
-		$("#new_calculation_ground_state").css('display', 'block');
+            var quantum_num_min = -2*spin_magnitude*system_size;
+            var quantum_num_max = +2*spin_magnitude*system_size;
+            var quantum_num_default = 0;
+
+        } else if (system_type="bosonic") {
+
+            var bosonic_truncation = window.calculation
+                                .setup
+                                .system
+                                .system_type
+                                .extra_info
+                                .bosonic_truncation;
+
+
+            var quantum_num_min = 1;
+            var quantum_num_max = bosonic_truncation*system_size;
+            var quantum_num_default = quantum_num_max;
+
+        } else if (system_type="fermionic") {
+            // TODO
+        }
+
+        // Now initialise the quantum number dropdown
+        tnt.set_up_numeric_range_dropdown(
+            "quantum_number_ground_state_choice",
+            quantum_num_min,
+            quantum_num_max,
+            quantum_num_default
+        );
+
+        $('#ground_state_quantum_number_info')
+            .css('display', 'none');
+
+		$("#ground_state_calculation_choice input")
+			.change(
+				function () {
+
+					if ($(this).data('number-conservation') == 0) {
+						$('#ground_state_quantum_number_info')
+							.css('display', 'none');
+					} else {
+						$('#ground_state_quantum_number_info')
+							.css('display', 'block');
+					}
+
+				}
+			);
 
 		// Add a function so that if the user chooses not to calculate time evolution, we don't display inputs for time step info
 		$("#ground_state_calculation_choice input")
@@ -725,16 +787,21 @@ var tnt = {
 
 					if ($(this).data('calculate-ground-state') == 0) {
 						console.log("We're not calculating the ground state");
-						$('#ground_state_precision_specification')
+						$('#ground_state_extra_info_specification')
 							.css('display', 'none');
 					} else {
 						console.log("We are calculating the ground state");
-						$('#ground_state_precision_specification')
+						$('#ground_state_extra_info_specification')
 							.css('display', 'block');
 					}
 
 				}
 			);
+
+
+		$("#new_calculation_ground_state").css('display', 'block');
+
+        $("#ground_state_quantum_number_info").css("display", "none");
 
 		// Navigation
 		$("#new_calculation_ground_state .btn-next-step").click(
@@ -759,14 +826,39 @@ var tnt = {
 		.system
 		.calculate_ground_state = calculate_ground_state;
 
-		// Ground state precision:
-		var log_ground_state_precision = parseInt($("#input_ground_state_precision_choice").val());
+        if (calculation.setup.system.calculate_ground_state == 1) {
 
-		window
-		.calculation
-		.setup
-		.system
-		.log_ground_state_precision = log_ground_state_precision;
+            // Ground state precision:
+            var log_ground_state_precision = parseInt($("#input_ground_state_precision_choice").val());
+
+            window
+            .calculation
+            .setup
+            .system
+            .log_ground_state_precision = log_ground_state_precision;
+
+            // Now let's see if the user wants to enforce number conservation:
+            var enforce_number_conservation = parseInt($("label.active input", "#number_conservation_choice")
+                .data("number-conservation"));
+
+            window
+            .calculation
+            .setup
+            .system
+            .number_conservation
+            .apply_qn= enforce_number_conservation;
+
+            if (enforce_number_conservation == 1) {
+                // Now see which qn chosen, and do checks
+                window
+                .calculation
+                .setup
+                .system
+                .number_conservation
+                .qn = parseInt($("#quantum_number_ground_state_choice").val());
+            }
+
+        }
 
 		console.log("Validated new calculation ground state input");
 
