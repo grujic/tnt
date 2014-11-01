@@ -456,7 +456,9 @@ var tnt = {
 					$("#system_type_extra_info_spins").css("display", "block");
 				} else if (chosen_system_type == "bosonic") {
 					$("#system_type_extra_info_bosons").css("display", "block");
-				}
+				} else if (chosen_system_type == "fermionic") {
+					$("#system_type_extra_info_fermions").css("display", "block");
+                }
 
 			}
 		);
@@ -482,17 +484,29 @@ var tnt = {
 		//
 
         // Get the name the user has input, even if it's blank:
-        window.calculation.meta_info.name = $("#calculation_name").val();
+        window
+        .calculation
+        .meta_info
+        .name = $("#calculation_name").val();
 
         console.log("Calculation name is :" + window.calculation.meta_info.name);
 
 		var system_type = $(".btn-system-type.active").data("system-type"); // From the selected button, find system type
 
-		window.calculation.setup.system.system_type.name = system_type;	// Update the calculation
+		window
+        .calculation
+        .setup
+        .system
+        .system_type
+        .name = system_type;	// Update the calculation
 
 		var system_size = parseInt($("#system_size_choice").val());	// How many sites?
 
-		window.calculation.setup.system.system_size = system_size;	// Update the calculation
+		window
+        .calculation
+        .setup
+        .system
+        .system_size = system_size;	// Update the calculation
 
 		// Now process any extra info to do with the system type
 		if (system_type == "spin") {
@@ -503,7 +517,12 @@ var tnt = {
 
 			console.log("Spin magnitude = " + spin_magnitude);
 
-			window.calculation.setup.system.system_type.extra_info['spin_magnitude'] = spin_magnitude;
+			window
+            .calculation
+            .setup
+            .system
+            .system_type
+            .extra_info['spin_magnitude'] = spin_magnitude;
 
 		} else if (system_type == "bosonic") {
 
@@ -520,7 +539,24 @@ var tnt = {
             .system_type
             .extra_info['bosonic_truncation'] = bosonic_truncation;
 
-		}
+		} else if (system_type == "fermionic") {
+
+            console.log("System type = fermionic");
+
+            var fermion_type = $("label.active input",
+                                          "#fermions_spinless_choice")
+                                        .data("fermion-type");
+
+            console.log("Fermion type = " + fermion_type);
+
+			window
+            .calculation
+            .setup
+            .system
+            .system_type
+            .extra_info['fermion_type'] = fermion_type;
+
+        }
 
 		// Now let's see if the user wants to enforce number conservation:
 		var enforce_number_conservation = parseInt($("label.active input", "#number_conservation_choice")
