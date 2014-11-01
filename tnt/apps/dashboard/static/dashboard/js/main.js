@@ -1,6 +1,15 @@
 // Namespace for tnt
 var tnt = {
 
+    // Some important variables
+    system_size_min: 2,
+    system_size_max: 40,
+    system_size_default: 10,
+
+    chi_min: 1,
+    chi_max: 40,
+    chi_default: 10,
+
 	timestamp_to_human_date: function (timestamp) {
 		var date = new Date(timestamp*1000);
 		return date.toLocaleString();
@@ -405,6 +414,32 @@ var tnt = {
 		//
 		console.log("Initialising new calculation basic setup input");
 
+        // Set up the selectors for system size
+        for (var i=tnt.system_size_min; i<tnt.system_size_max+1; i++)
+        {
+            var select=document.getElementById("system_size_choice");
+            var option = document.createElement("OPTION");
+            select.options.add(option);
+            option.text = i;
+            option.value = i;
+            if (i == tnt.system_size_default) {
+                option.selected = true;
+            }
+        }
+
+        // Set up the selectors for chi
+        for (var i=tnt.chi_min; i<tnt.chi_max+1; i++)
+        {
+            var select=document.getElementById("chi_choice");
+            var option = document.createElement("OPTION");
+            select.options.add(option);
+            option.text = i;
+            option.value = i;
+            if (i == tnt.chi_default) {
+                option.selected = true;
+            }
+        }
+
 		$(".btn-system-type")
 			.click(function(el) {
 				$(".btn-system-type").removeClass("active");
@@ -455,7 +490,7 @@ var tnt = {
 
 		window.calculation.setup.system.system_type.name = system_type;	// Update the calculation
 
-		var system_size = parseInt($("#system_size").val());	// How many sites?
+		var system_size = parseInt($("#system_size_choice").val());	// How many sites?
 
 		window.calculation.setup.system.system_size = system_size;	// Update the calculation
 
@@ -497,7 +532,7 @@ var tnt = {
         .system
         .number_conservation = enforce_number_conservation;
 
-		var chi = parseInt($("#chi_value").val());	// \chi
+		var chi = parseInt($("#chi_choice").val());	// \chi
 
 		window
         .calculation
