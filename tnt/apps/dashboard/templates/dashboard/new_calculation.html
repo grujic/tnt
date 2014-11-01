@@ -122,64 +122,6 @@
 
 </div> <!-- End of div new_calculation_basic_setup -->
 
-<div id="new_calculation_define_hamiltonian" class="new-calculation-step">
-
-  <div class="jumbotron">
-    <h1>Define your Hamiltonian </h1>
-    <p>Build it up step by step by choosing from the predefined operators below.</p>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Available operators</h3>
-    </div>
-
-    <div class="panel-body">
-
-      <div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100" style="width: 28%;">
-            Setup progress
-        </div>
-      </div>
-
-      <p>Select from the following menu to add another Hamiltonian term, then customise it by choosing a functional form for its coefficients (defaults to constant across the system). 
-      Each term will be used to form the Hamiltonian as 
-      \[ 
-      H = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j} + \sum_{j=0}^{L-2}\sum_t^{n_t}f_{t}(j)\hat{t}_{j,j+1},
-      \]
-      where there are \( n_o \) onsite terms \( \hat{o} \), \( n_t \) two-site terms \( \hat{t} \), and where \( f_{o,t}(j) \) is the chosen spatial function for the onsite or two-site term \( \hat{o},\hat{t} \).
-      </p>
-
-      <div id="new_calculation_available_hamiltonian_operators">
-
-      </div>
-
-      <hr>
-
-      <h2>Hamiltonian H = </h2>
-
-      <div id="no_hamiltonian_terms_added_yet_warning" class="alert alert-info" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
-
-      <div id="hamiltonian_terms_container">
-      </div>
-
-      <hr>
-
-      <div class="row new-calculation-step-navigation">  <!-- back next controls -->
-          <div class="col-md-6">
-              <button type="button" class="btn btn-default btn-back-step btn-back-step form-control ">Back</button>
-          </div>
-
-          <div class="col-md-6">
-              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
-          </div>
-      </div>  <!-- End of back next controls -->
-
-    </div>  <!-- End of panel body -->
-
-  </div>  <!-- End of panel -->
-
-</div>  <!-- End of div new_calculation_basic_setup -->
 
 <!-- Ground state calculation specification -->
 <div id="new_calculation_ground_state" class="new-calculation-step">
@@ -240,6 +182,66 @@
     </div>
   </div>
 </div> <!-- End of Ground state calculation specification -->
+
+<div id="new_calculation_define_hamiltonian" class="new-calculation-step">
+
+  <div class="jumbotron">
+    <h1>Define your Hamiltonian </h1>
+    <p>Build it up step by step by choosing from the predefined operators below.</p>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Available operators</h3>
+    </div>
+
+    <div class="panel-body">
+
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100" style="width: 28%;">
+            Setup progress
+        </div>
+      </div>
+
+      <p>Select from the following menu to add another Hamiltonian term, then customise it by choosing a functional form for its coefficients (defaults to constant across the system). 
+      Each term will be used to form the Hamiltonian as 
+      \[ 
+      H = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j} + \sum_{j=0}^{L-2}\sum_t^{n_t}f_{t}(j)\hat{t}_{j,j+1},
+      \]
+      where there are \( n_o \) onsite terms \( \hat{o} \), \( n_t \) two-site terms \( \hat{t} \), and where \( f_{o,t}(j) \) is the chosen spatial function for the onsite or two-site term \( \hat{o},\hat{t} \).
+      </p>
+
+      <div id="new_calculation_available_hamiltonian_operators">
+
+      </div>
+
+      <hr>
+
+      <h2>Hamiltonian H = </h2>
+
+      <div id="no_hamiltonian_terms_added_yet_warning" class="alert alert-info" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
+
+      <div id="hamiltonian_terms_container">
+      </div>
+
+      <hr>
+
+      <div class="row new-calculation-step-navigation">  <!-- back next controls -->
+          <div class="col-md-6">
+              <button type="button" class="btn btn-default btn-back-step btn-back-step form-control ">Back</button>
+          </div>
+
+          <div class="col-md-6">
+              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
+          </div>
+      </div>  <!-- End of back next controls -->
+
+    </div>  <!-- End of panel body -->
+
+  </div>  <!-- End of panel -->
+
+</div>  <!-- End of div new_calculation_basic_setup -->
+
 
 <!-- Time evolution calculation specification -->
 <div id="new_calculation_time_evolution" class="new-calculation-step">

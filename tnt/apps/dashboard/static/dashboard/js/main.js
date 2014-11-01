@@ -478,7 +478,12 @@ var tnt = {
 
 			console.log("Bosonic truncation parameter = " + bosonic_truncation);
 
-			window.calculation.setup.system.system_type.extra_info['bosonic_truncation'] = bosonic_truncation;
+			window
+            .calculation
+            .setup
+            .system
+            .system_type
+            .extra_info['bosonic_truncation'] = bosonic_truncation;
 
 		}
 
@@ -486,19 +491,27 @@ var tnt = {
 		var enforce_number_conservation = parseInt($("label.active input", "#number_conservation_choice")
 			.data("number-conservation"));
 
-		window.calculation.setup.system.number_conservation = enforce_number_conservation;
+		window
+        .calculation
+        .setup
+        .system
+        .number_conservation = enforce_number_conservation;
 
 		var chi = parseInt($("#chi_value").val());	// \chi
 
-		window.calculation.setup.system.chi = chi;
+		window
+        .calculation
+        .setup
+        .system
+        .chi = chi;
 
 		console.log("Validated new calculation basic setup input");
 
-		tnt.initialise_new_calculation_define_hamiltonian();	// Move to next 'page'
+		tnt.initialise_new_calculation_ground_state();
 
 	},
 
-	initialise_new_calculation_define_hamiltonian: function () {
+	initialise_new_calculation_define_ground_hamiltonian: function () {
 		//
 		console.log("Initialising new calculation Hamiltonian input");
 
@@ -509,11 +522,11 @@ var tnt = {
 		$("#new_calculation_define_hamiltonian").css('display', 'block');
 
 		$("#new_calculation_define_hamiltonian .btn-next-step").click(
-			tnt.validate_new_calculation_define_hamiltonian
+			tnt.validate_new_calculation_define_ground_hamiltonian
 		);
 
 		$("#new_calculation_define_hamiltonian .btn-back-step").click(
-			tnt.initialise_new_calculation_basic_setup_step
+			tnt.initialise_new_calculation_ground_state
 		);
 
 
@@ -582,7 +595,7 @@ var tnt = {
 		return hamiltonian_operator;
 	},
 
-	validate_new_calculation_define_hamiltonian: function () {
+	validate_new_calculation_define_ground_hamiltonian: function () {
 		//
 		_.each($('.hamiltonian-term'),
 	       function (term) {
@@ -599,7 +612,8 @@ var tnt = {
 	       }
 		); 	// End of loop over Hamiltonian terms
 
-		tnt.initialise_new_calculation_ground_state();
+		tnt.initialise_new_calculation_time_evolution();
+
 	},
 
 	initialise_new_calculation_ground_state: function () {
@@ -636,7 +650,7 @@ var tnt = {
 		);
 
 		$("#new_calculation_ground_state .btn-back-step").click(
-			tnt.initialise_new_calculation_define_hamiltonian
+			tnt.initialise_new_calculation_basic_setup_step
 		);
 
 	},
@@ -664,7 +678,7 @@ var tnt = {
 
 		console.log("Validated new calculation ground state input");
 
-		tnt.initialise_new_calculation_time_evolution();
+		tnt.initialise_new_calculation_define_ground_hamiltonian();	// Move to next 'page'
 	},
 
 	initialise_new_calculation_time_evolution: function () {
@@ -694,7 +708,7 @@ var tnt = {
 		);
 
 		$("#new_calculation_time_evolution .btn-back-step").click(
-			tnt.initialise_new_calculation_ground_state
+			tnt.initialise_new_calculation_define_ground_hamiltonian
 		);
 
 	},
