@@ -10,6 +10,10 @@ var tnt = {
     chi_max: 40,
     chi_default: 10,
 
+    log_ground_state_precision_min: 1,
+    log_ground_state_precision_max: 14,
+    log_ground_state_precision_default: 4,
+
 	timestamp_to_human_date: function (timestamp) {
 		var date = new Date(timestamp*1000);
 		return date.toLocaleString();
@@ -692,6 +696,23 @@ var tnt = {
 		console.log("Initialising new calculation ground state input");
 
 		tnt.clear_all_new_calculation_stages();
+
+        // Initialise the precision dropdown
+        //
+        for (var i=tnt.log_ground_state_precision_min; i<tnt.log_ground_state_precision_max+1; i++)
+        {
+            var select=document.getElementById("input_ground_state_precision_choice");
+            var option = document.createElement("OPTION");
+            select.options.add(option);
+            option.text = i;
+            option.value = i;
+            if (i == tnt.log_ground_state_precision_default) {
+                option.selected = true;
+            }
+        }
+
+
+
 		$("#new_calculation_ground_state").css('display', 'block');
 
 		// Add a function so that if the user chooses not to calculate time evolution, we don't display inputs for time step info
@@ -739,7 +760,7 @@ var tnt = {
 		.calculate_ground_state = calculate_ground_state;
 
 		// Ground state precision:
-		var log_ground_state_precision = parseFloat($("#input_ground_state_precision").val());
+		var log_ground_state_precision = parseInt($("#input_ground_state_precision_choice").val());
 
 		window
 		.calculation
