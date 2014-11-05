@@ -23,6 +23,7 @@ blank_calculation_template = \
 			'system_size': None,
 			'time_step': None,
 			'num_time_steps': None,
+			'num_expval_time_steps': None,
 			'system_type': {
 				'name': None,
 				'extra_info': {
@@ -37,7 +38,12 @@ blank_calculation_template = \
 		},
 
 		'hamiltonian': {
-			'terms': []
+            'ground': {
+                'terms': []
+            },
+            'dynamic': {
+                'terms': []
+            }
 		},
 
 		'initial_state': {

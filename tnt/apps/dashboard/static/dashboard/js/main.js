@@ -14,6 +14,9 @@ var tnt = {
     log_ground_state_precision_max: 14,
     log_ground_state_precision_default: 4,
 
+    min_num_time_steps: 1,
+    max_num_time_steps: 2000,
+
     is_odd: function(number) {
 
         if (number % 2 == 0) {
@@ -98,7 +101,7 @@ var tnt = {
 
 	},	// End of load_spatial_function_definitions
 
-	render_available_hamiltonian_operators: function () {
+	render_available_hamiltonian_operators: function (where_to_render_selector, hamiltonian_term_container_selector, no_terms_yet_warning_selector) {
 		// If window.calculation_type is not defined, render all available operators, otherwise filter
 		$.get("/api/v1.0/hamiltonian_operators",
 			function (data) {
@@ -162,15 +165,15 @@ var tnt = {
 
 				var template = Handlebars.compile(source);
 
-				$("#new_calculation_available_hamiltonian_operators")
+				$(where_to_render_selector)
 					.html(template(window.hamiltonian_operators));
 
 				$(".hamiltonian-operator-btn")
 					.click(function() {
-						console.log($(this).data("operator-id"));
 						tnt.add_hamiltonian_term(
 							$(this).data("operator-id"),
-							"#ground_hamiltonian_terms_container"
+							hamiltonian_term_container_selector,
+                            no_terms_yet_warning_selector
 						);
 					});
 
@@ -380,7 +383,7 @@ var tnt = {
 
 	}, // End of render_available_initial_base_states
 
-	add_hamiltonian_term: function(operator_id, term_container_selector) {
+	add_hamiltonian_term: function(operator_id, term_container_selector, no_terms_yet_warning_selector) {
 		// Add a visual representation of a Hamiltonian term to the screen, and render any user input elements necessary (e.g. inputs for spatial parameter values)
 
 		// First get the right operator
@@ -397,8 +400,12 @@ var tnt = {
 
 		var source = $("#hamiltonian-term-template").html();
 		var template = Handlebars.compile(source);
-		$(term_container_selector).append(template(hamiltonian_operator));
-		$("#no_ground_hamiltonian_terms_added_yet_warning").css('display', 'none');
+
+		$(term_container_selector)
+            .append(template(hamiltonian_operator));
+
+		$(no_terms_yet_warning_selector)
+            .css('display', 'none');
 
 		tnt.attach_click_fn_to_remove_hamiltonian_terms();
 
@@ -428,7 +435,8 @@ var tnt = {
 					}
 				)[0];
 
-				// When clicked, change the input form elements to the relevant ones for this spatial function choice
+				// When clicked, change the input form elements to
+                // the relevant ones for this spatial function choice
 				var source = $("#spatial-function-parameter-input-template").html();
 				var template = Handlebars.compile(source);
 
@@ -615,7 +623,10 @@ var tnt = {
 		//
 		console.log("Initialising new calculation Hamiltonian input");
 
-		tnt.render_available_hamiltonian_operators();
+		tnt.render_available_hamiltonian_operators(
+            "#new_calculation_available_ground_hamiltonian_operators",
+            "#ground_hamiltonian_terms_container",
+            "#no_ground_hamiltonian_terms_added_yet_warning");
 
 		tnt.clear_all_new_calculation_stages();
 
@@ -697,7 +708,7 @@ var tnt = {
 
 	validate_new_calculation_define_ground_hamiltonian: function () {
 		//
-		_.each($('.hamiltonian-term'),
+		_.each($('#ground_hamiltonian_terms_container .hamiltonian-term'),
 	       function (term) {
 
 	       	   var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
@@ -706,6 +717,7 @@ var tnt = {
 	           .calculation
 	           .setup
 	           .hamiltonian
+               .ground
 	           .terms
 	           .push(hamiltonian_operator);
 
@@ -766,16 +778,12 @@ var tnt = {
             // We initialise a list holding the range of quantum numbers
             var quantum_num_possibilities = _.range(quantum_num_min, quantum_num_max + 1);
 
-            console.log("quantum_num_possibilities A")
-            console.log(quantum_num_possibilities)
-
             // TODO: factor out these functions into different quantum number filters depending on system type
             quantum_num_possibilities = _.reject(
                 quantum_num_possibilities,
                 function (num) {
 
                     if ( tnt.is_odd(spin_magnitude) != true ) {   // 2S is even
-                        console.log("2S even");
                         if ( tnt.is_odd(num) ) {
                             return true;
                         } else {
@@ -785,7 +793,6 @@ var tnt = {
 
                     if ( tnt.is_odd(system_size) ) { // Odd number of sites
                         if ( tnt.is_odd(spin_magnitude) ) {   // 2S is odd
-                            console.log("2S odd and system size odd");
                             if ( tnt.is_odd(num) ) {
                                 return false;
                             } else {
@@ -794,7 +801,6 @@ var tnt = {
                         }
                     } else {    // Even number of sites
                         if ( tnt.is_odd(spin_magnitude) ) {   // 2S is odd
-                            console.log("2S odd and system size even");
                             if ( tnt.is_odd(num) ) {
                                 return true;
                             } else {
@@ -814,10 +820,11 @@ var tnt = {
                                 .extra_info
                                 .bosonic_truncation;
 
-
             var quantum_num_min = 1;
             var quantum_num_max = bosonic_truncation*system_size;
             var quantum_num_default = quantum_num_max;
+
+            var quantum_num_possibilities = _.range(quantum_num_min, quantum_num_max + 1);
 
         } else if (system_type="fermionic") {
             // TODO
@@ -940,14 +947,20 @@ var tnt = {
 		//
 		console.log("Initialising new calculation time evolution input");
 		tnt.clear_all_new_calculation_stages();
+
+        // If no ground state calculation specified then we MUST calculate a time evolution
+        var calculate_ground_state = window.calculation.setup.system.calculate_ground_state;
+        if (calculate_ground_state == 0) {
+                $("#time_evolution_choice label")
+                    .attr("disabled", "disabled");
+        }
+
 		$("#new_calculation_time_evolution").css('display', 'block');
 
 		// Add a function so that if the user chooses not to calculate time evolution, we don't display inputs for time step info
 		$("#time_evolution_choice input")
 			.change(
 				function () {
-					console.log('test' + $(this).data('calculate-time-evolution'));
-					console.log($(this));
 					if ($(this).data('calculate-time-evolution') == 0) {
 						console.log("We're not calculating time evolution");
 						$('#time_evolution_time_step_specification').css('display', 'none');
@@ -987,10 +1000,53 @@ var tnt = {
 			var num_time_steps = parseInt($("#input_num_time_steps").val())
 			var time_step_size = parseFloat($("#input_time_step_size").val());
 
-			window.calculation.setup.system.num_time_steps = num_time_steps;
-			window.calculation.setup.system.time_step = time_step_size;
+			var num_expval_time_steps_val = $("#input_num_expval_time_steps").val();
+            // If user has left this blank, assume we want every time step
+            if (num_expval_time_steps_val == "") {
+                var num_expval_time_steps = num_time_steps
+            } else {
+                var num_expval_time_steps = parseFloat(num_expval_time_steps_val);
+            }
+
+            console.log("num_time_steps");
+            console.log(num_time_steps);
+
+            console.log("time_step_size:");
+            console.log(time_step_size);
+
+            console.log("num_expval_time_steps_val:");
+            console.log(num_expval_time_steps_val);
+
+            console.log("num_expval_time_steps:");
+            console.log(num_expval_time_steps);
+
+            // If there's anything wrong with the inputs, disaply a message and don't go to next page
+            if ( (isNaN(num_time_steps)) ||
+                 (isNaN(time_step_size)) ||
+                 (isNaN(num_expval_time_steps)) ||
+                 (num_time_steps > tnt.max_num_time_steps) ||
+                 (num_expval_time_steps < num_time_steps / 200) ||
+                 (num_expval_time_steps > num_time_steps)
+               ) {
+                $("#time_evolution_parameter_warning_msg").css("display", "block");
+                return;
+            }
+
+			window
+            .calculation
+            .setup
+            .system
+            .num_time_steps = num_time_steps;
+
+			window
+            .calculation
+            .setup
+            .system
+            .time_step = time_step_size;
 
 		}
+
+        $("#time_evolution_parameter_warning_msg").css("display", "none");
 
 		// We work out what to display next
 		if (calculate_time_evolution_choice == 1) {
@@ -1118,6 +1174,11 @@ var tnt = {
 
 		console.log("All calculation stages cleared..");
 
+        tnt.render_available_hamiltonian_operators(
+            "#new_calculation_available_dynamic_hamiltonian_operators",
+            "#dynamic_hamiltonian_terms_container",
+            "#no_dynamic_hamiltonian_terms_added_yet_warning");
+
 		$("#new_calculation_define_dynamic_hamiltonian")
 			.css('display', 'block');
 
@@ -1242,6 +1303,12 @@ var tnt = {
 		  		});
 			}
 		);
+
+        $("#cancel_calculation").click(
+            function () {
+                window.location = '/';
+        }
+        );
 
 		$("#new_calculation_confirm").css('display', 'block');
 

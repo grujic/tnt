@@ -275,7 +275,7 @@
       where there are \( n_o \) onsite terms \( \hat{o} \), \( n_t \) two-site terms \( \hat{t} \), and where \( f_{o,t}(j) \) is the chosen spatial function for the onsite or two-site term \( \hat{o},\hat{t} \).
       </p>
 
-      <div id="new_calculation_available_hamiltonian_operators">
+      <div id="new_calculation_available_ground_hamiltonian_operators">
 
       </div>
 
@@ -339,18 +339,29 @@
       <hr>
 
       <div id="time_evolution_time_step_specification">
-        
+
+          <div id="time_evolution_parameter_warning_msg" class="bg-warning text-warning" style="display:none;">
+            <p>Please ensure your time step size is a real number, and your chosen number of time steps is between 1 and 2000. </p>
+            <p>The number of expectation value evaluations must be no less than (the number of time steps) / 200, and no larger than the number of time steps. </p>
+          </div>
+
         <form class="form-horizontal" role="form">
           <div class="form-group">
-            <label for="input_num_time_steps" class="col-sm-2 control-label">Number of time steps</label>
-            <div class="col-sm-10">
+            <label for="input_num_time_steps" class="col-sm-3 control-label">Number of time steps</label>
+            <div class="col-sm-9">
               <input type="number" class="form-control" id="input_num_time_steps" placeholder="100" value="100">
             </div>
           </div>
           <div class="form-group">
-            <label for="input_time_step_size" class="col-sm-2 control-label">Time step size</label>
-            <div class="col-sm-10">
+            <label for="input_time_step_size" class="col-sm-3 control-label">Time step size</label>
+            <div class="col-sm-9">
               <input type="number" class="form-control" id="input_time_step_size" placeholder="0.01" value="0.01">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input_num_expval_time_steps" class="col-sm-3 control-label">Number of time steps for expectation value evaluations</label>
+            <div class="col-sm-9">
+              <input type="number" class="form-control" id="input_num_expval_time_steps" placeholder="Leave blank to evaluate expectation values at every step" value="">
             </div>
           </div>
         </form>
@@ -484,7 +495,7 @@
       where there are \( n_o \) onsite terms \( \hat{o} \), \( n_t \) two-site terms \( \hat{t} \), and where \( f_{o,t}(j) \) is the chosen spatial function for the onsite or two-site term \( \hat{o},\hat{t} \).
       </p>
 
-      <div id="new_calculation_available_hamiltonian_operators">
+      <div id="new_calculation_available_dynamic_hamiltonian_operators">
 
       </div>
 
@@ -492,9 +503,9 @@
 
       <h2>Hamiltonian H = </h2>
 
-      <div id="no_ground_hamiltonian_terms_added_yet_warning" class="alert alert-info" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
+      <div id="no_dynamic_hamiltonian_terms_added_yet_warning" class="alert alert-info" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
 
-      <div id="ground_hamiltonian_terms_container">
+      <div id="dynamic_hamiltonian_terms_container">
       </div>
 
       <hr>
@@ -591,7 +602,7 @@
 
       <div class="row">
           <div class="col-md-6">
-              <button type="button" class="btn btn-default form-control ">Cancel</button>
+              <button type="button" id="cancel_calculation" class="btn btn-default form-control ">Cancel</button>
           </div>
 
           <div class="col-md-6">
