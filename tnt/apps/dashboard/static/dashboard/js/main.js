@@ -60,8 +60,6 @@ var tnt = {
     set_up_numeric_vals_dropdown: function(dropdown_id, dropdown_possibilities, dropdown_default) {
         // Dropdown with arbitrary vals
         var select=document.getElementById(dropdown_id);
-        console.log("dropdown_possibilities");
-        console.log(dropdown_possibilities);
 
         _.each(dropdown_possibilities, function (num) {
             var option = document.createElement("OPTION");
@@ -72,6 +70,34 @@ var tnt = {
                 option.selected = true;
             }
         });
+
+    },
+
+    get_hamiltonian_operator: function(operator_id) {
+        // Assumes operators are loaded and just
+        // gets the one with the right ID
+        //
+		var hamiltonian_operator =
+			_.filter(
+				window.all_operators.operators,
+				function (el) {
+					return el.operator_id == operator_id;
+				}
+			)[0];
+
+        return hamiltonian_operator;
+    },
+
+    get_spatial_function: function(selected_spatial_function_id) {
+
+        var relevant_spatial_function = _.filter(
+            window.spatial_fns.spatial_fns,
+            function(el) {
+                return el['spatial_fn_id'] == selected_spatial_function_id;
+            }
+        )[0];
+
+        return relevant_spatial_function;
 
     },
 
@@ -171,7 +197,7 @@ var tnt = {
 				$(".hamiltonian-operator-btn")
 					.click(function() {
 						tnt.add_hamiltonian_term(
-							$(this).data("operator-id"),
+                            tnt.get_hamiltonian_operator($(this).data("operator-id")),
 							hamiltonian_term_container_selector,
                             no_terms_yet_warning_selector
 						);
@@ -198,8 +224,10 @@ var tnt = {
 				console.log("ID of base state modifer chosen: ");
 				console.log($(this).data("operator-id"));
 
+            var hamiltonian_operator = tnt.get_hamiltonian_operator($(this).data("operator-id"));
+
 				tnt.add_hamiltonian_term(
-					$(this).data("operator-id"),
+                    hamiltonian_operator,
 					"#initial_state_modifier_operators_terms"
 				);
 			});
@@ -383,23 +411,23 @@ var tnt = {
 
 	}, // End of render_available_initial_base_states
 
-	add_hamiltonian_term: function(operator_id, term_container_selector, no_terms_yet_warning_selector) {
+	add_hamiltonian_term: function(hamiltonian_operator,
+                                   term_container_selector,
+                                   no_terms_yet_warning_selector) {
 		// Add a visual representation of a Hamiltonian term to the screen, and render any user input elements necessary (e.g. inputs for spatial parameter values)
-
-		// First get the right operator
-		var hamiltonian_operator =
-			_.filter(
-				window.all_operators.operators,
-				function (el) {
-					return el.operator_id == operator_id;
-				}
-			)[0];
-
-		// Hack for now: add in a unique identifier so we can refer to this element and its children easily
-		hamiltonian_operator['uuid'] = tnt.generate_unique_id();
+        // If the Hamiltonian operator has a spatial_fn field, then
+        // set up the eleemnt to reflect this
 
 		var source = $("#hamiltonian-term-template").html();
 		var template = Handlebars.compile(source);
+
+        // If there is not already a spatial function attached,
+        // put in a default
+        if ( _.has(hamiltonian_operator, 'spatial_function') != true) {
+
+            hamiltonian_operator['spatial_function'] = tnt.get_spatial_function(1);
+
+        }
 
 		$(term_container_selector)
             .append(template(hamiltonian_operator));
@@ -409,7 +437,6 @@ var tnt = {
 
 		tnt.attach_click_fn_to_remove_hamiltonian_terms();
 
-		// $('select').selectpicker();
 
 		tnt.attach_click_fn_to_spatial_fn_choices();	// Attach logic for changing spatial function input
 
@@ -422,18 +449,12 @@ var tnt = {
 		$(".spatial-function-btn-group").on("change",
 			function (e) {
 
-				// var selected_spatial_function_id = parseInt($(this).closest(".btn-group").siblings("select").val());
 				var selected_spatial_function_id = $(this).val();
 				console.log("selected_spatial_function_id");
 				console.log(selected_spatial_function_id);
 
 				// Get info on the selected spatial function
-				var relevant_spatial_function = _.filter(
-					window.spatial_fns.spatial_fns,
-					function(el) {
-						return el['spatial_fn_id'] == selected_spatial_function_id;
-					}
-				)[0];
+				var relevant_spatial_function = tnt.get_spatial_function(selected_spatial_function_id);
 
 				// When clicked, change the input form elements to
                 // the relevant ones for this spatial function choice
@@ -446,7 +467,8 @@ var tnt = {
 					.find('.spatial_function_parameter_input_form');
 
 
-				$(spatial_function_parameter_input_form).html(template(relevant_spatial_function));
+				$(spatial_function_parameter_input_form)
+                .html(template(relevant_spatial_function));
 
 				tnt.render_mathjax();
 
@@ -1178,6 +1200,19 @@ var tnt = {
             "#new_calculation_available_dynamic_hamiltonian_operators",
             "#dynamic_hamiltonian_terms_container",
             "#no_dynamic_hamiltonian_terms_added_yet_warning");
+
+        // If the ground state has been calculated, want to default
+        // the dynamic Hamiltonian to the ground state one
+        _.each(
+            window.calculation.setup.hamiltonian.ground.terms,
+            function(el) {
+                tnt.add_hamiltonian_term(
+                    el['operator_id'],
+                    "#dynamic_hamiltonian_terms_container",
+                    "#no_dynamic_hamiltonian_terms_added_yet_warning"
+                );
+            }
+        );
 
 		$("#new_calculation_define_dynamic_hamiltonian")
 			.css('display', 'block');
