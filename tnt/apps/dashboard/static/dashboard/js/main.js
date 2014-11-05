@@ -14,6 +14,16 @@ var tnt = {
     log_ground_state_precision_max: 14,
     log_ground_state_precision_default: 4,
 
+    is_odd: function(number) {
+
+        if (number % 2 == 0) {
+            return false;
+        } else {
+            return true;
+        }
+
+    },
+
 	timestamp_to_human_date: function (timestamp) {
 		var date = new Date(timestamp*1000);
 		return date.toLocaleString();
@@ -29,17 +39,37 @@ var tnt = {
 	},
 
     set_up_numeric_range_dropdown: function(dropdown_id, dropdown_min, dropdown_max, dropdown_default) {
-        for (var i=dropdown_min; i<dropdown_max+1; i++)
-        {
-            var select=document.getElementById(dropdown_id);
+        // Dropdown with strictly increasing vals
+        var select=document.getElementById(dropdown_id);
+
+        _.each(_.range(dropdown_min, dropdown_max + 1), function (num) {
             var option = document.createElement("OPTION");
             select.options.add(option);
-            option.text = i;
-            option.value = i;
-            if (i == dropdown_default) {
+            option.text = num;
+            option.value = num;
+            if (num == dropdown_default) {
                 option.selected = true;
             }
-        }
+        });
+
+    },
+
+    set_up_numeric_vals_dropdown: function(dropdown_id, dropdown_possibilities, dropdown_default) {
+        // Dropdown with arbitrary vals
+        var select=document.getElementById(dropdown_id);
+        console.log("dropdown_possibilities");
+        console.log(dropdown_possibilities);
+
+        _.each(dropdown_possibilities, function (num) {
+            var option = document.createElement("OPTION");
+            select.options.add(option);
+            option.text = num;
+            option.value = num;
+            if (num == dropdown_default) {
+                option.selected = true;
+            }
+        });
+
     },
 
 	initialise_blank_calculation: function () {
@@ -729,9 +759,51 @@ var tnt = {
                                 .spin_magnitude;
 
 
-            var quantum_num_min = -2*spin_magnitude*system_size;
-            var quantum_num_max = +2*spin_magnitude*system_size;
+            var quantum_num_min = -spin_magnitude*system_size;
+            var quantum_num_max = +spin_magnitude*system_size;
             var quantum_num_default = 0;
+
+            // We initialise a list holding the range of quantum numbers
+            var quantum_num_possibilities = _.range(quantum_num_min, quantum_num_max + 1);
+
+            console.log("quantum_num_possibilities A")
+            console.log(quantum_num_possibilities)
+
+            // TODO: factor out these functions into different quantum number filters depending on system type
+            quantum_num_possibilities = _.reject(
+                quantum_num_possibilities,
+                function (num) {
+
+                    if ( tnt.is_odd(spin_magnitude) != true ) {   // 2S is even
+                        console.log("2S even");
+                        if ( tnt.is_odd(num) ) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+
+                    if ( tnt.is_odd(system_size) ) { // Odd number of sites
+                        if ( tnt.is_odd(spin_magnitude) ) {   // 2S is odd
+                            console.log("2S odd and system size odd");
+                            if ( tnt.is_odd(num) ) {
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }
+                    } else {    // Even number of sites
+                        if ( tnt.is_odd(spin_magnitude) ) {   // 2S is odd
+                            console.log("2S odd and system size even");
+                            if ( tnt.is_odd(num) ) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            );
 
         } else if (system_type="bosonic") {
 
@@ -752,10 +824,9 @@ var tnt = {
         }
 
         // Now initialise the quantum number dropdown
-        tnt.set_up_numeric_range_dropdown(
+        tnt.set_up_numeric_vals_dropdown(
             "quantum_number_ground_state_choice",
-            quantum_num_min,
-            quantum_num_max,
+            quantum_num_possibilities,
             quantum_num_default
         );
 
