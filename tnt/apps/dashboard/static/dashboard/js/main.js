@@ -1198,6 +1198,22 @@ var tnt = {
 		//
 		console.log("Validating the definition of the dynamic Hamiltonian...");
 
+		_.each($('#dynamic_hamiltonian_terms_container .hamiltonian-term'),
+	       function (term) {
+
+	       	   var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
+
+	           window
+	           .calculation
+	           .setup
+	           .hamiltonian
+               .dynamic
+	           .terms
+	           .push(hamiltonian_operator);
+
+	       }
+		); 	// End of loop over Hamiltonian terms
+
         tnt.initialise_new_calculation_expectation_operators();
 
     },
