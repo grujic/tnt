@@ -132,93 +132,49 @@ var tnt = {
         hamiltonian_term_container_selector,
         no_terms_yet_warning_selector,
         next_calculation_stage_btn_selector) {
-		// If window.calculation_type is not defined, render all available operators, otherwise filter
-		$.get("/api/v1.0/hamiltonian_operators",
-			function (data) {
+            //
 
-				// First filter to operators corresponding to the chosen system type
-				if (window.calculation.setup.system.system_type === null) {
-					var filtered_data = data;
-				} else {
-					var filtered_data =
-						{'operators':
-							_.filter(
-								data.operators,
-								function(el) {
-									return el['term_type'] == window.calculation.setup.system.system_type.name;
-								}
-							)
-						};
-				}
+        // Now check if number conservation is being enforced
+        var hamiltonian_operators_to_render = window.hamiltonian_operators;
 
-				// Now check if number conservation is being enforced
-				if ( qn_enforced == 1 ) {
-					var filtered_data =
-						{'operators':
-							_.filter(
-								filtered_data.operators,
-								function (el) {
-									return el['U1_invariant'];
-								}
-							)
-						};
-				}
+        if ( qn_enforced == 1 ) {
+            var hamiltonian_operators_to_render =
+                {'operators':
+                    _.filter(
+                        window.hamiltonian_operators.operators,
+                        function (el) {
+                            return el['U1_invariant'];
+                        }
+                    )
+                };
+        }
 
-				// Keep this data available:
-				window.all_operators = filtered_data;
+        var source = $("#hamiltonian-operator-template").html();
 
-				window.hamiltonian_operators =
-					{
-						'operators':
-						_.filter(
-							window.all_operators.operators,
-							function(el) {
-								return el['use_for_hamiltonian'] == true;
-							}
-						)
-					};
+        var template = Handlebars.compile(source);
 
-				// We use these same palette of operators to modify initial states - filter
-				// appropriately and store them here rather than making an identical call later
-				window.initial_state_modifier_operators =
-					{
-						'operators':
-						_.filter(
-							window.all_operators.operators,
-							function(el) {
-								return el['use_for_transform'] == true;
-							}
-						)
-					};
+        $(where_to_render_selector)
+            .html(template(hamiltonian_operators_to_render));
 
-				var source = $("#hamiltonian-operator-template").html();
+        $(where_to_render_selector + " .hamiltonian-operator-btn")
+            .click(function() {
+                tnt.add_hamiltonian_term(
+                    tnt.get_hamiltonian_operator($(this).data("operator-id")),
+                    hamiltonian_term_container_selector,
+                    no_terms_yet_warning_selector,
+                    next_calculation_stage_btn_selector
+                );
+            });
 
-				var template = Handlebars.compile(source);
-
-				$(where_to_render_selector)
-					.html(template(window.hamiltonian_operators));
-
-				$(where_to_render_selector + " .hamiltonian-operator-btn")
-					.click(function() {
-						tnt.add_hamiltonian_term(
-                            tnt.get_hamiltonian_operator($(this).data("operator-id")),
-							hamiltonian_term_container_selector,
-                            no_terms_yet_warning_selector,
-                            next_calculation_stage_btn_selector
-						);
-					});
-
-			}
-		).done(function() {
-    		tnt.render_mathjax();
-            $(".operator_loading_placeholder")
-                .css("display", "none")
-  		});
+        tnt.render_mathjax();
+        $(".operator_loading_placeholder")
+            .css("display", "none")
 
 	}, // End of render_available_hamiltonian_operators
 
 	render_available_intitial_state_modifier_operators: function () {
 		// Transformations we can apply to the base state
+        console.log("Rendering initial base state modifiers...");
 		var source = $("#hamiltonian-operator-template").html();
 
 		var template = Handlebars.compile(source);
@@ -241,6 +197,8 @@ var tnt = {
 
 		tnt.render_mathjax();
 
+        $(".operator_loading_placeholder")
+            .css("display", "none")
 	},
 
 	attach_click_fn_to_initial_base_state_choices: function () {
@@ -667,7 +625,59 @@ var tnt = {
 
 		console.log("Validated new calculation basic setup input");
 
-		tnt.initialise_new_calculation_ground_state();
+        // We're going to pull in all the operator data we need for the rest of the setup here before we proceed
+        console.log("Pulling in operator data from API...")
+
+        $.get("/api/v1.0/hamiltonian_operators",
+			function (data) {
+
+				// First filter to operators corresponding to the chosen system type
+				if (window.calculation.setup.system.system_type === null) {
+					var filtered_data = data;
+				} else {
+					var filtered_data =
+						{'operators':
+							_.filter(
+								data.operators,
+								function(el) {
+									return el['term_type'] == window.calculation.setup.system.system_type.name;
+								}
+							)
+						};
+				}
+
+				// Keep this data available:
+				window.all_operators = filtered_data;
+
+				window.hamiltonian_operators =
+					{
+						'operators':
+						_.filter(
+							window.all_operators.operators,
+							function(el) {
+								return el['use_for_hamiltonian'] == true;
+							}
+						)
+					};
+
+				// We use these same palette of operators to modify initial states - filter
+				// appropriately and store them here rather than making an identical call later
+				window.initial_state_modifier_operators =
+					{
+						'operators':
+						_.filter(
+							window.all_operators.operators,
+							function(el) {
+								return el['use_for_transform'] == true;
+							}
+						)
+					};
+
+			}
+		).done(function () {
+            console.log("Finished loading data from API");
+            tnt.initialise_new_calculation_ground_state();
+        })
 
 	},
 
@@ -1072,7 +1082,7 @@ var tnt = {
 			var num_expval_time_steps_val = $("#input_num_expval_time_steps").val();
             // If user has left this blank, assume we want every time step
             if (num_expval_time_steps_val == "") {
-                var num_expval_time_steps = num_time_steps
+                var num_expval_time_steps = parseInt(Math.floor(num_time_steps/10));
             } else {
                 var num_expval_time_steps = parseFloat(num_expval_time_steps_val);
             }
