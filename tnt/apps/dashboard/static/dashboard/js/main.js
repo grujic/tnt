@@ -127,6 +127,7 @@ var tnt = {
 	},	// End of load_spatial_function_definitions
 
 	render_available_hamiltonian_operators: function (
+        qn_enforced,
         where_to_render_selector,
         hamiltonian_term_container_selector,
         no_terms_yet_warning_selector,
@@ -151,7 +152,7 @@ var tnt = {
 				}
 
 				// Now check if number conservation is being enforced
-				if ( parseInt(window.calculation.setup.system.number_conservation) == 1 ) {
+				if ( qn_enforced == 1 ) {
 					var filtered_data =
 						{'operators':
 							_.filter(
@@ -210,6 +211,8 @@ var tnt = {
 			}
 		).done(function() {
     		tnt.render_mathjax();
+            $(".operator_loading_placeholder")
+                .css("display", "none")
   		});
 
 	}, // End of render_available_hamiltonian_operators
@@ -362,6 +365,25 @@ var tnt = {
 		};
 
 		console.log("Filtered all operators to the expectation operators");
+
+        // Now check if number conservation is being enforced (ground AND dynamic)
+        if ( (parseInt(window.calculation.setup.system.number_conservation.ground.apply_qn) == 1)
+             &&
+             (parseInt(window.calculation.setup.system.number_conservation.dynamic.apply_qn) == 1) ) {
+
+            window.expectation_operators =
+                {'operators':
+                    _.filter(
+                        window.expectation_operators.operators,
+                        function (el) {
+                            return el['U1_invariant'];
+                        }
+                    )
+                };
+
+             }
+
+		console.log("Filtered expectation operators");
 
 		// Separate operators into single- and two-site expectation operators
 		var single_site_expectation_operators =
@@ -654,6 +676,7 @@ var tnt = {
 		console.log("Initialising new calculation Hamiltonian input");
 
 		tnt.render_available_hamiltonian_operators(
+            parseInt(window.calculation.setup.system.number_conservation.ground.apply_qn),
             "#new_calculation_available_ground_hamiltonian_operators",
             "#ground_hamiltonian_terms_container",
             "#no_ground_hamiltonian_terms_added_yet_warning",
@@ -947,7 +970,7 @@ var tnt = {
             .log_ground_state_precision = log_ground_state_precision;
 
             // Now let's see if the user wants to enforce number conservation:
-            var enforce_number_conservation = parseInt($("label.active input", "#number_conservation_choice")
+            var enforce_number_conservation = parseInt($("label.active input", "#ground_number_conservation_choice")
                 .data("number-conservation"));
 
             window
@@ -1087,7 +1110,17 @@ var tnt = {
             .time
             .num_expval_time_steps = num_expval_time_steps;
 
+            // Number conservation checks:
+            var enforce_dynamical_number_conservation = parseInt($("label.active input", "#dynamical_number_conservation_choice")
+                .data("dynamical-number-conservation"));
 
+            window
+            .calculation
+            .setup
+            .system
+            .number_conservation
+            .dynamic
+            .apply_qn = enforce_dynamical_number_conservation;
 
 		}
 
@@ -1214,6 +1247,7 @@ var tnt = {
 		console.log("All calculation stages cleared..");
 
         tnt.render_available_hamiltonian_operators(
+            parseInt(window.calculation.setup.system.number_conservation.dynamic.apply_qn),
             "#new_calculation_available_dynamic_hamiltonian_operators",
             "#dynamic_hamiltonian_terms_container",
             "#no_dynamic_hamiltonian_terms_added_yet_warning",

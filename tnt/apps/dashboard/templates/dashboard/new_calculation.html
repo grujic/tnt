@@ -206,7 +206,7 @@
         <h5>Quantum number conservation</h5>
         <p>Is your calculation quantum number conserving?</p>
 
-        <div id="number_conservation_choice" class="btn-group" data-toggle="buttons">
+        <div id="ground_number_conservation_choice" class="btn-group" data-toggle="buttons">
           <label class="btn btn-primary">
             <input type="radio" name="options" data-number-conservation=1>Yes
           </label>
@@ -366,6 +366,19 @@
           </div>
         </form>
 
+        <hr>
+
+        <p>Enforce quantum number conservation on the dynamical evolution?</p>
+
+        <div id="dynamical_number_conservation_choice" class="btn-group" data-toggle="buttons">
+            <label class="btn btn-primary">
+            <input type="radio" name="options" data-dynamical-number-conservation=1>Yes
+            </label>
+            <label class="btn btn-primary active">
+            <input type="radio" name="options" data-dynamical-number-conservation=0 checked>No
+            </label>
+        </div>
+
       </div>
 
       <hr>
@@ -407,23 +420,6 @@
       <div id="new_calculation_available_initial_base_states">
       </div>
 
-      <div id="initial_state_quantum_number_info" style="display: none;">
-        <hr>
-
-
-        <h5>Quantum number conservation</h5>
-        <p>Enforce quantum number conservation on the initial state?</p>
-
-        <div id="initial_state_number_conservation_choice" class="btn-group" data-toggle="buttons">
-            <label class="btn btn-primary">
-            <input type="radio" name="options" data-number-conservation=1>Yes
-            </label>
-            <label class="btn btn-primary active">
-            <input type="radio" name="options" data-number-conservation=0 checked>No
-            </label>
-        </div>
-
-      </div>
 
       <hr>
 
