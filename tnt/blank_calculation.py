@@ -21,19 +21,26 @@ blank_calculation_template = \
 		'system': {
 			'chi': None,
 			'system_size': None,
-			'time_step': None,
-			'num_time_steps': None,
-			'num_expval_time_steps': None,
+            'time': {
+                'time_step': None,
+                'num_time_steps': None,
+                'num_expval_time_steps': None
+            },
 			'system_type': {
 				'name': None,
 				'extra_info': {
 				}
 			},
-			'calculation_type': None,
 			'calculate_ground_state': None,
             'number_conservation': {
-                'apply_qn': None,
-                'qn': None
+                'ground': {
+                    'apply_qn': None,
+                    'qn': None
+                },
+                'dynamic': {
+                    'apply_qn': None,
+                    'qn': None
+                }
             }
 		},
 
@@ -55,6 +62,7 @@ blank_calculation_template = \
 		},
 
 		'expectation_values': {
+            'calculate_overlap_with_ground': None,
 			'operators': []
 		}
 

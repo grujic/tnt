@@ -400,10 +400,29 @@
     </div>
 
     <div class="panel-body">
+
       <h4>Initial state - base state</h4>
       <p>Choose the initial state you want to evolve from. You can choose from the following given states, and optionally you can apply transformations by applying operators below. </p>
 
       <div id="new_calculation_available_initial_base_states">
+      </div>
+
+      <div id="initial_state_quantum_number_info" style="display: none;">
+        <hr>
+
+
+        <h5>Quantum number conservation</h5>
+        <p>Enforce quantum number conservation on the initial state?</p>
+
+        <div id="initial_state_number_conservation_choice" class="btn-group" data-toggle="buttons">
+            <label class="btn btn-primary">
+            <input type="radio" name="options" data-number-conservation=1>Yes
+            </label>
+            <label class="btn btn-primary active">
+            <input type="radio" name="options" data-number-conservation=0 checked>No
+            </label>
+        </div>
+
       </div>
 
       <hr>
@@ -545,6 +564,24 @@
         <div class="progress-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0" aria-valuemax="100" style="width: 84%;">
             Setup progress
         </div>
+      </div>
+
+
+      <div id="calculate_overlap_with_ground_state_choice_div">
+
+          <h4>Do you want to calculate overlaps with the ground state?</h4>
+          <div id="calculate_overlap_with_ground_state_choice" class="btn-group" data-toggle="buttons">
+
+            <label class="btn btn-primary">
+              <input type="radio" name="options" data-overlap-choice=1>Yes
+            </label>
+            <label class="btn btn-primary active">
+              <input type="radio" name="options" data-overlap-choice=0 checked>No
+            </label>
+          </div>
+
+          <hr>
+
       </div>
 
       <div id="no_expectation_operators_added_yet_warning" class="alert alert-warning" role="alert">You haven't specified any operators to calculate expectation values for yet!</div>
