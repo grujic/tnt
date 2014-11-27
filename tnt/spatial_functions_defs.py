@@ -13,6 +13,7 @@ spatial_fns = \
 		'use_for_temporal_hamil': True, \
 		'use_for_sum_modifier': True, \
 		'use_for_product_modifier': True, \
+		'use_for_product_modifier_noncovariant': True, \
 		'parameters': [{
 			'parameter_id': 1, \
 			'parameter_tex_str': 'k', \
