@@ -33,7 +33,7 @@ var tnt = {
 	},
 
 	render_mathjax: function () {
-		MathJax.Hub.Typeset();
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	},
 
 	generate_unique_id: function () {
@@ -131,8 +131,9 @@ var tnt = {
         where_to_render_selector,
         hamiltonian_term_container_selector,
         no_terms_yet_warning_selector,
-        next_calculation_stage_btn_selector) {
-            //
+        next_calculation_stage_btn_selector,
+        hamiltonian_tex_str_el) {
+        //
 
         // Now check if number conservation is being enforced
         var hamiltonian_operators_to_render = window.hamiltonian_operators;
@@ -162,7 +163,8 @@ var tnt = {
                     tnt.get_hamiltonian_operator($(this).data("operator-id")),
                     hamiltonian_term_container_selector,
                     no_terms_yet_warning_selector,
-                    next_calculation_stage_btn_selector
+                    next_calculation_stage_btn_selector,
+                    hamiltonian_tex_str_el
                 );
             });
 
@@ -212,7 +214,10 @@ var tnt = {
 			);
 	},
 
-	attach_click_fn_to_remove_hamiltonian_terms: function () {
+	attach_click_fn_to_remove_hamiltonian_terms: function (
+        hamiltonian_term_container_selector,
+        hamiltonian_tex_str_el
+    ) {
 		// When an initial base state is chosen, need to make that button active and all others not
 		$(".remove-hamiltonian-term-btn")
 			.click(
@@ -223,7 +228,14 @@ var tnt = {
 					// If there are no more Hamiltonian terms left, add back in the warning sign
 					if ($('.hamiltonian-term').length == 0) {
 						$("#no_ground_hamiltonian_terms_added_yet_warning").css("display", "block");
-					}
+					} else {
+                    }
+
+                    tnt.update_hamiltonian_tex_str(
+                        hamiltonian_term_container_selector,
+                        hamiltonian_tex_str_el
+                    );
+
 				}
 			);
 	},
@@ -398,10 +410,11 @@ var tnt = {
 	add_hamiltonian_term: function(hamiltonian_operator,
                                    term_container_selector,
                                    no_terms_yet_warning_selector,
-                                   next_calculation_stage_btn_selector) {
+                                   next_calculation_stage_btn_selector,
+                                   hamiltonian_tex_str_el) {
 		// Add a visual representation of a Hamiltonian term to the screen, and render any user input elements necessary (e.g. inputs for spatial parameter values)
         // If the Hamiltonian operator has a spatial_fn field, then
-        // set up the eleemnt to reflect this
+        // set up the element to reflect this
 
 		var source = $("#hamiltonian-term-template").html();
 		var template = Handlebars.compile(source);
@@ -414,8 +427,15 @@ var tnt = {
 
         }
 
+        // Add GUI element
 		$(term_container_selector)
             .append(template(hamiltonian_operator));
+
+        // Update Hamiltonian str if required
+        tnt.update_hamiltonian_tex_str(
+            "#dynamic_hamiltonian_terms_container",
+            hamiltonian_tex_str_el
+        );
 
 		$(no_terms_yet_warning_selector)
             .css('display', 'none');
@@ -423,14 +443,51 @@ var tnt = {
         $(next_calculation_stage_btn_selector)
             .removeAttr("disabled");
 
-		tnt.attach_click_fn_to_remove_hamiltonian_terms();
-
+		tnt.attach_click_fn_to_remove_hamiltonian_terms(
+            term_container_selector,
+            hamiltonian_tex_str_el
+        );
 
 		tnt.attach_click_fn_to_spatial_fn_choices();	// Attach logic for changing spatial function input
 
 		tnt.render_mathjax();
 
 	},
+
+    update_hamiltonian_tex_str: function(hamiltonian_term_container_selector,
+        hamiltonian_tex_str_el) {
+        // Update a Hamiltonian tex string representation
+        // of the input Hamiltonian.
+        // hamiltonian_term_container_selector is where we source Ham terms
+        // hamiltonian_tex_str_el is where to draw the results
+        //
+		console.log("Validating the definition of the dynamic Hamiltonian...");
+
+        var hamiltonian_tex_str = "\\[";
+
+		_.each($(hamiltonian_term_container_selector + ' .hamiltonian-term'),
+	       function (term) {
+
+	       	   var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
+
+               var to_add = hamiltonian_operator['function_tex_str'];
+
+               if (hamiltonian_tex_str == "\\[") {
+                   hamiltonian_tex_str = hamiltonian_tex_str + to_add;
+               } else {
+                   hamiltonian_tex_str = hamiltonian_tex_str + " + " + to_add;
+               }
+
+	       }
+		); 	// End of loop over Hamiltonian terms
+
+        var hamiltonian_tex_str = hamiltonian_tex_str + "\\]";
+
+        $(hamiltonian_tex_str_el).html(hamiltonian_tex_str);
+
+        tnt.render_mathjax();
+
+    },
 
 	attach_click_fn_to_spatial_fn_choices: function () {
 		// Attach a click listener to the list elements representing different spatial function variations, updating parameter input fields accordingly
@@ -690,7 +747,8 @@ var tnt = {
             "#new_calculation_available_ground_hamiltonian_operators",
             "#ground_hamiltonian_terms_container",
             "#no_ground_hamiltonian_terms_added_yet_warning",
-            "#new_calculation_define_ground_hamiltonian .btn-next-step");
+            "#new_calculation_define_ground_hamiltonian .btn-next-step",
+            "#ground_hamiltonian_tex_str");
 
 		tnt.clear_all_new_calculation_stages();
 
@@ -1261,7 +1319,9 @@ var tnt = {
             "#new_calculation_available_dynamic_hamiltonian_operators",
             "#dynamic_hamiltonian_terms_container",
             "#no_dynamic_hamiltonian_terms_added_yet_warning",
-            "#new_calculation_define_dynamic_hamiltonian .btn-next-step");
+            "#new_calculation_define_dynamic_hamiltonian .btn-next-step",
+            "#dynamic_hamiltonian_tex_str"
+        );
 
         // If the ground state has been calculated, want to default
         // the dynamic Hamiltonian to the ground state one
