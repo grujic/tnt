@@ -16,14 +16,9 @@ urlpatterns = patterns('',
         name='spatial_functions'),
 
     ### Info on available Hamiltonian operators ###
-    url(r'^hamiltonian_operators[/]?$', \
-        views.hamiltonian_operators, \
-        name='hamiltonian_operators'),
-
-    ### Info on available expectation value operators ###
-    url(r'^expectation_operators[/]?$', \
-        views.expectation_operators, \
-        name='expectation_operators'),
+    url(r'^operators[/]?$', \
+        views.operators, \
+        name='operators'),
 
     ### Example JSON structure representing a blank calculation to use as a template ###
     url(r'^blank_calculation[/]?$', \
@@ -67,7 +62,7 @@ urlpatterns = patterns('',
     ### Save calculation which is POSTed to this URL ###
     url(r'^calculation/save[/]?$', \
         views.save_calculation, \
-        name='save_calculation'),    
+        name='save_calculation'),
 
     url(r'^calculation/run[/]?$', \
     views.run_calculation, \

@@ -628,7 +628,7 @@ var tnt = {
         // We're going to pull in all the operator data we need for the rest of the setup here before we proceed
         console.log("Pulling in operator data from API...")
 
-        $.get("/api/v1.0/hamiltonian_operators",
+        $.get("/api/v1.0/operators",
 			function (data) {
 
 				// First filter to operators corresponding to the chosen system type

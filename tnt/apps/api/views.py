@@ -18,8 +18,7 @@ from django.shortcuts import render
 
 # TNT imports
 from tnt.spatial_functions_defs import spatial_fns
-from tnt import hamiltonnian_operator_defs
-from tnt import expectation_value_operator_defs
+from tnt import operator_defs
 from tnt.blank_calculation import blank_calculation_template
 
 from tnt.initial_base_states import initial_base_states_list
@@ -47,13 +46,8 @@ def api_root(request, format=None):
         request=request, \
         format=format),
 
-		'hamiltonian_operators': \
-        reverse('api:hamiltonian_operators', \
-        request=request, \
-        format=format),
-
-		'expectation_operators': \
-        reverse('api:expectation_operators', \
+		'operators': \
+        reverse('api:operators', \
         request=request, \
         format=format),
 
@@ -98,22 +92,12 @@ def spatial_functions(request):
     return response
 
 @api_view(['GET'])
-def hamiltonian_operators(request):
+def operators(request):
     """
     Return a list of the available Hamiltonian operators.
     """
 
-    response = Response({'operators': hamiltonnian_operator_defs.operators}, status=status.HTTP_200_OK)    # R1gt
-
-    return response
-
-@api_view(['GET'])
-def expectation_operators(request):
-    """
-    Return a list of the available Hamiltonian operators.
-    """
-
-    response = Response({'operators': expectation_value_operator_defs.operators}, status=status.HTTP_200_OK)    # R1gt
+    response = Response({'operators': operator_defs.operators}, status=status.HTTP_200_OK)    # R1gt
 
     return response
 
