@@ -3,13 +3,13 @@
 <script>
 
     Handlebars.registerHelper("btn_disabled", function(status) {
-        
+
         if ( (status == 'running') || (status == 'error') || (status == 'saved') ) {
-            
+
             return '" disabled="disabled" ';
 
         } else {
-            
+
             return '';
 
         }
@@ -17,15 +17,15 @@
     });
 
     Handlebars.registerHelper("timestamp_to_human_date", function(timestamp) {
-        
+
         if ( (timestamp === null) || (timestamp == 0) || (timestamp == false) ) {
-            
+
             return "None";
 
         } else {
 
             var date = new Date(timestamp*1000);
-            
+
             return date.toLocaleString();
 
         }
@@ -33,7 +33,7 @@
     });
 
     Handlebars.registerHelper("render_action_button", function(status, calculation_id) {
-        
+
         if (status == 'running') {
 
             var action_button_classes = 'btn-default download-calculation-button';
@@ -80,18 +80,29 @@
 <script id="user-calculations-template" type="text/x-handlebars-template"> 
 
     {{#calculations}}
-
         <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
           <div class="panel-heading">
-              <h3 class="panel-title">Name: {{meta_info.name}} <span class="pull-right">ID: {{meta_info.id}}</span></h3>
+              <h3 class="panel-title">
+
+                <div class="input-group update_name_div">
+                    <input type="text" class="form-control" placeholder="{{meta_info.name}}">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default update_calculation_name_btn" type="button" data-calculation-id="{{meta_info.id}}">
+                            Update name
+                        </button>
+                    </span>
+                </div>
+
+                  <!--<span class="pull-right">ID: {{meta_info.id}}</span>-->
+              </h3>
           </div>
 
           <div class="panel-body">
 
             <div class="row">
-            	
+
             	<div class="col-md-6">
-            		
+
             		<p>Date created: {{timestamp_to_human_date meta_info.date_created}}</p>
 
             		<p>Date run: {{timestamp_to_human_date meta_info.date_run}}</p>

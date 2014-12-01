@@ -863,7 +863,7 @@ var tnt = {
             var select=document.getElementById("input_ground_state_precision_choice");
             var option = document.createElement("OPTION");
             select.options.add(option);
-            option.text = i;
+            option.text = -i;
             option.value = i;
             if (i == tnt.log_ground_state_precision_default) {
                 option.selected = true;
@@ -1277,6 +1277,15 @@ var tnt = {
         .initial_state
         .applied_operators
         .type = $("#initial_state_modifier_sum_or_product_choice").val();
+
+        var dec_vals = {false: 0, true: 1};
+        window
+        .calculation
+        .setup
+        .initial_state
+        .applied_operators
+        .renormalise =
+        dec_vals[$("#renormalise_after_initial_state_modifiers_choice").is(":checked")];
 
         window
         .calculation

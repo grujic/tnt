@@ -26,16 +26,16 @@
 
     $.get('/api/v1.0/calculations', 
       function (calculations) {
-        
+
         window.calculations = calculations;
 
         if (calculations.calculations.length == 0) {
           $("#user_calculations").html("<h1>You don't have any calculations yet</h1><p>They'll appear here once you've set them up</p>");
         } else {
-          
+
           var source = $("#user-calculations-template").html();
           var template = Handlebars.compile(source);
-          
+
           $("#user_calculations").html(template(calculations));
 
           // Attach functions to 'Run...' buttons
@@ -65,13 +65,51 @@
 
       }
     ).done(function() {
+
+        // Attach functionality to various buttons
+        $(".update_calculation_name_btn").click(
+            function() {
+
+                var calculation_id = $(this).data("calculation-id");
+
+                var new_name_input = $(this)
+                    .closest('.update_name_div')
+                    .find('input');
+
+                var new_name = new_name_input 
+                    .val();
+
+                if (new_name != "") {
+
+                    console.log("This button text: " + $(this).html());
+                    $(this).html("Updating...");
+                    $(this).addClass("updating_name");
+
+                    console.log("Renaming setup for calculation " + calculation_id + " to " + new_name);
+
+                    $.post(
+                        '/api/v1.0/calculation/rename/' + calculation_id + '/' + new_name, 
+                        function(data) {
+                            if (data == "OK") {
+                                $(new_name_input).attr("placeholder", new_name);
+                                $(new_name_input).val("");
+                            }
+                            console.log(data); 
+                        }
+                    ).done(function() {
+                        $(".update_calculation_name_btn").html("Update name");
+                        $(".update_calculation_name_btn").removeClass("updating_name");
+                    });
+
+                }
+
+            }
+        );
+
+
         $(".btn-delete-calculation")
           .click(
             function() {
-                
-                // var this_calculation_info_panel = $(this).closest(".panel-calculation-info");
-                // var calculation_id = $(this_calculation_info_panel).data("calculation-id");
-                // console.log(calculation_id);
 
                 var calculation_id = $(this).data("calculation-id");
 
@@ -85,12 +123,13 @@
                 ).done(function () {
                   window.location = '/';
                 });
+
             }
         );
     });
 
     $("#sidebar_home").addClass("active");
-    
+
   </script>
 
 {% endblock %}

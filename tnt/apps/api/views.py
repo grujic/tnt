@@ -73,6 +73,16 @@ def api_root(request, format=None):
         request=request, \
         format=format),
 
+        #'delete_calculation': \
+        #reverse('api:delete_calculation', \
+        #request=request, \
+        #format=format),
+
+        #'rename_calculation': \
+        #reverse('api:rename_calculation', \
+        #request=request, \
+        #format=format),
+
         ### START OF API CALLS FOR info on calculations ###
 
         ### END OF API CALLS FOR info on calculations ###
@@ -272,6 +282,25 @@ def show_calculation(request, calculation_id):
         response = Response({'calculation': json.loads(calculation[0].setup)}, status=status.HTTP_200_OK)
     else:
         response = Response('Not found', status=status.HTTP_404_NOT_FOUND)
+
+    return response
+
+@api_view(['POST'])
+def rename_calculation(request, calculation_id, new_name):
+    """
+    Rename calculation with the given ID ###
+    """
+    try:
+        calc = Calculation.objects.filter(id=calculation_id)[0]
+        calc.name = new_name
+        # Annoyingly have to do this too, modify the JSON:
+        setup = json.loads(calc.setup)
+        setup['meta_info']['name'] = new_name
+        calc.setup = json.dumps(setup)
+        calc.save()
+        response = Response('OK', status=status.HTTP_200_OK)    # R1gt
+    except:
+        response = Response('Not found', status=status.HTTP_404_NOT_FOUND)    # R1gt
 
     return response
 

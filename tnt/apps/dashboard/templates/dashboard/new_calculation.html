@@ -190,10 +190,12 @@
 
         <form class="form-horizontal" role="form">
           <div class="form-group">
-            <label for="input_ground_state_precision" class="col-sm-2 control-label">Precision = 10^-</label>
+            <label for="input_ground_state_precision_choice" class="col-sm-2 control-label">
+                \[ \log{Precision} = \]
+            </label>
             <div class="col-sm-10">
 
-                <select id="input_ground_state_precision_choice" class="form-control">
+                <select id="input_ground_state_precision_choice" class="col-sm-4 form-control">
 
                 </select>
 
@@ -214,6 +216,8 @@
             <input type="radio" name="options" data-number-conservation=0 checked>No
           </label>
         </div>
+
+        <br>
 
         <div id="ground_state_quantum_number_info" style="display: none;">
 
@@ -361,7 +365,7 @@
           <div class="form-group">
             <label for="input_num_expval_time_steps" class="col-sm-3 control-label">Number of time steps for expectation value evaluations</label>
             <div class="col-sm-9">
-              <input type="number" class="form-control" id="input_num_expval_time_steps" placeholder="Leave blank to evaluate expectation values at every step" value="">
+              <input type="number" class="form-control" id="input_num_expval_time_steps" placeholder="Leave blank to evaluate expectation values at every ten steps" value="">
             </div>
           </div>
         </form>
@@ -424,17 +428,28 @@
       <hr>
 
       <h4>Initial state - transformation</h4>
-      
+
       <p>Now choose a transformation to tailor your initial state (optional).
       You can choose to apply the operator to the initial state as a <b>product</b> of terms or a <b>sum</b> of terms using the drop-down below.</p>
 
+        <form class="form-inline" role="form">
 
-        <select id="initial_state_modifier_sum_or_product_choice">
+        <div class="form-group">
 
-            <option value="sum">Sum</option>
-            <option value="product">Product</option>
+            <label class="" for="initial_state_modifier_sum_or_product_choice">Sum or product</label>
+            <select id="initial_state_modifier_sum_or_product_choice" class="form-control">
 
-        </select>
+                <option value="sum">Sum</option>
+                <option value="product">Product</option>
+
+            </select>
+        </div>
+        <div class="checkbox">
+            <label>
+            <input type="checkbox" id="renormalise_after_initial_state_modifiers_choice">Renormalise wave function after applying modifiers
+            </label>
+        </div>
+        </form>
 
       <div class="panel panel-default">
 

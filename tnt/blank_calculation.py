@@ -57,7 +57,8 @@ blank_calculation_template = \
 			'base_state': {},
 			'applied_operators': {
                 'type': None,
-                'applied_operators': []
+                'applied_operators': [],
+                'renormalise': None
             }
 		},
 
