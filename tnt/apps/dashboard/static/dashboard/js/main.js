@@ -818,12 +818,7 @@ var tnt = {
 		console.log(spatial_function_id);
 
 		// Get the corresponding spatial function dict representation
-		var this_spatial_function = _.filter(
-		                              window.spatial_fns.fns,
-		                              function (spatial_fn) {
-		                                  return spatial_fn['spatial_fn_id'] == parseInt(spatial_function_id)
-		                              }
-		                          )[0];
+        var this_spatial_function = tnt.get_spatial_function(parseInt(spatial_function_id));
 
 		// Deep clone
 		var spatial_function = _.cloneDeep(this_spatial_function);
