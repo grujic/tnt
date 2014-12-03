@@ -433,7 +433,7 @@ var tnt = {
 
         // Update Hamiltonian str if required
         tnt.update_hamiltonian_tex_str(
-            "#dynamic_hamiltonian_terms_container",
+            term_container_selector,
             hamiltonian_tex_str_el
         );
 
