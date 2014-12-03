@@ -17,7 +17,7 @@ from tnt.settings import \
 from django.shortcuts import render
 
 # TNT imports
-from tnt.spatial_functions_defs import spatial_fns
+from tnt.spatial_and_temporal_functions_defs import fns
 from tnt import operator_defs
 from tnt.blank_calculation import blank_calculation_template
 
@@ -41,8 +41,8 @@ def api_root(request, format=None):
 
         ### START OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
 
-        'spatial_functions': \
-        reverse('api:spatial_functions', \
+        'spatial_and_temporal_functions': \
+        reverse('api:spatial_and_temporal_functions', \
         request=request, \
         format=format),
 
@@ -92,12 +92,12 @@ def api_root(request, format=None):
 ### START OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
 
 @api_view(['GET'])
-def spatial_functions(request):
+def spatial_and_temporal_functions(request):
     """
-    Return a list of the allowed spatial dependences of operators
+    Return a list of the allowed spatial and temporal dependences of operators
     """
 
-    response = Response({'spatial_fns': spatial_fns}, status=status.HTTP_200_OK)    # R1gt
+    response = Response({'fns': fns}, status=status.HTTP_200_OK)    # R1gt
 
     return response
 
