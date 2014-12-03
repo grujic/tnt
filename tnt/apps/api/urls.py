@@ -68,6 +68,10 @@ urlpatterns = patterns('',
     views.run_calculation, \
     name='run_calculation'),
 
+    url(r'^calculation/rename/(?P<calculation_id>[^/]+)/(?P<new_name>[^/]+)[/]?$', \
+    views.rename_calculation, \
+    name='rename_calculation'),
+
     ### END OF API CALLS FOR info about calculations ###
 
     ### START OF API CALLS FOR info about users ###
