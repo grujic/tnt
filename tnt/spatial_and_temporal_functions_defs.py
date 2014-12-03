@@ -4,7 +4,7 @@ fns = \
 [
 	# A constant across the system
 	{
-		'spatial_fn_id': 1, \
+		'id': 1, \
 		'function_tex_str': 'k', \
 		'spatial_function_tex_str': 'k', \
 		'temporal_function_tex_str': 'k', \
@@ -25,7 +25,7 @@ fns = \
 
 	# Linear
 	{
-		'spatial_fn_id': 2, \
+		'id': 2, \
 		'function_tex_str': 'a + bj', \
 		'function_description': 'Linear', \
 		'use_for_spatial_hamil': True, \
@@ -49,7 +49,7 @@ fns = \
 
 	# Quadratic
 	{
-		'spatial_fn_id': 3, \
+		'id': 3, \
 		'function_tex_str': 'a + b(j-j_c)^2', \
 		'function_description': 'Quadratic', \
 		'use_for_spatial_hamil': True, \
@@ -79,7 +79,7 @@ fns = \
 
 	# A sin dependence on system size
 	{
-		'spatial_fn_id': 4, \
+		'id': 4, \
 		'function_tex_str': 'A_0 + A \sin ( k j + \phi )', \
 		'function_description': 'Sinusoidal', \
 		'use_for_spatial_hamil': True, \
@@ -115,7 +115,7 @@ fns = \
 
 	# Step function
 	{
-		'spatial_fn_id': 5, \
+		'id': 5, \
 		'function_tex_str': 'A H(j_s)', \
 		'function_description': 'Heaviside step function', \
 		'use_for_spatial_hamil': True, \
@@ -139,7 +139,7 @@ fns = \
 
 	# Rectangular function
 	{
-		'spatial_fn_id': 6, \
+		'id': 6, \
 		'function_tex_str': 'A \mathrm{rect}((j-j_c)/w)', \
 		'function_description': 'Rectangular function', \
 		'use_for_spatial_hamil': True, \
@@ -169,7 +169,7 @@ fns = \
 
 	# Delta function
 	{
-		'spatial_fn_id': 7, \
+		'id': 7, \
 		'function_tex_str': 'A \delta(j-j_c)', \
 		'function_description': 'Delta function', \
 		'use_for_spatial_hamil': True, \

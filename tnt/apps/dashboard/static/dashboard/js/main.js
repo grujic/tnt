@@ -92,7 +92,7 @@ var tnt = {
         var relevant_spatial_function = _.filter(
             window.spatial_fns.fns,
             function(el) {
-                return el['spatial_fn_id'] == selected_spatial_function_id;
+                return el['id'] == selected_spatial_function_id;
             }
         )[0];
 

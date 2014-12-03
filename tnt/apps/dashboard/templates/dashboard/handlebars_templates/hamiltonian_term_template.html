@@ -4,30 +4,69 @@
 
   <div id="spatial_function_input_skeleton_row" class="row">
 
-    <div class="col-md-4"> <!-- Define the kind of spatial dependence-->
+    <!-- Spatial function stuff -->
 
-      <h4>Spatial function</h4>
+    <div class="col-md-1"></div>
 
-      <select class="spatial-function-btn-group">
-        {{#all_spatial_function_info.all_spatial_functions.fns}}
-            <option value="{{spatial_fn_id}}" class="spatial-fn-choice" data-spatial-function-id="{{spatial_fn_id}}">
-              {{function_description}}
-            </option>
-        {{/all_spatial_function_info.all_spatial_functions.fns}}
-      </select>
+    <div class="col-md-5">
 
-    </div>  <!-- End of define the kind of spatial dependence-->
+        <div class="row">
 
-    <div class="col-md-8">  <!-- Spatial dependence parameters -->
+            <h4>Spatial function</h4>
 
-      <h4>Spatial Parameters</h4>
-      <div class="spatial_function_parameter_input_form">
+            <select class="spatial-function-btn-group form-control">
+                {{#all_spatial_function_info.all_spatial_functions.fns}}
+                    <option value="{{id}}" class="spatial-fn-choice" data-spatial-function-id="{{id}}">
+                    {{function_description}}
+                    </option>
+                {{/all_spatial_function_info.all_spatial_functions.fns}}
+            </select>
 
-            {{subrender-spatial-function-form all_spatial_function_info.default_spatial_function}}
+        </div>
 
-      </div>
+        <div class="row">
 
-    </div>  <!-- End of Spatial dependence parameters -->
+            <div class="spatial_function_parameter_input_form">
+
+                {{subrender-spatial-function-form all_spatial_function_info.default_spatial_function}}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-1"></div>
+
+    <!-- Now temporal function stuff -->
+
+    <div class="col-md-5">
+
+        <div class="row">
+
+            <h4>Temporal function</h4>
+
+            <select class="temporal form-control">
+                {{#all_temporal_function_info.all_temporal_functions.fns}}
+                    <option value="{{id}}" class="spatial-fn-choice" data-spatial-function-id="{{id}}">
+                    {{function_description}}
+                    </option>
+                {{/all_spatial_function_info.all_spatial_functions.fns}}
+            </select>
+
+        </div>
+
+        <div class="row">
+
+            <div class="spatial_function_parameter_input_form">
+
+                {{subrender-spatial-function-form all_spatial_function_info.default_spatial_function}}
+
+            </div>
+
+        </div>
+
+    </div>
 
   </div>
 
@@ -87,18 +126,17 @@
 
     <div class="panel panel-default alert alert-dismissible">
       <div class="panel-body">
-        
+
         <div class="row">
-          
+
           <div class="col-md-3">
             <h3>{{function_description}}</h3>
             <p>\[ {{function_tex_str}} \]</p>
             <button type="button" class="btn btn-danger form-control remove-hamiltonian-term-btn">Remove</button>
           </div>
-          
+
           <div class="col-md-9">
-            <h3>Spatial dependence</h3>
-            
+
             {{spatial_function_input spatial_function}}
 
           </div>  <!-- End of spatial definitions box -->
