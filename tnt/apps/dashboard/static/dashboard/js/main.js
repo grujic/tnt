@@ -257,11 +257,16 @@ var tnt = {
 				console.log("ID of base state modifer chosen: ");
 				console.log($(this).data("operator-id"));
 
-            var hamiltonian_operator = tnt.get_hamiltonian_operator($(this).data("operator-id"));
+            var hamiltonian_operator
+                = tnt.get_hamiltonian_operator($(this).data("operator-id"));
 
 				tnt.add_hamiltonian_term(
                     hamiltonian_operator,
-					"#initial_state_modifier_operators_terms"
+					"#initial_state_modifier_operators_terms",
+                    '',
+                    '',
+                    '',
+                    false
 				);
 			});
 
@@ -479,10 +484,14 @@ var tnt = {
                                    term_container_selector,
                                    no_terms_yet_warning_selector,
                                    next_calculation_stage_btn_selector,
-                                   hamiltonian_tex_str_el) {
+                                   hamiltonian_tex_str_el,
+                                   include_temporal_function) {
 		// Add a visual representation of a Hamiltonian term to the screen, and render any user input elements necessary (e.g. inputs for spatial parameter values)
         // If the Hamiltonian operator has a spatial_fn field, then
         // set up the element to reflect this
+        // if include_temporal_function is false, then don't add in all the temporal stuff
+
+        include_temporal_function = typeof include_temporal_function !== 'undefined' ? include_temporal_function : true;
 
 		var source = $("#hamiltonian-term-template").html();
 		var template = Handlebars.compile(source);
@@ -497,9 +506,15 @@ var tnt = {
 
         // If there is not already a temporal function attached,
         // put in a default
-        if ( _.has(hamiltonian_operator, 'temporal_function') != true) {
+        if (include_temporal_function === false) {
 
-            hamiltonian_operator['temporal_function'] = tnt.get_temporal_function(0);
+        } else {
+
+            if ( _.has(hamiltonian_operator, 'temporal_function') != true) {
+
+                hamiltonian_operator['temporal_function'] = tnt.get_temporal_function(0);
+
+            }
 
         }
 

@@ -1,8 +1,8 @@
 {% verbatim %}
 
+<!-- A Hamiltonian term representation -->
 <script id="hamiltonian-term-template" type="text/x-handlebars-template"> 
 
-    <!-- A Hamiltonian term representation -->
     <div id="hamiltonian-term-{{uuid}}" 
          data-hamiltonian-term-id="{{uuid}}" 
          data-hamiltonian-operator-id="{{operator_id}}" 
@@ -46,13 +46,17 @@
 
                             <div class="col-md-1"></div>
 
-                            <div class="col-md-5 temporal_parameter_input_div">
+                            {{#if temporal_function}}
 
-                                <h4>Temporal function</h4>
+                                <div class="col-md-5 temporal_parameter_input_div">
 
-                                {{temporal_function_input temporal_function}}
+                                    <h4>Temporal function</h4>
 
-                            </div>
+                                    {{temporal_function_input temporal_function}}
+
+                                </div>
+
+                            {{/if}}
 
                         </div>
 
