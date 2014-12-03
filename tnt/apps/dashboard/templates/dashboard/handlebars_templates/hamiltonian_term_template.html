@@ -3,17 +3,17 @@
 <script id="spatial-function-input-template" type="text/x-handlebars-template"> 
 
   <div id="spatial_function_input_skeleton_row" class="row">
-                
+
     <div class="col-md-4"> <!-- Define the kind of spatial dependence-->
 
       <h4>Spatial function</h4>
 
       <select class="spatial-function-btn-group">
-        {{#all_spatial_function_info.all_spatial_functions.spatial_fns}}
+        {{#all_spatial_function_info.all_spatial_functions.fns}}
             <option value="{{spatial_fn_id}}" class="spatial-fn-choice" data-spatial-function-id="{{spatial_fn_id}}">
               {{function_description}}
             </option>
-        {{/all_spatial_function_info.all_spatial_functions.spatial_fns}}
+        {{/all_spatial_function_info.all_spatial_functions.fns}}
       </select>
 
     </div>  <!-- End of define the kind of spatial dependence-->

@@ -10,7 +10,7 @@ urlpatterns = patterns('',
 
     ### START OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
 
-    ### Info on available spatial dependences ###
+    ### Info on available spatial and temporal dependences ###
     url(r'^spatial_and_temporal_functions[/]?$', \
         views.spatial_and_temporal_functions, \
         name='spatial_and_temporal_functions'),

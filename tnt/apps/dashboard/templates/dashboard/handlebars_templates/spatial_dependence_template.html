@@ -3,24 +3,24 @@
 <script id="spatial-dependence-template" type="text/x-handlebars-template">
 
 <h3>Spatial dependence</h3>
-            
+
 <div class="row">
-  
+
   <div class="col-md-4"> <!-- Define the kind of spatial dependence-->
     <div class="btn-group">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
         Constant <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-        {{#spatial_fns}}
+        {{#fns}}
           <li><a href="#">{{function_description}}</a></li>
           <li><a href="#">{{function_description}}</a></li>
           <li><a href="#">{{function_description}}</a></li>
-        {{/spatial_fns}}
+        {{/fns}}
       </ul>
     </div>
   </div>  <!-- End of define the kind of spatial dependence-->
-            
+
   <div class="col-md-8">  <!-- Spatial dependence parameters -->
 
     <h4>Spatial Parameters</h4>

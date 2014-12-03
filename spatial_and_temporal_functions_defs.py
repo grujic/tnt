@@ -1,4 +1,4 @@
-# This file defines the available spatial dependences of operators
+# This file defines the available spatial and temporal dependences of operators
 
 fns = \
 [

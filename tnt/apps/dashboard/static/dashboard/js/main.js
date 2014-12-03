@@ -90,7 +90,7 @@ var tnt = {
     get_spatial_function: function(selected_spatial_function_id) {
 
         var relevant_spatial_function = _.filter(
-            window.spatial_fns.spatial_fns,
+            window.spatial_fns.fns,
             function(el) {
                 return el['spatial_fn_id'] == selected_spatial_function_id;
             }
@@ -108,20 +108,41 @@ var tnt = {
 				window.calculation.meta_info.user.email = window.user.email;
 	  			window.calculation.meta_info.user.id = window.user.id;
 	  			console.log("Initialised blank calculation. ");
-	  			console.log(window.calculation);
 			}
 		);
+
+        // Not quite sure where to put this, we need these definitions eventually..
+        tnt.load_spatial_and_temporal_function_definitions();
+
 	}, // End of initialise_blank_calculation
 
-	load_spatial_function_definitions: function() {
-		// Make an API call and
-		console.log("Loading spatial function definitions...");
-		$.get('/api/v1.0/spatial_functions',
+	load_spatial_and_temporal_function_definitions: function() {
+		// Make an API call and pull in these definitions
+		console.log("Loading spatial and temporal function definitions...");
+		$.get('/api/v1.0/spatial_and_temporal_functions',
 			function(data) {
-				window.spatial_fns = data;
+
+                window.spatial_fns = {
+                    'fns': _.filter(
+                        data.fns,
+                        function (el) {
+                            return (el['use_for_spatial_hamil'] == true)
+                        }
+                    )
+                };
+
+                window.temporal_fns = {
+                    'fns': _.filter(
+                        data.fns,
+                        function (el) {
+                            return (el['use_for_temporal_hamil'] == true)
+                        }
+                    )
+                };
+
 			}
 		).done(function() {
-    		console.log("Loaded spatial function definitions");
+    		console.log("Loaded spatial and temporal function definitions");
   		});
 
 	},	// End of load_spatial_function_definitions
@@ -461,7 +482,6 @@ var tnt = {
         // hamiltonian_term_container_selector is where we source Ham terms
         // hamiltonian_tex_str_el is where to draw the results
         //
-		console.log("Validating the definition of the dynamic Hamiltonian...");
 
         var hamiltonian_tex_str = "\\[";
 
@@ -752,16 +772,17 @@ var tnt = {
 
 		tnt.clear_all_new_calculation_stages();
 
-		$("#new_calculation_define_ground_hamiltonian").css('display', 'block');
+		$("#new_calculation_define_ground_hamiltonian")
+            .css('display', 'block');
 
-		$("#new_calculation_define_ground_hamiltonian .btn-next-step").click(
-			tnt.validate_new_calculation_define_ground_hamiltonian
-		);
+		$("#new_calculation_define_ground_hamiltonian .btn-next-step")
+            .click(
+                tnt.validate_new_calculation_define_ground_hamiltonian
+            );
 
 		$("#new_calculation_define_ground_hamiltonian .btn-back-step").click(
 			tnt.initialise_new_calculation_ground_state
 		);
-
 
 	},
 
@@ -798,7 +819,7 @@ var tnt = {
 
 		// Get the corresponding spatial function dict representation
 		var this_spatial_function = _.filter(
-		                              window.spatial_fns.spatial_fns,
+		                              window.spatial_fns.fns,
 		                              function (spatial_fn) {
 		                                  return spatial_fn['spatial_fn_id'] == parseInt(spatial_function_id)
 		                              }
@@ -1542,11 +1563,6 @@ var tnt = {
   		});
 	},
 
-
-	download_calculation: function(calculation_id) {
-		// Download a JSON file to the User's computer
-	},
-
 	// Plotting and 'exploring' functions
 
 	load_expectation_val_results: function(calculation_id) {
@@ -1649,10 +1665,6 @@ var tnt = {
 		var time_series = get_data_single_site_expectation_val_fn_time(expectation_operator_id, site, re_or_im);
 
 	},
-
-
-
-
 
 } 	// End of tnt namespace
 
