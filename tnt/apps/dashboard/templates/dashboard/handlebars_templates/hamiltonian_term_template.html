@@ -1,156 +1,197 @@
 {% verbatim %}
 
-<script id="spatial-function-input-template" type="text/x-handlebars-template"> 
-
-  <div id="spatial_function_input_skeleton_row" class="row">
-
-    <!-- Spatial function stuff -->
-
-    <div class="col-md-1"></div>
-
-    <div class="col-md-5">
-
-        <div class="row">
-
-            <h4>Spatial function</h4>
-
-            <select class="spatial-function-btn-group form-control">
-                {{#all_spatial_function_info.all_spatial_functions.fns}}
-                    <option value="{{id}}" class="spatial-fn-choice" data-spatial-function-id="{{id}}">
-                    {{function_description}}
-                    </option>
-                {{/all_spatial_function_info.all_spatial_functions.fns}}
-            </select>
-
-        </div>
-
-        <div class="row">
-
-            <div class="spatial_function_parameter_input_form">
-
-                {{subrender-spatial-function-form all_spatial_function_info.default_spatial_function}}
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-md-1"></div>
-
-    <!-- Now temporal function stuff -->
-
-    <div class="col-md-5">
-
-        <div class="row">
-
-            <h4>Temporal function</h4>
-
-            <select class="temporal form-control">
-                {{#all_temporal_function_info.all_temporal_functions.fns}}
-                    <option value="{{id}}" class="spatial-fn-choice" data-spatial-function-id="{{id}}">
-                    {{function_description}}
-                    </option>
-                {{/all_spatial_function_info.all_spatial_functions.fns}}
-            </select>
-
-        </div>
-
-        <div class="row">
-
-            <div class="spatial_function_parameter_input_form">
-
-                {{subrender-spatial-function-form all_spatial_function_info.default_spatial_function}}
-
-            </div>
-
-        </div>
-
-    </div>
-
-  </div>
-
-</script>
-
-<script id="spatial-function-parameter-input-template" type="text/x-handlebars-template"> 
-
-  <p>\[ {{function_tex_str}} \] </p>
-  <form class="form-horizontal" role="form">
-    {{#parameters}}
-      <div class="form-group">
-          <label for="inputEmail3" class="col-sm-2 control-label">\({{parameter_tex_str}}\)</label>
-        <div class="col-sm-10">
-            <input type="number" class="form-control" id="parameter_{{parameter_id}}" data-parameter-id="{{parameter_id}}" placeholder="{{#if value}}{{value}}{{else}}{{parameter_default_value}}{{/if}}" value="{{#if value}}{{value}}{{else}}{{parameter_default_value}}{{/if}}">
-        </div>
-      </div>
-    {{/parameters}}
-  </form>
-
-</script>
-
-
-<script>
-
-    Handlebars.registerHelper("spatial_function_input", function(spatial_function) {
-
-        var source = $("#spatial-function-input-template").html();
-        var template = Handlebars.compile(source);
-
-        return new Handlebars.SafeString(
-        template({
-                'all_spatial_function_info': {
-                    'all_spatial_functions': window.spatial_fns, 
-                    'default_spatial_function': spatial_function
-                }
-            })
-        );
-
-    });
-
-    Handlebars.registerHelper("subrender-spatial-function-form", function(spatial_function) {
-        var template = Handlebars.compile($("#spatial-function-parameter-input-template").html());
-        return new Handlebars.SafeString(template(spatial_function));
-    })
-
-
-</script>
-
 <script id="hamiltonian-term-template" type="text/x-handlebars-template"> 
 
-<div id="hamiltonian-term-{{uuid}}" data-hamiltonian-term-id="{{uuid}}" data-hamiltonian-operator-id="{{operator_id}}" class="row hamiltonian-term">  <!-- A Hamiltonian term representation -->
-  <div class="col-md-1" style="padding-top: 70px;">
-    <i class="fa fa-plus-circle fa-5x"></i> 
-  </div>
+    <!-- A Hamiltonian term representation -->
+    <div id="hamiltonian-term-{{uuid}}" 
+         data-hamiltonian-term-id="{{uuid}}" 
+         data-hamiltonian-operator-id="{{operator_id}}" 
+         class="row hamiltonian-term">
 
-  <div class="col-md-11">
+    <div class="col-md-1" style="padding-top: 70px;">
 
-    <div class="panel panel-default alert alert-dismissible">
-      <div class="panel-body">
+        <i class="fa fa-plus-circle fa-5x"></i> 
 
-        <div class="row">
+    </div>
 
-          <div class="col-md-3">
-            <h3>{{function_description}}</h3>
-            <p>\[ {{function_tex_str}} \]</p>
-            <button type="button" class="btn btn-danger form-control remove-hamiltonian-term-btn">Remove</button>
-          </div>
+    <div class="col-md-11">
 
-          <div class="col-md-9">
+        <div class="panel panel-default alert alert-dismissible">
 
-            {{spatial_function_input spatial_function}}
+            <div class="panel-body">
 
-          </div>  <!-- End of spatial definitions box -->
+                <div class="row">
 
-        </div>  <!-- End of row -->
+                    <div class="col-md-3">
 
-      </div>  <!-- End of panel body -->
+                        <h3>{{function_description}}</h3>
+                        <p>\[ {{function_tex_str}} \]</p>
+                        <button type="button" class="btn btn-danger form-control remove-hamiltonian-term-btn">Remove</button>
 
-    </div>  <!-- End of panel -->
+                    </div>
 
-  </div>
+                    <div class="col-md-9">
 
-</div>  <!-- End of A Hamiltonian term representation -->
+                        <div class="row">
+
+                            <div class="col-md-1"></div>
+
+                            <div class="col-md-5 spatial_parameter_input_div">
+
+                                <h4>Spatial function</h4>
+
+                                {{spatial_function_input spatial_function}}
+
+                            </div>
+
+                            <div class="col-md-1"></div>
+
+                            <div class="col-md-5 temporal_parameter_input_div">
+
+                                <h4>Temporal function</h4>
+
+                                {{temporal_function_input temporal_function}}
+
+                            </div>
+
+                        </div>
+
+                    </div>  <!-- End of spatial definitions box -->
+
+                </div>  <!-- End of row -->
+
+            </div>  <!-- End of panel body -->
+
+        </div>  <!-- End of panel -->
+
+    </div>
+
+    </div>  <!-- End of A Hamiltonian term representation -->
 
 </script>
+
+<!-- Just the little dropdown to choose functions -->
+<script id="spatial-or-temporal-function-input-template" type="text/x-handlebars-template"> 
+
+    <div class="row">
+
+        <select class="spatial-or-temporal-function-btn-group form-control">
+
+            {{#all_function_info.all_functions.fns}}
+
+                <option value="{{id}}" 
+                        class="spatial-or-temporal-fn-choice" 
+                        data-function-id="{{id}}"
+                        data-function-type="{{type}}">
+
+                    {{function_description}}
+
+                </option>
+
+            {{/all_function_info.all_functions.fns}}
+
+        </select>
+
+    </div>
+
+    <div class="row">
+
+        <div class="spatial_or_temporal_function_parameter_input_form">
+
+            {{subrender-spatial-function-form all_function_info.default_spatial_function}}
+
+        </div>
+
+    </div>
+
+</script>
+
+<script id="spatial-or-temporal-function-parameter-input-template" type="text/x-handlebars-template"> 
+
+    <p>\[ {{function_tex_str}} \] </p>
+
+    <form class="form-horizontal" role="form">
+      {{#parameters}}
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">\({{parameter_tex_str}}\)</label>
+          <div class="col-sm-10">
+              <input type="number" class="form-control" id="parameter_{{parameter_id}}" data-parameter-id="{{parameter_id}}" placeholder="{{#if value}}{{value}}{{else}}{{parameter_default_value}}{{/if}}" value="{{#if value}}{{value}}{{else}}{{parameter_default_value}}{{/if}}">
+          </div>
+        </div>
+      {{/parameters}}
+    </form>
+
+</script>
+
+<!-- This bit renders the components necessary for selecting a spatial function, 
+and fills out the form for a given spatial function-->
+<script>
+
+    Handlebars.registerHelper(
+        "spatial_function_input", 
+        function(spatial_function) {
+
+            var source = $("#spatial-or-temporal-function-input-template").html();
+
+            var template = Handlebars.compile(source);
+
+            return new Handlebars.SafeString(
+            template({
+                    'all_function_info': {
+                        'all_functions': window.spatial_fns, 
+                        'default_spatial_function': spatial_function
+                    }
+                })
+            );
+
+        }
+    );
+
+    Handlebars.registerHelper(
+        "temporal_function_input", 
+        function(temporal_function) {
+
+            var source = $("#spatial-or-temporal-function-input-template").html();
+
+            console.log("temporal_function passed to temporal_function_input = ");
+            console.log(temporal_function);
+
+            console.log("Hi 3");
+
+            var template = Handlebars.compile(source);
+
+            console.log("Hi 4");
+
+            return new Handlebars.SafeString(
+            template({
+                    'all_function_info': {
+                        'all_functions': window.temporal_fns, 
+                        'default_temporal_function': temporal_function
+                    }
+                })
+            );
+
+        }
+    );
+
+    Handlebars.registerHelper(
+        "subrender-spatial-function-form", 
+        function(spatial_function) {
+            var template = Handlebars.compile($("#spatial-or-temporal-function-parameter-input-template").html());
+            return new Handlebars.SafeString(template(spatial_function));
+        }
+    );
+
+    Handlebars.registerHelper(
+        "subrender-temporal-function-form", 
+        function(temporal_function) {
+            var template = Handlebars.compile($("#spatial-or-temporal-function-parameter-input-template").html());
+            return new Handlebars.SafeString(template(temporal_function));
+        }
+    );
+
+</script>
+
+
 
 {% endverbatim %}

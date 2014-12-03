@@ -2,6 +2,22 @@
 
 fns = \
 [
+	# This special term is to designate that there's NO temporal dependence
+    {
+		'id': 0, \
+		'function_tex_str': '', \
+		'spatial_function_tex_str': '', \
+		'temporal_function_tex_str': '', \
+		'function_description': 'No dependence', \
+		'use_for_spatial_hamil': False, \
+		'use_for_temporal_hamil': True, \
+		'use_for_sum_modifier': False, \
+		'use_for_product_modifier': False, \
+		'use_for_product_modifier_noncovariant': False, \
+		'parameters': []
+	},
+
+
 	# A constant across the system
 	{
 		'id': 1, \

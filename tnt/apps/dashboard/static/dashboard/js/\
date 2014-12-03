@@ -923,12 +923,12 @@ var tnt = {
 
 		   function(el) {
 
-		       var function_parameter_id = $(el).data("parameter-id");
+		       var spatial_function_parameter_id = $(el).data("parameter-id");
 
-		       var function_parameter_val = $(el).val()
+		       var spatial_function_parameter_val = $(el).val()
 
-		       spatial_function.parameters[function_parameter_id - 1]['value']
-                = function_parameter_val;
+		       spatial_function.parameters[spatial_function_parameter_id - 1]['value']
+                = spatial_function_parameter_val;
 
 		   }
 
@@ -943,20 +943,19 @@ var tnt = {
 
 		   function(el) {
 
-		       var function_parameter_id = $(el).data("parameter-id");
+		       var spatial_function_parameter_id = $(el).data("parameter-id");
 
-		       var function_parameter_val = $(el).val()
+		       var spatial_function_parameter_val = $(el).val()
 
-		       temporal_function.parameters[function_parameter_id - 1]['value']
-                = function_parameter_val;
+		       spatial_function.parameters[spatial_function_parameter_id - 1]['value']
+                = spatial_function_parameter_val;
 
 		   }
 
 		);
 
+		//
 		hamiltonian_operator['spatial_function'] = spatial_function;
-
-		hamiltonian_operator['temporal_function'] = temporal_function;
 
 		return hamiltonian_operator;
 	},
