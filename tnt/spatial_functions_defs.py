@@ -1,6 +1,6 @@
-# This file defines the available spatial dependences of operators 
+# This file defines the available spatial dependences of operators
 
-spatial_fns = \
+fns = \
 [
 	# A constant across the system
 	{
@@ -22,7 +22,7 @@ spatial_fns = \
 			'parameter_default_value': 1
 		}]
 	},
-	
+
 	# Linear
 	{
 		'spatial_fn_id': 2, \
@@ -46,7 +46,7 @@ spatial_fns = \
 			'parameter_default_value': 1
 		}]
 	},
-	
+
 	# Quadratic
 	{
 		'spatial_fn_id': 3, \
@@ -111,8 +111,8 @@ spatial_fns = \
 			'value': None, \
 			'parameter_default_value': 0
 		}]
-	}, 
-	
+	},
+
 	# Step function
 	{
 		'spatial_fn_id': 5, \
@@ -136,7 +136,7 @@ spatial_fns = \
 			'parameter_default_value': 5
 		}]
 	},
-	
+
 	# Rectangular function
 	{
 		'spatial_fn_id': 6, \
@@ -166,7 +166,7 @@ spatial_fns = \
 			'parameter_default_value': 1
 		}]
 	},
-	
+
 	# Delta function
 	{
 		'spatial_fn_id': 7, \
