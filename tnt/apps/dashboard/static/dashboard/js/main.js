@@ -1217,35 +1217,15 @@ var tnt = {
         $('#ground_state_quantum_number_info')
             .css('display', 'none');
 
+		// hiding / displaying further ground state info
 		$("#ground_state_calculation_choice input")
 			.change(
 				function () {
-
-					if ($(this).data('number-conservation') == 0) {
-						$('#ground_state_quantum_number_info')
-							.css('display', 'none');
-					} else {
-						$('#ground_state_quantum_number_info')
-							.css('display', 'block');
-					}
-
-				}
-			);
-
-		// Add a function so that if the user chooses not to calculate time evolution, we don't display inputs for time step info
-		$("#ground_state_calculation_choice input")
-			.change(
-				function () {
-
-					console.log('test' + $(this).data('calculate-ground-state'));
-					console.log($(this));
 
 					if ($(this).data('calculate-ground-state') == 0) {
-						console.log("We're not calculating the ground state");
 						$('#ground_state_extra_info_specification')
 							.css('display', 'none');
 					} else {
-						console.log("We are calculating the ground state");
 						$('#ground_state_extra_info_specification')
 							.css('display', 'block');
 					}
@@ -1253,6 +1233,21 @@ var tnt = {
 				}
 			);
 
+        // Hiding / displaying quantum number choices
+		$("#ground_number_conservation_choice input")
+			.change(
+				function () {
+
+					if (parseInt($(this).data('number-conservation')) == 0) {
+						$('#ground_state_quantum_number_info')
+							.css('display', 'none');
+					} else {
+						$('#ground_state_quantum_number_info')
+							.css('display', 'block');
+					}
+
+				}
+			);
 
 		$("#new_calculation_ground_state").css('display', 'block');
 
