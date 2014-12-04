@@ -315,6 +315,17 @@ def delete_calculation(request, calculation_id):
     except:
         response = Response('Not found', status=status.HTTP_404_NOT_FOUND)    # R1gt
 
+    # Now delete the info on BOSE
+
+    # Make a call posting this to the BOSE server
+    bose_delete_url = bose_base_url + '/api/v1.0/calculation/delete/' + calculation_id
+
+    resp = requests.post(bose_delete_url, data={})
+
+    print("Bose response: ")
+
+    print(resp.content)
+
     return response
 
 @api_view(['POST'])
