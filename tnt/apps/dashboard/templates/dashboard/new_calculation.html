@@ -106,22 +106,6 @@
             </select>
         </form>
 
-
-
-      <!--<hr>-->
-
-      <!--<h4>Number conservation</h4>-->
-      <!--<p>Do you want to enforce number conservation?</p>-->
-
-      <!--<div id="number_conservation_choice" class="btn-group" data-toggle="buttons">-->
-        <!--<label class="btn btn-primary">-->
-          <!--<input type="radio" name="options" data-number-conservation=1>Yes-->
-        <!--</label>-->
-        <!--<label class="btn btn-primary active">-->
-          <!--<input type="radio" name="options" data-number-conservation=0 checked>No-->
-        <!--</label>-->
-      <!--</div>-->
-
       <hr>
 
       <h4>Simulation truncation parameters</h4>
@@ -353,19 +337,19 @@
           <div class="form-group">
             <label for="input_num_time_steps" class="col-sm-3 control-label">Number of time steps</label>
             <div class="col-sm-9">
-              <input type="number" class="form-control" id="input_num_time_steps" placeholder="100" value="100">
+              <input type="number" class="form-control integer-only" id="input_num_time_steps" placeholder="100" value="100">
             </div>
           </div>
           <div class="form-group">
             <label for="input_time_step_size" class="col-sm-3 control-label">Time step size</label>
             <div class="col-sm-9">
-              <input type="number" class="form-control" id="input_time_step_size" placeholder="0.01" value="0.01">
+              <input type="number" class="form-control float-only" id="input_time_step_size" placeholder="0.01" value="0.01">
             </div>
           </div>
           <div class="form-group">
             <label for="input_num_expval_time_steps" class="col-sm-3 control-label">Number of time steps for expectation value evaluations</label>
             <div class="col-sm-9">
-              <input type="number" class="form-control" id="input_num_expval_time_steps" placeholder="Leave blank to evaluate expectation values at every ten steps" value="">
+              <input type="number" class="form-control integer-only" id="input_num_expval_time_steps" placeholder="Leave blank to evaluate expectation values at every ten steps" value="">
             </div>
           </div>
         </form>
@@ -422,6 +406,9 @@
       <p>Choose the initial state you want to evolve from. You can choose from the following given states, and optionally you can apply transformations by applying operators below. </p>
 
       <div id="new_calculation_available_initial_base_states">
+
+        <p class="bg-info">Loading initial states...</p>
+
       </div>
 
 
@@ -430,48 +417,93 @@
       <h4>Initial state - transformation</h4>
 
       <p>Now choose a transformation to tailor your initial state (optional).
-      You can choose to apply the operator to the initial state as a <b>product</b> of terms or a <b>sum</b> of terms using the drop-down below.</p>
-
-        <form class="form-inline" role="form">
-
-        <div class="form-group">
-
-            <label class="" for="initial_state_modifier_sum_or_product_choice">Sum or product</label>
-            <select id="initial_state_modifier_sum_or_product_choice" class="form-control">
-
-                <option value="sum">Sum</option>
-                <option value="product">Product</option>
-
-            </select>
-        </div>
-        <div class="checkbox">
-            <label>
-            <input type="checkbox" id="renormalise_after_initial_state_modifiers_choice">Renormalise wave function after applying modifiers
-            </label>
-        </div>
-        </form>
+      You can choose to apply the operator to the initial state as a <b>product</b> of terms or a <b>sum</b> of terms.</p>
 
       <div class="panel panel-default">
 
         <div class="panel-body">
 
-            <p id="initial_state_modifier_explain_text_sum">If you choose a <b>sum</b> of terms, the chosen operators will be used to form the total site-wide operator as 
-            \[ 
-            \hat{O} = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j},
-            \]
-            where there are \( n_o \) on-site terms \( \hat{o} \), and where \( f_{o}(j) \) is the chosen spatial function for the onsite term \( \hat{o} \).
-            </p>
-            
-            <p id="initial_state_modifier_explain_text_product" style="display: none;">If you choose a <b>product</b> of terms, the chosen operators will be used to form the total site-wide operator as 
-            \[ 
-            \hat{O} = \prod_{j=0}^{L-1}\prod_o^{n_o}f_{o}(j)\hat{o}_{j},
-            \]
-            where there are \( n_o \) on-site terms \( \hat{o} \), and where \( f_{o}(j) \) is the chosen spatial function for the onsite term \( \hat{o} \). Note the operators will be applied to the base state in the order that they are chosen.
-            </p>
-      
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <p id="initial_state_modifier_explain_text_sum">If you choose a <b>sum</b> of terms, the chosen operators will be used to form the total site-wide operator as 
+                    \[ 
+                    \hat{O} = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j},
+                    \]
+                    where there are \( n_o \) on-site terms \( \hat{o} \), and where \( f_{o}(j) \) is the chosen spatial function for the onsite term \( \hat{o} \).
+                    </p>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <p id="initial_state_modifier_explain_text_product" style="">If you choose a <b>product</b> of terms, the chosen operators will be used to form the total site-wide operator as 
+                    \[ 
+                    \hat{O} = \prod_{j=0}^{L-1}\prod_o^{n_o}f_{o}(j)\hat{o}_{j},
+                    \]
+                    where there are \( n_o \) on-site terms \( \hat{o} \), and where \( f_{o}(j) \) is the chosen spatial function for the onsite term \( \hat{o} \). Note the operators will be applied to the base state in the order that they are chosen.
+                    </p>
+
+                </div>
+
+            </div>
+
         </div>
 
       </div>
+
+      <div class="well">
+        <form class="form-inline" role="form">
+
+            <!--<div class="form-group">-->
+
+                <!--<label class="" for="initial_state_modifier_sum_or_product_choice">Sum or product</label>-->
+                <!--<select id="initial_state_modifier_sum_or_product_choice" class="form-control">-->
+
+                    <!--<option value="sum">Sum</option>-->
+                    <!--<option value="product">Product</option>-->
+
+                <!--</select>-->
+            <!--</div>-->
+            <div class="checkbox">
+                <label>
+                <input type="checkbox" id="renormalise_after_initial_state_modifiers_choice"> Renormalise wave function after applying modifiers
+                </label>
+            </div>
+
+        </form>
+      </div>
+
+	  <div class="row">
+
+        <div class="col-md-3">
+            <button
+            type="button" 
+            id="add_product_modifier"
+            class="btn btn-default form-control hamiltonian-operator-btn"
+            data-sum-product="product">
+            <i class="fa fa-times-circle fa-3x"></i> 
+            Add a product modifier
+            <br>
+            </button>
+        </div>
+
+        <div class="col-md-3">
+            <button
+            type="button" 
+            id="add_sum_modifier"
+            class="btn btn-default form-control hamiltonian-operator-btn"
+            data-sum-product="sum">
+            <i class="fa fa-plus-circle fa-3x"></i> 
+            Add a sum modifier
+            </button>
+        </div>
+
+	  </div>
+
+
+      
 
       <div id="initial_state_modifier_operators_container">
       </div>

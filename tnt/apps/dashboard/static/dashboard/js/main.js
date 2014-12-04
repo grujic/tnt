@@ -72,6 +72,50 @@ var tnt = {
 
     },
 
+    restrict_inputs_to_float: function(els_to_restrict) {
+        // Only allow people to enter an integer in these inputs
+        $(els_to_restrict).keydown(function (e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                // Allow: Ctrl+A
+                (e.keyCode == 65 && e.ctrlKey === true) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                    // let it happen, don't do anything
+                    return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+    },
+
+    restrict_inputs_to_integer: function(els_to_restrict) {
+        // Only allow people to enter an integer in these inputs
+        $(els_to_restrict).keydown(function (e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+                // Allow: Ctrl+A
+                (e.keyCode == 65 && e.ctrlKey === true) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                    // let it happen, don't do anything
+                    return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+    },
+
+    enforce_numeric_restrictions_to_inputs: function() {
+        // Attach restrictions to inputs that only accept float or integer inputs
+        tnt.restrict_inputs_to_integer($('.integer-only'));
+        tnt.restrict_inputs_to_float($('.float-only'));
+    },
+
     get_hamiltonian_operator: function(operator_id) {
         // Assumes operators are loaded and just
         // gets the one with the right ID
@@ -141,6 +185,10 @@ var tnt = {
 
         // Not quite sure where to put this, we need these definitions eventually..
         tnt.load_spatial_and_temporal_function_definitions();
+
+        // Also this should maybe go somewhere else.. restrict the input on numeric fields
+        // so people can't enter something wrong
+        tnt.enforce_numeric_restrictions_to_inputs();
 
 	}, // End of initialise_blank_calculation
 
@@ -245,12 +293,48 @@ var tnt = {
 	render_available_intitial_state_modifier_operators: function () {
 		// Transformations we can apply to the base state
         console.log("Rendering initial base state modifiers...");
+
+        // First check which ones comply with QN
+        var dynamic_qn =
+            window
+            .calculation
+            .setup
+            .system
+            .number_conservation
+            .dynamic
+            .apply_qn;
+
+        var cloned_initial_state_modifiers =
+            _.cloneDeep(
+                window.initial_state_modifier_operators
+            );
+
+        if (dynamic_qn == 1) {
+
+            var complying_initial_state_modifiers =
+                {
+                    'operators':
+                    _.filter(
+                        cloned_initial_state_modifiers.operators,
+                        function(el) {
+                            return el['U1_covariant'] == true;
+                        }
+                    )
+                };
+
+        } else {
+
+            var complying_initial_state_modifiers = cloned_initial_state_modifiers;
+
+        }
+
+
 		var source = $("#hamiltonian-operator-template").html();
 
 		var template = Handlebars.compile(source);
 
 		$("#initial_state_modifier_operators_container")
-			.html(template(window.initial_state_modifier_operators));
+			.html(template(complying_initial_state_modifiers));
 
 		$("#initial_state_modifier_operators_container .hamiltonian-operator-btn")
 			.click(function() {
@@ -337,7 +421,7 @@ var tnt = {
 	},
 
 	render_available_initial_base_states: function () {
-		// If window.calculation_type is not defined, render all available initial base states, otherwise filter
+		// Draw in buttons showing available initial states
 		$.get("/api/v1.0/initial_base_states",
 			function (data) {
 
@@ -358,8 +442,13 @@ var tnt = {
 
 				window.initial_base_states = filtered_data;
 
-				// If we're not calculating the ground state, then exclude it as a possibility for an intitial state
-				if (window.calculation.setup.system.calculate_ground_state == 0) {
+				// We only display the ground state as a choice if certain conditions are met
+                var calculating_ground_state = window.calculation.setup.system.calculate_ground_state;
+                var ground_qn = window.calculation.setup.system.number_conservation.ground.apply_qn;
+                var dynamic_qn = window.calculation.setup.system.number_conservation.dynamic.apply_qn;
+
+				if (calculating_ground_state == 0)
+                {
 					window.initial_base_states =
 					{
 						'states':
@@ -370,11 +459,29 @@ var tnt = {
 							}
 						)
 					};
-				}
+				} else {
+                    // We ARE calculating the ground state
+                    if ( (dynamic_qn == 0) || ( (ground_qn == 1) && (dynamic_qn == 1) ) ) {
+                        // Then we can display the ground state
+                    } else {
+                        window.initial_base_states =
+                        {
+                            'states':
+                            _.filter(
+                                window.initial_base_states.states,
+                                function(el) {
+                                    return el['initial_base_state_id'] > 0;
+                                }
+                            )
+                        };
+                    }
+                }
 
 				var source = $("#initial-base-states-template").html();
 				var template = Handlebars.compile(source);
-				$("#new_calculation_available_initial_base_states").html(template(window.initial_base_states));
+
+				$("#new_calculation_available_initial_base_states")
+                    .html(template(window.initial_base_states));
 
 				$(".initial-state-btn")
 					.first()
@@ -1360,8 +1467,41 @@ var tnt = {
 
 		tnt.clear_all_new_calculation_stages(); // Clear all panels
 
-        // Work out if we need to show quantum number info
-        // TODO
+        var dynamic_qn = window
+            .calculation
+            .setup
+            .system
+            .number_conservation
+            .dynamic
+            .apply_qn;
+
+        if (dynamic_qn == 0) {
+            // Sum type allowed
+        } else {
+           $("#add_sum_modifier").css("display", "none");
+        }
+
+        // For reference further on, we build lists of spatial functions
+        // filtered by sum, product, product non-covariant
+        window.spatial_functions_sum_modifiers =
+            {'fns':
+                _.filter(
+                    window.spatial_fns.fns,
+                    function(el) {
+                        return el['use_for_sum_modifier'] == true;
+                    }
+                )
+            };
+
+        window.spatial_functions_product_noncovariant_modifiers =
+            {'fns':
+                _.filter(
+                    window.spatial_fns.fns,
+                    function(el) {
+                        return el['use_for_product_modifier_noncovariant'] == true;
+                    }
+                )
+            };
 
         $("#initial_state_modifier_sum_or_product_choice")
             .on("change",
