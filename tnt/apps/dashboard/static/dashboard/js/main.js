@@ -1325,12 +1325,14 @@ var tnt = {
 
 	initialise_new_calculation_time_evolution: function () {
 		//
-		console.log("Initialising new calculation time evolution input");
+		console.log("Initialising new calculation time evolution input\n");
 		tnt.clear_all_new_calculation_stages();
 
         // If no ground state calculation specified then we MUST calculate a time evolution
         var calculate_ground_state = window.calculation.setup.system.calculate_ground_state;
         if (calculate_ground_state == 0) {
+                $("#time_evolution_choice label").removeClass('active');
+                $($("#time_evolution_choice label")[0]).addClass('active');
                 $("#time_evolution_choice label")
                     .attr("disabled", "disabled");
         }
@@ -1390,7 +1392,7 @@ var tnt = {
 			var num_expval_time_steps_val = $("#input_num_expval_time_steps").val();
             // If user has left this blank, assume we want every time step
             if (num_expval_time_steps_val == "") {
-                var num_expval_time_steps = parseInt(Math.floor(num_time_steps/10));
+                var num_expval_time_steps = 10;
             } else {
                 var num_expval_time_steps = parseFloat(num_expval_time_steps_val);
             }
