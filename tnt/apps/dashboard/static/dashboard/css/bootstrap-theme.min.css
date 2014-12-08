@@ -64,7 +64,7 @@
 }
 .btn-default:active,
 .btn-default.active {
-  background-color: #e0e0e0;
+  background-color: #808080;
   border-color: #dbdbdb;
 }
 .btn-default:disabled,
