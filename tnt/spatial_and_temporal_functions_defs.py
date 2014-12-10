@@ -6,8 +6,6 @@ fns = \
     {
 		'id': 0, \
 		'function_tex_str': '', \
-		'spatial_function_tex_str': '', \
-		'temporal_function_tex_str': '', \
 		'function_description': 'No dependence', \
 		'use_for_spatial_hamil': False, \
 		'use_for_temporal_hamil': True, \
@@ -22,8 +20,6 @@ fns = \
 	{
 		'id': 1, \
 		'function_tex_str': 'k', \
-		'spatial_function_tex_str': 'k', \
-		'temporal_function_tex_str': 'k', \
 		'function_description': 'Constant', \
 		'use_for_spatial_hamil': True, \
 		'use_for_temporal_hamil': True, \
@@ -66,7 +62,7 @@ fns = \
 	# Quadratic
 	{
 		'id': 3, \
-		'function_tex_str': 'a + b(j-j_c)^2', \
+		'function_tex_str': 'a + b(j-c)^2', \
 		'function_description': 'Quadratic', \
 		'use_for_spatial_hamil': True, \
 		'use_for_temporal_hamil': True, \
@@ -86,7 +82,7 @@ fns = \
 			'parameter_default_value': 1
 		},{
 			'parameter_id': 3, \
-			'parameter_tex_str': 'j_c', \
+			'parameter_tex_str': 'c', \
 			'parameter_name': 'Centre', \
 			'value': None, \
 			'parameter_default_value': 5
@@ -96,7 +92,7 @@ fns = \
 	# A sin dependence on system size
 	{
 		'id': 4, \
-		'function_tex_str': 'A_0 + A \sin ( k j + \phi )', \
+		'function_tex_str': 'C + A \sin ( k j + \phi )', \
 		'function_description': 'Sinusoidal', \
 		'use_for_spatial_hamil': True, \
 		'use_for_temporal_hamil': True, \
@@ -104,7 +100,7 @@ fns = \
 		'use_for_product_modifier': True, \
 		'parameters': [{
 			'parameter_id': 1, \
-			'parameter_tex_str': 'A_0', \
+			'parameter_tex_str': 'C', \
 			'parameter_name': 'Mean value', \
 			'value': None, \
 			'parameter_default_value': 0
@@ -156,7 +152,7 @@ fns = \
 	# Rectangular function
 	{
 		'id': 6, \
-		'function_tex_str': 'A \mathrm{rect}((j-j_c)/w)', \
+		'function_tex_str': 'A \mathrm{rect}((j-c)/w)', \
 		'function_description': 'Rectangular function', \
 		'use_for_spatial_hamil': True, \
 		'use_for_temporal_hamil': True, \
@@ -170,7 +166,7 @@ fns = \
 			'parameter_default_value': 1
 		},{
 			'parameter_id': 2, \
-			'parameter_tex_str': 'j_c', \
+			'parameter_tex_str': 'c', \
 			'parameter_name': 'Centre', \
 			'value': None, \
 			'parameter_default_value': 5
@@ -186,7 +182,7 @@ fns = \
 	# Delta function
 	{
 		'id': 7, \
-		'function_tex_str': 'A \delta(j-j_c)', \
+		'function_tex_str': 'A \delta(j-c)', \
 		'function_description': 'Delta function', \
 		'use_for_spatial_hamil': True, \
 		'use_for_temporal_hamil': True, \
@@ -200,7 +196,7 @@ fns = \
 			'parameter_default_value': 1
 		},{
 			'parameter_id': 2, \
-			'parameter_tex_str': 'j_c', \
+			'parameter_tex_str': 'c', \
 			'parameter_name': 'Centre', \
 			'value': None, \
 			'parameter_default_value': 5
