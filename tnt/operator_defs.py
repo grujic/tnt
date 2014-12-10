@@ -10,7 +10,7 @@ operators = \
 		'function_description': 'Sx', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -25,7 +25,7 @@ operators = \
 		'function_description': 'Sy', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -40,7 +40,7 @@ operators = \
 		'function_description': 'Sz', \
 		'term_type': 'spin', \
 		'U1_invariant': True, \
-        'U1_covariant': True, \
+        	'U1_covariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -55,7 +55,7 @@ operators = \
 		'function_description': 'S+', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': False, \
@@ -70,7 +70,7 @@ operators = \
 		'function_description': 'S-', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': False, \
@@ -85,7 +85,7 @@ operators = \
 		'function_description': 'XX Coupling', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -100,7 +100,7 @@ operators = \
 		'function_description': 'YY Coupling', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -115,7 +115,7 @@ operators = \
 		'function_description': 'ZZ Coupling', \
 		'term_type': 'spin', \
 		'U1_invariant': True, \
-        'U1_covariant': True, \
+        	'U1_covariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -130,7 +130,7 @@ operators = \
 		'function_description': 'Hopping', \
 		'term_type': 'spin', \
 		'U1_invariant': True, \
-        'U1_covariant': True, \
+        	'U1_covariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
@@ -145,7 +145,7 @@ operators = \
 		'function_description': 'Hopping with phase change', \
 		'term_type': 'spin', \
 		'U1_invariant': True, \
-        'U1_covariant': True, \
+        	'U1_covariant': True, \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
@@ -160,7 +160,7 @@ operators = \
 		'function_description': 'XY Coupling', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -175,7 +175,7 @@ operators = \
 		'function_description': 'YX Coupling', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -190,7 +190,7 @@ operators = \
 		'function_description': 'YZ Coupling', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -205,7 +205,7 @@ operators = \
 		'function_description': 'ZY Coupling', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -220,7 +220,7 @@ operators = \
 		'function_description': 'ZX Coupling', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -235,12 +235,27 @@ operators = \
 		'function_description': 'XZ Coupling', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
 		'two_site': True
+	},
+	
+	# Rotation
+	{
+		'operator_id': 17, \
+		'function_tex_str': "\mathrm{e}^{2\pi\mathrm{i}\hat{S}_j^y}", \
+		'function_description': 'Spin flip', \
+		'term_type': 'spin', \
+		'U1_invariant': False, \
+        	'U1_covariant': False, \
+		'complex': False, \
+		'use_for_hamiltonian': False, \
+		'use_for_expectation': False, \
+		'use_for_transform': True, \
+		'two_site': False
 	},
 
 	###################### Bosonic terms start here ####################################
@@ -252,7 +267,7 @@ operators = \
 		'function_description': 'Number', \
 		'term_type': 'bosonic', \
 		'U1_invariant': True, \
-        'U1_covariant': True, \
+        	'U1_covariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -267,7 +282,7 @@ operators = \
 		'function_description': 'On-site interaction', \
 		'term_type': 'bosonic', \
 		'U1_invariant': True, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -282,7 +297,7 @@ operators = \
 		'function_description': 'Coherent driving', \
 		'term_type': 'bosonic', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
@@ -297,7 +312,7 @@ operators = \
 		'function_description': 'x-quadrature', \
 		'term_type': 'bosonic', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': True, \
@@ -312,7 +327,7 @@ operators = \
 		'function_description': 'p-quadrature', \
 		'term_type': 'bosonic', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': True, \
@@ -327,7 +342,7 @@ operators = \
 		'function_description': 'Creation', \
 		'term_type': 'bosonic', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': False, \
@@ -342,7 +357,7 @@ operators = \
 		'function_description': 'Annihilation', \
 		'term_type': 'bosonic', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': False, \
@@ -357,7 +372,7 @@ operators = \
 		'function_description': 'N-squared', \
 		'term_type': 'bosonic', \
 		'U1_invariant': True, \
-        'U1_covariant': True, \
+        	'U1_covariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': True, \
@@ -372,7 +387,7 @@ operators = \
 		'function_description': 'Hopping', \
 		'term_type': 'bosonic', \
 		'U1_invariant': True, \
-        'U1_covariant': True, \
+        	'U1_covariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
@@ -387,7 +402,7 @@ operators = \
 		'function_description': 'Density-density', \
 		'term_type': 'bosonic', \
 		'U1_invariant': True, \
-        'U1_covariant': True, \
+        	'U1_covariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -402,7 +417,7 @@ operators = \
 		'function_description': 'Parametric driving', \
 		'term_type': 'bosonic', \
 		'U1_invariant': False, \
-        'U1_covariant': True, \
+        	'U1_covariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
@@ -417,7 +432,7 @@ operators = \
 		'function_description': 'bdag-b', \
 		'term_type': 'bosonic', \
 		'U1_invariant': True, \
-        'U1_covariant': True, \
+        	'U1_covariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': True, \
