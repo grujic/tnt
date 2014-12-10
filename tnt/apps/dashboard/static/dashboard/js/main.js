@@ -290,74 +290,85 @@ var tnt = {
 
 	}, // End of render_available_hamiltonian_operators
 
-	render_available_intitial_state_modifier_operators: function () {
-		// Transformations we can apply to the base state
-        console.log("Rendering initial base state modifiers...");
+	render_available_intitial_state_modifier_operators:
+        function (where_to_render, sum_or_product) {
+            // Transformations we can apply to the base state
+            // We draw these choices in where_to_render
+            // sum_or_product is 'sum' or 'product'
+            console.log("Rendering initial base state modifiers...");
 
-        // First check which ones comply with QN
-        var dynamic_qn =
-            window
-            .calculation
-            .setup
-            .system
-            .number_conservation
-            .dynamic
-            .apply_qn;
+            // First check which ones comply with QN
+            var dynamic_qn =
+                window
+                .calculation
+                .setup
+                .system
+                .number_conservation
+                .dynamic
+                .apply_qn;
 
-        var cloned_initial_state_modifiers =
-            _.cloneDeep(
-                window.initial_state_modifier_operators
+            var cloned_initial_state_modifiers =
+                _.cloneDeep(
+                    window.initial_state_modifier_operators
+                );
+
+            if (dynamic_qn == 1) {
+
+                var complying_initial_state_modifiers =
+                    {
+                        'operators':
+                        _.filter(
+                            cloned_initial_state_modifiers.operators,
+                            function(el) {
+                                return el['U1_covariant'] == true;
+                            }
+                        )
+                    };
+
+            } else {
+
+                var complying_initial_state_modifiers = cloned_initial_state_modifiers;
+
+            }
+
+            _.each(
+                complying_initial_state_modifiers.operators,
+                function(el) {
+                    el['sum_or_product'] = sum_or_product;
+                }
             );
 
-        if (dynamic_qn == 1) {
+            var source = $("#hamiltonian-operator-template").html();
 
-            var complying_initial_state_modifiers =
-                {
-                    'operators':
-                    _.filter(
-                        cloned_initial_state_modifiers.operators,
-                        function(el) {
-                            return el['U1_covariant'] == true;
-                        }
-                    )
-                };
+            var template = Handlebars.compile(source);
 
-        } else {
+            $(where_to_render)
+                .html(template(complying_initial_state_modifiers));
 
-            var complying_initial_state_modifiers = cloned_initial_state_modifiers;
+            // Add behaviour to modifier buttons
+            $(where_to_render).find(".hamiltonian-operator-btn")
+                .click(function() {
 
-        }
+                    var hamiltonian_operator
+                        = tnt.get_hamiltonian_operator($(this).data("operator-id"));
+
+                    hamiltonian_operator['sum_or_product'] = $(this).data('sum-or-product');
+
+                    tnt.add_hamiltonian_term(
+                        hamiltonian_operator,
+                        $(where_to_render).closest('.initial_state_modifier_sum_or_product').find('.initial_state_modifier_operators_terms'),
+                        '',
+                        '',
+                        '',
+                        false
+                    );
+                });
 
 
-		var source = $("#hamiltonian-operator-template").html();
+            tnt.render_mathjax();
 
-		var template = Handlebars.compile(source);
-
-		$("#initial_state_modifier_operators_container")
-			.html(template(complying_initial_state_modifiers));
-
-		$("#initial_state_modifier_operators_container .hamiltonian-operator-btn")
-			.click(function() {
-				console.log("ID of base state modifer chosen: ");
-				console.log($(this).data("operator-id"));
-
-            var hamiltonian_operator
-                = tnt.get_hamiltonian_operator($(this).data("operator-id"));
-
-				tnt.add_hamiltonian_term(
-                    hamiltonian_operator,
-					"#initial_state_modifier_operators_terms",
-                    '',
-                    '',
-                    '',
-                    false
-				);
-			});
-
-		tnt.render_mathjax();
-
-        $(".operator_loading_placeholder")
-            .css("display", "none")
+            $(".operator_loading_placeholder")
+                .css("display", "none")
 	},
 
 	attach_click_fn_to_initial_base_state_choices: function () {
@@ -611,6 +622,14 @@ var tnt = {
 
         }
 
+        // We represent if this is part of a sum or product term
+        // with icons - default this to sum if not present
+        if ( _.has(hamiltonian_operator, 'sum_or_product') != true) {
+
+            hamiltonian_operator['sum_or_product'] = 'sum';
+
+        }
+
         // If there is not already a temporal function attached,
         // put in a default
         if (include_temporal_function === false) {
@@ -665,7 +684,7 @@ var tnt = {
 
         var hamiltonian_tex_str = "\\[";
 
-		_.each($(hamiltonian_term_container_selector + ' .hamiltonian-term'),
+		_.each($(hamiltonian_term_container_selector).find('.hamiltonian-term'),
 	       function (term) {
 
 	       	   var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
@@ -1460,8 +1479,6 @@ var tnt = {
 		console.log("Initialising new calculation initial state input");
 		tnt.render_available_initial_base_states(); 	// Draw the choices available
 
-		tnt.render_available_intitial_state_modifier_operators();
-
 		tnt.clear_all_new_calculation_stages(); // Clear all panels
 
         var dynamic_qn = window
@@ -1500,22 +1517,33 @@ var tnt = {
                 )
             };
 
-        $("#initial_state_modifier_sum_or_product_choice")
-            .on("change",
-                function (e) {
-                    if ( $(this).val() == "sum") {
+        $('.add-product-or-sum-modifier-btn')
+            .click(function (e) {
 
-                        $("#initial_state_modifier_explain_text_sum").css("display", "block");
-                        $("#initial_state_modifier_explain_text_product").css("display", "none");
+                var sum_or_product = $(this).data('sum-product');
 
-                    } else if ( $(this).val() == "product") {
+                var source = $("#initial-state-modifier-sum-or-product-template").html();
 
-                        $("#initial_state_modifier_explain_text_sum").css("display", "none");
-                        $("#initial_state_modifier_explain_text_product").css("display", "block");
+                var template = Handlebars.compile(source);
 
+                $('#initial_state_modifier_container')
+                    .append(template({'sum_or_product': sum_or_product}));
+
+                var where_to_render_modifier_operator_btns
+                    = $('#initial_state_modifier_container .initial_state_modifier_sum_or_product:last  .initial_state_modifier_operators_container');
+
+                tnt.render_available_intitial_state_modifier_operators(where_to_render_modifier_operator_btns, sum_or_product);
+
+                $('.initial_state_modifier_sum_or_product .remove-initial-state-modifier-btn')
+                    .click(function() {
+                        $(this)
+                        .closest('.initial_state_modifier_sum_or_product')
+                        .remove();
                     }
-                    console.log($(this).val());
-                }
+                );
+
+
+            }
         );
 
 		$("#new_calculation_initial_state").css('display', 'block'); 	// Make this panel visible

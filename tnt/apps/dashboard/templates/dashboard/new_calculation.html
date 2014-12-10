@@ -26,7 +26,18 @@
       <p>You can name your calculation, otherwise leave it blank and let us provide a random default for you. </p>
       <input class="form-control" id="calculation_name" type="text" class="" placeholder="Leave blank to generate random default" value="">
 
-      <h4>System type</h4>
+      <h4>
+        System type 
+        <a tabindex="0" 
+           data-toggle="popover" 
+           data-trigger="focus" 
+           title="System type"
+           data-content="Content"
+        >
+            <i class="fa fa-question-circle fa-lg"></i>
+        </a>
+      </h4>
+
       <p>Choose the type of system you want to simulate.</p>
 
       <div class="row">
@@ -96,7 +107,18 @@
 
       <hr>
 
-      <h4>System Size</h4>
+      <h4>
+        System size
+        <a tabindex="0" 
+           data-toggle="popover" 
+           data-trigger="focus" 
+           title="System size"
+           data-content="Content"
+        >
+            <i class="fa fa-question-circle fa-lg"></i>
+        </a>
+    </h4>
+
       <p>How many sites in your system?</p>
 
 
@@ -108,7 +130,18 @@
 
       <hr>
 
-      <h4>Simulation truncation parameters</h4>
+      <h4>
+        Simulation truncation parameters
+        <a tabindex="0" 
+           data-toggle="popover" 
+           data-trigger="focus" 
+           title="Truncation"
+           data-content="Content"
+        >
+        <i class="fa fa-question-circle fa-lg"></i>
+        </a>
+      </h4>
+
       <p>Choose an upper bound for \( \chi \). This parameter controls the degree of quantum correlations the simulation captures. </p>
 
 
@@ -481,7 +514,7 @@
             <button
             type="button" 
             id="add_product_modifier"
-            class="btn btn-default form-control hamiltonian-operator-btn"
+            class="btn btn-default form-control hamiltonian-operator-btn add-product-or-sum-modifier-btn"
             data-sum-product="product">
             <i class="fa fa-times-circle fa-3x"></i> 
             Add a product modifier
@@ -493,7 +526,7 @@
             <button
             type="button" 
             id="add_sum_modifier"
-            class="btn btn-default form-control hamiltonian-operator-btn"
+            class="btn btn-default form-control hamiltonian-operator-btn add-product-or-sum-modifier-btn"
             data-sum-product="sum">
             <i class="fa fa-plus-circle fa-3x"></i> 
             Add a sum modifier
@@ -502,16 +535,12 @@
 
 	  </div>
 
-
-      
-
-      <div id="initial_state_modifier_operators_container">
-      </div>
-
       <hr>
 
-      <div id="initial_state_modifier_operators_terms">
+      <div id="initial_state_modifier_container">
+
       </div>
+
 
       <hr>
 
@@ -710,6 +739,9 @@
 
     $("#sidebar_new_calculation").addClass("active");
 
+    // Initialise popovers
+    $('[data-toggle="popover"]').popover();
+
   </script>
 
 {% endblock %}
@@ -720,10 +752,12 @@
 
   {% include "dashboard/handlebars_templates/hamiltonian_term_template.html" %}
 
-  {% include "dashboard/handlebars_templates/initial_base_states_template.html" %}  
+  {% include "dashboard/handlebars_templates/initial_base_states_template.html" %}
 
-  {% include "dashboard/handlebars_templates/spatial_dependence_template.html" %}  
+  {% include "dashboard/handlebars_templates/spatial_dependence_template.html" %}
 
-  {% include "dashboard/handlebars_templates/expectation_operators_template.html" %}    
-      
+  {% include "dashboard/handlebars_templates/expectation_operators_template.html" %}
+
+  {% include "dashboard/handlebars_templates/initial_state_modifier_sum_or_product_template.html" %}
+
 {% endblock %}

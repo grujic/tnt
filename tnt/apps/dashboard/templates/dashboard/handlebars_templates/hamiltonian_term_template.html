@@ -5,12 +5,12 @@
 
     <div id="hamiltonian-term-{{uuid}}" 
          data-hamiltonian-term-id="{{uuid}}" 
-         data-hamiltonian-operator-id="{{operator_id}}" 
+         data-hamiltonian-operator-id="{{operator_id}}"
          class="row hamiltonian-term">
 
     <div class="col-md-1" style="padding-top: 70px;">
 
-        <i class="fa fa-plus-circle fa-5x"></i> 
+        <i class="fa fa-{{sum-or-product sum_or_product}}-circle fa-5x"></i> 
 
     </div>
 
@@ -193,6 +193,21 @@ and fills out the form for a given spatial function-->
             return new Handlebars.SafeString(template(temporal_function));
         }
     );
+
+     Handlebars.registerHelper(
+        "sum-or-product", 
+        function(sum_or_product) {
+            if (sum_or_product == 'product') {
+
+                return 'times';
+
+            } else {
+
+                return 'plus';
+
+            }
+        }
+     );
 
 </script>
 
