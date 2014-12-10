@@ -246,7 +246,7 @@ operators = \
 	# Rotation
 	{
 		'operator_id': 17, \
-		'function_tex_str': "\mathrm{e}^{2\pi\mathrm{i}\hat{S}_j^y}", \
+		'function_tex_str': "\mathrm{exp}(2\pi\mathrm{i}\hat{S}_j^y)", \
 		'function_description': 'Spin flip', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
