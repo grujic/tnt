@@ -436,7 +436,7 @@
     <div class="panel-body">
 
       <h4>Initial state - base state</h4>
-      <p>Choose the initial state you want to evolve from. You can choose from the following given states, and optionally you can apply transformations by applying operators below. </p>
+      <p>Choose the initial state \( | \psi \rangle_{\mathrm{base}} \) you want to evolve from. You can choose from the following given states, and optionally you can apply transformations by applying operators below. </p>
 
       <div id="new_calculation_available_initial_base_states">
 
@@ -450,7 +450,11 @@
       <h4>Initial state - transformation</h4>
 
       <p>Now choose a transformation to tailor your initial state (optional).
-      You can choose to apply the operator to the initial state as a <b>product</b> of terms or a <b>sum</b> of terms.</p>
+      You can apply multiple system-wide operators \( \hat{O}_k \) to the initial state, which will be applied in the order they are specified below.
+      i.e. \( | \psi \rangle_{\mathrm{start}} = \hat{O}_m\cdots\hat{O}_2\hat{O}_1| \psi \rangle_{\mathrm{base}} \) where \( m \) operators have been applied.</p>
+      
+      <p>Each system wide operator \( \hat{O}_k \) is to formed from a single-site operators of your choice, 
+      and can be <b>product</b> of terms or a <b>sum</b> of terms (where the latter case is only available when there is no quantum number conservation).</p>
 
       <div class="panel panel-default">
 
@@ -462,7 +466,7 @@
 
                     <p id="initial_state_modifier_explain_text_sum">If you choose a <b>sum</b> of terms, the chosen operators will be used to form the total site-wide operator as 
                     \[ 
-                    \hat{O} = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j},
+                    \hat{O}_k = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j},
                     \]
                     where there are \( n_o \) on-site terms \( \hat{o} \), and where \( f_{o}(j) \) is the chosen spatial function for the onsite term \( \hat{o} \).
                     </p>
@@ -473,9 +477,11 @@
 
                     <p id="initial_state_modifier_explain_text_product" style="">If you choose a <b>product</b> of terms, the chosen operators will be used to form the total site-wide operator as 
                     \[ 
-                    \hat{O} = \prod_{j=0}^{L-1}\prod_o^{n_o}f_{o}(j)\hat{o}_{j},
+                    \hat{O} = \prod_{j=0}^{L-1}\prod_o^{n_o}\hat{o}_{j}^{f_{o}(j)},
                     \]
-                    where there are \( n_o \) on-site terms \( \hat{o} \), and where \( f_{o}(j) \) is the chosen spatial function for the onsite term \( \hat{o} \). Note the operators will be applied to the base state in the order that they are chosen.
+                    where there are \( n_o \) on-site terms \( \hat{o} \), and where \( f_{o}(j) \) is the chosen spatial function for the onsite term \( \hat{o} \). 
+                    For all operators apart from the spin flip, the function \( f_{o}(j) \) will take positive integer values only.
+                    Note the operators will be applied to the base state in the order that they are chosen.
                     </p>
 
                 </div>
@@ -581,9 +587,10 @@
       <p>Select from the following menu to add another Hamiltonian term, then customise it by choosing a functional form for its coefficients (defaults to constant across the system). 
       Each term will be used to form the Hamiltonian as 
       \[ 
-      H = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j} + \sum_{j=0}^{L-2}\sum_t^{n_t}f_{t}(j)\hat{t}_{j,j+1},
+      H = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)g_{o}(t)\hat{o}_{j} + \sum_{j=0}^{L-2}\sum_o^{n_n}f_{o}(j)g_{o}(t)\hat{o}_{j,j+1},
       \]
-      where there are \( n_o \) onsite terms \( \hat{o} \), \( n_t \) two-site terms \( \hat{t} \), and where \( f_{o,t}(j) \) is the chosen spatial function for the onsite or two-site term \( \hat{o},\hat{t} \).
+      where there are \( n_o \) onsite terms \( \hat{o}_{j} \), \( n_n \) nearest-neighbour two-site terms \( \hat{o}_{j,j+1} \), 
+      and where \( f_{o}(j), g_{o}(t) \) are the chosen spatial and temporal functions respectively for the onsite or two-site term.
       </p>
 
       <div id="new_calculation_available_dynamic_hamiltonian_operators">
