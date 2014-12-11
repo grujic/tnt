@@ -43,7 +43,8 @@ fns = \
 		'use_for_spatial_hamil': True, \
 		'use_for_temporal_hamil': True, \
 		'use_for_sum_modifier': True, \
-		'use_for_product_modifier': True, \
+		'use_for_product_modifier': False, \
+		'use_for_product_modifier_noncovariant': True, \
 		'parameters': [{
 			'parameter_id': 1, \
 			'parameter_tex_str': 'a', \
@@ -67,7 +68,8 @@ fns = \
 		'use_for_spatial_hamil': True, \
 		'use_for_temporal_hamil': True, \
 		'use_for_sum_modifier': True, \
-		'use_for_product_modifier': True, \
+		'use_for_product_modifier': False, \
+		'use_for_product_modifier_noncovariant': True, \
 		'parameters': [{
 			'parameter_id': 1, \
 			'parameter_tex_str': 'a', \
@@ -92,12 +94,13 @@ fns = \
 	# A sin dependence on system size
 	{
 		'id': 4, \
-		'function_tex_str': 'C + A \sin ( k j + \phi )', \
+		'function_tex_str': 'C + A \sin [ 2 \pi ( k j + \phi ) ]', \
 		'function_description': 'Sinusoidal', \
 		'use_for_spatial_hamil': True, \
 		'use_for_temporal_hamil': True, \
 		'use_for_sum_modifier': True, \
-		'use_for_product_modifier': True, \
+		'use_for_product_modifier': False, \
+		'use_for_product_modifier_noncovariant': True, \
 		'parameters': [{
 			'parameter_id': 1, \
 			'parameter_tex_str': 'C', \
@@ -134,6 +137,7 @@ fns = \
 		'use_for_temporal_hamil': True, \
 		'use_for_sum_modifier': True, \
 		'use_for_product_modifier': True, \
+		'use_for_product_modifier_noncovariant': True, \
 		'parameters': [{
 			'parameter_id': 1, \
 			'parameter_tex_str': 'A', \
@@ -158,6 +162,7 @@ fns = \
 		'use_for_temporal_hamil': True, \
 		'use_for_sum_modifier': True, \
 		'use_for_product_modifier': True, \
+		'use_for_product_modifier_noncovariant': True, \
 		'parameters': [{
 			'parameter_id': 1, \
 			'parameter_tex_str': 'A', \
@@ -188,6 +193,7 @@ fns = \
 		'use_for_temporal_hamil': True, \
 		'use_for_sum_modifier': True, \
 		'use_for_product_modifier': True, \
+		'use_for_product_modifier_noncovariant': True, \
 		'parameters': [{
 			'parameter_id': 1, \
 			'parameter_tex_str': 'A', \
