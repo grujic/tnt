@@ -1055,25 +1055,25 @@ var tnt = {
                 tnt.get_spatial_function(parseInt(temporal_function_id))
         );
 
-		// Now get the values for each of the parameters for the spatial function variation
-		var spatial_function_parameter_input_form
+        // Now get the values for each of the parameters for the spatial function variation
+        var spatial_function_parameter_input_form
             = $(term).find('.spatial_parameter_input_div .spatial_or_temporal_function_parameter_input_form');
 
-		// Loop over the spatial function parameters for this term
-		_.each($(spatial_function_parameter_input_form).find('.form-control'),
+        // Loop over the spatial function parameters for this term
+        _.each($(spatial_function_parameter_input_form).find('.form-control'),
 
-		   function(el) {
+           function(el) {
 
-		       var function_parameter_id = $(el).data("parameter-id");
+               var function_parameter_id = $(el).data("parameter-id");
 
-		       var function_parameter_val = $(el).val()
+               var function_parameter_val = $(el).val()
 
-		       spatial_function.parameters[function_parameter_id - 1]['value']
+               spatial_function.parameters[function_parameter_id - 1]['value']
                 = function_parameter_val;
 
-		   }
+           }
 
-		);
+        );
 
 		// Now temporal function parameters
 		var temporal_function_parameter_input_form
@@ -1608,6 +1608,26 @@ var tnt = {
         .applied_operators = [];
 
 		// Now we look for modifiers to the base state:
+        // Loop over each product or sum operator
+        //_.each(
+            //$('#initial_state_modifier_container .initial_state_modifier_sum_or_product'),
+            //function(el) {
+
+                //var sum_or_product = $(el).data('sum-or-product');
+
+                //_.each(
+                    //$(el)
+                    //.find('.initial_state_modifier_operators_terms')
+                    //.find('.hamiltonian-term'),
+                    //function (term) {
+                        //var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
+                    //}
+                //);
+
+            //}
+        //);
+
+
 		_.each($('#initial_state_modifier_operators_terms .hamiltonian-term'),
 	       function (term) {
 
