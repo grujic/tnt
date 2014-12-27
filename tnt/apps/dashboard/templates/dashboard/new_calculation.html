@@ -4,10 +4,9 @@
 
 <div id="new_calculation_basic_setup" class="new-calculation-step">
 
-  <div class="jumbotron">
-    <h1>Set up your system </h1>
-    <p>Define some basic properties of the system you're simulating</p>
-  </div>
+    <!--<div class="page-header">-->
+        <!--<h1>Set up your system <small>Basic system properties</small></h1>-->
+    <!--</div>-->
 
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -30,10 +29,12 @@
         >
             <i class="fa fa-question-circle fa-lg"></i>
         </a>
-      	
+
       </h4>
       <p> </p>
       <input class="form-control" id="calculation_name" type="text" class="" placeholder="Leave blank to generate random default" value="">
+
+      <hr>
 
       <h4>
         System type 
@@ -62,93 +63,110 @@
           </div>
       </div>
 
-      <div id="system_type_extra_info_spins" style="display: block;" class="system_type_extra_info">
 
-        <h4>Physical dimension</h4>
-        <p>Choose the magnitude of the spin S, where 2S =  </p>
+      <hr>
+
+      <div class="row">
+
+        <div class="col-md-4">
+
+            <div id="system_type_extra_info_spins" style="display: block;" class="system_type_extra_info">
+
+                <h4>Physical dimension</h4>
+                <p>Magnitude of the spin S, where 2S =  </p>
 
 
-        <select id="system_type_extra_info_spins_choice" class="form-control">
+                        <select id="system_type_extra_info_spins_choice" class="form-control">
 
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
 
-        </select>
+                        </select>
 
-      </div>
 
-      <div id="system_type_extra_info_bosons" style="display: none;" class="system_type_extra_info">
+            </div>
 
-        <h4>Physical dimension</h4>
-        <p>Choose the maximum number of bosons per site:</p>
+            <div id="system_type_extra_info_bosons" style="display: none;" class="system_type_extra_info">
 
-        <select id="system_type_extra_info_bosons_choice" class="form-control">
+                <h4>Physical dimension</h4>
+                <p>Maximum number of bosons per site:</p>
 
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+                <select id="system_type_extra_info_bosons_choice" class="form-control">
 
-        </select>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
 
-      </div>
+                </select>
 
-      <div id="system_type_extra_info_fermions" style="display: none;" class="system_type_extra_info">
+            </div>
 
-        <h4>Physical dimension</h4>
-        <p>Are these fermions spinless, or spin one half?</p>
+            <div id="system_type_extra_info_fermions" style="display: none;" class="system_type_extra_info">
 
-        <div id="fermions_spinless_choice" class="btn-group" data-toggle="buttons">
-          <label class="btn btn-primary">
-            <input type="radio" name="options" data-fermion-type="spinless">Spinless
-          </label>
-          <label class="btn btn-primary active">
-            <input type="radio" name="options" data-fermion-type="spin_half" checked>Spin 1 / 2
-          </label>
+                <h4>Physical dimension</h4>
+                <p>Are these fermions spinless, or spin one half?</p>
+
+                <div id="fermions_spinless_choice" class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary">
+                    <input type="radio" name="options" data-fermion-type="spinless">Spinless
+                </label>
+                <label class="btn btn-primary active">
+                    <input type="radio" name="options" data-fermion-type="spin_half" checked>Spin 1 / 2
+                </label>
+                </div>
+
+            </div>
+
         </div>
 
-      </div>
+        <div class="col-md-4">
 
-      <hr>
+            <h4>
+                System size
+                <a tabindex="0" 
+                data-toggle="popover" 
+                data-trigger="focus" 
+                data-content="Choose the number of sites in your system. The system will be formed of a 1D chain with open boundary conditions, and must have between 2 and 40 sites."
+                >
+                    <i class="fa fa-question-circle fa-lg"></i>
+                </a>
+            </h4>
 
-      <h4>
-        System size
-        <a tabindex="0" 
-           data-toggle="popover" 
-           data-trigger="focus" 
-           data-content="Choose the number of sites in your system. The system will be formed of a 1D chain with open boundary conditions, and must have between 2 and 40 sites."
-        >
-            <i class="fa fa-question-circle fa-lg"></i>
-        </a>
-    </h4>
-        <form class="form-inline" role="form">
-            <select id="system_size_choice" class="form-control">
+                <p>Number of sites</p>
 
-            </select>
-        </form>
+                    <select id="system_size_choice" class="form-control">
 
-      <hr>
+                    </select>
 
-      <h4>
-        Simulation truncation parameters
-        <a tabindex="0" 
-           data-toggle="popover" 
-           data-trigger="focus" 
-           data-content="Choose an upper bound for \( \chi \). This parameter controls the degree of quantum correlations the simulation captures. A larger \( \chi \) will mean a longer run-time but a more accurate calculation. The maximum allowed value is 40."
-        >
-        <i class="fa fa-question-circle fa-lg"></i>
-        </a>
-      </h4>
+        </div>
 
-        <form class="form-inline" role="form">
-            <select id="chi_choice" class="form-control">
+        <div class="col-md-4">
 
-            </select>
-        </form>
+            <h4>
+                Truncation parameter
+                <a tabindex="0" 
+                data-toggle="popover" 
+                data-trigger="focus" 
+                data-content="Choose an upper bound for \( \chi \). This parameter controls the degree of quantum correlations the simulation captures. A larger \( \chi \) will mean a longer run-time but a more accurate calculation. The maximum allowed value is 40."
+                >
+                <i class="fa fa-question-circle fa-lg"></i>
+                </a>
+            </h4>
+
+                    <p>Matrix product dimension</p>
+
+                    <select id="chi_choice" class="form-control">
+
+                    </select>
+
+        </div>
+
+    </div>
 
 
       <hr>
@@ -200,52 +218,74 @@
 
       <div id="ground_state_extra_info_specification" style="display: none;">
 
-        <h5>Precision</h5>
+        <div class="row">
 
-        <p>Enter the precision with which you want to find the ground state. The number below is a convergence parameter - if the ground state energy on successive 'sweeps' do not differ by more than this fractional amount, the calculation is stopped. </p>
+            <div class="col-md-6">
 
-        <form class="form-horizontal" role="form">
-          <div class="form-group">
-            <label for="input_ground_state_precision_choice" class="col-sm-2 control-label">
-                \[ \log{Precision} = \]
-            </label>
-            <div class="col-sm-10">
 
-                <select id="input_ground_state_precision_choice" class="col-sm-4 form-control">
+                <h5>Precision
 
-                </select>
+                    <a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="Enter the precision with which you want to find the ground state. The number below is a convergence parameter - if the ground state energy on successive 'sweeps' do not differ by more than this fractional amount, the calculation is stopped. "
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
+
+                </h5>
+
+                <p>Enter the precision with which you want to find the ground state. </p>
+
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="input_ground_state_precision_choice" class="col-sm-4 control-label">
+                            log (Precision)
+                        </label>
+                        <div class="col-sm-8">
+
+                            <select id="input_ground_state_precision_choice" class="col-sm-4 form-control">
+
+                            </select>
+
+                        </div>
+                    </div>
+                </form>
 
             </div>
-          </div>
-        </form>
 
-        <hr>
-    
-        <h5>Quantum number conservation</h5>
-        <p>Is your calculation quantum number conserving?</p>
+            <div class="col-md-6">
 
-        <div id="ground_number_conservation_choice" class="btn-group" data-toggle="buttons">
-          <label class="btn btn-primary">
-            <input type="radio" name="options" data-number-conservation=1>Yes
-          </label>
-          <label class="btn btn-primary active">
-            <input type="radio" name="options" data-number-conservation=0 checked>No
-          </label>
-        </div>
+                <h5>Quantum number conservation</h5>
+                <p>Is your calculation quantum number conserving?</p>
 
-        <br>
+                <div id="ground_number_conservation_choice" class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary">
+                    <input type="radio" name="options" data-number-conservation=1>Yes
+                </label>
+                <label class="btn btn-primary active">
+                    <input type="radio" name="options" data-number-conservation=0 checked>No
+                </label>
+                </div>
 
-        <div id="ground_state_quantum_number_info" style="display: none;">
 
-            <p>
-                Enter the quantum number. The possible values have been enumerated for you. 
-            </p>
+                <br><br>
 
-            <form class="form-inline" role="form">
-                <select id="quantum_number_ground_state_choice" class="form-control">
+                <div id="ground_state_quantum_number_info" style="display: none;">
 
-                </select>
-            </form>
+                    <p>
+                        Enter the quantum number. The possible values have been enumerated for you. 
+                    </p>
+
+                    <form class="form-inline" role="form">
+                        <select id="quantum_number_ground_state_choice" class="form-control">
+
+                        </select>
+                    </form>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -269,10 +309,14 @@
 
 <div id="new_calculation_define_ground_hamiltonian" class="new-calculation-step">
 
-  <div class="jumbotron">
-    <h1>Define your ground state Hamiltonian </h1>
-    <p>Build it up step by step by choosing from the predefined operators below.</p>
-  </div>
+    <div class="page-header">
+        <h1>Ground state Hamiltonian <small>Choose from the predefined operators below</small></h1>
+    </div>
+
+  <!--<div class="jumbotron">-->
+    <!--<h1>Define your ground state Hamiltonian </h1>-->
+    <!--<p>Build it up step by step by choosing from the predefined operators below.</p>-->
+  <!--</div>-->
 
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -341,9 +385,6 @@
     </div>
 
     <div class="panel-body">
-      <h4>Time evolution</h4>
-
-      <hr>
 
       <p>Do you want to calculate dynamical evolution of your system?</p>
 
@@ -356,50 +397,60 @@
         </label>
       </div>
 
-      <hr>
 
-      <div id="time_evolution_time_step_specification">
-
-          <div id="time_evolution_parameter_warning_msg" class="bg-warning text-warning" style="display:none;">
-            <p>Please ensure your time step size is a real number, and your chosen number of time steps is between 1 and 2000. </p>
-            <p>The number of expectation value evaluations must be no less than (the number of time steps) / 200, and no larger than the number of time steps. </p>
-          </div>
-
-        <form class="form-horizontal" role="form">
-          <div class="form-group">
-            <label for="input_num_time_steps" class="col-sm-3 control-label">Number of time steps</label>
-            <div class="col-sm-9">
-              <input type="number" class="form-control integer-only" id="input_num_time_steps" placeholder="100" value="100">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="input_time_step_size" class="col-sm-3 control-label">Time step size</label>
-            <div class="col-sm-9">
-              <input type="number" class="form-control float-only" id="input_time_step_size" placeholder="0.01" value="0.01">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="input_num_expval_time_steps" class="col-sm-3 control-label">Number of time steps for expectation value evaluations</label>
-            <div class="col-sm-9">
-              <input type="number" class="form-control integer-only" id="input_num_expval_time_steps" placeholder="Leave blank to evaluate expectation at ten evenly spaced points" value="">
-            </div>
-          </div>
-        </form>
+      <div id="time_evolution_time_step_specification" class="row">
 
         <hr>
 
-        <p>Enforce quantum number conservation on the dynamical evolution?</p>
+        <div class="col-md-7">
 
-        <div id="dynamical_number_conservation_choice" class="btn-group" data-toggle="buttons">
-            <label class="btn btn-primary">
-            <input type="radio" name="options" data-dynamical-number-conservation=1>Yes
-            </label>
-            <label class="btn btn-primary active">
-            <input type="radio" name="options" data-dynamical-number-conservation=0 checked>No
-            </label>
-        </div>
 
-      </div>
+            <div id="time_evolution_parameter_warning_msg" class="bg-warning text-warning" style="display:none;">
+                <p>Please ensure your time step size is a real number, and your chosen number of time steps is between 1 and 2000. </p>
+                <p>The number of expectation value evaluations must be no less than (the number of time steps) / 200, and no larger than the number of time steps. </p>
+            </div>
+
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="input_num_time_steps" class="col-sm-5 control-label">Number of time steps</label>
+                    <div class="col-sm-7">
+                    <input type="number" class="form-control integer-only" id="input_num_time_steps" placeholder="100" value="100">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="input_time_step_size" class="col-sm-5 control-label">Time step size</label>
+                    <div class="col-sm-7">
+                    <input type="number" class="form-control float-only" id="input_time_step_size" placeholder="0.01" value="0.01">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="input_num_expval_time_steps" class="col-sm-5 control-label">Number of time steps for expectation value evaluations</label>
+                    <div class="col-sm-7">
+                    <input type="number" class="form-control integer-only" id="input_num_expval_time_steps" placeholder="Leave blank to evaluate expectation at ten evenly spaced points" value="">
+                    </div>
+                </div>
+            </form>
+
+
+            </div>
+
+            <div class="col-md-5"
+
+                <p>Enforce quantum number conservation on the dynamical evolution?</p>
+
+                <div id="dynamical_number_conservation_choice" class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-primary">
+                    <input type="radio" name="options" data-dynamical-number-conservation=1>Yes
+                    </label>
+                    <label class="btn btn-primary active">
+                    <input type="radio" name="options" data-dynamical-number-conservation=0 checked>No
+                    </label>
+                </div>
+
+            </div>
+
+        </div> <!-- End of row -->
+
 
       <hr>
 
@@ -565,10 +616,27 @@
 
 <div id="new_calculation_define_dynamic_hamiltonian" class="new-calculation-step">
 
-  <div class="jumbotron">
-    <h1>Define your dynamic Hamiltonian </h1>
-    <p>This is the Hamiltonian controlling the system as it evolves from your chosen initial state. If you specified a ground state calculation, this Hamiltonian defaults to the Hamiltonian you chose to calculate the ground state. </p>
-  </div>
+    <div class="page-header">
+    <h1>
+        Define your dynamic Hamiltonian <small>
+
+      	<a tabindex="0" 
+           data-toggle="popover" 
+           data-trigger="focus" 
+           data-content="This is the Hamiltonian controlling the system as it evolves from your chosen initial state. If you specified a ground state calculation, this Hamiltonian defaults to the Hamiltonian you chose to calculate the ground state. "
+        >
+            <i class="fa fa-question-circle fa-lg"></i>
+        </a>
+
+        </small>
+
+    </h1>
+    </div>
+
+  <!--<div class="jumbotron">-->
+    <!--<h1>Define your dynamic Hamiltonian </h1>-->
+    <!--<p>This is the Hamiltonian controlling the system as it evolves from your chosen initial state. If you specified a ground state calculation, this Hamiltonian defaults to the Hamiltonian you chose to calculate the ground state. </p>-->
+  <!--</div>-->
 
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -626,10 +694,14 @@
 <!-- Expectation value specification -->
 <div id="new_calculation_expectation_operators" class="new-calculation-step">
 
-  <div class="jumbotron">
-    <h1>Expectation values</h1>
-    <p>What do you want to calculate?</p>
-  </div>
+    <div class="page-header">
+    <h1>Expectation values <small>What do you want to calculate?</small></h1>
+    </div>
+
+  <!--<div class="jumbotron">-->
+    <!--<h1>Expectation values</h1>-->
+    <!--<p>What do you want to calculate?</p>-->
+  <!--</div>-->
 
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -697,14 +769,14 @@
 <!-- Confirm and submit the calculation -->
 <div id="new_calculation_confirm" class="new-calculation-step">
 
-  <div class="jumbotron">
-    <h1>That's it!</h1>
-    <p>If you're happy with this calculation, hit Save. You can then run it at your leisure. </p>
-  </div>
+  <!--<div class="jumbotron">-->
+    <!--<h1>That's it!</h1>-->
+    <!--<p>If you're happy with this calculation, hit Save. You can then run it at your leisure. </p>-->
+  <!--</div>-->
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Confirmation</h3>
+      <h3 class="panel-title">Confirmation - If you're happy with this calculation, hit Save. You can then run it at your leisure. </h3>
     </div>
 
     <div class="panel-body">
