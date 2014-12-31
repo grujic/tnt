@@ -55,11 +55,8 @@ blank_calculation_template = \
 
 		'initial_state': {
 			'base_state': {},
-			'applied_operators': {
-                'type': None,
-                'applied_operators': [],
-                'renormalise': None
-            }
+            'renormalise': None,
+            'applied_mpos': []
 		},
 
 		'expectation_values': {

@@ -44,6 +44,8 @@ var tnt = {
         // Dropdown with strictly increasing vals
         var select=document.getElementById(dropdown_id);
 
+        $(select).empty();
+
         _.each(_.range(dropdown_min, dropdown_max + 1), function (num) {
             var option = document.createElement("OPTION");
             select.options.add(option);
@@ -59,6 +61,8 @@ var tnt = {
     set_up_numeric_vals_dropdown: function(dropdown_id, dropdown_possibilities, dropdown_default) {
         // Dropdown with arbitrary vals
         var select=document.getElementById(dropdown_id);
+
+        $(select).empty();
 
         _.each(dropdown_possibilities, function (num) {
             var option = document.createElement("OPTION");
@@ -408,6 +412,35 @@ var tnt = {
 			);
 	},
 
+    attach_click_fn_to_remove_all_terms: function () {
+        $(".remove-all-terms-btn").click(
+            function (e) {
+                console.log("Removing all terms...\n");
+
+                var hamiltonian_terms_container_super =
+                    $(this)
+                    .closest(".hamiltonian_terms_container_super");
+
+                var hamiltonian_terms_container =
+                    $(hamiltonian_terms_container_super)
+                    .find(".hamiltonian_terms_container");
+
+                var hamiltonian_tex_str =
+                    $(hamiltonian_terms_container_super)
+                    .find(".hamiltonian_tex_str");
+
+                $(hamiltonian_terms_container).empty();
+
+                tnt
+                .update_hamiltonian_tex_str(
+                    hamiltonian_terms_container,
+                    hamiltonian_tex_str
+                );
+
+            }
+        );
+    },
+
 	attach_click_fn_to_expectation_operator_choices: function () {
 		// When an expectation operator is chosen, need to toggle it's 'active' class
 		$(".expectation-operator-btn")
@@ -674,7 +707,8 @@ var tnt = {
 
 	},
 
-    update_hamiltonian_tex_str: function(hamiltonian_term_container_selector,
+    update_hamiltonian_tex_str: function(
+        hamiltonian_term_container_selector,
         hamiltonian_tex_str_el) {
         // Update a Hamiltonian tex string representation
         // of the input Hamiltonian.
@@ -988,6 +1022,8 @@ var tnt = {
             "#new_calculation_define_ground_hamiltonian .btn-next-step",
             "#ground_hamiltonian_tex_str");
 
+        tnt.attach_click_fn_to_remove_all_terms();
+
 		tnt.clear_all_new_calculation_stages();
 
 		$("#new_calculation_define_ground_hamiltonian")
@@ -1009,12 +1045,7 @@ var tnt = {
 		// (or more generally quantum operator) term, and we get back a
 		// JSON struct describing the term's spatial dependence etc
 
-		console.log("Converting an operator GUI element into JSON...");
-
 		var hamiltonian_operator_id = $(term).data("hamiltonian-operator-id");
-
-		console.log("hamiltonian_operator_id: ");
-		console.log(hamiltonian_operator_id);
 
 		var this_hamiltonian_operator
             = _.filter(
@@ -1023,9 +1054,6 @@ var tnt = {
                     return operator['operator_id'] == parseInt(hamiltonian_operator_id);
                 }
             )[0];
-
-		console.log("this_hamiltonian_operator: ");
-		console.log(this_hamiltonian_operator);
 
 		// Need a deep clone of this object
 		var hamiltonian_operator = _.cloneDeep(this_hamiltonian_operator);
@@ -1100,6 +1128,7 @@ var tnt = {
 		hamiltonian_operator['temporal_function'] = temporal_function;
 
 		return hamiltonian_operator;
+
 	},
 
 	validate_new_calculation_define_ground_hamiltonian: function () {
@@ -1583,66 +1612,75 @@ var tnt = {
         .initial_state
         .base_state = initial_base_state;
 
-        // See what kind of initial state modifier the user has selected,  a sum or a product
-        window
-        .calculation
-        .setup
-        .initial_state
-        .applied_operators
-        .type = $("#initial_state_modifier_sum_or_product_choice").val();
-
         var dec_vals = {false: 0, true: 1};
         window
         .calculation
         .setup
         .initial_state
-        .applied_operators
         .renormalise =
         dec_vals[$("#renormalise_after_initial_state_modifiers_choice").is(":checked")];
 
+		// Now we look for modifiers to the base state:
+
+        // First empty any existing modifiers:
         window
         .calculation
         .setup
         .initial_state
-        .applied_operators
-        .applied_operators = [];
+        .applied_mpos = [];
 
-		// Now we look for modifiers to the base state:
         // Loop over each product or sum operator
-        //_.each(
-            //$('#initial_state_modifier_container .initial_state_modifier_sum_or_product'),
-            //function(el) {
+        _.each(
+            $('#initial_state_modifier_container .initial_state_modifier_sum_or_product'),
+            function(el) {
 
-                //var sum_or_product = $(el).data('sum-or-product');
+                var sum_or_product = $(el).data('sum-or-product');
 
-                //_.each(
-                    //$(el)
-                    //.find('.initial_state_modifier_operators_terms')
-                    //.find('.hamiltonian-term'),
-                    //function (term) {
-                        //var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
-                    //}
-                //);
+                console.log("Found a " + sum_or_product + " modifier container...\n");
 
-            //}
-        //);
+                var applied_operators_this_modifier = [];
+
+                _.each(
+                    $(el)
+                    .find('.initial_state_modifier_operators_terms')
+                    .find('.hamiltonian-term'),
+                    function (term) {
+                        console.log("In this container, found a Ham operator: \n");
+                        var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
+                        console.log(hamiltonian_operator);
+                        applied_operators_this_modifier.push(hamiltonian_operator);
+                    }
+                );
+
+                window
+                .calculation
+                .setup
+                .initial_state
+                .applied_mpos
+                .push({
+                    "type": sum_or_product,
+                    "applied_operators": applied_operators_this_modifier
+                });
+
+            }
+        );
 
 
-		_.each($('#initial_state_modifier_operators_terms .hamiltonian-term'),
-	       function (term) {
+		//_.each($('#initial_state_modifier_operators_terms .hamiltonian-term'),
+		   //function (term) {
 
-	       	   var operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
+				  //var operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
 
-	           window
-	           .calculation
-	           .setup
-	           .initial_state
-	           .applied_operators
-	           .applied_operators
-	           .push(operator);
+			   //window
+			   //.calculation
+			   //.setup
+			   //.initial_state
+			   //.applied_operators
+			   //.applied_operators
+			   //.push(operator);
 
-	       }
-		); 	// End of loop over Hamiltonian terms
+		   //}
+		//); 	// End of loop over Hamiltonian terms
 
 		tnt.initialise_new_calculation_define_dynamic_hamiltonian();
 
@@ -1664,6 +1702,8 @@ var tnt = {
             "#new_calculation_define_dynamic_hamiltonian .btn-next-step",
             "#dynamic_hamiltonian_tex_str"
         );
+
+        tnt.attach_click_fn_to_remove_all_terms();
 
         // If the ground state has been calculated, want to default
         // the dynamic Hamiltonian to the ground state one

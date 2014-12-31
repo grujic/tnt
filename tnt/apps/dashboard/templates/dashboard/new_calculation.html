@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div id="new_calculation_basic_setup" class="new-calculation-step">
+<div id="new_calculation_basic_setup" class="new-calculation-step" style="display: none;">
 
     <!--<div class="page-header">-->
         <!--<h1>Set up your system <small>Basic system properties</small></h1>-->
@@ -187,7 +187,7 @@
 </div> <!-- End of div new_calculation_basic_setup -->
 
 <!-- Ground state calculation specification -->
-<div id="new_calculation_ground_state" class="new-calculation-step">
+<div id="new_calculation_ground_state" class="new-calculation-step" style="display: none;" >
 
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -307,7 +307,7 @@
   </div>
 </div> <!-- End of Ground state calculation specification -->
 
-<div id="new_calculation_define_ground_hamiltonian" class="new-calculation-step">
+<div id="new_calculation_define_ground_hamiltonian" class="new-calculation-step" style="display: none;">
 
     <div class="page-header">
         <h1>Ground state Hamiltonian <small>Choose from the predefined operators below</small></h1>
@@ -345,11 +345,15 @@
 
       <hr>
 
-      <h2 >Hamiltonian H = <span id="ground_hamiltonian_tex_str"></span></h2>
+      <h2 >Hamiltonian H = <span id="ground_hamiltonian_tex_str" class="hamiltonian_tex_str"></span></h2>
 
       <div id="no_ground_hamiltonian_terms_added_yet_warning" class="alert alert-info" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
 
-      <div id="ground_hamiltonian_terms_container">
+      <div id="ground_hamiltonian_terms_container_super" class="hamiltonian_terms_container_super">
+
+        <div id="ground_hamiltonian_terms_container" class="hamiltonian_terms_container">
+        </div>
+
       </div>
 
       <hr>
@@ -371,7 +375,7 @@
 </div>  <!-- End of div new_calculation_define_ground_hamiltonian-->
 
 <!-- Time evolution calculation specification -->
-<div id="new_calculation_time_evolution" class="new-calculation-step">
+<div id="new_calculation_time_evolution" class="new-calculation-step" style="display: none;">
 
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -471,7 +475,7 @@
 </div> <!-- End of Time evolution calculation specification -->
 
 <!-- Initial state specification -->
-<div id="new_calculation_initial_state" class="new-calculation-step">
+<div id="new_calculation_initial_state" class="new-calculation-step" style="display: none;">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Initial state</h3>
@@ -614,7 +618,7 @@
 </div>
 <!-- End of Time evolution specification -->
 
-<div id="new_calculation_define_dynamic_hamiltonian" class="new-calculation-step">
+<div id="new_calculation_define_dynamic_hamiltonian" class="new-calculation-step" style="display: none;">
 
     <div class="page-header">
     <h1>
@@ -666,11 +670,25 @@
 
       <hr>
 
-      <h2>Hamiltonian H = <span id="dynamic_hamiltonian_tex_str"></span></h2>
 
       <div id="no_dynamic_hamiltonian_terms_added_yet_warning" class="alert alert-info" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
 
-      <div id="dynamic_hamiltonian_terms_container">
+      <div id="dynamic_hamiltonian_terms_container_super" class="hamiltonian_terms_container_super">
+
+        <h2>
+
+            <btn class="btn btn-danger remove-all-terms-btn">
+                <i class="fa fa-trash-o fa-lg"></i> Remove all terms
+            </btn>
+
+            Hamiltonian H = <span id="dynamic_hamiltonian_tex_str" class="hamiltonian_tex_str"></span>
+
+        </h2>
+
+
+        <div id="dynamic_hamiltonian_terms_container" class="hamiltonian_terms_container">
+        </div>
+
       </div>
 
       <hr>
@@ -692,7 +710,7 @@
 </div>  <!-- End of div new_calculation_define_dynamic_hamiltonian-->
 
 <!-- Expectation value specification -->
-<div id="new_calculation_expectation_operators" class="new-calculation-step">
+<div id="new_calculation_expectation_operators" class="new-calculation-step" style="display: none;">
 
     <div class="page-header">
     <h1>Expectation values <small>What do you want to calculate?</small></h1>
@@ -767,7 +785,7 @@
 </div> <!-- End of div new_calculation_expectation_operators -->
 
 <!-- Confirm and submit the calculation -->
-<div id="new_calculation_confirm" class="new-calculation-step">
+<div id="new_calculation_confirm" class="new-calculation-step" style="display: none;">
 
   <!--<div class="jumbotron">-->
     <!--<h1>That's it!</h1>-->
