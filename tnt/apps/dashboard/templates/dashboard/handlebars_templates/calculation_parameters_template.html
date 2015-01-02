@@ -1,0 +1,192 @@
+{% verbatim %}
+
+<script>
+
+
+    Handlebars.registerHelper("timestamp_to_human_date", function(timestamp) {
+
+        if ( (timestamp === null) || (timestamp == 0) || (timestamp == false) ) {
+
+            return "None";
+
+        } else {
+
+            var date = new Date(timestamp*1000);
+
+            return date.toLocaleString();
+
+        }
+
+    });
+
+</script>
+
+<script id="calculation-parameters-template" type="text/x-handlebars-template"> 
+
+    <div class="row">
+
+        
+
+        <div id="basic_info" class="col-md-6">
+
+            <h4>Basic info</h4>
+
+            <table class="table table-striped table-bordered">
+                <!--<thead>-->
+                    <!--<th></th>-->
+                    <!--<th></th>-->
+                <!--</thead>-->
+                <tbody>
+
+                    <tr>
+                        <th class="text-nowrap" scope="row">Calculation name</th>
+                        <td>{{meta_info.name}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">System type</th>
+                        <td>{{setup.system.system_type.name}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Number of sites</th>
+                        <td>{{setup.system.system_size}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Ground state?</th>
+                        <td>{{setup.system.calculate_ground_state}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Time evolution?</th>
+                        <td>{{setup.system.calculate_time_evolution}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <div id="time_info" class="col-md-6">
+
+            <h4>Time evolution</h4>
+
+            <table class="table table-striped table-bordered">
+                <!--<thead>-->
+                    <!--<th></th>-->
+                    <!--<th></th>-->
+                <!--</thead>-->
+                <tbody>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Num time steps</th>
+                        <td>{{setup.system.time.num_time_steps}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Time step</th>
+                        <td>{{setup.system.time.time_step}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Num expectation value evaluations</th>
+                        <td>{{setup.system.time.num_expval_time_steps}}</td>
+                    </tr>
+
+
+        
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div id="dynamic_ham_info" class="col-md-6">
+
+            <h4>Dynamic Hamiltonian terms</h4>
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <th>Term type</th>
+                    <th>Spatial dependence</th>
+                    <th>Temporal dependence</th>
+                </thead>
+                <tbody>
+
+                {{#setup.hamiltonian.dynamic.terms}}
+
+                    <tr>
+                        <th class="text-nowrap" scope="row">{{function_description}}</th>
+                        <td>{{spatial_function.function_description}}</td>
+                        <td>{{temporal_function.function_description}}</td>
+                    </tr>
+                {{/setup.hamiltonian.dynamic.terms}}
+
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <div id="ground_ham_info" class="col-md-6">
+
+            <h4>Ground Hamiltonian terms</h4>
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <th>Term type</th>
+                    <th>Spatial dependence</th>
+                </thead>
+                <tbody>
+
+                {{#setup.hamiltonian.ground.terms}}
+
+                    <tr>
+                        <th class="text-nowrap" scope="row">{{function_description}}</th>
+                        <td>{{spatial_function.function_description}}</td>
+                    </tr>
+                {{/setup.hamiltonian.ground.terms}}
+
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div id="qn_info" class="col-md-6">
+
+            <h4>Number conservation info</h4>
+
+            <table class="table table-striped table-bordered">
+                <!--<thead>-->
+                    <!--<th></th>-->
+                    <!--<th></th>-->
+                <!--</thead>-->
+                <tbody>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Conservation for ground state?</th>
+                        <td>{{setup.system.number_conservation.ground.apply_qn}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Ground state number</th>
+                        <td>{{setup.system.number_conservation.ground.qn}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Conservation for time evolution?</th>
+                        <td>{{setup.system.number_conservation.dynamic.apply_qn}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Dynamic number</th>
+                        <td>{{setup.system.number_conservation.dynamic.qn}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</script>
+
+{% endverbatim %}
