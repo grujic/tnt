@@ -391,17 +391,32 @@ var tnt = {
         hamiltonian_tex_str_el
     ) {
 		// When an initial base state is chosen, need to make that button active and all others not
-		$(".remove-hamiltonian-term-btn")
+		$(hamiltonian_term_container_selector).find(".remove-hamiltonian-term-btn")
 			.click(
+
 				function (e) {
-					var hamiltonian_term_containing_div = $(this).closest('.hamiltonian-term');
-					$(hamiltonian_term_containing_div).remove();
+					var hamiltonian_term_containing_div
+                        = $(this).closest('.hamiltonian-term');
 
 					// If there are no more Hamiltonian terms left, add back in the warning sign
-					if ($('.hamiltonian-term').length == 0) {
-						$("#no_ground_hamiltonian_terms_added_yet_warning").css("display", "block");
+					if ($('.hamiltonian-term').length == 1) {
+
+                        $(this)
+                        .closest(".new-calculation-step")
+                        .find(".no-terms-added")
+                        .css("display", "block");
+
+                        // Prevent user from proceeding
+                        $(this)
+                        .closest(".new-calculation-step")
+                        .find(".new-calculation-step-navigation .btn-next-step")
+                        .attr("disabled", true);
+
+
 					} else {
                     }
+
+					$(hamiltonian_term_containing_div).remove();
 
                     tnt.update_hamiltonian_tex_str(
                         hamiltonian_term_container_selector,
@@ -676,9 +691,6 @@ var tnt = {
             }
 
         }
-
-        console.log("hamiltonian_operator = ");
-        console.log(hamiltonian_operator);
 
         // Add GUI element
 		$(term_container_selector)

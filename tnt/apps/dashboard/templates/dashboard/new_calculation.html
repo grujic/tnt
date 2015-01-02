@@ -313,11 +313,6 @@
         <h1>Ground state Hamiltonian <small>Choose from the predefined operators below</small></h1>
     </div>
 
-  <!--<div class="jumbotron">-->
-    <!--<h1>Define your ground state Hamiltonian </h1>-->
-    <!--<p>Build it up step by step by choosing from the predefined operators below.</p>-->
-  <!--</div>-->
-
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Available operators</h3>
@@ -347,7 +342,7 @@
 
       <h2 >Hamiltonian H = <span id="ground_hamiltonian_tex_str" class="hamiltonian_tex_str"></span></h2>
 
-      <div id="no_ground_hamiltonian_terms_added_yet_warning" class="alert alert-info" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
+      <div id="no_ground_hamiltonian_terms_added_yet_warning" class="alert alert-info no-terms-added" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
 
       <div id="ground_hamiltonian_terms_container_super" class="hamiltonian_terms_container_super">
 
@@ -360,7 +355,7 @@
 
       <div class="row new-calculation-step-navigation">  <!-- back next controls -->
           <div class="col-md-6">
-              <button type="button" class="btn btn-default btn-back-step btn-back-step form-control ">Back</button>
+              <button type="button" disabled="disabled" class="btn btn-default btn-back-step btn-back-step form-control ">Back</button>
           </div>
 
           <div class="col-md-6">
@@ -671,7 +666,7 @@
       <hr>
 
 
-      <div id="no_dynamic_hamiltonian_terms_added_yet_warning" class="alert alert-info" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
+      <div id="no_dynamic_hamiltonian_terms_added_yet_warning" class="alert alert-info no-terms-added" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
 
       <div id="dynamic_hamiltonian_terms_container_super" class="hamiltonian_terms_container_super">
 
