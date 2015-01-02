@@ -73,16 +73,17 @@ def new_calculation(request):
                   'dashboard/new_calculation.html')
 
 @login_required
-def calculations(request):
-    # See all your calculations
-    return render(request, \
-                  'dashboard/calculations.html')
-
-@login_required
 def explore_calculation(request, calculation_id):
     # Explore a calculation's expectation values etc in the browser
     return render(request, \
                   'dashboard/explore_calculation.html', \
+                  {'calculation_id': calculation_id})
+
+@login_required
+def calculation_parameters(request, calculation_id):
+    # Summary of calculation's important parameters
+    return render(request, \
+                  'dashboard/calculation_parameters.html', \
                   {'calculation_id': calculation_id})
 
 def faq(request):

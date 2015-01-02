@@ -27,15 +27,15 @@ urlpatterns = patterns('',
         views.new_calculation, \
         name='new_calculation'),
 
-    # See all your calculations
-    url(r'^calculations[/]?$', \
-        views.calculations, \
-        name='calculations'),
-
     # Explore a calculation's expectation values etc in the browser
     url(r'^calculation/explore/(?P<calculation_id>[^/]+)[/]?$', \
         views.explore_calculation, \
-        name='explore_calculation'),    
+        name='explore_calculation'),
+
+    # Summary of calculation's important parameters
+    url(r'^calculation/parameters/(?P<calculation_id>[^/]+)[/]?$', \
+        views.calculation_parameters, \
+        name='calculation_parameters'),
 
     # FAQ page
     url(r'^faq[/]?$', \

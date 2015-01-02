@@ -716,11 +716,6 @@
     <h1>Expectation values <small>What do you want to calculate?</small></h1>
     </div>
 
-  <!--<div class="jumbotron">-->
-    <!--<h1>Expectation values</h1>-->
-    <!--<p>What do you want to calculate?</p>-->
-  <!--</div>-->
-
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Available expectation operators</h3>
@@ -735,22 +730,43 @@
       </div>
 
 
-      <div id="calculate_overlap_with_ground_state_choice_div">
+      <div class="row">
 
-          <h4>Do you want to calculate overlaps with the ground state?</h4>
-          <div id="calculate_overlap_with_ground_state_choice" class="btn-group" data-toggle="buttons">
+        <div id="calculate_overlap_with_ground_state_choice_div" class="col-md-6">
 
-            <label class="btn btn-primary">
-              <input type="radio" name="options" data-overlap-choice=1>Yes
-            </label>
-            <label class="btn btn-primary active">
-              <input type="radio" name="options" data-overlap-choice=0 checked>No
-            </label>
-          </div>
+            <h4>Calculate overlaps with the ground state?</h4>
+            <div id="calculate_overlap_with_ground_state_choice" class="btn-group" data-toggle="buttons">
 
-          <hr>
+                <label class="btn btn-primary">
+                <input type="radio" name="options" data-overlap-choice=1>Yes
+                </label>
+                <label class="btn btn-primary active">
+                <input type="radio" name="options" data-overlap-choice=0 checked>No
+                </label>
+            </div>
 
-      </div>
+            <hr>
+
+        </div>
+
+        <div id="calculate_overlap_with_initial_state_choice_div" class="col-md-6">
+
+            <h4>Calculate overlaps with the initial state?</h4>
+            <div id="calculate_overlap_with_initial_state_choice" class="btn-group" data-toggle="buttons">
+
+                <label class="btn btn-primary">
+                <input type="radio" name="options" data-overlap-choice=1>Yes
+                </label>
+                <label class="btn btn-primary active">
+                <input type="radio" name="options" data-overlap-choice=0 checked>No
+                </label>
+            </div>
+
+            <hr>
+
+        </div>
+
+     </div>
 
       <div id="no_expectation_operators_added_yet_warning" class="alert alert-warning" role="alert">You haven't specified any operators to calculate expectation values for yet!</div>
 

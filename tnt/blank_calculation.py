@@ -61,6 +61,7 @@ blank_calculation_template = \
 
 		'expectation_values': {
             'calculate_overlap_with_ground': None,
+            'calculate_overlap_with_initial': None,
 			'operators': []
 		}
 

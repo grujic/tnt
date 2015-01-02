@@ -1,0 +1,91 @@
+{% extends "dashboard/page_template.html" %}
+
+{% block content %}
+
+  {% block handlebars_scripts %}
+
+  {% endblock %}  <!-- End of block handlebars_scripts -->
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Calculation parameter summary</h3>
+  </div>
+
+  <div class="panel-body">
+
+    <div id="loading_parameters_msg" class="alert alert-info" role="alert">
+        Loading parameters...
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <a href="/api/v1.0/calculation/show/{{calculation_id}}" role="button" class="btn btn-default form-control ">See full parameters</a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="/media/{{calculation_id}}.json" class="btn btn-default  form-control" role="button">Download JSON results</a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="/media/{{calculation_id}}/{{calculation_id}}.mat" class="btn btn-default form-control" role="button">Download MAT results</a>
+        </div>
+
+    </div>
+
+
+    <hr>
+
+    <table class="table table-striped">
+        <thead>
+            <th>Parameter</th>
+            <th>Value</th>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="text-nowrap" scope="row">Name</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th class="text-nowrap" scope="row">Another parameter</th>
+                <td></td>
+            </tr>
+        </tbody>
+     </table>
+
+    <!--Space for graph -->
+    <div id="plot_div" 
+         style="min-width: 310px; height: 400px; margin: 0 auto">
+    </div>
+
+
+  </div>  <!-- End of panel body -->
+
+</div>  <!-- End of panel -->
+
+{% endblock %} <!-- End of block content -->
+
+{% block end_of_body_scripts %}
+
+  <script src="{{ STATIC_URL }}dashboard/js/highcharts.js"></script>
+
+  <script src="{{ STATIC_URL }}dashboard/js/plotting_fns.js"></script>
+
+  <script>
+    window.calculation_id = "{{calculation_id}}"; // Django passes this in
+
+    $.get(
+        "/api/v1.0/calculation/show/{{calculation_id}}", 
+        function(data) {
+            window.calculation = data.calculation;
+        }
+    ).done(
+        function() {
+            console.log("Done loading parameters for calculation {{calculation_id}}");
+            $("#loading_parameters_msg").css("display", "none");
+        }
+    );
+
+  </script>
+
+{% endblock %}

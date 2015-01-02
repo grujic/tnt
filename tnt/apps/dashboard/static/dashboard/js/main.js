@@ -1771,6 +1771,14 @@ var tnt = {
             $("#calculate_overlap_with_ground_state_choice_div").css("display", "none");
         }
 
+        if (window.calculation.setup.system.calculate_time_evolution == 1)
+        {
+            $("#calculate_overlap_with_initial_state_choice_div").css("display", "block");
+        } else {
+            $("#calculate_overlap_with_initial_state_choice_div").css("display", "none");
+
+        }
+
 		tnt.render_available_expectation_operators();
 
 		console.log("Rendered available expectation operators");
@@ -1817,6 +1825,15 @@ var tnt = {
             .setup
             .expectation_values
             .calculate_overlap_with_ground = $("#calculate_overlap_with_ground_state_choice .btn.active input").data("overlap-choice");
+        }
+
+        // Check if we want to calculate overlap with initial state:
+        if (window.calculation.setup.system.calculate_time_evolution == 1) {
+            window
+            .calculation
+            .setup
+            .expectation_values
+            .calculate_overlap_with_initial = $("#calculate_overlap_with_initial_state_choice .btn.active input").data("overlap-choice");
         }
 
 		var selected_expectation_operator_ids = _.map(
