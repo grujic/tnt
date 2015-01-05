@@ -72,8 +72,13 @@
 
             <div id="system_type_extra_info_spins" style="display: block;" class="system_type_extra_info">
 
-                <h4>Physical dimension</h4>
-                <p>Magnitude of the spin S, where 2S =  </p>
+                <h4>Physical dimension \( 2S \) <a tabindex="0" 
+           data-toggle="popover" 
+           data-trigger="focus" 
+           data-content="Choose the twice magnitude of the spin (i.e. for a spin 1/2 system, choose 1). Note larger values result in longer run times."
+        >
+            <i class="fa fa-question-circle fa-lg"></i>
+        </a></h4>
 
 
                         <select id="system_type_extra_info_spins_choice" class="form-control">
@@ -91,8 +96,13 @@
 
             <div id="system_type_extra_info_bosons" style="display: none;" class="system_type_extra_info">
 
-                <h4>Physical dimension</h4>
-                <p>Maximum number of bosons per site:</p>
+                <h4>Physical dimension \( n_{\mathrm{max}} \) <a tabindex="0" 
+           data-toggle="popover" 
+           data-trigger="focus" 
+           data-content="Choose the maximum number of bosons per site. Note larger values result in longer run times."
+        >
+            <i class="fa fa-question-circle fa-lg"></i>
+        </a></h4>
 
                 <select id="system_type_extra_info_bosons_choice" class="form-control">
 
@@ -137,8 +147,6 @@
                 </a>
             </h4>
 
-                <p>Number of sites</p>
-
                     <select id="system_size_choice" class="form-control">
 
                     </select>
@@ -148,7 +156,7 @@
         <div class="col-md-4">
 
             <h4>
-                Truncation parameter
+                Truncation parameter \( \chi \)
                 <a tabindex="0" 
                 data-toggle="popover" 
                 data-trigger="focus" 
@@ -157,8 +165,6 @@
                 <i class="fa fa-question-circle fa-lg"></i>
                 </a>
             </h4>
-
-                    <p>Matrix product dimension</p>
 
                     <select id="chi_choice" class="form-control">
 
