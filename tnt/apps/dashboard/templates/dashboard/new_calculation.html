@@ -202,12 +202,20 @@
 
     <div class="panel-body">
       
-      <h4>Ground state</h4>
-      <p>Do you want to calculate the ground state of this Hamiltonian?</p>
+      <h5>Calculate ground state
+      <a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="Choose Yes to calculate the energy of the ground state and any onsite and two-site expectation values you choose. The calculated ground state can also be used to generate the starting state for time evolution, and for overlap calculations with the time-evolved state."
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
+                    	
+                    </h5>
 
       <div id="ground_state_calculation_choice" class="btn-group" data-toggle="buttons">
         <label class="btn btn-primary">
-          <input type="radio" name="options" data-calculate-ground-state=1>Yes, calculate and save ground state
+          <input type="radio" name="options" data-calculate-ground-state=1>Yes
         </label>
         <label class="btn btn-primary active">
           <input type="radio" name="options" data-calculate-ground-state=0 checked>No
@@ -235,8 +243,6 @@
 
                 </h5>
 
-                <p>Enter the precision with which you want to find the ground state. </p>
-
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
                         <label for="input_ground_state_precision_choice" class="col-sm-4 control-label">
@@ -256,8 +262,16 @@
 
             <div class="col-md-6">
 
-                <h5>Quantum number conservation</h5>
-                <p>Is your calculation quantum number conserving?</p>
+                <h5>Is your calculation quantum number conserving?
+                	<a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="If the ground state you wish to calculate is an eigenstate of the total spin/boson number, then click yes. You will then be able to choose the quantum number (twice the total spin/the total boson number) below. "
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
+                	
+                </h5>
 
                 <div id="ground_number_conservation_choice" class="btn-group" data-toggle="buttons">
                 <label class="btn btn-primary">
@@ -274,7 +288,13 @@
                 <div id="ground_state_quantum_number_info" style="display: none;">
 
                     <p>
-                        Enter the quantum number. The possible values have been enumerated for you. 
+                        Enter the quantum number. <a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="This number gives twice the total spin/the total boson number of the calculated ground state. Only values that are physically possible (given the magnitude of the spin/the number of bosons allowed per site, and the system size) are displayed in the dropdown."
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
                     </p>
 
                     <form class="form-inline" role="form">
