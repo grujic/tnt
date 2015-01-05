@@ -16,6 +16,10 @@ var tnt = {
     min_num_time_steps: 1,
     max_num_time_steps: 2000,
 
+    replaceAll: function(find, replace, str) {
+        return str.replace(new RegExp(find, 'g'), replace);
+    },
+
     is_odd: function(number) {
 
         if (number % 2 == 0) {
@@ -232,10 +236,13 @@ var tnt = {
                     )
                 };
 
+                // Add flags for the type of function, and any other modifications relevant to temporal
                 _.each(
                     window.temporal_fns.fns,
                     function(el) {
                         el['type'] = 'temporal';
+                        el['function_tex_str']
+                            = tnt.replaceAll('j', 't', el['function_tex_str']);
                     }
                 );
 
@@ -782,7 +789,8 @@ var tnt = {
 				var source = $("#spatial-or-temporal-function-parameter-input-template").html();
 				var template = Handlebars.compile(source);
 
-				var hamiltonian_term_containing_div = $(this).closest('.hamiltonian-term');
+				var hamiltonian_term_containing_div
+                    = $(this).closest('.hamiltonian-term');
 
                 if (spatial_or_temporal == 'spatial') {
 
