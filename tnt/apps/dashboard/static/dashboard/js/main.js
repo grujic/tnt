@@ -1214,7 +1214,14 @@ var tnt = {
                             .system
                             .system_size;
 
+        // Setup a range of quantities depending on system type
         if (system_type == "spin") {
+
+            var qn_conserve_help_content = "Click yes if the ground state you wish to calculate is an eigenstate of the total spin.";
+            var qn_magnitude_help_content = "This number gives twice the total spin of the calculated ground state. Only values that are physically possible (given the magnitude of the spin per site and the system size) are displayed in the dropdown.";
+            var qn_conserve_prompt = "Conserve total spin";
+            var qn_magnitude_prompt = "Total spin \( \sum{2S} \)";
+
 
             var spin_magnitude = window.calculation
                                 .setup
@@ -1264,7 +1271,12 @@ var tnt = {
                 }
             );
 
-        } else if (system_type="bosonic") {
+        } else if (system_type == "bosonic") {
+
+            var qn_conserve_help_content = "Click yes if the ground state you wish to calculate is an eigenstate of the total boson number.";
+            var qn_magnitude_help_content = "This number gives the total boson number of the calculated ground state. Only values that are physically possible (given the maximum number of bosons per site \( n_{\mathrm{max}} \) and the system size \(L\)) are displayed in the dropdown.";
+            var qn_conserve_prompt = "Conserve total boson number";
+            var qn_magnitude_prompt = "Total boson number N";
 
             var bosonic_truncation = window.calculation
                                 .setup
@@ -1279,9 +1291,28 @@ var tnt = {
 
             var quantum_num_possibilities = _.range(quantum_num_min, quantum_num_max + 1);
 
-        } else if (system_type="fermionic") {
+        } else if (system_type == "fermionic") {
             // TODO
+
+            var qn_conserve_help_content = "Fermionic conservation help content";
+            var qn_magnitude_help_content = "Total fermion number \( N \)";
+            var qn_conserve_prompt = "Conserve total fermion number";
+            var qn_magnitude_prompt = "Total fermion number \( N \)";
         }
+
+        console.log("Setting text to " + qn_conserve_help_content);
+
+        $("#ground_state_quantum_info #qn_conserve_prompt a")
+            .attr("data-content", qn_conserve_help_content);
+
+        $("#ground_state_quantum_info #qn_magnitude_prompt a")
+            .attr("data-content", qn_magnitude_help_content);
+
+        $("#ground_state_quantum_info #qn_conserve_prompt span")
+            .html(qn_conserve_prompt);
+
+        $("#ground_state_quantum_info #qn_magnitude_prompt span")
+            .html(qn_magnitude_prompt);
 
         // Now initialise the quantum number dropdown
         tnt.set_up_numeric_vals_dropdown(
