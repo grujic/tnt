@@ -1153,6 +1153,14 @@ var tnt = {
 
 	validate_new_calculation_define_ground_hamiltonian: function () {
 		//
+
+        window
+        .calculation
+        .setup
+        .hamiltonian
+        .ground
+        .terms = [];
+
 		_.each($('#ground_hamiltonian_terms_container .hamiltonian-term'),
 	       function (term) {
 
@@ -1685,23 +1693,6 @@ var tnt = {
             }
         );
 
-
-		//_.each($('#initial_state_modifier_operators_terms .hamiltonian-term'),
-		   //function (term) {
-
-				  //var operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
-
-			   //window
-			   //.calculation
-			   //.setup
-			   //.initial_state
-			   //.applied_operators
-			   //.applied_operators
-			   //.push(operator);
-
-		   //}
-		//); 	// End of loop over Hamiltonian terms
-
 		tnt.initialise_new_calculation_define_dynamic_hamiltonian();
 
 	},
@@ -1756,6 +1747,13 @@ var tnt = {
 	validate_new_calculation_define_dynamic_hamiltonian: function () {
 		//
 		console.log("Validating the definition of the dynamic Hamiltonian...");
+
+        window
+        .calculation
+        .setup
+        .hamiltonian
+        .dynamic
+        .terms = [];
 
 		_.each($('#dynamic_hamiltonian_terms_container .hamiltonian-term'),
 	       function (term) {
