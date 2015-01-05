@@ -16,10 +16,6 @@ var tnt = {
     min_num_time_steps: 1,
     max_num_time_steps: 2000,
 
-    replaceAll: function(find, replace, str) {
-        return str.replace(new RegExp(find, 'g'), replace);
-    },
-
     is_odd: function(number) {
 
         if (number % 2 == 0) {
@@ -48,8 +44,6 @@ var tnt = {
         // Dropdown with strictly increasing vals
         var select=document.getElementById(dropdown_id);
 
-        $(select).empty();
-
         _.each(_.range(dropdown_min, dropdown_max + 1), function (num) {
             var option = document.createElement("OPTION");
             select.options.add(option);
@@ -66,8 +60,6 @@ var tnt = {
         // Dropdown with arbitrary vals
         var select=document.getElementById(dropdown_id);
 
-        $(select).empty();
-
         _.each(dropdown_possibilities, function (num) {
             var option = document.createElement("OPTION");
             select.options.add(option);
@@ -78,50 +70,6 @@ var tnt = {
             }
         });
 
-    },
-
-    restrict_inputs_to_float: function(els_to_restrict) {
-        // Only allow people to enter an integer in these inputs
-        $(els_to_restrict).keydown(function (e) {
-            // Allow: backspace, delete, tab, escape, enter and .
-            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-                // Allow: Ctrl+A
-                (e.keyCode == 65 && e.ctrlKey === true) ||
-                // Allow: home, end, left, right
-                (e.keyCode >= 35 && e.keyCode <= 39)) {
-                    // let it happen, don't do anything
-                    return;
-            }
-            // Ensure that it is a number and stop the keypress
-            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-                e.preventDefault();
-            }
-        });
-    },
-
-    restrict_inputs_to_integer: function(els_to_restrict) {
-        // Only allow people to enter an integer in these inputs
-        $(els_to_restrict).keydown(function (e) {
-            // Allow: backspace, delete, tab, escape, enter and .
-            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
-                // Allow: Ctrl+A
-                (e.keyCode == 65 && e.ctrlKey === true) ||
-                // Allow: home, end, left, right
-                (e.keyCode >= 35 && e.keyCode <= 39)) {
-                    // let it happen, don't do anything
-                    return;
-            }
-            // Ensure that it is a number and stop the keypress
-            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-                e.preventDefault();
-            }
-        });
-    },
-
-    enforce_numeric_restrictions_to_inputs: function() {
-        // Attach restrictions to inputs that only accept float or integer inputs
-        tnt.restrict_inputs_to_integer($('.integer-only'));
-        tnt.restrict_inputs_to_float($('.float-only'));
     },
 
     get_hamiltonian_operator: function(operator_id) {
@@ -194,10 +142,6 @@ var tnt = {
         // Not quite sure where to put this, we need these definitions eventually..
         tnt.load_spatial_and_temporal_function_definitions();
 
-        // Also this should maybe go somewhere else.. restrict the input on numeric fields
-        // so people can't enter something wrong
-        tnt.enforce_numeric_restrictions_to_inputs();
-
 	}, // End of initialise_blank_calculation
 
 	load_spatial_and_temporal_function_definitions: function() {
@@ -236,13 +180,10 @@ var tnt = {
                     )
                 };
 
-                // Add flags for the type of function, and any other modifications relevant to temporal
                 _.each(
                     window.temporal_fns.fns,
                     function(el) {
                         el['type'] = 'temporal';
-                        el['function_tex_str']
-                            = tnt.replaceAll('j', 't', el['function_tex_str']);
                     }
                 );
 
@@ -301,85 +242,33 @@ var tnt = {
 
 	}, // End of render_available_hamiltonian_operators
 
-	render_available_intitial_state_modifier_operators:
-        function (where_to_render, sum_or_product) {
-            // Transformations we can apply to the base state
-            // We draw these choices in where_to_render
-            // sum_or_product is 'sum' or 'product'
-            console.log("Rendering initial base state modifiers...");
+	render_available_intitial_state_modifier_operators: function () {
+		// Transformations we can apply to the base state
+        console.log("Rendering initial base state modifiers...");
+		var source = $("#hamiltonian-operator-template").html();
 
-            // First check which ones comply with QN
-            var dynamic_qn =
-                window
-                .calculation
-                .setup
-                .system
-                .number_conservation
-                .dynamic
-                .apply_qn;
+		var template = Handlebars.compile(source);
 
-            var cloned_initial_state_modifiers =
-                _.cloneDeep(
-                    window.initial_state_modifier_operators
-                );
+		$("#initial_state_modifier_operators_container")
+			.html(template(window.initial_state_modifier_operators));
 
-            if (dynamic_qn == 1) {
+		$("#initial_state_modifier_operators_container .hamiltonian-operator-btn")
+			.click(function() {
+				console.log("ID of base state modifer chosen: ");
+				console.log($(this).data("operator-id"));
 
-                var complying_initial_state_modifiers =
-                    {
-                        'operators':
-                        _.filter(
-                            cloned_initial_state_modifiers.operators,
-                            function(el) {
-                                return el['U1_covariant'] == true;
-                            }
-                        )
-                    };
+            var hamiltonian_operator = tnt.get_hamiltonian_operator($(this).data("operator-id"));
 
-            } else {
+				tnt.add_hamiltonian_term(
+                    hamiltonian_operator,
+					"#initial_state_modifier_operators_terms"
+				);
+			});
 
-                var complying_initial_state_modifiers = cloned_initial_state_modifiers;
+		tnt.render_mathjax();
 
-            }
-
-            _.each(
-                complying_initial_state_modifiers.operators,
-                function(el) {
-                    el['sum_or_product'] = sum_or_product;
-                }
-            );
-
-            var source = $("#hamiltonian-operator-template").html();
-
-            var template = Handlebars.compile(source);
-
-            $(where_to_render)
-                .html(template(complying_initial_state_modifiers));
-
-            // Add behaviour to modifier buttons
-            $(where_to_render).find(".hamiltonian-operator-btn")
-                .click(function() {
-
-                    var hamiltonian_operator
-                        = tnt.get_hamiltonian_operator($(this).data("operator-id"));
-
-                    hamiltonian_operator['sum_or_product'] = $(this).data('sum-or-product');
-
-                    tnt.add_hamiltonian_term(
-                        hamiltonian_operator,
-                        $(where_to_render).closest('.initial_state_modifier_sum_or_product').find('.initial_state_modifier_operators_terms'),
-                        '',
-                        '',
-                        '',
-                        false
-                    );
-                });
-
-
-            tnt.render_mathjax();
-
-            $(".operator_loading_placeholder")
-                .css("display", "none")
+        $(".operator_loading_placeholder")
+            .css("display", "none")
 	},
 
 	attach_click_fn_to_initial_base_state_choices: function () {
@@ -398,32 +287,17 @@ var tnt = {
         hamiltonian_tex_str_el
     ) {
 		// When an initial base state is chosen, need to make that button active and all others not
-		$(hamiltonian_term_container_selector).find(".remove-hamiltonian-term-btn")
+		$(".remove-hamiltonian-term-btn")
 			.click(
-
 				function (e) {
-					var hamiltonian_term_containing_div
-                        = $(this).closest('.hamiltonian-term');
+					var hamiltonian_term_containing_div = $(this).closest('.hamiltonian-term');
+					$(hamiltonian_term_containing_div).remove();
 
 					// If there are no more Hamiltonian terms left, add back in the warning sign
-					if ($('.hamiltonian-term').length == 1) {
-
-                        $(this)
-                        .closest(".new-calculation-step")
-                        .find(".no-terms-added")
-                        .css("display", "block");
-
-                        // Prevent user from proceeding
-                        $(this)
-                        .closest(".new-calculation-step")
-                        .find(".new-calculation-step-navigation .btn-next-step")
-                        .attr("disabled", true);
-
-
+					if ($('.hamiltonian-term').length == 0) {
+						$("#no_ground_hamiltonian_terms_added_yet_warning").css("display", "block");
 					} else {
                     }
-
-					$(hamiltonian_term_containing_div).remove();
 
                     tnt.update_hamiltonian_tex_str(
                         hamiltonian_term_container_selector,
@@ -433,35 +307,6 @@ var tnt = {
 				}
 			);
 	},
-
-    attach_click_fn_to_remove_all_terms: function () {
-        $(".remove-all-terms-btn").click(
-            function (e) {
-                console.log("Removing all terms...\n");
-
-                var hamiltonian_terms_container_super =
-                    $(this)
-                    .closest(".hamiltonian_terms_container_super");
-
-                var hamiltonian_terms_container =
-                    $(hamiltonian_terms_container_super)
-                    .find(".hamiltonian_terms_container");
-
-                var hamiltonian_tex_str =
-                    $(hamiltonian_terms_container_super)
-                    .find(".hamiltonian_tex_str");
-
-                $(hamiltonian_terms_container).empty();
-
-                tnt
-                .update_hamiltonian_tex_str(
-                    hamiltonian_terms_container,
-                    hamiltonian_tex_str
-                );
-
-            }
-        );
-    },
 
 	attach_click_fn_to_expectation_operator_choices: function () {
 		// When an expectation operator is chosen, need to toggle it's 'active' class
@@ -487,7 +332,7 @@ var tnt = {
 	},
 
 	render_available_initial_base_states: function () {
-		// Draw in buttons showing available initial states
+		// If window.calculation_type is not defined, render all available initial base states, otherwise filter
 		$.get("/api/v1.0/initial_base_states",
 			function (data) {
 
@@ -508,13 +353,8 @@ var tnt = {
 
 				window.initial_base_states = filtered_data;
 
-				// We only display the ground state as a choice if certain conditions are met
-                var calculating_ground_state = window.calculation.setup.system.calculate_ground_state;
-                var ground_qn = window.calculation.setup.system.number_conservation.ground.apply_qn;
-                var dynamic_qn = window.calculation.setup.system.number_conservation.dynamic.apply_qn;
-
-				if (calculating_ground_state == 0)
-                {
+				// If we're not calculating the ground state, then exclude it as a possibility for an intitial state
+				if (window.calculation.setup.system.calculate_ground_state == 0) {
 					window.initial_base_states =
 					{
 						'states':
@@ -525,29 +365,11 @@ var tnt = {
 							}
 						)
 					};
-				} else {
-                    // We ARE calculating the ground state
-                    if ( (dynamic_qn == 0) || ( (ground_qn == 1) && (dynamic_qn == 1) ) ) {
-                        // Then we can display the ground state
-                    } else {
-                        window.initial_base_states =
-                        {
-                            'states':
-                            _.filter(
-                                window.initial_base_states.states,
-                                function(el) {
-                                    return el['initial_base_state_id'] > 0;
-                                }
-                            )
-                        };
-                    }
-                }
+				}
 
 				var source = $("#initial-base-states-template").html();
 				var template = Handlebars.compile(source);
-
-				$("#new_calculation_available_initial_base_states")
-                    .html(template(window.initial_base_states));
+				$("#new_calculation_available_initial_base_states").html(template(window.initial_base_states));
 
 				$(".initial-state-btn")
 					.first()
@@ -657,14 +479,10 @@ var tnt = {
                                    term_container_selector,
                                    no_terms_yet_warning_selector,
                                    next_calculation_stage_btn_selector,
-                                   hamiltonian_tex_str_el,
-                                   include_temporal_function) {
+                                   hamiltonian_tex_str_el) {
 		// Add a visual representation of a Hamiltonian term to the screen, and render any user input elements necessary (e.g. inputs for spatial parameter values)
         // If the Hamiltonian operator has a spatial_fn field, then
         // set up the element to reflect this
-        // if include_temporal_function is false, then don't add in all the temporal stuff
-
-        include_temporal_function = typeof include_temporal_function !== 'undefined' ? include_temporal_function : true;
 
 		var source = $("#hamiltonian-term-template").html();
 		var template = Handlebars.compile(source);
@@ -677,27 +495,16 @@ var tnt = {
 
         }
 
-        // We represent if this is part of a sum or product term
-        // with icons - default this to sum if not present
-        if ( _.has(hamiltonian_operator, 'sum_or_product') != true) {
-
-            hamiltonian_operator['sum_or_product'] = 'sum';
-
-        }
-
         // If there is not already a temporal function attached,
         // put in a default
-        if (include_temporal_function === false) {
+        if ( _.has(hamiltonian_operator, 'temporal_function') != true) {
 
-        } else {
-
-            if ( _.has(hamiltonian_operator, 'temporal_function') != true) {
-
-                hamiltonian_operator['temporal_function'] = tnt.get_temporal_function(0);
-
-            }
+            hamiltonian_operator['temporal_function'] = tnt.get_temporal_function(0);
 
         }
+
+        console.log("hamiltonian_operator = ");
+        console.log(hamiltonian_operator);
 
         // Add GUI element
 		$(term_container_selector)
@@ -726,8 +533,7 @@ var tnt = {
 
 	},
 
-    update_hamiltonian_tex_str: function(
-        hamiltonian_term_container_selector,
+    update_hamiltonian_tex_str: function(hamiltonian_term_container_selector,
         hamiltonian_tex_str_el) {
         // Update a Hamiltonian tex string representation
         // of the input Hamiltonian.
@@ -737,7 +543,7 @@ var tnt = {
 
         var hamiltonian_tex_str = "\\[";
 
-		_.each($(hamiltonian_term_container_selector).find('.hamiltonian-term'),
+		_.each($(hamiltonian_term_container_selector + ' .hamiltonian-term'),
 	       function (term) {
 
 	       	   var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
@@ -789,8 +595,7 @@ var tnt = {
 				var source = $("#spatial-or-temporal-function-parameter-input-template").html();
 				var template = Handlebars.compile(source);
 
-				var hamiltonian_term_containing_div
-                    = $(this).closest('.hamiltonian-term');
+				var hamiltonian_term_containing_div = $(this).closest('.hamiltonian-term');
 
                 if (spatial_or_temporal == 'spatial') {
 
@@ -1042,8 +847,6 @@ var tnt = {
             "#new_calculation_define_ground_hamiltonian .btn-next-step",
             "#ground_hamiltonian_tex_str");
 
-        tnt.attach_click_fn_to_remove_all_terms();
-
 		tnt.clear_all_new_calculation_stages();
 
 		$("#new_calculation_define_ground_hamiltonian")
@@ -1065,7 +868,12 @@ var tnt = {
 		// (or more generally quantum operator) term, and we get back a
 		// JSON struct describing the term's spatial dependence etc
 
+		console.log("Converting an operator GUI element into JSON...");
+
 		var hamiltonian_operator_id = $(term).data("hamiltonian-operator-id");
+
+		console.log("hamiltonian_operator_id: ");
+		console.log(hamiltonian_operator_id);
 
 		var this_hamiltonian_operator
             = _.filter(
@@ -1074,6 +882,9 @@ var tnt = {
                     return operator['operator_id'] == parseInt(hamiltonian_operator_id);
                 }
             )[0];
+
+		console.log("this_hamiltonian_operator: ");
+		console.log(this_hamiltonian_operator);
 
 		// Need a deep clone of this object
 		var hamiltonian_operator = _.cloneDeep(this_hamiltonian_operator);
@@ -1103,25 +914,25 @@ var tnt = {
                 tnt.get_spatial_function(parseInt(temporal_function_id))
         );
 
-        // Now get the values for each of the parameters for the spatial function variation
-        var spatial_function_parameter_input_form
+		// Now get the values for each of the parameters for the spatial function variation
+		var spatial_function_parameter_input_form
             = $(term).find('.spatial_parameter_input_div .spatial_or_temporal_function_parameter_input_form');
 
-        // Loop over the spatial function parameters for this term
-        _.each($(spatial_function_parameter_input_form).find('.form-control'),
+		// Loop over the spatial function parameters for this term
+		_.each($(spatial_function_parameter_input_form).find('.form-control'),
 
-           function(el) {
+		   function(el) {
 
-               var function_parameter_id = $(el).data("parameter-id");
+		       var spatial_function_parameter_id = $(el).data("parameter-id");
 
-               var function_parameter_val = $(el).val()
+		       var spatial_function_parameter_val = $(el).val()
 
-               spatial_function.parameters[function_parameter_id - 1]['value']
-                = function_parameter_val;
+		       spatial_function.parameters[spatial_function_parameter_id - 1]['value']
+                = spatial_function_parameter_val;
 
-           }
+		   }
 
-        );
+		);
 
 		// Now temporal function parameters
 		var temporal_function_parameter_input_form
@@ -1132,35 +943,25 @@ var tnt = {
 
 		   function(el) {
 
-		       var function_parameter_id = $(el).data("parameter-id");
+		       var spatial_function_parameter_id = $(el).data("parameter-id");
 
-		       var function_parameter_val = $(el).val()
+		       var spatial_function_parameter_val = $(el).val()
 
-		       temporal_function.parameters[function_parameter_id - 1]['value']
-                = function_parameter_val;
+		       spatial_function.parameters[spatial_function_parameter_id - 1]['value']
+                = spatial_function_parameter_val;
 
 		   }
 
 		);
 
+		//
 		hamiltonian_operator['spatial_function'] = spatial_function;
 
-		hamiltonian_operator['temporal_function'] = temporal_function;
-
 		return hamiltonian_operator;
-
 	},
 
 	validate_new_calculation_define_ground_hamiltonian: function () {
 		//
-
-        window
-        .calculation
-        .setup
-        .hamiltonian
-        .ground
-        .terms = [];
-
 		_.each($('#ground_hamiltonian_terms_container .hamiltonian-term'),
 	       function (term) {
 
@@ -1214,14 +1015,7 @@ var tnt = {
                             .system
                             .system_size;
 
-        // Setup a range of quantities depending on system type
         if (system_type == "spin") {
-
-            var qn_conserve_help_content = "Click yes if the ground state you wish to calculate is an eigenstate of the total spin.";
-            var qn_magnitude_help_content = "This number gives twice the total spin of the calculated ground state. Only values that are physically possible (given the magnitude of the spin per site and the system size) are displayed in the dropdown.";
-            var qn_conserve_prompt = "Conserve total spin";
-            var qn_magnitude_prompt = "Total spin \( \sum{2S} \)";
-
 
             var spin_magnitude = window.calculation
                                 .setup
@@ -1271,12 +1065,7 @@ var tnt = {
                 }
             );
 
-        } else if (system_type == "bosonic") {
-
-            var qn_conserve_help_content = "Click yes if the ground state you wish to calculate is an eigenstate of the total boson number.";
-            var qn_magnitude_help_content = "This number gives the total boson number of the calculated ground state. Only values that are physically possible (given the maximum number of bosons per site \( n_{\mathrm{max}} \) and the system size \(L\)) are displayed in the dropdown.";
-            var qn_conserve_prompt = "Conserve total boson number";
-            var qn_magnitude_prompt = "Total boson number N";
+        } else if (system_type="bosonic") {
 
             var bosonic_truncation = window.calculation
                                 .setup
@@ -1291,28 +1080,9 @@ var tnt = {
 
             var quantum_num_possibilities = _.range(quantum_num_min, quantum_num_max + 1);
 
-        } else if (system_type == "fermionic") {
+        } else if (system_type="fermionic") {
             // TODO
-
-            var qn_conserve_help_content = "Fermionic conservation help content";
-            var qn_magnitude_help_content = "Total fermion number \( N \)";
-            var qn_conserve_prompt = "Conserve total fermion number";
-            var qn_magnitude_prompt = "Total fermion number \( N \)";
         }
-
-        console.log("Setting text to " + qn_conserve_help_content);
-
-        $("#ground_state_quantum_info #qn_conserve_prompt a")
-            .attr("data-content", qn_conserve_help_content);
-
-        $("#ground_state_quantum_info #qn_magnitude_prompt a")
-            .attr("data-content", qn_magnitude_help_content);
-
-        $("#ground_state_quantum_info #qn_conserve_prompt span")
-            .html(qn_conserve_prompt);
-
-        $("#ground_state_quantum_info #qn_magnitude_prompt span")
-            .html(qn_magnitude_prompt);
 
         // Now initialise the quantum number dropdown
         tnt.set_up_numeric_vals_dropdown(
@@ -1324,37 +1094,42 @@ var tnt = {
         $('#ground_state_quantum_number_info')
             .css('display', 'none');
 
-		// hiding / displaying further ground state info
 		$("#ground_state_calculation_choice input")
 			.change(
 				function () {
 
-					if ($(this).data('calculate-ground-state') == 0) {
-						$('#ground_state_extra_info_specification')
+					if ($(this).data('number-conservation') == 0) {
+						$('#ground_state_quantum_number_info')
 							.css('display', 'none');
 					} else {
-						$('#ground_state_extra_info_specification')
+						$('#ground_state_quantum_number_info')
 							.css('display', 'block');
 					}
 
 				}
 			);
 
-        // Hiding / displaying quantum number choices
-		$("#ground_number_conservation_choice input")
+		// Add a function so that if the user chooses not to calculate time evolution, we don't display inputs for time step info
+		$("#ground_state_calculation_choice input")
 			.change(
 				function () {
 
-					if (parseInt($(this).data('number-conservation')) == 0) {
-						$('#ground_state_quantum_number_info')
+					console.log('test' + $(this).data('calculate-ground-state'));
+					console.log($(this));
+
+					if ($(this).data('calculate-ground-state') == 0) {
+						console.log("We're not calculating the ground state");
+						$('#ground_state_extra_info_specification')
 							.css('display', 'none');
 					} else {
-						$('#ground_state_quantum_number_info')
+						console.log("We are calculating the ground state");
+						$('#ground_state_extra_info_specification')
 							.css('display', 'block');
 					}
 
 				}
 			);
+
 
 		$("#new_calculation_ground_state").css('display', 'block');
 
@@ -1432,14 +1207,12 @@ var tnt = {
 
 	initialise_new_calculation_time_evolution: function () {
 		//
-		console.log("Initialising new calculation time evolution input\n");
+		console.log("Initialising new calculation time evolution input");
 		tnt.clear_all_new_calculation_stages();
 
         // If no ground state calculation specified then we MUST calculate a time evolution
         var calculate_ground_state = window.calculation.setup.system.calculate_ground_state;
         if (calculate_ground_state == 0) {
-                $("#time_evolution_choice label").removeClass('active');
-                $($("#time_evolution_choice label")[0]).addClass('active');
                 $("#time_evolution_choice label")
                     .attr("disabled", "disabled");
         }
@@ -1499,7 +1272,7 @@ var tnt = {
 			var num_expval_time_steps_val = $("#input_num_expval_time_steps").val();
             // If user has left this blank, assume we want every time step
             if (num_expval_time_steps_val == "") {
-                var num_expval_time_steps = 10;
+                var num_expval_time_steps = parseInt(Math.floor(num_time_steps/10));
             } else {
                 var num_expval_time_steps = parseFloat(num_expval_time_steps_val);
             }
@@ -1567,71 +1340,29 @@ var tnt = {
 		console.log("Initialising new calculation initial state input");
 		tnt.render_available_initial_base_states(); 	// Draw the choices available
 
+		tnt.render_available_intitial_state_modifier_operators();
+
 		tnt.clear_all_new_calculation_stages(); // Clear all panels
 
-        var dynamic_qn = window
-            .calculation
-            .setup
-            .system
-            .number_conservation
-            .dynamic
-            .apply_qn;
+        // Work out if we need to show quantum number info
+        // TODO
 
-        if (dynamic_qn == 0) {
-            // Sum type allowed
-        } else {
-           $("#add_sum_modifier").css("display", "none");
-        }
+        $("#initial_state_modifier_sum_or_product_choice")
+            .on("change",
+                function (e) {
+                    if ( $(this).val() == "sum") {
 
-        // For reference further on, we build lists of spatial functions
-        // filtered by sum, product, product non-covariant
-        window.spatial_functions_sum_modifiers =
-            {'fns':
-                _.filter(
-                    window.spatial_fns.fns,
-                    function(el) {
-                        return el['use_for_sum_modifier'] == true;
+                        $("#initial_state_modifier_explain_text_sum").css("display", "block");
+                        $("#initial_state_modifier_explain_text_product").css("display", "none");
+
+                    } else if ( $(this).val() == "product") {
+
+                        $("#initial_state_modifier_explain_text_sum").css("display", "none");
+                        $("#initial_state_modifier_explain_text_product").css("display", "block");
+
                     }
-                )
-            };
-
-        window.spatial_functions_product_noncovariant_modifiers =
-            {'fns':
-                _.filter(
-                    window.spatial_fns.fns,
-                    function(el) {
-                        return el['use_for_product_modifier_noncovariant'] == true;
-                    }
-                )
-            };
-
-        $('.add-product-or-sum-modifier-btn')
-            .click(function (e) {
-
-                var sum_or_product = $(this).data('sum-product');
-
-                var source = $("#initial-state-modifier-sum-or-product-template").html();
-
-                var template = Handlebars.compile(source);
-
-                $('#initial_state_modifier_container')
-                    .append(template({'sum_or_product': sum_or_product}));
-
-                var where_to_render_modifier_operator_btns
-                    = $('#initial_state_modifier_container .initial_state_modifier_sum_or_product:last  .initial_state_modifier_operators_container');
-
-                tnt.render_available_intitial_state_modifier_operators(where_to_render_modifier_operator_btns, sum_or_product);
-
-                $('.initial_state_modifier_sum_or_product .remove-initial-state-modifier-btn')
-                    .click(function() {
-                        $(this)
-                        .closest('.initial_state_modifier_sum_or_product')
-                        .remove();
-                    }
-                );
-
-
-            }
+                    console.log($(this).val());
+                }
         );
 
 		$("#new_calculation_initial_state").css('display', 'block'); 	// Make this panel visible
@@ -1671,58 +1402,46 @@ var tnt = {
         .initial_state
         .base_state = initial_base_state;
 
+        // See what kind of initial state modifier the user has selected,  a sum or a product
+        window
+        .calculation
+        .setup
+        .initial_state
+        .applied_operators
+        .type = $("#initial_state_modifier_sum_or_product_choice").val();
+
         var dec_vals = {false: 0, true: 1};
         window
         .calculation
         .setup
         .initial_state
+        .applied_operators
         .renormalise =
         dec_vals[$("#renormalise_after_initial_state_modifiers_choice").is(":checked")];
 
-		// Now we look for modifiers to the base state:
-
-        // First empty any existing modifiers:
         window
         .calculation
         .setup
         .initial_state
-        .applied_mpos = [];
+        .applied_operators
+        .applied_operators = [];
 
-        // Loop over each product or sum operator
-        _.each(
-            $('#initial_state_modifier_container .initial_state_modifier_sum_or_product'),
-            function(el) {
+		// Now we look for modifiers to the base state:
+		_.each($('#initial_state_modifier_operators_terms .hamiltonian-term'),
+	       function (term) {
 
-                var sum_or_product = $(el).data('sum-or-product');
+	       	   var operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
 
-                console.log("Found a " + sum_or_product + " modifier container...\n");
+	           window
+	           .calculation
+	           .setup
+	           .initial_state
+	           .applied_operators
+	           .applied_operators
+	           .push(operator);
 
-                var applied_operators_this_modifier = [];
-
-                _.each(
-                    $(el)
-                    .find('.initial_state_modifier_operators_terms')
-                    .find('.hamiltonian-term'),
-                    function (term) {
-                        console.log("In this container, found a Ham operator: \n");
-                        var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
-                        console.log(hamiltonian_operator);
-                        applied_operators_this_modifier.push(hamiltonian_operator);
-                    }
-                );
-
-                window
-                .calculation
-                .setup
-                .initial_state
-                .applied_mpos
-                .push({
-                    "type": sum_or_product,
-                    "applied_operators": applied_operators_this_modifier
-                });
-
-            }
-        );
+	       }
+		); 	// End of loop over Hamiltonian terms
 
 		tnt.initialise_new_calculation_define_dynamic_hamiltonian();
 
@@ -1744,8 +1463,6 @@ var tnt = {
             "#new_calculation_define_dynamic_hamiltonian .btn-next-step",
             "#dynamic_hamiltonian_tex_str"
         );
-
-        tnt.attach_click_fn_to_remove_all_terms();
 
         // If the ground state has been calculated, want to default
         // the dynamic Hamiltonian to the ground state one
@@ -1779,13 +1496,6 @@ var tnt = {
 		//
 		console.log("Validating the definition of the dynamic Hamiltonian...");
 
-        window
-        .calculation
-        .setup
-        .hamiltonian
-        .dynamic
-        .terms = [];
-
 		_.each($('#dynamic_hamiltonian_terms_container .hamiltonian-term'),
 	       function (term) {
 
@@ -1818,14 +1528,6 @@ var tnt = {
             $("#calculate_overlap_with_ground_state_choice_div").css("display", "block");
         } else {
             $("#calculate_overlap_with_ground_state_choice_div").css("display", "none");
-        }
-
-        if (window.calculation.setup.system.calculate_time_evolution == 1)
-        {
-            $("#calculate_overlap_with_initial_state_choice_div").css("display", "block");
-        } else {
-            $("#calculate_overlap_with_initial_state_choice_div").css("display", "none");
-
         }
 
 		tnt.render_available_expectation_operators();
@@ -1874,15 +1576,6 @@ var tnt = {
             .setup
             .expectation_values
             .calculate_overlap_with_ground = $("#calculate_overlap_with_ground_state_choice .btn.active input").data("overlap-choice");
-        }
-
-        // Check if we want to calculate overlap with initial state:
-        if (window.calculation.setup.system.calculate_time_evolution == 1) {
-            window
-            .calculation
-            .setup
-            .expectation_values
-            .calculate_overlap_with_initial = $("#calculate_overlap_with_initial_state_choice .btn.active input").data("overlap-choice");
         }
 
 		var selected_expectation_operator_ids = _.map(
