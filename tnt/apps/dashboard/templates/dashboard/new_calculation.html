@@ -59,7 +59,7 @@
           </div>
 
           <div class="col-md-4">
-              <button type="button" data-system-type="fermionic" class="btn btn-system-type btn-default form-control">Fermionic <span class="text-warning">(Coming soon)</span></button>
+              <button type="button" data-system-type="fermionic" class="btn btn-system-type btn-default form-control" disabled="disabled">Fermionic <span class="text-warning">(Coming soon)</span></button>
           </div>
       </div>
 
@@ -270,18 +270,18 @@
 
             </div>
 
-            <div class="col-md-6">
+            <div id="ground_state_quantum_info_spins" style="display: block;" class="col-md-6" >
 
-                <h5>Quantum number conserving
+                <h4>Conserve total spin
                 	<a tabindex="0" 
                     data-toggle="popover" 
                     data-trigger="focus" 
-                    data-content="If the ground state you wish to calculate is an eigenstate of the total spin/boson number, then click yes. You will then be able to choose the quantum number (twice the total spin/the total boson number) below. "
+                    data-content="Click yes if the ground state you wish to calculate is an eigenstate of the total spin."
                     >
                         <i class="fa fa-question-circle fa-lg"></i>
                     </a>
                 	
-                </h5>
+                </h4>
 
                 <div id="ground_number_conservation_choice" class="btn-group" data-toggle="buttons">
                 <label class="btn btn-primary">
@@ -297,18 +297,63 @@
 
                 <div id="ground_state_quantum_number_info" style="display: none;">
 
-                    <p>
-                        Total quantum number <a tabindex="0" 
+                    <h5> Total spin \( \sum{2S} \) <a tabindex="0" 
                     data-toggle="popover" 
                     data-trigger="focus" 
-                    data-content="This number gives twice the total spin/the total boson number of the calculated ground state. Only values that are physically possible (given the magnitude of the spin/the number of bosons allowed per site, and the system size) are displayed in the dropdown."
+                    data-content="This number gives twice the total spin of the calculated ground state. Only values that are physically possible (given the magnitude of the spin per site and the system size) are displayed in the dropdown."
                     >
                         <i class="fa fa-question-circle fa-lg"></i>
                     </a>
-                    </p>
+                    </h5>
 
                     <form class="form-inline" role="form">
                         <select id="quantum_number_ground_state_choice" class="form-control">
+
+                        </select>
+                    </form>
+
+                </div>
+
+            </div>
+            
+            <div id="ground_state_quantum_info_bosons" style="display: none;" class="col-md-6" >
+
+                <h4>Conserve total boson number
+                	<a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="Click yes if the ground state you wish to calculate is an eigenstate of the total boson number."
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
+                	
+                </h4>
+
+                <div id="ground_number_conservation_bosons_choice" class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary">
+                    <input type="radio" name="options" data-number-conservation=1>Yes
+                </label>
+                <label class="btn btn-primary active">
+                    <input type="radio" name="options" data-number-conservation=0 checked>No
+                </label>
+                </div>
+
+
+                <br><br>
+
+                <div id="ground_state_quantum_number_bosons_info" style="display: none;">
+
+                    <h5> Total boson number \( N \) <a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="This number gives the total boson number of the calculated ground state. Only values that are physically possible (given the maximum number of bosons per site \( n_{\mathrm{max}} \) and the system size \(L\)) are displayed in the dropdown."
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
+                    </h5>
+
+                    <form class="form-inline" role="form">
+                        <select id="quantum_number_ground_state_bosons_choice" class="form-control">
 
                         </select>
                     </form>
