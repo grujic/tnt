@@ -246,7 +246,7 @@
                     <a tabindex="0" 
                     data-toggle="popover" 
                     data-trigger="focus" 
-                    data-content="Enter the precision with which you want to find the ground state. The number below is a convergence parameter - if the ground state energy on successive 'sweeps' do not differ by more than this fractional amount, the calculation is stopped. "
+                    data-content="Enter the precision with which you want to find the ground state. The number below is a convergence parameter - if the ground state energy on successive 'sweeps' do not differ by more than this absolute amount, the calculation is stopped. "
                     >
                         <i class="fa fa-question-circle fa-lg"></i>
                     </a>
@@ -256,7 +256,7 @@
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
                         <label for="input_ground_state_precision_choice" class="col-sm-4 control-label">
-                            log (Precision)
+                            \( \mathrm{log}_10(\mathrm{precision}) \)
                         </label>
                         <div class="col-sm-8">
 
@@ -300,7 +300,7 @@
 
                 <div id="ground_state_quantum_number_info" style="display: none;">
 
-                    <h5 id="qn_magnitude_prompt">
+                    <h4 id="qn_magnitude_prompt">
                         <span class="prompt-text">
                             Total spin \( \sum{2S} \) 
                         </span>
@@ -311,7 +311,7 @@
                         >
                             <i class="fa fa-question-circle fa-lg"></i>
                         </a>
-                    </h5>
+                    </h4>
 
                     <form class="form-inline" role="form">
                         <select id="quantum_number_ground_state_choice" class="form-control">
@@ -711,7 +711,7 @@
             <btn class="btn btn-danger remove-all-terms-btn">
                 <i class="fa fa-trash-o fa-lg"></i> Remove all terms
             </btn>
-
+			<br><br>
             Hamiltonian H = <span id="dynamic_hamiltonian_tex_str" class="hamiltonian_tex_str"></span>
 
         </h2>
