@@ -60,14 +60,12 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li id="sidebar_home"><a href="/">Home</a></li>
-            <li id="sidebar_new_calculation"><a href="/new_calculation/">New calculation</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li id="sidebar_faq"><a href="/faq/">FAQ</a></li>
-            <li><a href="/logout/">Log out</a></li>
-          </ul>
+          <div class="list-group">
+            <a href="/" id="sidebar_home" class="list-group-item">Home</a></li>
+            <a href="/new_calculation/" id="sidebar_new_calculation" class="list-group-item">New calculation</a></li>
+            <a href="/faq/" id="sidebar_faq" class="list-group-item">FAQ</a></li>
+            <a href="/logout/" class="list-group-item">Log out</a></li>
+          </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             {% block content %}
