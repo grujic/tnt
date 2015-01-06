@@ -25,19 +25,6 @@ body {
   border: 0;
 }
 
-.navbar {
-  background-color: #ffffff;
-}
-
-/* Altering bootstrap defaults for navbar brand */
-.navbar-brand {
-float: left;
-padding: 5px 15px;
-font-size: 36px;
-line-height: 45px;
-height: 55px;
-text-shadow: 2px 2px 2px rgba(190, 190, 190, 0.51);
-}
 /*
  * Sidebar
  */
@@ -58,17 +45,6 @@ text-shadow: 2px 2px 2px rgba(190, 190, 190, 0.51);
     overflow-x: hidden;
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
   }
-}
-
-/* Sidebar navigation */
-.nav-sidebar {
-  margin-right: -21px; /* 20px padding + 1px border */
-  margin-bottom: 20px;
-  margin-left: -20px;
-}
-.nav-sidebar > li > a {
-  padding-right: 20px;
-  padding-left: 20px;
 }
 
 /*
