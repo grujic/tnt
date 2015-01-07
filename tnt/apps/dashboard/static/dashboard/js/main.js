@@ -669,6 +669,9 @@ var tnt = {
         // If the Hamiltonian operator has a spatial_fn field, then
         // set up the element to reflect this
         // if include_temporal_function is false, then don't add in all the temporal stuff
+        console.log("Adding hamiltonian term: \n\n");
+        console.log(hamiltonian_operator);
+
 
         include_temporal_function = typeof include_temporal_function !== 'undefined' ? include_temporal_function : true;
 
@@ -1182,11 +1185,17 @@ var tnt = {
             );
 
 		// Now get the temporal function ID:
-		var temporal_function_id
-            = parseInt($(term)
-                .find('.temporal_parameter_input_div select')
-                .val()
-            );
+        if ($(term).find('.temporal_parameter_input_div').length == 0) {
+            var temporal_function_id = 0;
+            hamiltonian_operator["include_temporal_function"] = false;
+        } else {
+            var temporal_function_id
+                = parseInt($(term)
+                    .find('.temporal_parameter_input_div select')
+                    .val()
+                );
+            hamiltonian_operator["include_temporal_function"] = true;
+        }
 
 		// Get the corresponding spatial and temporal function dict representation
         var spatial_function
@@ -1196,7 +1205,7 @@ var tnt = {
 
         var temporal_function
             = _.cloneDeep(
-                tnt.get_spatial_function(parseInt(temporal_function_id))
+                tnt.get_temporal_function(parseInt(temporal_function_id))
         );
 
         // Now get the values for each of the parameters for the spatial function variation
@@ -1847,11 +1856,15 @@ var tnt = {
 
         // If the ground state has been calculated, want to default
         // the dynamic Hamiltonian to the ground state one
+        var default_temporal_function = tnt.get_temporal_function(0);
         _.each(
             window.calculation.setup.hamiltonian.ground.terms,
             function(el) {
+                var el_clone = _.cloneDeep(el);
+                el_clone['include_temporal_function'] = true;
+                el_clone['temporal_function'] = default_temporal_function;
                 tnt.add_hamiltonian_term(
-                    el,
+                    el_clone,
                     "#dynamic_hamiltonian_terms_container",
                     "#no_dynamic_hamiltonian_terms_added_yet_warning"
                 );
