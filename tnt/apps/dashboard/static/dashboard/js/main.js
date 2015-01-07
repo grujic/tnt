@@ -40,6 +40,10 @@ var tnt = {
         MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	},
 
+	render_mathjax_in_element_with_id: function (el_id) {
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub, el_id]);
+	},
+
 	generate_unique_id: function () {
 		return Math.round(1000000000*Math.random()) + "";
 	},
@@ -734,8 +738,6 @@ var tnt = {
 
 		tnt.render_mathjax();
 
-        window.TEMP_hamiltonian_operator = hamiltonian_operator;
-
 	},
 
     update_hamiltonian_tex_str: function(
@@ -749,43 +751,104 @@ var tnt = {
 
         var hamiltonian_tex_str = "";
 
+        // First we loop over the terms and collect relevant info
+        var hamiltonian_terms = [];
+
 		_.each($(hamiltonian_term_container_selector).find('.hamiltonian-term'),
 	       function (term, index) {
 
-	       	   var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
+	       	  var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
 
-               var possible_new_line = (index + 1) % 3 == 0 ? "\\\\" : "";
-
-              var summation_prefix = (hamiltonian_operator["two_site"] == true) ?
-                                     "\\sum_{j=0}^{L-2}" :
-                                     "\\sum_{j=0}^{L-1}";
-
-              var number_of_terms =  hamiltonian_operator['number_of_terms'];
-
-              var to_add = summation_prefix;
-
-              if (number_of_terms > 1) {
-                to_add = to_add + "\\left (";
-              }
-
-               to_add = to_add
-                          + "f_{" + hamiltonian_operator["index"] + "} (j, t) "
-                          + hamiltonian_operator['function_tex_str'];
-
-              if (number_of_terms > 1) {
-                to_add = to_add + "\\right )";
-              }
-
-               to_add = to_add + possible_new_line;
-
-               if (hamiltonian_tex_str == "") {
-                   hamiltonian_tex_str = hamiltonian_tex_str + to_add;
-               } else {
-                   hamiltonian_tex_str = hamiltonian_tex_str + " + " + to_add;
-               }
+              hamiltonian_terms.push(hamiltonian_operator);
 
 	       }
 		); 	// End of loop over Hamiltonian terms
+
+        var two_site_terms = [];
+        var single_site_terms = [];
+
+        _.each(
+            hamiltonian_terms,
+            function (el) {
+                if (el['two_site'] == true) {
+                    two_site_terms.push(el);
+                } else {
+                    single_site_terms.push(el);
+                }
+            }
+        );
+
+         console.log("two_site_terms = ");
+         console.log(two_site_terms);
+
+        if (two_site_terms.length > 0) {
+
+            hamiltonian_tex_str = hamiltonian_tex_str + "\\sum_{j=0}^{L-2} \\left \\{";
+
+            _.each(
+                two_site_terms,
+                function (hamiltonian_operator, index) {
+                    var possible_new_line = ( ( (index) % 3 == 0 ) && (index != 0) ) ? "\\\\" : "";
+                    var possible_plus_sign = (index == 0) ? "" : " + ";
+                    var function_arguments = (hamiltonian_operator['include_temporal_function'] == true) ? "(j, t)" : "(j)";
+                    var possible_left_bracket = (hamiltonian_operator['number_of_terms'] > 1) ? "\\left (" : "";
+                    var possible_right_bracket = (hamiltonian_operator['number_of_terms'] > 1) ? "\\right )" : "";
+
+                    hamiltonian_tex_str = hamiltonian_tex_str
+                                        + possible_new_line
+                                        + possible_plus_sign
+                                        + "f_{" + hamiltonian_operator["index"] + "}"
+                                        + function_arguments
+                                        + possible_left_bracket
+                                        + hamiltonian_operator["function_tex_str"]
+                                        + possible_right_bracket;
+                }
+            );
+
+            hamiltonian_tex_str = hamiltonian_tex_str + "\\right \\}";
+
+        }
+
+        if (single_site_terms.length > 0) {
+
+            hamiltonian_tex_str = hamiltonian_tex_str + "\\\\ + \\sum_{j=0}^{L-1} \\left \\{";
+
+            _.each(
+                single_site_terms,
+                function (hamiltonian_operator, index) {
+                    var possible_new_line = ( ( (index) % 3 == 0 ) && (index != 0) ) ? "\\\\" : "";
+                    var possible_plus_sign = (index == 0) ? "" : " + ";
+                    var function_arguments = (hamiltonian_operator['include_temporal_function'] == true) ? "(j, t)" : "(j)";
+                    var possible_left_bracket = (hamiltonian_operator['number_of_terms'] > 1) ? "\\left (" : "";
+                    var possible_right_bracket = (hamiltonian_operator['number_of_terms'] > 1) ? "\\right )" : "";
+
+                    hamiltonian_tex_str = hamiltonian_tex_str
+                                        + possible_new_line
+                                        + possible_plus_sign
+                                        + "f_{" + hamiltonian_operator["index"] + "}"
+                                        + function_arguments + " "
+                                        + possible_left_bracket
+                                        + hamiltonian_operator["function_tex_str"]
+                                        + possible_right_bracket;
+                }
+            );
+
+            hamiltonian_tex_str = hamiltonian_tex_str + "\\right \\}";
+
+        }
+
+        window.TEMP_hamiltonian_terms = hamiltonian_terms;
+
+               //var possible_new_line = (index + 1) % 3 == 0 ? "\\\\" : "";
+
+
+               //to_add = to_add + possible_new_line;
+
+               //if (hamiltonian_tex_str == "") {
+                   //hamiltonian_tex_str = hamiltonian_tex_str + to_add;
+               //} else {
+                   //hamiltonian_tex_str = hamiltonian_tex_str + " + " + to_add;
+               //}
 
         var hamiltonian_tex_str = "\\[ H = " + hamiltonian_tex_str + "\\]";
 
@@ -1253,8 +1316,7 @@ var tnt = {
             var qn_conserve_help_content = "Click yes if the ground state you wish to calculate is an eigenstate of the total spin.";
             var qn_magnitude_help_content = "This number gives twice the total spin of the calculated ground state. Only values that are physically possible (given the magnitude of the spin per site and the system size) are displayed in the dropdown.";
             var qn_conserve_prompt = "Conserve total spin";
-            var qn_magnitude_prompt = "Total spin \( \sum{2S} \)";
-
+            var qn_magnitude_prompt = "Total spin \\( \\sum{2S} \\)";
 
             var spin_magnitude = window.calculation
                                 .setup
@@ -1388,6 +1450,8 @@ var tnt = {
 
 				}
 			);
+
+        tnt.render_mathjax_in_element_with_id("ground_state_quantum_info");
 
 		$("#new_calculation_ground_state").css('display', 'block');
 
@@ -1794,6 +1858,11 @@ var tnt = {
             }
         );
 
+        tnt.update_hamiltonian_tex_str(
+            "#dynamic_hamiltonian_terms_container",
+            "#dynamic_hamiltonian_tex_str"
+        );
+
 		$("#new_calculation_define_dynamic_hamiltonian")
 			.css('display', 'block');
 
@@ -1857,9 +1926,16 @@ var tnt = {
         if (window.calculation.setup.system.calculate_time_evolution == 1)
         {
             $("#calculate_overlap_with_initial_state_choice_div").css("display", "block");
+
+            if (window.calculation.setup.system.calculate_ground_state == 1) {
+                $("#calculate_overlap_with_ground_state_choice_div").css("display", "block");
+            } else {
+                $("#calculate_overlap_with_ground_state_choice_div").css("display", "none");
+            }
+
         } else {
             $("#calculate_overlap_with_initial_state_choice_div").css("display", "none");
-
+            $("#calculate_overlap_with_ground_state_choice_div").css("display", "none");
         }
 
 		tnt.render_available_expectation_operators();
