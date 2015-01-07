@@ -735,7 +735,7 @@ var tnt = {
         // hamiltonian_tex_str_el is where to draw the results
         //
 
-        var hamiltonian_tex_str = "\\[";
+        var hamiltonian_tex_str = "\\[ H = \\sum_{j=0}^{L-1}";
 
 		_.each($(hamiltonian_term_container_selector).find('.hamiltonian-term'),
 	       function (term) {
@@ -744,7 +744,7 @@ var tnt = {
 
                var to_add = hamiltonian_operator['function_tex_str'];
 
-               if (hamiltonian_tex_str == "\\[") {
+               if (hamiltonian_tex_str == "\\[ H = \\sum_{j=0}^{L-1}") {
                    hamiltonian_tex_str = hamiltonian_tex_str + to_add;
                } else {
                    hamiltonian_tex_str = hamiltonian_tex_str + " + " + to_add;

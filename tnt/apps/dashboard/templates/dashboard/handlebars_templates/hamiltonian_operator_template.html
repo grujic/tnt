@@ -11,12 +11,13 @@
 		        <div class="col-md-3">
 		            <button
 		             type="button" 
-		             class="btn btn-default form-control hamiltonian-operator-btn"
-		             data-operator-id="{{operator_id}}"
+		             class="btn btn-default form-control hamiltonian-operator-btn" 
+		             data-toggle="tooltip"
+		             data-placement="bottom"
+		             title="Tooltip on bottom"
+		             data-operator-id="{{function_description}}"
                      data-sum-or-product="{{sum_or_product}}">
-		              <i>{{function_description}}</i>
 		              \[ {{function_tex_str }} \]
-		              <br>
 		            </button>
 		        </div>
 	        {{/operators}}
