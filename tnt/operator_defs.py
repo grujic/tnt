@@ -10,12 +10,13 @@ operators = \
 		'function_description': 'Sx', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        	'U1_covariant': False, \
+        'U1_covariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': False
+		'two_site': False, \
+		'number_of_terms': 1
 	},
 
 	# Sigma Y
@@ -25,12 +26,13 @@ operators = \
 		'function_description': 'Sy', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        	'U1_covariant': False, \
+        'U1_covariant': False, \
 		'complex': True, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': False
+		'two_site': False, \
+		'number_of_terms': 1
 	},
 
 	# Sigma Z
@@ -45,7 +47,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': False
+		'two_site': False, \
+		'number_of_terms': 1
 	},
 
 	# Sigma +
@@ -75,7 +78,8 @@ operators = \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': False, \
 		'use_for_transform': True, \
-		'two_site': False
+		'two_site': False, \
+		'number_of_terms': 1
 	},
 
 	# XX coupling
@@ -90,7 +94,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 1
 	},
 
 	# YY coupling
@@ -105,7 +110,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 1
 	},
 
 	# ZZ coupling
@@ -120,7 +126,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 1
 	},
 
 	# Hopping
@@ -135,7 +142,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 2
 	},
 
 	# Hopping with phase change
@@ -150,7 +158,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 2
 	},
 
 	# XY coupling
@@ -165,7 +174,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 1
 	},
 
 	# YX coupling
@@ -180,7 +190,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 1
 	},
 
 	# YZ coupling
@@ -195,7 +206,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 1
 	},
 
 	# ZY coupling
@@ -210,7 +222,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 1
 	},
 
 	# ZX coupling
@@ -225,7 +238,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 1
 	},
 
 	# XZ coupling
@@ -240,7 +254,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 1
 	},
 	
 	# Rotation
@@ -255,7 +270,8 @@ operators = \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': False, \
 		'use_for_transform': True, \
-		'two_site': False
+		'two_site': False, \
+		'number_of_terms': 1
 	},
 
 	###################### Bosonic terms start here ####################################
@@ -272,7 +288,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': False
+		'two_site': False, \
+		'number_of_terms': 1
 	},
 
 	# On-site interaction
@@ -287,7 +304,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': False
+		'two_site': False, \
+		'number_of_terms': 1
 	},
 
 	# Coherent driving
@@ -302,7 +320,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
 		'use_for_transform': False, \
-		'two_site': False
+		'two_site': False, \
+		'number_of_terms': 2
 	},
 
 	# x-quadrature
@@ -317,7 +336,8 @@ operators = \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': False
+		'two_site': False, \
+		'number_of_terms': 2
 	},
 
 	# p-quadrature
@@ -332,7 +352,8 @@ operators = \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': False
+		'two_site': False, \
+		'number_of_terms': 1
 	},
 
 	# Creation
@@ -347,7 +368,8 @@ operators = \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': False, \
 		'use_for_transform': True, \
-		'two_site': False
+		'two_site': False, \
+		'number_of_terms': 1
 	},
 
 	# Annihilation
@@ -362,7 +384,8 @@ operators = \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': False, \
 		'use_for_transform': True, \
-		'two_site': False
+		'two_site': False, \
+		'number_of_terms': 1
 	},
 
 	# N-squared
@@ -377,7 +400,8 @@ operators = \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': False
+		'two_site': False, \
+		'number_of_terms': 1
 	},
 
 	# Hopping
@@ -392,7 +416,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 2
 	},
 
 	# Density-density
@@ -407,7 +432,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 1
 	},
 
 	# Parametric driving
@@ -422,7 +448,8 @@ operators = \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 2
 	},
 
 	# Bdagb
@@ -437,7 +464,8 @@ operators = \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
-		'two_site': True
+		'two_site': True, \
+		'number_of_terms': 1
 	}
 
 ]
