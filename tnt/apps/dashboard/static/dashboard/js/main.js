@@ -259,7 +259,8 @@ var tnt = {
         hamiltonian_term_container_selector,
         no_terms_yet_warning_selector,
         next_calculation_stage_btn_selector,
-        hamiltonian_tex_str_el) {
+        hamiltonian_tex_str_el,
+        display_temporal_info) {
         //
 
         // Now check if number conservation is being enforced
@@ -291,7 +292,8 @@ var tnt = {
                     hamiltonian_term_container_selector,
                     no_terms_yet_warning_selector,
                     next_calculation_stage_btn_selector,
-                    hamiltonian_tex_str_el
+                    hamiltonian_tex_str_el,
+                    display_temporal_info
                 );
             });
 
@@ -699,6 +701,10 @@ var tnt = {
 
         }
 
+        // Let's work out how many terms there already are,
+        // and assign this one a number
+        hamiltonian_operator['index'] = $(term_container_selector).find('.hamiltonian-term').length + 1;
+
         // Add GUI element
 		$(term_container_selector)
             .append(template(hamiltonian_operator));
@@ -735,16 +741,27 @@ var tnt = {
         // hamiltonian_tex_str_el is where to draw the results
         //
 
-        var hamiltonian_tex_str = "\\[ H = \\sum_{j=0}^{L-1}";
+        var hamiltonian_tex_str = "";
 
 		_.each($(hamiltonian_term_container_selector).find('.hamiltonian-term'),
-	       function (term) {
+	       function (term, index) {
 
 	       	   var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
 
-               var to_add = hamiltonian_operator['function_tex_str'];
+               var possible_new_line = (index + 1) % 3 == 0 ? "\\\\" : "";
 
-               if (hamiltonian_tex_str == "\\[ H = \\sum_{j=0}^{L-1}") {
+            console.log("\nIs this two-site?\n");
+console.log(hamiltonian_operator["two_site"]);
+
+              var summation_prefix = (hamiltonian_operator["two_site"] == true) ?
+                                     "\\sum_{j=0}^{L-2}" :
+                                     "\\sum_{j=0}^{L-1}";
+
+               var to_add = summation_prefix
+                          + "f_{" + hamiltonian_operator["index"] + "} (j, t)"
+                          + hamiltonian_operator['function_tex_str'] + possible_new_line;
+
+               if (hamiltonian_tex_str == "") {
                    hamiltonian_tex_str = hamiltonian_tex_str + to_add;
                } else {
                    hamiltonian_tex_str = hamiltonian_tex_str + " + " + to_add;
@@ -753,7 +770,7 @@ var tnt = {
 	       }
 		); 	// End of loop over Hamiltonian terms
 
-        var hamiltonian_tex_str = hamiltonian_tex_str + "\\]";
+        var hamiltonian_tex_str = "\\[ H = " + hamiltonian_tex_str + "\\]";
 
         $(hamiltonian_tex_str_el).html(hamiltonian_tex_str);
 
@@ -1040,7 +1057,8 @@ var tnt = {
             "#ground_hamiltonian_terms_container",
             "#no_ground_hamiltonian_terms_added_yet_warning",
             "#new_calculation_define_ground_hamiltonian .btn-next-step",
-            "#ground_hamiltonian_tex_str");
+            "#ground_hamiltonian_tex_str",
+            false);
 
         tnt.attach_click_fn_to_remove_all_terms();
 
@@ -1066,6 +1084,7 @@ var tnt = {
 		// JSON struct describing the term's spatial dependence etc
 
 		var hamiltonian_operator_id = $(term).data("hamiltonian-operator-id");
+        var index = $(term).data("index");
 
 		var this_hamiltonian_operator
             = _.filter(
@@ -1077,6 +1096,8 @@ var tnt = {
 
 		// Need a deep clone of this object
 		var hamiltonian_operator = _.cloneDeep(this_hamiltonian_operator);
+
+        hamiltonian_operator['index'] = index;
 
 		// Now get the spatial function ID:
 		var spatial_function_id
@@ -1742,7 +1763,8 @@ var tnt = {
             "#dynamic_hamiltonian_terms_container",
             "#no_dynamic_hamiltonian_terms_added_yet_warning",
             "#new_calculation_define_dynamic_hamiltonian .btn-next-step",
-            "#dynamic_hamiltonian_tex_str"
+            "#dynamic_hamiltonian_tex_str",
+            true
         );
 
         tnt.attach_click_fn_to_remove_all_terms();
