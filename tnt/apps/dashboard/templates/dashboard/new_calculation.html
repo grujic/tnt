@@ -4,10 +4,6 @@
 
 <div id="new_calculation_basic_setup" class="new-calculation-step" style="display: none;">
 
-    <!--<div class="page-header">-->
-        <!--<h1>Set up your system <small>Basic system properties</small></h1>-->
-    <!--</div>-->
-
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Basic system setup</h3>
@@ -41,7 +37,7 @@
         <a tabindex="0" 
            data-toggle="popover" 
            data-trigger="focus" 
-           data-content="Choose the type of system you want to simulate. Currently you can choose from a spin system (i.e. a spin of magnitude \( S \) on each site), or a bosonic system (i.e. with 0 to \( n_{\mathrm{max}} \) spinless bosons on each site). The ability to choose fermionic systems will be available soon."
+           data-content="Choose the type of system you want to simulate. Currently you can choose from a spin system (i.e. a spin of magnitude S on each site), or a bosonic system (i.e. with n spinless bosons on each site). The ability to choose fermionic systems will be available soon."
         >
             <i class="fa fa-question-circle fa-lg"></i>
         </a>
@@ -345,13 +341,9 @@
 
 <div id="new_calculation_define_ground_hamiltonian" class="new-calculation-step" style="display: none;">
 
-    <div class="page-header">
-        <h1>Ground state Hamiltonian <small>Choose from the predefined operators below</small></h1>
-    </div>
-
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Available operators</h3>
+      <h3 class="panel-title">Ground state Hamiltonian</h3>
     </div>
 
     <div class="panel-body">
@@ -361,22 +353,43 @@
             Setup progress
         </div>
       </div>
-
-      <p>Select from the following menu to add another Hamiltonian term, then customise it by choosing a functional form for its coefficients (defaults to constant across the system). 
+      
+      <h4>Available operators
+      <a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="Build the ground state Hamiltonian by clicking on one of the predefined operators below, then choosing a functional form for its coefficients in the box that appears below. Your currently defined Hamiltonian will be displayed as it is created."
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
+                    	
+      </h4>
+      
+      <!-- <p> 
       Each term will be used to form the Hamiltonian as 
       \[ 
       H = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j} + \sum_{j=0}^{L-2}\sum_t^{n_t}f_{t}(j)\hat{t}_{j,j+1},
       \]
       where there are \( n_o \) onsite terms \( \hat{o} \), \( n_t \) two-site terms \( \hat{t} \), and where \( f_{o,t}(j) \) is the chosen spatial function for the onsite or two-site term \( \hat{o},\hat{t} \).
-      </p>
+      </p> -->
 
       <div id="new_calculation_available_ground_hamiltonian_operators">
 
       </div>
 
       <hr>
+	 <h4>Current Hamiltonian
+      <a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="This Hamiltonian will be used to find the ground state. The spatially varying functions can be modified be specifying the function type and parameters in the box for each term below."
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
+                    	
+      </h4>
 
-      <h2 >Hamiltonian H = <span id="ground_hamiltonian_tex_str" class="hamiltonian_tex_str"></span></h2>
+      <h3><span id="ground_hamiltonian_tex_str" class="hamiltonian_tex_str"></span></h3>
 
       <div id="no_ground_hamiltonian_terms_added_yet_warning" class="alert alert-info no-terms-added" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
 
@@ -410,7 +423,7 @@
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Time evolution</h3>
+      <h3 class="panel-title">Time evolution calculation</h3>
     </div>
 
     <div class="progress">
@@ -461,7 +474,7 @@
                 <div class="form-group">
                     <label for="input_num_expval_time_steps" class="col-sm-5 control-label">Number of time steps for expectation value evaluations</label>
                     <div class="col-sm-7">
-                    <input type="number" class="form-control integer-only" id="input_num_expval_time_steps" placeholder="Leave blank to evaluate expectation at ten evenly spaced points" value="">
+                    <input type="number" class="form-control integer-only" id="input_num_expval_time_steps" placeholder="10" value="10">
                     </div>
                 </div>
             </form>
