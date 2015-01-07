@@ -21,11 +21,11 @@
         </div>
 
         <div class="col-md-4">
-            <a href="/media/{{calculation_id}}.json" class="btn btn-default  form-control" role="button">Download JSON results</a>
+            <a href="/media/{{calculation_id}}.json" id="download_json" class="btn btn-default form-control" role="button">Download JSON results</a>
         </div>
 
         <div class="col-md-4">
-            <a href="/media/{{calculation_id}}/{{calculation_id}}.mat" class="btn btn-default form-control" role="button">Download MAT results</a>
+            <a href="/media/{{calculation_id}}/{{calculation_id}}.mat" id="download_mat" class="btn btn-default form-control" role="button">Download MAT results</a>
         </div>
 
     </div>
@@ -70,6 +70,10 @@
             $("#parameter_summary")
                 .html(template(window.calculation));
 
+            if (window.calculation.meta_info.status != "finished") {
+                $("#download_mat").attr("disabled", true);
+                $("#download_json").attr("disabled", true);
+            }
         }
     );
 
