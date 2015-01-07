@@ -187,7 +187,7 @@ var tnt = {
 				window.calculation = data;
 				window.calculation.meta_info.user.email = window.user.email;
 	  			window.calculation.meta_info.user.id = window.user.id;
-	  			console.log("Initialised blank calculation. ");
+	  			console.log("Initialised blank calculation. \n\n");
 			}
 		);
 
@@ -202,7 +202,7 @@ var tnt = {
 
 	load_spatial_and_temporal_function_definitions: function() {
 		// Make an API call and pull in these definitions
-		console.log("Loading spatial and temporal function definitions...");
+		console.log("Loading spatial and temporal function definitions...\n\n");
 
 		$.get('/api/v1.0/spatial_and_temporal_functions',
 			function(data) {
@@ -248,7 +248,7 @@ var tnt = {
 
 			}
 		).done(function() {
-    		console.log("Loaded spatial and temporal function definitions");
+    		console.log("Loaded spatial and temporal function definitions\n\n");
   		});
 
 	},	// End of load_spatial_function_definitions
@@ -308,7 +308,7 @@ var tnt = {
             // Transformations we can apply to the base state
             // We draw these choices in where_to_render
             // sum_or_product is 'sum' or 'product'
-            console.log("Rendering initial base state modifiers...");
+            console.log("Rendering initial base state modifiers...\n\n");
 
             // First check which ones comply with QN
             var dynamic_qn =
@@ -439,7 +439,7 @@ var tnt = {
     attach_click_fn_to_remove_all_terms: function () {
         $(".remove-all-terms-btn").click(
             function (e) {
-                console.log("Removing all terms...\n");
+                console.log("Removing all terms...\n\n");
 
                 var hamiltonian_terms_container_super =
                     $(this)
@@ -570,7 +570,7 @@ var tnt = {
 
 	render_available_expectation_operators: function () {
 		// render the available expectation value operators
-		console.log("Rendering available expectation value operators...");
+		console.log("Rendering available expectation value operators...\n\n");
 
 		window.expectation_operators = {
 			'operators':
@@ -582,7 +582,7 @@ var tnt = {
 			)
 		};
 
-		console.log("Filtered all operators to the expectation operators");
+		console.log("Filtered all operators to the expectation operators\n\n");
 
         // Now check if number conservation is being enforced (ground AND dynamic)
         if ( (parseInt(window.calculation.setup.system.number_conservation.ground.apply_qn) == 1)
@@ -601,7 +601,7 @@ var tnt = {
 
              }
 
-		console.log("Filtered expectation operators");
+		console.log("Filtered expectation operators to matching QN status\n\n");
 
 		// Separate operators into single- and two-site expectation operators
 		var single_site_expectation_operators =
@@ -615,7 +615,7 @@ var tnt = {
 				)
 			};
 
-		console.log("Filtered expectation operators to single site ones");
+		console.log("Filtered expectation operators to single site ones\n\n");
 
 		var two_site_expectation_operators =
 			{
@@ -628,7 +628,7 @@ var tnt = {
 				)
 			};
 
-		console.log("Filtered expectation operators to two site ones");
+		console.log("Filtered expectation operators to two site ones\n\n");
 
 		var single_site_source = $("#expectation-operators-single-site-template").html();
 		var single_site_template = Handlebars.compile(single_site_source);
@@ -640,16 +640,16 @@ var tnt = {
 		$("#new_calculation_available_expectation_operators_single_site")
 			.html(single_site_template(single_site_expectation_operators));
 
-		console.log("Rendered single site operators");
+		console.log("Rendered single site operators\n\n");
 
 		$("#new_calculation_available_expectation_operators_two_site")
 			.html(two_site_template(two_site_expectation_operators));
 
-		console.log("Rendered two site operators");
+		console.log("Rendered two site operators\n\n");
 
 		tnt.attach_click_fn_to_expectation_operator_choices();
 
-		console.log("Attached click functions to exp op choices");
+		console.log("Attached click functions to exp op choices\n\n");
 
 		tnt.render_mathjax();
 
@@ -691,7 +691,11 @@ var tnt = {
         // put in a default
         if (include_temporal_function === false) {
 
+            hamiltonian_operator['include_temporal_function'] = false;
+
         } else {
+
+            hamiltonian_operator['include_temporal_function'] = true;
 
             if ( _.has(hamiltonian_operator, 'temporal_function') != true) {
 
@@ -730,6 +734,8 @@ var tnt = {
 
 		tnt.render_mathjax();
 
+        window.TEMP_hamiltonian_operator = hamiltonian_operator;
+
 	},
 
     update_hamiltonian_tex_str: function(
@@ -750,16 +756,27 @@ var tnt = {
 
                var possible_new_line = (index + 1) % 3 == 0 ? "\\\\" : "";
 
-            console.log("\nIs this two-site?\n");
-console.log(hamiltonian_operator["two_site"]);
-
               var summation_prefix = (hamiltonian_operator["two_site"] == true) ?
                                      "\\sum_{j=0}^{L-2}" :
                                      "\\sum_{j=0}^{L-1}";
 
-               var to_add = summation_prefix
-                          + "f_{" + hamiltonian_operator["index"] + "} (j, t)"
-                          + hamiltonian_operator['function_tex_str'] + possible_new_line;
+              var number_of_terms =  hamiltonian_operator['number_of_terms'];
+
+              var to_add = summation_prefix;
+
+              if (number_of_terms > 1) {
+                to_add = to_add + "\\left (";
+              }
+
+               to_add = to_add
+                          + "f_{" + hamiltonian_operator["index"] + "} (j, t) "
+                          + hamiltonian_operator['function_tex_str'];
+
+              if (number_of_terms > 1) {
+                to_add = to_add + "\\right )";
+              }
+
+               to_add = to_add + possible_new_line;
 
                if (hamiltonian_tex_str == "") {
                    hamiltonian_tex_str = hamiltonian_tex_str + to_add;
@@ -785,8 +802,6 @@ console.log(hamiltonian_operator["two_site"]);
 			function (e) {
 
 				var selected_function_id = $(this).val();
-				console.log("selected_function_id");
-				console.log(selected_function_id);
 
 				// Get info on the selected function
                 // Is is a spatial or temporal function?
@@ -844,7 +859,7 @@ console.log(hamiltonian_operator["two_site"]);
 	// Following is a list of functions that verify data input and also set up the various data input panels for a new calculation
 	initialise_new_calculation_basic_setup_step: function () {
 		//
-		console.log("Initialising new calculation basic setup input");
+		console.log("Initialising new calculation basic setup input\n\n");
 
         // Set up the selectors for system size
         tnt.set_up_numeric_range_dropdown(
@@ -868,7 +883,6 @@ console.log(hamiltonian_operator["two_site"]);
 				$(this).addClass("active");
 
 				var chosen_system_type = $(this).data("system-type");
-				console.log("Chosen system type = " + chosen_system_type);
 
 				// Hide all extra input panels
 				$(".system_type_extra_info").css("display", "none");
@@ -910,8 +924,6 @@ console.log(hamiltonian_operator["two_site"]);
         .calculation
         .meta_info
         .name = $("#calculation_name").val();
-
-        console.log("Calculation name is :" + window.calculation.meta_info.name);
 
 		var system_type = $(".btn-system-type.active").data("system-type"); // From the selected button, find system type
 
@@ -1863,26 +1875,18 @@ console.log(hamiltonian_operator["two_site"]);
 			tnt.validate_new_calculation_expectation_operators
 		);
 
-		console.log("A");
-
 		// What comes before this stage depends on calculation parameters:
 		if (window.calculation.setup.system.calculate_time_evolution == 1) {
 			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_initial_state;
-			console.log("A1");
 		} else  {
 			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_time_evolution;
-			console.log("A2");
 		}
-
-		console.log("B");
 
 		$("#new_calculation_expectation_operators .btn-back-step").click(
 			//previous_stage_initialisation_fn
             //
             previous_stage_initialisation_fn
 		);
-
-		console.log("C");
 
 	},  // End of initialise_new_calculation_expectation_operators
 
