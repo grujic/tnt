@@ -30,6 +30,20 @@ var tnt = {
 
     },
 
+    min_int_not_in_array: function(arr) {
+        // [1,3,4] --> 2
+        var found = false;
+        var counter = 1;
+        while (!found) {
+            if (! _.contains(arr, counter)) {
+                found = true;
+            } else {
+                counter = counter + 1;
+            }
+        }
+        return counter;
+    },
+
 	timestamp_to_human_date: function (timestamp) {
 		var date = new Date(timestamp*1000);
 		return date.toLocaleString();
@@ -717,7 +731,15 @@ var tnt = {
 
         // Let's work out how many terms there already are,
         // and assign this one a number
-        hamiltonian_operator['index'] = $(term_container_selector).find('.hamiltonian-term').length + 1;
+        var existing_indices
+            = _.map(
+                $(term_container_selector).find('.hamiltonian-term'),
+                function(el) {
+                    return $(el).data("index");
+                }
+            );
+
+        hamiltonian_operator['index'] = tnt.min_int_not_in_array(existing_indices);
 
         // Add GUI element
 		$(term_container_selector)
@@ -1412,8 +1434,6 @@ var tnt = {
             var qn_magnitude_prompt = "Total fermion number \( N \)";
         }
 
-        console.log("Setting text to " + qn_conserve_help_content);
-
         $("#ground_state_quantum_info #qn_conserve_prompt a")
             .attr("data-content", qn_conserve_help_content);
 
@@ -1724,14 +1744,32 @@ var tnt = {
 
                 var sum_or_product = $(this).data('sum-product');
 
-                //hamiltonian_operator['index'] = $(term_container_selector).find('.hamiltonian-term').length + 1;
+                var existing_indices
+                    = _.map(
+                        $(".initial_state_modifier_sum_or_product"),
+                        function(el) {
+                            return $(el).data("index");
+                        }
+                    );
+
+                var index = tnt.min_int_not_in_array(existing_indices);
+
+                var index = $("#initial_state_modifier_container")
+                    .find('.initial_state_modifier_sum_or_product').length + 1;
 
                 var source = $("#initial-state-modifier-sum-or-product-template").html();
 
                 var template = Handlebars.compile(source);
 
                 $('#initial_state_modifier_container')
-                    .append(template({'sum_or_product': sum_or_product}));
+                    .append(
+                        template(
+                            {
+                                'sum_or_product': sum_or_product,
+                                'index': index
+                            }
+                        )
+                    );
 
                 var where_to_render_modifier_operator_btns
                     = $('#initial_state_modifier_container .initial_state_modifier_sum_or_product:last  .initial_state_modifier_operators_container');

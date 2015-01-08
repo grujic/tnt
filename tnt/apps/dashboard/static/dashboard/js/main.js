@@ -55,6 +55,9 @@ var tnt = {
 	},
 
 	render_mathjax_in_element_with_id: function (el_id) {
+        if (el_id[0] == "#") {
+            el_id = el_id.slice(1, el_id.length);
+        }
         MathJax.Hub.Queue(["Typeset",MathJax.Hub, el_id]);
 	},
 
@@ -418,7 +421,8 @@ var tnt = {
 
 	attach_click_fn_to_remove_hamiltonian_terms: function (
         hamiltonian_term_container_selector,
-        hamiltonian_tex_str_el
+        hamiltonian_tex_str_el,
+        update_tex_str_fn
     ) {
 		// When an initial base state is chosen, need to make that button active and all others not
 		$(hamiltonian_term_container_selector).find(".remove-hamiltonian-term-btn")
@@ -448,7 +452,7 @@ var tnt = {
 
 					$(hamiltonian_term_containing_div).remove();
 
-                    tnt.update_hamiltonian_tex_str(
+                    update_tex_str_fn(
                         hamiltonian_term_container_selector,
                         hamiltonian_tex_str_el
                     );
@@ -741,8 +745,6 @@ var tnt = {
 
         hamiltonian_operator['index'] = tnt.min_int_not_in_array(existing_indices);
 
-        //hamiltonian_operator['index'] = $(term_container_selector).find('.hamiltonian-term').length + 1;
-
         // Add GUI element
 		$(term_container_selector)
             .append(template(hamiltonian_operator));
@@ -761,7 +763,8 @@ var tnt = {
 
 		tnt.attach_click_fn_to_remove_hamiltonian_terms(
             term_container_selector,
-            hamiltonian_tex_str_el
+            hamiltonian_tex_str_el,
+            tnt.update_hamiltonian_tex_str
         );
 
 		tnt.attach_click_fn_to_spatial_and_temporal_fn_choices();	// Attach logic for changing spatial function input
@@ -780,6 +783,22 @@ var tnt = {
         tex_str = tex_str +  "| \\Psi \\rangle_{\\mathrm\{start\}} = ";
 
         // actual work
+        var operator_indices
+            = _.map(
+                $(".initial_state_modifier_sum_or_product"),
+                function(el) {
+                    return $(el).data("index");
+                }
+            );
+
+        operator_indices.reverse();
+
+        _.each(
+            operator_indices,
+            function (index) {
+                tex_str = tex_str + "\\hat{O}_{" + index + "} ";
+            }
+        );
 
         tex_str = tex_str + " | \\Psi \\rangle_{\\mathrm\{base\}}"
 
@@ -1746,8 +1765,15 @@ var tnt = {
 
                 var sum_or_product = $(this).data('sum-product');
 
-                var index = $("#initial_state_modifier_container")
-                    .find('.initial_state_modifier_sum_or_product').length + 1;
+                var existing_indices
+                    = _.map(
+                        $(".initial_state_modifier_sum_or_product"),
+                        function(el) {
+                            return $(el).data("index");
+                        }
+                    );
+
+                var index = tnt.min_int_not_in_array(existing_indices);
 
                 var source = $("#initial-state-modifier-sum-or-product-template").html();
 
@@ -1777,6 +1803,8 @@ var tnt = {
                         $(this)
                         .closest('.initial_state_modifier_sum_or_product')
                         .remove();
+
+                        tnt.update_initial_state_modifiers_tex_str();
                     }
                 );
 
