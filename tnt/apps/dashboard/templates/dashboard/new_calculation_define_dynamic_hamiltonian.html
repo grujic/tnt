@@ -1,25 +1,8 @@
 <div id="new_calculation_define_dynamic_hamiltonian" class="new-calculation-step" style="display: none;">
 
-    <div class="page-header">
-    <h1>
-        Define your dynamic Hamiltonian <small>
-
-      	<a tabindex="0" 
-           data-toggle="popover" 
-           data-trigger="focus" 
-           data-content="This is the Hamiltonian controlling the system as it evolves from your chosen initial state. If you specified a ground state calculation, this Hamiltonian defaults to the Hamiltonian you chose to calculate the ground state. "
-        >
-            <i class="fa fa-question-circle fa-lg"></i>
-        </a>
-
-        </small>
-
-    </h1>
-    </div>
-
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Available operators</h3>
+      <h3 class="panel-title">Dynamic Hamiltonian</h3>
     </div>
 
     <div class="panel-body">
@@ -29,15 +12,17 @@
             Setup progress
         </div>
       </div>
-
-      <p>Select from the following menu to add another Hamiltonian term, then customise it by choosing a functional form for its coefficients (defaults to constant across the system). 
-      Each term will be used to form the Hamiltonian as 
-      \[ 
-      H = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)g_{o}(t)\hat{o}_{j} + \sum_{j=0}^{L-2}\sum_o^{n_n}f_{o}(j)g_{o}(t)\hat{o}_{j,j+1},
-      \]
-      where there are \( n_o \) onsite terms \( \hat{o}_{j} \), \( n_n \) nearest-neighbour two-site terms \( \hat{o}_{j,j+1} \), 
-      and where \( f_{o}(j), g_{o}(t) \) are the chosen spatial and temporal functions respectively for the onsite or two-site term.
-      </p>
+      
+      <h4>Available operators
+      <a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="Build the dynamic Hamiltonian by clicking on one of the predefined operators below, then choosing a functional form for its coefficients in the box that appears below. Your currently defined Hamiltonian will be displayed as it is created. If you specified a ground state calculation, this Hamiltonian defaults to the Hamiltonian you chose to calculate the ground state."
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
+                        
+      </h4>
 
       <div id="new_calculation_available_dynamic_hamiltonian_operators">
 
@@ -45,6 +30,16 @@
 
       <hr>
 
+    <h4>Current Hamiltonian
+      <a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="This Hamiltonian will be used to find the evolve your chosen initial state. The spatially and temporally varying functions can be modified be specifying the function type and parameters in the box for each term below."
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
+
+      </h4>
 
       <div id="no_dynamic_hamiltonian_terms_added_yet_warning" class="alert alert-info no-terms-added" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
 
