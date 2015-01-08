@@ -1,0 +1,90 @@
+<div id="new_calculation_expectation_operators" class="new-calculation-step" style="display: none;">
+
+    <div class="page-header">
+    <h1>Expectation values <small>What do you want to calculate?</small></h1>
+    </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Available expectation operators</h3>
+    </div>
+
+    <div class="panel-body">
+
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0" aria-valuemax="100" style="width: 84%;">
+            Setup progress
+        </div>
+      </div>
+
+
+      <div class="row">
+
+        <div id="calculate_overlap_with_ground_state_choice_div" class="col-md-6">
+
+            <h4>Calculate overlaps with the ground state?</h4>
+            <div id="calculate_overlap_with_ground_state_choice" class="btn-group" data-toggle="buttons">
+
+                <label class="btn btn-primary">
+                <input type="radio" name="options" data-overlap-choice=1>Yes
+                </label>
+                <label class="btn btn-primary active">
+                <input type="radio" name="options" data-overlap-choice=0 checked>No
+                </label>
+            </div>
+
+            <hr>
+
+        </div>
+
+        <div id="calculate_overlap_with_initial_state_choice_div" class="col-md-6">
+
+            <h4>Calculate overlaps with the initial state?</h4>
+            <div id="calculate_overlap_with_initial_state_choice" class="btn-group" data-toggle="buttons">
+
+                <label class="btn btn-primary">
+                <input type="radio" name="options" data-overlap-choice=1>Yes
+                </label>
+                <label class="btn btn-primary active">
+                <input type="radio" name="options" data-overlap-choice=0 checked>No
+                </label>
+            </div>
+
+            <hr>
+
+        </div>
+
+     </div>
+
+      <div id="no_expectation_operators_added_yet_warning" class="alert alert-warning" role="alert">You haven't specified any operators to calculate expectation values for yet!</div>
+
+      <p>Select from the following menu to add another operator you wish to calculate expectation values for. </p>
+
+      <h4>Single site expectation operators</h4>
+      <div id="new_calculation_available_expectation_operators_single_site">
+
+      </div>
+
+      <hr>
+
+      <h4>Two-site expectation operators</h4>
+      <div id="new_calculation_available_expectation_operators_two_site">
+
+      </div>
+
+      <div class="row new-calculation-step-navigation">  <!-- back next controls -->
+          <div class="col-md-6">
+              <button type="button" class="btn btn-default btn-back-step form-control ">Back</button>
+          </div>
+
+          <div class="col-md-6">
+              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
+          </div>
+      </div>  <!-- End of back next controls -->
+
+    </div>  <!-- End of panel body -->
+
+  </div>  <!-- End of panel -->
+
+</div> <!-- End of div new_calculation_expectation_operators -->
+

@@ -1,0 +1,232 @@
+<!-- Ground state calculation specification -->
+<div id="new_calculation_ground_state" class="new-calculation-step" style="display: none;" >
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Ground state calculation</h3>
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100" style="width: 42%;">
+          Setup progress
+      </div>
+    </div>
+
+    <div class="panel-body">
+      
+      <h4>Calculate ground state
+      <a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="Choose Yes to calculate the energy of the ground state and any onsite and two-site expectation values you choose. The calculated ground state can also be used to generate the starting state for time evolution, and for overlap calculations with the time-evolved state."
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
+                    	
+                    </h4>
+
+      <div id="ground_state_calculation_choice" class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary">
+          <input type="radio" name="options" data-calculate-ground-state=1>Yes
+        </label>
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" data-calculate-ground-state=0 checked>No
+        </label>
+      </div>
+
+      <hr>
+
+      <div id="ground_state_extra_info_specification" style="display: none;">
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+
+                <h4>Precision
+
+                    <a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="Enter the precision with which you want to find the ground state. The number below is a convergence parameter - if the ground state energy on successive 'sweeps' do not differ by more than this absolute amount, the calculation is stopped. "
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
+
+                </h4>
+
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="input_ground_state_precision_choice" class="col-sm-4 control-label">
+                            \( \mathrm{log}_{10}(\mathrm{precision}) \)
+                        </label>
+                        <div class="col-sm-8">
+
+                            <select id="input_ground_state_precision_choice" class="col-sm-4 form-control">
+
+                            </select>
+
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+            <div id="ground_state_quantum_info" style="display: block;" class="col-md-6" >
+
+                <h4 id="qn_conserve_prompt">
+                    <span class="prompt-text">
+                        Conserve total spin
+                    </span>
+                	<a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="Click yes if the ground state you wish to calculate is an eigenstate of the total spin."
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
+
+                </h4>
+
+                <div id="ground_number_conservation_choice" class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary">
+                    <input type="radio" name="options" data-number-conservation=1>Yes
+                </label>
+                <label class="btn btn-primary active">
+                    <input type="radio" name="options" data-number-conservation=0 checked>No
+                </label>
+                </div>
+
+
+                <br><br>
+
+                <div id="ground_state_quantum_number_info" style="display: none;">
+
+                    <h4 id="qn_magnitude_prompt">
+                        <span class="prompt-text">
+                            Total spin \( \sum{2S} \) 
+                        </span>
+                        <a tabindex="0" 
+                        data-toggle="popover" 
+                        data-trigger="focus" 
+                        data-content="This number gives twice the total spin of the calculated ground state. Only values that are physically possible (given the magnitude of the spin per site and the system size) are displayed in the dropdown."
+                        >
+                            <i class="fa fa-question-circle fa-lg"></i>
+                        </a>
+                    </h4>
+
+                    <form class="form-inline" role="form">
+                        <select id="quantum_number_ground_state_choice" class="form-control">
+
+                        </select>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+      </div> <!-- End of ground_state_extra_info_specification -->
+
+      <div class="row new-calculation-step-navigation">
+          <div class="col-md-6">
+              <button type="button" class="btn btn-default btn-back-step form-control ">Back</button>
+          </div>
+
+          <div class="col-md-6">
+              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
+          </div>
+      </div>
+
+    </div>
+  </div>
+</div> <!-- End of Ground state calculation specification -->
+
+<div id="new_calculation_define_ground_hamiltonian" class="new-calculation-step" style="display: none;">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Ground state Hamiltonian</h3>
+    </div>
+
+    <div class="panel-body">
+
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100" style="width: 28%;">
+            Setup progress
+        </div>
+      </div>
+      
+      <h4>Available operators
+      <a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="Build the ground state Hamiltonian by clicking on one of the predefined operators below, then choosing a functional form for its coefficients in the box that appears below. Your currently defined Hamiltonian will be displayed as it is created."
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
+                    	
+      </h4>
+      
+      <!-- <p> 
+      Each term will be used to form the Hamiltonian as 
+      \[ 
+      H = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j} + \sum_{j=0}^{L-2}\sum_t^{n_t}f_{t}(j)\hat{t}_{j,j+1},
+      \]
+      where there are \( n_o \) onsite terms \( \hat{o} \), \( n_t \) two-site terms \( \hat{t} \), and where \( f_{o,t}(j) \) is the chosen spatial function for the onsite or two-site term \( \hat{o},\hat{t} \).
+      </p> -->
+
+      <div id="new_calculation_available_ground_hamiltonian_operators">
+
+      </div>
+
+      <hr>
+	 <h4>Current Hamiltonian
+      <a tabindex="0" 
+                    data-toggle="popover" 
+                    data-trigger="focus" 
+                    data-content="This Hamiltonian will be used to find the ground state. The spatially varying functions can be modified be specifying the function type and parameters in the box for each term below."
+                    >
+                        <i class="fa fa-question-circle fa-lg"></i>
+                    </a>
+
+      </h4>
+
+      <div id="no_ground_hamiltonian_terms_added_yet_warning" class="alert alert-info no-terms-added" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
+
+      <div id="ground_hamiltonian_terms_container_super" class="hamiltonian_terms_container_super">
+
+        <p>
+
+            <btn class="btn btn-danger remove-all-terms-btn">
+                <i class="fa fa-trash-o fa-lg"></i> Remove all terms
+            </btn>
+            <span id="ground_hamiltonian_tex_str" class="hamiltonian_tex_str"></span>
+
+        </p>
+
+        <div id="ground_hamiltonian_terms_container" class="hamiltonian_terms_container">
+        </div>
+
+      </div>
+
+      <hr>
+
+      <div class="row new-calculation-step-navigation">  <!-- back next controls -->
+          <div class="col-md-6">
+              <button type="button" class="btn btn-default btn-back-step btn-back-step form-control ">Back</button>
+          </div>
+
+          <div class="col-md-6">
+              <button type="button" disabled="disabled" class="btn btn-success btn-next-step form-control ">Next</button>
+          </div>
+      </div>  <!-- End of back next controls -->
+
+    </div>  <!-- End of panel body -->
+
+  </div>  <!-- End of panel -->
+
+</div>  <!-- End of div new_calculation_define_ground_hamiltonian-->

@@ -1726,7 +1726,10 @@ var tnt = {
                 var where_to_render_modifier_operator_btns
                     = $('#initial_state_modifier_container .initial_state_modifier_sum_or_product:last  .initial_state_modifier_operators_container');
 
-                tnt.render_available_intitial_state_modifier_operators(where_to_render_modifier_operator_btns, sum_or_product);
+                tnt.render_available_intitial_state_modifier_operators(
+                    where_to_render_modifier_operator_btns,
+                    sum_or_product
+                );
 
                 $('.initial_state_modifier_sum_or_product .remove-initial-state-modifier-btn')
                     .click(function() {

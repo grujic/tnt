@@ -1,0 +1,100 @@
+<!-- Time evolution calculation specification -->
+<div id="new_calculation_time_evolution" class="new-calculation-step" style="display: none;">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Time evolution calculation</h3>
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100" style="width: 56%;">
+          Setup progress
+      </div>
+    </div>
+
+    <div class="panel-body">
+
+      <p>Do you want to calculate dynamical evolution of your system?</p>
+
+      <div id="time_evolution_choice" class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" data-calculate-time-evolution=1 checked>Yes
+        </label>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" data-calculate-time-evolution=0>No
+        </label>
+      </div>
+
+
+      <div id="time_evolution_time_step_specification" class="row">
+
+        <hr>
+
+        <div class="col-md-7">
+
+
+            <div id="time_evolution_parameter_warning_msg" class="bg-warning text-warning" style="display:none;">
+                <p>Please ensure your time step size is a real number, and your chosen number of time steps is between 1 and 2000. </p>
+                <p>The number of expectation value evaluations must be no less than (the number of time steps) / 200, and no larger than the number of time steps. </p>
+            </div>
+
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="input_num_time_steps" class="col-sm-5 control-label">Number of time steps</label>
+                    <div class="col-sm-7">
+                    <input type="number" class="form-control integer-only" id="input_num_time_steps" placeholder="100" value="100">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="input_time_step_size" class="col-sm-5 control-label">Time step size</label>
+                    <div class="col-sm-7">
+                    <input type="number" class="form-control float-only" id="input_time_step_size" placeholder="0.01" value="0.01">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="input_num_expval_time_steps" class="col-sm-5 control-label">Number of time steps for expectation value evaluations</label>
+                    <div class="col-sm-7">
+                    <input type="number" class="form-control integer-only" id="input_num_expval_time_steps" placeholder="10" value="10">
+                    </div>
+                </div>
+            </form>
+
+
+            </div>
+
+            <div class="col-md-5"
+
+                <p>Enforce quantum number conservation on the dynamical evolution?</p>
+
+                <div id="dynamical_number_conservation_choice" class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-primary">
+                    <input type="radio" name="options" data-dynamical-number-conservation=1>Yes
+                    </label>
+                    <label class="btn btn-primary active">
+                    <input type="radio" name="options" data-dynamical-number-conservation=0 checked>No
+                    </label>
+                </div>
+
+            </div>
+
+        </div> <!-- End of row -->
+
+
+      <hr>
+
+      <div class="row new-calculation-step-navigation">
+          <div class="col-md-6">
+              <button type="button" class="btn btn-default btn-back-step form-control ">Back</button>
+          </div>
+
+          <div class="col-md-6">
+              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
+          </div>
+      </div>
+
+    </div> <!-- End of panel body -->
+
+  </div> <!-- End of panel -->
+
+</div> <!-- End of Time evolution calculation specification -->
+

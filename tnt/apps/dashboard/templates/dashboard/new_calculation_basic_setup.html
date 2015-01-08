@@ -1,0 +1,190 @@
+<div id="new_calculation_basic_setup" class="new-calculation-step" style="display: none;">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Basic system setup</h3>
+    </div>
+
+    <div class="panel-body">
+
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="14" aria-valuemin="0" aria-valuemax="100" style="width: 14%;">
+            Setup progress
+        </div>
+      </div>
+
+      <h4>Calculation name
+      	<a tabindex="0" 
+           data-toggle="popover" 
+           data-trigger="focus" 
+           data-content="You can name your calculation, otherwise leave it blank and let us provide a random default for you. You can also edit the name of your calculation at a later date."
+        >
+            <i class="fa fa-question-circle fa-lg"></i>
+        </a>
+
+      </h4>
+      <p> </p>
+      <input class="form-control" id="calculation_name" type="text" class="" placeholder="Leave blank to generate random default" value="">
+
+      <hr>
+
+      <h4>
+        System type 
+        <a tabindex="0" 
+           data-toggle="popover" 
+           data-trigger="focus" 
+           data-content="Choose the type of system you want to simulate. Currently you can choose from a spin system (i.e. a spin of magnitude S on each site), or a bosonic system (i.e. with n spinless bosons on each site). The ability to choose fermionic systems will be available soon."
+        >
+            <i class="fa fa-question-circle fa-lg"></i>
+        </a>
+      </h4>
+
+      <p></p>
+
+      <div class="row">
+          <div class="col-md-4">
+              <button type="button" data-system-type="spin" class="btn btn-system-type btn-default form-control active">Spin</button>
+          </div>
+
+          <div class="col-md-4">
+              <button type="button" data-system-type="bosonic" class="btn btn-system-type btn-default form-control">Bosonic </button>
+          </div>
+
+          <div class="col-md-4">
+              <button type="button" data-system-type="fermionic" class="btn btn-system-type btn-default form-control" disabled="disabled">Fermionic <span class="text-warning">(Coming soon)</span></button>
+          </div>
+      </div>
+
+
+      <hr>
+
+      <div class="row">
+
+        <div class="col-md-4">
+
+            <div id="system_type_extra_info_spins" style="display: block;" class="system_type_extra_info">
+
+                <h4>Physical dimension \( 2S \) <a tabindex="0" 
+           data-toggle="popover" 
+           data-placement="top"
+           data-trigger="focus" 
+           data-content="Choose the twice magnitude of the spin (i.e. for a spin 1/2 system, choose 1). Note larger values result in longer run times."
+        >
+            <i class="fa fa-question-circle fa-lg"></i>
+        </a></h4>
+
+
+                        <select id="system_type_extra_info_spins_choice" class="form-control">
+
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+
+                        </select>
+
+
+            </div>
+
+            <div id="system_type_extra_info_bosons" style="display: none;" class="system_type_extra_info">
+
+                <h4>Physical dimension \( n_{\mathrm{max}} \) <a tabindex="0" 
+           data-toggle="popover" 
+           data-placement="top"
+           data-trigger="focus" 
+           data-content="Choose the maximum number of bosons per site. Note larger values result in longer run times."
+        >
+            <i class="fa fa-question-circle fa-lg"></i>
+        </a></h4>
+
+                <select id="system_type_extra_info_bosons_choice" class="form-control">
+
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+
+                </select>
+
+            </div>
+
+            <div id="system_type_extra_info_fermions" style="display: none;" class="system_type_extra_info">
+
+                <h4>Physical dimension</h4>
+                <p>Are these fermions spinless, or spin one half?</p>
+
+                <div id="fermions_spinless_choice" class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary">
+                    <input type="radio" name="options" data-fermion-type="spinless">Spinless
+                </label>
+                <label class="btn btn-primary active">
+                    <input type="radio" name="options" data-fermion-type="spin_half" checked>Spin 1 / 2
+                </label>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <h4>
+                System size \( L \)
+                <a tabindex="0" 
+                data-toggle="popover" 
+                data-placement="top"
+                data-trigger="focus" 
+                data-content="Choose the number of sites in your system. The system will be formed of a 1D chain with open boundary conditions, and must have between 2 and 40 sites."
+                >
+                    <i class="fa fa-question-circle fa-lg"></i>
+                </a>
+            </h4>
+
+                    <select id="system_size_choice" class="form-control">
+
+                    </select>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <h4>
+                Truncation parameter \( \chi \)
+                <a tabindex="0" 
+                data-toggle="popover" 
+                data-placement="top"
+                data-trigger="focus" 
+                data-content="Choose an upper bound for \( \chi \). This parameter controls the degree of quantum correlations the simulation captures. A larger \( \chi \) will mean a longer run-time but a more accurate calculation. The maximum allowed value is 40."
+                >
+                <i class="fa fa-question-circle fa-lg"></i>
+                </a>
+            </h4>
+
+                    <select id="chi_choice" class="form-control">
+
+                    </select>
+
+        </div>
+
+    </div>
+
+
+      <hr>
+
+      <div class="row new-calculation-step-navigation">  <!-- back next controls -->
+          <div class="col-md-6">
+              <button type="button" disabled="disabled" class="btn btn-default btn-back-step form-control btn-back-step">Back</button>
+          </div>
+
+          <div class="col-md-6">
+              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
+          </div>
+      </div>  <!-- End of back next controls -->
+
+    </div>
+  </div>
+
+</div> <!-- End of div new_calculation_basic_setup -->
+
