@@ -5,8 +5,8 @@
  */
 
 /*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=2cc6ca7a0cf570bc91be)
- * Config saved to config.json and https://gist.github.com/2cc6ca7a0cf570bc91be
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=712c21560f006db292f6)
+ * Config saved to config.json and https://gist.github.com/712c21560f006db292f6
  */
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 html {
@@ -900,7 +900,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: #404040;
@@ -5592,7 +5592,7 @@ button.close {
   z-index: 1070;
   display: block;
   visibility: visible;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
   font-weight: normal;
   line-height: 1.4;
@@ -5699,7 +5699,7 @@ button.close {
   display: none;
   max-width: 300px;
   padding: 1px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   font-weight: normal;
   line-height: 1.42857143;
