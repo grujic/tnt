@@ -793,6 +793,8 @@ var tnt = {
 
         operator_indices.reverse();
 
+        console.log("\n\noperator_indices = " + operator_indices + "\n\n");
+
         _.each(
             operator_indices,
             function (index) {
@@ -804,9 +806,11 @@ var tnt = {
 
         tex_str = tex_str + "\\)";
 
+        console.log("tex_str = " + tex_str + "\n\n");
+
         $(tex_str_el).html(tex_str);
 
-        tnt.render_mathjax_in_element_with_id(tex_str_el);
+        tnt.render_mathjax_in_element_with_id("initial_state_modifiers_tex_str");
 
     },
 
@@ -1804,7 +1808,10 @@ var tnt = {
                         .closest('.initial_state_modifier_sum_or_product')
                         .remove();
 
-                        tnt.update_initial_state_modifiers_tex_str();
+                        tnt.update_initial_state_modifiers_tex_str(
+                            '#initial_state_modifier_container',
+                            "#initial_state_modifiers_tex_str"
+                        );
                     }
                 );
 
