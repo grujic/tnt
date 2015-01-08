@@ -308,7 +308,10 @@ var tnt = {
 	}, // End of render_available_hamiltonian_operators
 
 	render_available_intitial_state_modifier_operators:
-        function (where_to_render, sum_or_product) {
+        function (where_to_render,
+                  sum_or_product,
+                  hamiltonian_tex_str_el
+                  ) {
             // Transformations we can apply to the base state
             // We draw these choices in where_to_render
             // sum_or_product is 'sum' or 'product'
@@ -743,6 +746,27 @@ var tnt = {
 
 	},
 
+    update_initial_state_modifiers_tex_str: function(
+        initial_state_modifier_container,
+        tex_str_el) {
+        // When an initial state modifier is added,
+        // we update a tex string
+        var tex_str = "\\(";   // init
+
+        tex_str = tex_str +  "| \\Psi \\rangle_{\\mathrm\{start\}} = ";
+
+        // actual work
+
+        tex_str = tex_str + " | \\Psi \\rangle_{\\mathrm\{base\}}"
+
+        tex_str = tex_str + "\\)";
+
+        $(tex_str_el).html(tex_str);
+
+        tnt.render_mathjax_in_element_with_id(tex_str_el);
+
+    },
+
     update_hamiltonian_tex_str: function(
         hamiltonian_term_container_selector,
         hamiltonian_tex_str_el) {
@@ -780,9 +804,6 @@ var tnt = {
                 }
             }
         );
-
-         console.log("two_site_terms = ");
-         console.log(two_site_terms);
 
         if (two_site_terms.length > 0) {
 
@@ -839,19 +860,6 @@ var tnt = {
             hamiltonian_tex_str = hamiltonian_tex_str + "\\right \\}";
 
         }
-
-        window.TEMP_hamiltonian_terms = hamiltonian_terms;
-
-               //var possible_new_line = (index + 1) % 3 == 0 ? "\\\\" : "";
-
-
-               //to_add = to_add + possible_new_line;
-
-               //if (hamiltonian_tex_str == "") {
-                   //hamiltonian_tex_str = hamiltonian_tex_str + to_add;
-               //} else {
-                   //hamiltonian_tex_str = hamiltonian_tex_str + " + " + to_add;
-               //}
 
         var hamiltonian_tex_str = "\\[ H = " + hamiltonian_tex_str + "\\]";
 
@@ -1728,7 +1736,8 @@ var tnt = {
 
                 tnt.render_available_intitial_state_modifier_operators(
                     where_to_render_modifier_operator_btns,
-                    sum_or_product
+                    sum_or_product,
+                    "#initial_state_modifiers_tex_str"
                 );
 
                 $('.initial_state_modifier_sum_or_product .remove-initial-state-modifier-btn')
@@ -1739,9 +1748,12 @@ var tnt = {
                     }
                 );
 
+                tnt.update_initial_state_modifiers_tex_str(
+                    '#initial_state_modifier_container',
+                    "#initial_state_modifiers_tex_str"
+                );
 
-            }
-        );
+        });
 
 		$("#new_calculation_initial_state").css('display', 'block'); 	// Make this panel visible
 
