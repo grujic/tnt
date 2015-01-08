@@ -2,12 +2,6 @@
  * Base structure
  */
 
-/* Move down content because we have a fixed navbar that is 70px tall */
-body {
-  padding-top: 70px;
-}
-
-
 /*
  * Global add-ons
  */
@@ -17,13 +11,6 @@ body {
   border-bottom: 1px solid #eee;
 }
 
-/*
- * Top navigation
- * Hide default border to remove 1px line.
- */
-.navbar-fixed-top {
-  border: 0;
-}
 
 /*
  * Sidebar
