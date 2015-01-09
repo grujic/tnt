@@ -8,14 +8,10 @@
 
 	    <div class="row">
 	        {{#operators}}
-		        <div class="col-md-3">
+		        <div class="col-md-3" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="{{function_description}}">
 		            <button
 		             type="button" 
 		             class="btn btn-default form-control hamiltonian-operator-btn" 
-		             data-toggle="popover"
-		             data-placement="bottom"
-		             data-trigger="hover"
-		             data-content="{{function_description}}"
 		             data-operator-id="{{operator_id}}"
                      data-sum-or-product="{{sum_or_product}}">
 		              \[ {{function_tex_str }} \]
