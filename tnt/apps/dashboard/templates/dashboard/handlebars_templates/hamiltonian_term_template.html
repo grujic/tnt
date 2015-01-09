@@ -46,7 +46,14 @@
 
                             <div class="col-md-5 spatial_parameter_input_div">
 
-                                <h4>Spatial function</h4>
+                                <h4>Spatial function<a tabindex="0" 
+           data-toggle="popover" 
+           data-trigger="focus" 
+           data-html="true"
+           data-content="The spatial function is defined in terms of the site number <var>j</var> or \( j \). For two-site terms the smallest of the two-site numbers is used to set the parameter."
+        >
+            <i class="fa fa-question-circle fa-lg"></i></h4>
+        </a>
 
                                 {{spatial_function_input spatial_function}}
 
