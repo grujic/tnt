@@ -1865,12 +1865,14 @@ var tnt = {
         .base_state = initial_base_state;
 
         var dec_vals = {false: 0, true: 1};
+        
+        var renorm_initial_state = parseInt($("label.active input", "#renormalise_after_initial_state_modifiers_choice")
+        .data("renormalise-initial-state"));
         window
         .calculation
         .setup
         .initial_state
-        .renormalise =
-        dec_vals[$("#renormalise_after_initial_state_modifiers_choice").is(":checked")];
+        .renormalise = renorm_initial_state;
 
 		// Now we look for modifiers to the base state:
 

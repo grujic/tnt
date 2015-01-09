@@ -92,7 +92,7 @@
            data-container="body"
            data-placement="top"
            data-content="Apply a modifier formed from a product of single-site terms, where the number of times each operator is applied to a given site is specified by a spatial function, which you can define below."
-           style="height:100px;">
+           style="height:90px;">
             \[ \prod_{j=0}^{L-1}\prod_o^{n_o}\hat{o}_{j}^{f_{o}(j)} \]
             </button>
         </div>
@@ -109,21 +109,30 @@
            data-container="body"
            data-placement="top"
            data-content="Apply a modifier formed from a sum of single-site terms, where the operator on each site can be scaled by a spatial function, which you can define below."
-           style="height:100px;">
+           style="height:90px;">
             \[ \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j} \]
             </button>
         </div>
         
         <div class="col-md-6">
-        <form class="form-inline" role="form">
+        
+        <h4> Renormalise wave function after applying modifiers </h4>
 
-            <div class="checkbox">
+      <div id="renormalise_after_initial_state_modifiers_choice" class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary">
+          <input type="radio" name="options" data-renormalise-initial-state=1>Yes
+        </label>
+        <label class="btn btn-primary active">
+          <input type="radio" name="options" data-renormalise-initial-state=0 checked>No
+        </label>
+      </div>
+
+            <!-- <div class="checkbox">
                 <label>
                 <input type="checkbox" id="renormalise_after_initial_state_modifiers_choice"> Renormalise wave function after applying modifiers
                 </label>
-            </div>
+            </div> -->
 
-        </form>
       </div>
 
       </div>
