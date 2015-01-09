@@ -314,7 +314,8 @@ var tnt = {
                     no_terms_yet_warning_selector,
                     next_calculation_stage_btn_selector,
                     hamiltonian_tex_str_el,
-                    display_temporal_info
+                    display_temporal_info,
+                    true
                 );
             });
 
@@ -397,6 +398,7 @@ var tnt = {
                         '',
                         '',
                         '',
+                        false,
                         false
                     );
                 });
@@ -685,7 +687,8 @@ var tnt = {
                                    no_terms_yet_warning_selector,
                                    next_calculation_stage_btn_selector,
                                    hamiltonian_tex_str_el,
-                                   include_temporal_function) {
+                                   include_temporal_function,
+                                   disable_flow_if_no_operators ) {
 		// Add a visual representation of a Hamiltonian term to the screen, and render any user input elements necessary (e.g. inputs for spatial parameter values)
         // If the Hamiltonian operator has a spatial_fn field, then
         // set up the element to reflect this
