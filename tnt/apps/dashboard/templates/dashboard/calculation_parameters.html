@@ -75,7 +75,7 @@
                 $("#download_json").attr("disabled", true);
             }
             
-            tnt.render_mathjax();
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
         }
     );
 
