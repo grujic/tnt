@@ -4,11 +4,10 @@
         
 		<div class="row">
 			{{#operators}}
-		        <div class="col-md-3">
+		        <div class="col-md-3 col-lg-2" style="padding-bottom: 10px;" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-content="{{function_description}}">
 		            <button type="button" 
 		             class="btn btn-default form-control expectation-operator-btn"
 		             data-expectation-operator-id="{{operator_id}}">
-					     <i>{{function_description}}</i>
 		                 \[{{function_tex_str}}\]
 		            </button>
 		        </div>
@@ -22,11 +21,10 @@
         
 		<div class="row">
 			{{#operators}}
-		        <div class="col-md-3" style="padding-bottom: 20px;">
+		        <div class="col-md-3 col-lg-2" style="padding-bottom: 20px;" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-content="{{function_description}}">
 		            <button type="button" 
 		             class="btn btn-default form-control expectation-operator-btn"
 		             data-expectation-operator-id="{{operator_id}}">
-					     <i>{{function_description}}</i>
 		                 \[{{function_tex_str}}\]
 		            </button>
 		            <select 
