@@ -20,7 +20,15 @@
                 
     <div class="col-md-4"> <!-- Define the kind of spatial dependence-->
 
-      <h4>Spatial function</h4>
+      <h4>Spatial function <a tabindex="0" 
+           data-toggle="popover" 
+           data-trigger="focus" 
+           data-html="true"
+           data-container="body"
+           data-placement="top"
+           data-content="The spatial function is defined in terms of the site number j. For two-site terms the smallest of the two site numbers is used to set the parameter."
+        >
+            <i class="fa fa-question-circle fa-lg"></i></a></h4>
 
       <select class="spatial-function-btn-group">
         {{#spatial_fns}}
