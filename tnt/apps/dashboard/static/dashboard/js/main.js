@@ -405,6 +405,8 @@ var tnt = {
 
 
             tnt.render_mathjax();
+            
+            $('[data-toggle="popover"]').popover();
 
             $(".operator_loading_placeholder")
                 .css("display", "none")
