@@ -46,11 +46,11 @@
 
                             <div class="col-md-5 spatial_parameter_input_div">
 
-                                <h4>Spatial function<a tabindex="0" 
+                                <h4>Spatial function <a tabindex="0" 
            data-toggle="popover" 
            data-trigger="focus" 
            data-html="true"
-           data-content="The spatial function is defined in terms of the site number <var>j</var> or \( j \). For two-site terms the smallest of the two-site numbers is used to set the parameter."
+           data-content="The spatial function is defined in terms of the site number j. For two-site terms the smallest of the two site numbers is used to set the parameter."
         >
             <i class="fa fa-question-circle fa-lg"></i></h4>
         </a>
@@ -65,7 +65,13 @@
 
                                 <div class="col-md-5 temporal_parameter_input_div">
 
-                                    <h4>Temporal function</h4>
+                                    <h4>Temporal function <a tabindex="0" 
+           data-toggle="popover" 
+           data-trigger="focus" 
+           data-html="true"
+           data-content="The temporal function is defined in terms of the dimsionless time t, where the time is given by the time step count multiplied by the time step size dt."
+        >
+            <i class="fa fa-question-circle fa-lg"></i></h4>
 
                                     {{temporal_function_input temporal_function}}
 
