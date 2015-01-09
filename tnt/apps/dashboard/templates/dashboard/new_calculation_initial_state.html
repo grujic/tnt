@@ -80,7 +80,7 @@
       
       <div class="row">
 
-        <div class="col-md-3">
+        <div class="col-md-4 col-lg-3">
             <button
             type="button" 
             id="add_product_modifier"
@@ -91,13 +91,13 @@
            data-html="true"
            data-container="body"
            data-placement="top"
-           data-content="Apply a modifier formed from a product of single-site terms, where the number of times each operator is applied to a given site is specified by a spatial function, which you can define below."
+           data-content="Apply a modifier formed from a product of single-site terms o_j, where the number of times each operator is applied to a given site j is specified by a spatial function, which you can define below."
            style="height:90px;">
             \[ \hat{O}_k = \prod_{j=0}^{L-1}\prod_o^{n_o}\hat{o}_{j}^{f_{o}(j)} \]
             </button>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4 col-lg-3">
             <button
             type="button" 
             id="add_sum_modifier"
@@ -108,13 +108,13 @@
            data-html="true"
            data-container="body"
            data-placement="top"
-           data-content="Apply a modifier formed from a sum of single-site terms, where the operator on each site can be scaled by a spatial function, which you can define below."
+           data-content="Apply a modifier formed from a sum of single-site terms o_j, where the operator on each site j can be scaled by a spatial function, which you can define below."
            style="height:90px;">
             \[ \hat{O}_k = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j} \]
             </button>
         </div>
         
-        <div class="col-md-6">
+        <div class="col-md-4 col-lg-6">
         
         <h5> Renormalise wave function after applying modifiers? </h5>
 
