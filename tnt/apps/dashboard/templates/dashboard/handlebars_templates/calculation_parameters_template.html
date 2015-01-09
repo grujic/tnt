@@ -25,9 +25,7 @@
 
     <div class="row">
 
-        
-
-        <div id="basic_info" class="col-md-6">
+        <div id="basic_info" class="col-md-6 col-sm-12">
 
             <h4>Basic info</h4>
 
@@ -47,7 +45,7 @@
                         <td>{{setup.system.system_type.name}}</td>
                     </tr>
                     <tr>
-                        <th class="text-nowrap" scope="row">Number of sites</th>
+                        <th class="text-nowrap" scope="row">System size \( L \)</th>
                         <td>{{setup.system.system_size}}</td>
                     </tr>
                     <tr>
@@ -64,7 +62,7 @@
 
         </div>
 
-        <div id="time_info" class="col-md-6">
+        <div id="time_info" class="col-md-6 col-sm-12">
 
             <h4>Time evolution</h4>
 
@@ -75,20 +73,17 @@
                 <!--</thead>-->
                 <tbody>
                     <tr>
-                        <th class="text-nowrap" scope="row">Num time steps</th>
+                        <th class="text-nowrap" scope="row">Time steps \( N_T \)</th>
                         <td>{{setup.system.time.num_time_steps}}</td>
                     </tr>
                     <tr>
-                        <th class="text-nowrap" scope="row">Time step</th>
+                        <th class="text-nowrap" scope="row">Time step size \( \delta t \)</th>
                         <td>{{setup.system.time.time_step}}</td>
                     </tr>
                     <tr>
-                        <th class="text-nowrap" scope="row">Num expectation value evaluations</th>
+                        <th class="text-nowrap" scope="row">Expectation value time steps \( N_e \)</th>
                         <td>{{setup.system.time.num_expval_time_steps}}</td>
                     </tr>
-
-
-        
                 </tbody>
             </table>
 
@@ -97,8 +92,33 @@
     </div>
 
     <div class="row">
+    
+    <div id="ground_ham_info" class="col-md-6 col-sm-12">
 
-        <div id="dynamic_ham_info" class="col-md-6">
+            <h4>Ground Hamiltonian terms</h4>
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <th>Term type</th>
+                    <th>Spatial dependence</th>
+                </thead>
+                <tbody>
+
+                {{#setup.hamiltonian.ground.terms}}
+
+                    <tr>
+                        <th class="text-nowrap" scope="row">{{function_description}}: {{function_tex_string}}</th>
+                        <td>{{spatial_function.function_description}}</td>
+                    </tr>
+                {{/setup.hamiltonian.ground.terms}}
+
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <div id="dynamic_ham_info" class="col-md-6 col-sm-12">
 
             <h4>Dynamic Hamiltonian terms</h4>
 
@@ -113,7 +133,7 @@
                 {{#setup.hamiltonian.dynamic.terms}}
 
                     <tr>
-                        <th class="text-nowrap" scope="row">{{function_description}}</th>
+                        <th class="text-nowrap" scope="row">{{function_description}}: {{function_tex_string}}</th>
                         <td>{{spatial_function.function_description}}</td>
                         <td>{{temporal_function.function_description}}</td>
                     </tr>
@@ -125,36 +145,13 @@
 
         </div>
 
-        <div id="ground_ham_info" class="col-md-6">
-
-            <h4>Ground Hamiltonian terms</h4>
-
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <th>Term type</th>
-                    <th>Spatial dependence</th>
-                </thead>
-                <tbody>
-
-                {{#setup.hamiltonian.ground.terms}}
-
-                    <tr>
-                        <th class="text-nowrap" scope="row">{{function_description}}</th>
-                        <td>{{spatial_function.function_description}}</td>
-                    </tr>
-                {{/setup.hamiltonian.ground.terms}}
-
-
-                </tbody>
-            </table>
-
-        </div>
+        
 
     </div>
 
     <div class="row">
 
-        <div id="qn_info" class="col-md-6">
+        <div id="qn_info" class="col-md-6 col-sm-12">
 
             <h4>Number conservation info</h4>
 
@@ -175,10 +172,6 @@
                     <tr>
                         <th class="text-nowrap" scope="row">Conservation for time evolution?</th>
                         <td>{{setup.system.number_conservation.dynamic.apply_qn}}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Dynamic number</th>
-                        <td>{{setup.system.number_conservation.dynamic.qn}}</td>
                     </tr>
                 </tbody>
             </table>
