@@ -13,8 +13,15 @@
 
     <div class="panel-body">
 
-      <h4>Initial state - base state</h4>
-      <p>Choose the initial state \( | \psi \rangle_{\mathrm{base}} \) you want to evolve from. You can choose from the following given states, and optionally you can apply transformations by applying operators below. </p>
+      <h4>Base state \( | \psi \rangle_{\mathrm{base}} \) <a tabindex="0" 
+           data-toggle="popover" 
+           data-trigger="focus" 
+           data-html="true"
+           data-placement="right"
+           data-content="Use these states to build initial state you want to evolve from. You can choose from the following given states, and optionally you can apply transformations by applying operators below."
+        >
+            <i class="fa fa-question-circle fa-lg"></i>
+        </a></h4>
 
       <div id="new_calculation_available_initial_base_states">
 
@@ -25,16 +32,17 @@
 
       <hr>
 
-      <h4>Initial state - transformation</h4>
-
-      <p>Now choose a transformation to tailor your initial state (optional).
-      You can apply multiple system-wide operators \( \hat{O}_k \) to the initial state, which will be applied in the order they are specified below.
-      i.e. \( | \psi \rangle_{\mathrm{start}} = \hat{O}_m\cdots\hat{O}_2\hat{O}_1| \psi \rangle_{\mathrm{base}} \) where \( m \) operators have been applied.</p>
-      
-      <p>Each system wide operator \( \hat{O}_k \) is to formed from a single-site operators of your choice, 
-      and can be <b>product</b> of terms or a <b>sum</b> of terms (where the latter case is only available when there is no quantum number conservation).</p>
-
-      <div class="panel panel-default">
+      <h4>Transformation <a tabindex="0" 
+           data-toggle="popover" 
+           data-trigger="focus" 
+           data-html="true"
+           data-placement="right"
+           data-content="Now choose a transformation to tailor your initial state (optional). You can apply multiple system-wide operators, and each system wide operator can be formed from a product of single-site terms or from a sum of single-site terms (where the latter case is only available when there is no quantum number conservation)."
+        >
+            <i class="fa fa-question-circle fa-lg"></i>
+        </a></h4>
+        
+     <!-- <div class="panel panel-default">
 
         <div class="panel-body">
 
@@ -68,51 +76,55 @@
 
         </div>
 
-      </div>
+      </div> -->
+      
+      <div class="row">
 
-      <div class="well">
-        <form class="form-inline" role="form">
-
-            <div class="checkbox">
-                <label>
-                <input type="checkbox" id="renormalise_after_initial_state_modifiers_choice"> Renormalise wave function after applying modifiers
-                </label>
-            </div>
-
-        </form>
-      </div>
-
-      <div class="row text-center" style="padding-bottom: 20px;">
-          <span id="initial_state_modifiers_tex_str" class="hamiltonian_tex_str text-center">
-          </span>
-      </div>
-
-	  <div class="row">
-
-        <div class="col-md-3">
+        <div class="col-md-4">
             <button
             type="button" 
             id="add_product_modifier"
             class="btn btn-default form-control hamiltonian-operator-btn add-product-or-sum-modifier-btn"
             data-sum-product="product">
             <i class="fa fa-times-circle fa-3x"></i> 
-            Add a product <br>modifier
+            Add a product modifier
             <br>
             </button>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4">
             <button
             type="button" 
             id="add_sum_modifier"
             class="btn btn-default form-control hamiltonian-operator-btn add-product-or-sum-modifier-btn"
             data-sum-product="sum">
             <i class="fa fa-plus-circle fa-3x"></i> 
-            Add a sum <br>modifier
+            Add a sum modifier
             </button>
         </div>
 
-	  </div>
+      </div>
+      
+     <div class="row text-center" style="padding-bottom: 20px;">
+          <span id="initial_state_modifiers_tex_str" class="hamiltonian_tex_str text-center">
+          </span>
+      </div>
+      
+      <div class="well">
+        <form class="form-inline" role="form">
+
+            <h5><div class="checkbox">
+                <label>
+                <input type="checkbox" id="renormalise_after_initial_state_modifiers_choice"> Renormalise wave function after applying modifiers
+                </label>
+            </div></h5>
+
+        </form>
+      </div>
+
+      
+
+	  
 
       <hr>
 
