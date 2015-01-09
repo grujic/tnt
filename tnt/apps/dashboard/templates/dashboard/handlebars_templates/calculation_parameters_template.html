@@ -24,18 +24,17 @@
 <script id="calculation-parameters-template" type="text/x-handlebars-template"> 
 
     <div class="row">
+    
+    <div id="basic_qn_ground" class="col-md-6 col-sm-12">
 
-        <div id="basic_info" class="col-md-6 col-sm-12">
-
+        <div id="basic_info">
             <h4>Basic info</h4>
-
             <table class="table table-striped table-bordered">
                 <!--<thead>-->
                     <!--<th></th>-->
                     <!--<th></th>-->
                 <!--</thead>-->
                 <tbody>
-
                     <tr>
                         <th class="text-nowrap" scope="row">Calculation name</th>
                         <td>{{meta_info.name}}</td>
@@ -56,16 +55,13 @@
                         <th class="text-nowrap" scope="row">Time evolution?</th>
                         <td>{{setup.system.calculate_time_evolution}}</td>
                     </tr>
-
                 </tbody>
             </table>
+        </div> <!-- end of div for basic info -->
+        
+        <div id="qn_info" class="col-md-6 col-sm-12">
 
-        </div>
-
-        <div id="time_info" class="col-md-6 col-sm-12">
-
-            <h4>Time evolution</h4>
-
+            <h4>Number conservation info</h4>
             <table class="table table-striped table-bordered">
                 <!--<thead>-->
                     <!--<th></th>-->
@@ -73,30 +69,24 @@
                 <!--</thead>-->
                 <tbody>
                     <tr>
-                        <th class="text-nowrap" scope="row">Time steps \( N_T \)</th>
-                        <td>{{setup.system.time.num_time_steps}}</td>
+                        <th class="text-nowrap" scope="row">Conservation for ground state?</th>
+                        <td>{{setup.system.number_conservation.ground.apply_qn}}</td>
                     </tr>
                     <tr>
-                        <th class="text-nowrap" scope="row">Time step size \( \delta t \)</th>
-                        <td>{{setup.system.time.time_step}}</td>
+                        <th class="text-nowrap" scope="row">Ground state number</th>
+                        <td>{{setup.system.number_conservation.ground.qn}}</td>
                     </tr>
                     <tr>
-                        <th class="text-nowrap" scope="row">Expectation value time steps \( N_e \)</th>
-                        <td>{{setup.system.time.num_expval_time_steps}}</td>
+                        <th class="text-nowrap" scope="row">Conservation for time evolution?</th>
+                        <td>{{setup.system.number_conservation.dynamic.apply_qn}}</td>
                     </tr>
                 </tbody>
             </table>
-
-        </div>
-
-    </div>
-
-    <div class="row">
-    
-    <div id="ground_ham_info" class="col-md-6 col-sm-12">
+        </div> <!-- end of div for qn info -->
+        
+        <div id="ground_ham_info" class="col-md-6 col-sm-12">
 
             <h4>Ground Hamiltonian terms</h4>
-
             <table class="table table-striped table-bordered">
                 <thead>
                     <th>Term type</th>
@@ -121,9 +111,36 @@
 
                 </tbody>
             </table>
+        </div>  <!-- end of div for ground ham info -->
+        
+        </div> <!-- end of LH div -->
+        
+        <div id="all_time_info" class="col-md-6 col-sm-12">
 
-        </div>
+        <div id="time_info">
 
+            <h4>Time evolution</h4>
+            <table class="table table-striped table-bordered">
+                <!--<thead>-->
+                    <!--<th></th>-->
+                    <!--<th></th>-->
+                <!--</thead>-->
+                <tbody>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Time steps \( N_T \)</th>
+                        <td>{{setup.system.time.num_time_steps}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Time step size \( \delta t \)</th>
+                        <td>{{setup.system.time.time_step}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Expectation value time steps \( N_e \)</th>
+                        <td>{{setup.system.time.num_expval_time_steps}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> <!-- end of div for time info -->
         <div id="dynamic_ham_info" class="col-md-6 col-sm-12">
 
             <h4>Dynamic Hamiltonian terms</h4>
@@ -161,42 +178,11 @@
                 </tbody>
             </table>
 
-        </div>
-
+        </div> <!-- end of div for dynamic ham info -->
+        </div> <!-- end of div for RH col -->
         
 
-    </div>
-
-    <div class="row">
-
-        <div id="qn_info" class="col-md-6 col-sm-12">
-
-            <h4>Number conservation info</h4>
-
-            <table class="table table-striped table-bordered">
-                <!--<thead>-->
-                    <!--<th></th>-->
-                    <!--<th></th>-->
-                <!--</thead>-->
-                <tbody>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Conservation for ground state?</th>
-                        <td>{{setup.system.number_conservation.ground.apply_qn}}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Ground state number</th>
-                        <td>{{setup.system.number_conservation.ground.qn}}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Conservation for time evolution?</th>
-                        <td>{{setup.system.number_conservation.dynamic.apply_qn}}</td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
-
-    </div>
+    </div> <!-- end of row div -->
 
 </script>
 
