@@ -80,37 +80,39 @@
       
       <div class="row">
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <button
             type="button" 
             id="add_product_modifier"
             class="btn btn-default form-control hamiltonian-operator-btn add-product-or-sum-modifier-btn"
-            data-sum-product="product">
-            <i class="fa fa-times-circle fa-3x"></i> 
-            Add a product modifier
-            <br>
+            data-sum-product="product"
+            data-toggle="popover" 
+           data-trigger="hover" 
+           data-html="true"
+           data-container="body"
+           data-placement="top"
+           data-content="Apply a modifier formed from a product of single-site terms, where the number of times each operator is applied to a given site is specified by a spatial function, which you can define below.">
+            \[ \prod_{j=0}^{L-1}\prod_o^{n_o}\hat{o}_{j}^{f_{o}(j)} \]
             </button>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <button
             type="button" 
             id="add_sum_modifier"
             class="btn btn-default form-control hamiltonian-operator-btn add-product-or-sum-modifier-btn"
-            data-sum-product="sum">
-            <i class="fa fa-plus-circle fa-3x"></i> 
-            Add a sum modifier
+            data-sum-product="sum"
+            data-toggle="popover" 
+           data-trigger="hover" 
+           data-html="true"
+           data-container="body"
+           data-placement="top"
+           data-content="Apply a modifier formed from a sum of single-site terms, where the operator on each site can be scaled by a spatial function, which you can define below.">
+            \[ \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j} \]
             </button>
         </div>
-
-      </div>
-      
-     <div class="row text-center" style="padding-bottom: 20px;">
-          <span id="initial_state_modifiers_tex_str" class="hamiltonian_tex_str text-center">
-          </span>
-      </div>
-      
-      <div class="well">
+        
+        <div class="well"  class="col-md-6">
         <form class="form-inline" role="form">
 
             <h5><div class="checkbox">
@@ -122,10 +124,13 @@
         </form>
       </div>
 
+      </div>
+      <br><br>
+     <div class="row text-center" style="padding-bottom: 20px;">
+          <span id="initial_state_modifiers_tex_str" class="hamiltonian_tex_str text-center">
+          </span>
+      </div>
       
-
-	  
-
       <hr>
 
       <div id="initial_state_modifier_container">
