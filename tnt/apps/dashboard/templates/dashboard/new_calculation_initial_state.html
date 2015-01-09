@@ -32,12 +32,12 @@
 
       <hr>
 
-      <h4>Transformation <a tabindex="0" 
+      <h4>Transformation \( \hat{O} = \prod \hat{O_k} \) <a tabindex="0" 
            data-toggle="popover" 
            data-trigger="focus" 
            data-html="true"
            data-placement="right"
-           data-content="Now choose a transformation to tailor your initial state (optional). You can apply multiple system-wide operators, and each system wide operator can be formed from a product of single-site terms or from a sum of single-site terms (where the latter case is only available when there is no quantum number conservation)."
+           data-content="Now build an operator O to transform your initial state (optional). You can apply multiple system-wide operators O_k, and each system wide operator can be formed from a product of single-site terms or from a sum of single-site terms (where the latter case is only available when there is no quantum number conservation)."
         >
             <i class="fa fa-question-circle fa-lg"></i>
         </a></h4>
@@ -93,7 +93,7 @@
            data-placement="top"
            data-content="Apply a modifier formed from a product of single-site terms, where the number of times each operator is applied to a given site is specified by a spatial function, which you can define below."
            style="height:90px;">
-            \[ \prod_{j=0}^{L-1}\prod_o^{n_o}\hat{o}_{j}^{f_{o}(j)} \]
+            \[ \hat{O}_k = \prod_{j=0}^{L-1}\prod_o^{n_o}\hat{o}_{j}^{f_{o}(j)} \]
             </button>
         </div>
 
@@ -110,13 +110,13 @@
            data-placement="top"
            data-content="Apply a modifier formed from a sum of single-site terms, where the operator on each site can be scaled by a spatial function, which you can define below."
            style="height:90px;">
-            \[ \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j} \]
+            \[ \hat{O}_k = \sum_{j=0}^{L-1}\sum_o^{n_o}f_{o}(j)\hat{o}_{j} \]
             </button>
         </div>
         
         <div class="col-md-6">
         
-        <h4> Renormalise wave function after applying modifiers </h4>
+        <h5> Renormalise wave function after applying modifiers? </h5>
 
       <div id="renormalise_after_initial_state_modifiers_choice" class="btn-group" data-toggle="buttons">
         <label class="btn btn-primary">
