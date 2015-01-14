@@ -15,3 +15,11 @@
 .new-calculation-btn {
   height: 60px;
 }
+
+.btn-default.active {
+  background-color: #bb6000;
+  border-color: #ab5800;
+  color: #fff;
+  text-shadow: 0 1px 0 #e0e0e0;
+}
+
