@@ -1,17 +1,17 @@
 {% verbatim %}
 
 <script id="initial-base-states-template" type="text/x-handlebars-template"> 
-        
+
 		<div class="row">
 			{{#states}}
-		        <div class="col-md-3" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="{{function_description}}">
+		        <div class="col-xs-6 col-sm-4 col-md-3" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="{{function_description}}">
 		            <button type="button" 
 		             class="btn btn-default form-control initial-state-btn"
 		              data-initial-base-state-id="{{initial_base_state_id}}">\[{{function_tex_str}}\]
                 </button>
 		        </div>
 	        {{/states}}
-	        
+
 	    </div>
 
 </script>

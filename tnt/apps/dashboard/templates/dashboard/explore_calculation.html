@@ -3,88 +3,70 @@
 {% block content %}
 
   {% block handlebars_scripts %}
-        
+      {% include "dashboard/handlebars_templates/results_img_array_template.html" %}
   {% endblock %}  <!-- End of block handlebars_scripts -->
 
-<div class="jumbotron">
-  <h1>Results</h1>
-  <h3>{{calculation_id}}</h3>
-  <p>Explore calculated expectation values in the browser, or download full results</p>
-  <p><a href="/media/{{calculation_id}}.json" class="btn btn-primary btn-lg" role="button">Download JSON results</a></p>
-  <p><a href="/media/{{calculation_id}}/{{calculation_id}}.mat" class="btn btn-primary btn-lg" role="button">Download MAT results</a></p>
-</div>
+<div class="page-header">
+  <h1>Results <small> {{calculation_id}}</small>
+</h1>
 
-<!-- <div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Available expectation operators</h3>
-  </div>
-
-  <div class="panel-body">
-
-    <p>What do you want to plot?</p>
-
-    <div class="row">
-        <div class="col-md-3">
-            <button
-             type="button" 
-             class="btn btn-default form-control expectation-operator-btn">
-              <i>Description</i>
-              \[ \sigma_j^z \]
-              <br>
-            </button>
-        </div>
-        <div class="col-md-3">
-            <button
-             type="button" 
-             class="btn btn-default form-control hamiltonian-operator-btn">
-              <i>Description</i>
-              \[ \sigma_j^x \]
-              <br>
-            </button>
-        </div>
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+        Download results
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="/media/{{calculation_id}}.json">As JSON</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="/media/{{calculation_id}}/{{calculation_id}}.mat">As MAT</a></li>
+      </ul>
     </div>
 
-    <hr>
+</div>
 
-    <!--Space for graph -->
-    <!-- <div id="plot_div" 
-         style="min-width: 310px; height: 400px; margin: 0 auto">
-    <!--</div>-->
-
-
-  <!--</div>  [> End of panel body <]-->
-
-<!-- </div>  End of panel -->
+<!--<div class="jumbotron">-->
+  <!--<h1>Results</h1>-->
+  <!--<h3>{{calculation_id}}</h3>-->
+  <!--<p>Explore calculated expectation values in the browser, or download full results</p>-->
+  <!--<p><a href="/media/{{calculation_id}}.json" class="btn btn-primary btn-lg" role="button">Download JSON results</a></p>-->
+  <!--<p><a href="/media/{{calculation_id}}/{{calculation_id}}.mat" class="btn btn-primary btn-lg" role="button">Download MAT results</a></p>-->
+<!--</div>-->
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Expectation operator evolutions</h3>
+    <h3 class="panel-title">Expectation values</h3>
   </div>
 
   <div class="panel-body">
 
     <div id="expectation_value_imgs" class="row">
-      
+
     </div>
-
-    <hr>
-
-    <!--Space for graph -->
-    <div id="plot_div" 
-         style="min-width: 310px; height: 400px; margin: 0 auto">
-    </div>
-
 
   </div>  <!-- End of panel body -->
 
 </div>  <!-- End of panel -->
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Zoom</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %} <!-- End of block content -->
 
 {% block end_of_body_scripts %}
-  
+
   <script src="{{ STATIC_URL }}dashboard/js/highcharts.js"></script>
-        
+
   <script src="{{ STATIC_URL }}dashboard/js/plotting_fns.js"></script>
 
   <script>
@@ -95,41 +77,35 @@
       function(data) {
         console.log("Expectation value img URL data: ");
 
-        _.each(
-          data.url_data, 
-          function (el) {
-            console.log(el.url); 
-            $("#expectation_value_imgs").append("<img src='" + el.url + "'>");
-          }
-        );
+        console.log(data);
+
+        data = {
+            'url_data':
+            _.filter(
+                data.url_data,
+                function (el) {
+                    return (!tnt.endsWith(el.url, 'mat'));
+                }
+            )
+        };
+
+        var source = $("#results-img-array-template").html();
+
+        var template = Handlebars.compile(source);
+
+         $("#expectation_value_imgs").html(template(data));
+
+        $('#myModal').on('show.bs.modal', function (event) {
+          var img_link = $(event.relatedTarget); // Button that triggered the modal
+          var url = img_link.data('url'); // Extract info from data-* attributes
+          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+          var modal = $(this);
+          modal.find('.modal-body').html("<img src='" + url + "' class='img-responsive'>");
+        })
 
       }
     );
-
-
-//     // Pull in this calculation's expectation value results
-//     $.get(
-//       "/api/v1.0/operators", 
-//       function (data) {
-//         window.expectation_operators = _.filter(
-//           data.operators, 
-//           function (el) {
-//             return el['use_for_expectation'] == true;
-//           }
-//         );
-//       }
-//     ).done(function() {
-//         tnt.load_expectation_val_results(window.calculation_id);
-//     });
-// 
-//     // var expval_series_data = [tnt.get_data_single_site_expectation_val_fn_time(1, 5, 're')];
-// 
-//     var series_data = {
-//       name: '\sigma^Z',
-//       data: [{'x': 1, 'y': 7.0}, {'x': 2, 'y': 6.9}, {'x': 3, 'y': 9.5}, {'x': 4, 'y': 14.5}, {'x': 5, 'y': 18.2}, {'x': 6, 'y': 21.5}, {'x': 7, 'y': 25.2}, {'x': 8, 'y': 26.5}, {'x': 9, 'y': 23.3}, {'x': 10, 'y': 18.3}, {'x': 11, 'y': 13.9}, {'x': 12, 'y': 9.6}]
-//     };
-
-    // tnt.plot_series(series_data);
 
   </script>
 

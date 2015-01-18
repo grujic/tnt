@@ -20,6 +20,10 @@ var tnt = {
         return str.replace(new RegExp(find, 'g'), replace);
     },
 
+    endsWith: function (str, suffix) {
+        return str.indexOf(suffix, str.length - suffix.length) !== -1;
+    },
+
     is_odd: function(number) {
 
         if (number % 2 == 0) {
@@ -1865,7 +1869,7 @@ var tnt = {
         .base_state = initial_base_state;
 
         var dec_vals = {false: 0, true: 1};
-        
+
         var renorm_initial_state = parseInt($("label.active input", "#renormalise_after_initial_state_modifiers_choice")
         .data("renormalise-initial-state"));
         window

@@ -55,6 +55,9 @@ var tnt = {
 	},
 
 	render_mathjax_in_element_with_id: function (el_id) {
+        if (el_id[0] == "#") {
+            el_id = el_id.slice(1, el_id.length);
+        }
         MathJax.Hub.Queue(["Typeset",MathJax.Hub, el_id]);
 	},
 
@@ -311,7 +314,8 @@ var tnt = {
                     no_terms_yet_warning_selector,
                     next_calculation_stage_btn_selector,
                     hamiltonian_tex_str_el,
-                    display_temporal_info
+                    display_temporal_info,
+                    true
                 );
             });
 
@@ -394,6 +398,7 @@ var tnt = {
                         '',
                         '',
                         '',
+                        false,
                         false
                     );
                 });
@@ -418,7 +423,8 @@ var tnt = {
 
 	attach_click_fn_to_remove_hamiltonian_terms: function (
         hamiltonian_term_container_selector,
-        hamiltonian_tex_str_el
+        hamiltonian_tex_str_el,
+        update_tex_str_fn
     ) {
 		// When an initial base state is chosen, need to make that button active and all others not
 		$(hamiltonian_term_container_selector).find(".remove-hamiltonian-term-btn")
@@ -448,7 +454,7 @@ var tnt = {
 
 					$(hamiltonian_term_containing_div).remove();
 
-                    tnt.update_hamiltonian_tex_str(
+                    update_tex_str_fn(
                         hamiltonian_term_container_selector,
                         hamiltonian_tex_str_el
                     );
@@ -681,7 +687,8 @@ var tnt = {
                                    no_terms_yet_warning_selector,
                                    next_calculation_stage_btn_selector,
                                    hamiltonian_tex_str_el,
-                                   include_temporal_function) {
+                                   include_temporal_function,
+                                   disable_flow_if_no_operators ) {
 		// Add a visual representation of a Hamiltonian term to the screen, and render any user input elements necessary (e.g. inputs for spatial parameter values)
         // If the Hamiltonian operator has a spatial_fn field, then
         // set up the element to reflect this
@@ -759,7 +766,8 @@ var tnt = {
 
 		tnt.attach_click_fn_to_remove_hamiltonian_terms(
             term_container_selector,
-            hamiltonian_tex_str_el
+            hamiltonian_tex_str_el,
+            tnt.update_hamiltonian_tex_str
         );
 
 		tnt.attach_click_fn_to_spatial_and_temporal_fn_choices();	// Attach logic for changing spatial function input
@@ -778,14 +786,34 @@ var tnt = {
         tex_str = tex_str +  "| \\Psi \\rangle_{\\mathrm\{start\}} = ";
 
         // actual work
+        var operator_indices
+            = _.map(
+                $(".initial_state_modifier_sum_or_product"),
+                function(el) {
+                    return $(el).data("index");
+                }
+            );
+
+        operator_indices.reverse();
+
+        console.log("\n\noperator_indices = " + operator_indices + "\n\n");
+
+        _.each(
+            operator_indices,
+            function (index) {
+                tex_str = tex_str + "\\hat{O}_{" + index + "} ";
+            }
+        );
 
         tex_str = tex_str + " | \\Psi \\rangle_{\\mathrm\{base\}}"
 
         tex_str = tex_str + "\\)";
 
+        console.log("tex_str = " + tex_str + "\n\n");
+
         $(tex_str_el).html(tex_str);
 
-        tnt.render_mathjax_in_element_with_id(tex_str_el);
+        tnt.render_mathjax_in_element_with_id("initial_state_modifiers_tex_str");
 
     },
 
@@ -1754,9 +1782,6 @@ var tnt = {
 
                 var index = tnt.min_int_not_in_array(existing_indices);
 
-                var index = $("#initial_state_modifier_container")
-                    .find('.initial_state_modifier_sum_or_product').length + 1;
-
                 var source = $("#initial-state-modifier-sum-or-product-template").html();
 
                 var template = Handlebars.compile(source);
@@ -1785,6 +1810,11 @@ var tnt = {
                         $(this)
                         .closest('.initial_state_modifier_sum_or_product')
                         .remove();
+
+                        tnt.update_initial_state_modifiers_tex_str(
+                            '#initial_state_modifier_container',
+                            "#initial_state_modifiers_tex_str"
+                        );
                     }
                 );
 
