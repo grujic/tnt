@@ -19,7 +19,7 @@ def logout_view(request):
     return HttpResponseRedirect('/login/')
 
 def signup(request):
-    state = "Please enter your details..."
+    state = ""
     if request.method == 'POST':
 
         email = request.POST.get('email')

@@ -20,12 +20,12 @@
   </div>
 
   <div class="row">
-    
+
     <div class="col-md-3"></div>
 
     <div class="col-md-6">
-      
-      <div class="alert alert-info">{{state}}</div>
+
+      <div id="signup_err_msg" class="alert alert-info">{{state}}</div>
 
       <form role="form" method="post">
 
@@ -71,5 +71,14 @@
     <div class="col-md-3"></div>
 
   </div>  <!-- End of signup row -->
+
+<script src="/static/dashboard/js/jquery-2.0.3.js"></script>
+
+<script>
+    var state = "{{state}}";
+    if (state == "") {
+        $("#signup_err_msg").css("display", "none");
+    }
+</script>
 
 {% endblock %}

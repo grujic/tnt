@@ -1,10 +1,10 @@
 {% verbatim %}
 
 <script id="expectation-operators-single-site-template" type="text/x-handlebars-template"> 
-        
+
 		<div class="row">
 			{{#operators}}
-		        <div class="col-md-3" style="margin-bottom: 10px;" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="{{function_description}}">
+		        <div class="col-xs-3" style="margin-bottom: 10px;" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="{{function_description}}">
 		            <button type="button" 
 		             class="btn btn-default form-control expectation-operator-btn"
 		             data-expectation-operator-id="{{operator_id}}">
@@ -12,16 +12,16 @@
 		            </button>
 		        </div>
 	        {{/operators}}
-	        
+
 	    </div>
 
 </script>
 
 <script id="expectation-operators-two-site-template" type="text/x-handlebars-template"> 
-        
+
 		<div class="row">
 			{{#operators}}
-		        <div class="col-md-3" style="margin-bottom: 20px;" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="{{function_description}}">
+		        <div class="col-xs-6 col-sm-3" style="margin-bottom: 20px;" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="{{function_description}}">
 		            <button type="button" 
 		             class="btn btn-default form-control expectation-operator-btn"
 		             data-expectation-operator-id="{{operator_id}}">
@@ -36,7 +36,7 @@
 					</select>
 		        </div>
 	        {{/operators}}
-	        
+
 	    </div>
 
 </script>

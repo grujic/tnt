@@ -120,19 +120,19 @@
             <hr>
 
             <div class="row">  
-                <div class="col-md-3">
+                <div class="col-xs-6 col-sm-3">
                     <a href="/calculation/explore/{{meta_info.id}}" {{btn_disabled meta_info.status}} role="button" class="btn btn-default form-control ">Explore</a>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-xs-6 col-sm-3">
                     {{render_action_button meta_info.status meta_info.id}}
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-xs-6 col-sm-3">
                     <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default form-control ">Parameters</a>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-xs-6 col-sm-3">
                     <a role="button" class="btn btn-danger form-control btn-delete-calculation" data-calculation-id="{{meta_info.id}}">Delete</a>
                 </div>
 

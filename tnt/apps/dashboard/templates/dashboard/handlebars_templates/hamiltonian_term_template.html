@@ -9,88 +9,94 @@
          data-index={{index}}
          class="row hamiltonian-term">
 
-    <div class="col-md-1" style="padding-top: 70px;">
+    <div class="col-sm-1 hidden-xs" style="padding-top: 70px;">
 
         <i class="fa fa-{{sum-or-product sum_or_product}}-circle fa-5x"></i> 
 
     </div>
 
-    <div class="col-md-11">
+    <div class="col-xs-12 col-sm-11 panel panel-default alert alert-dismissible">
 
-        <div class="panel panel-default alert alert-dismissible">
+        <div class="panel-heading">
 
-            <div class="panel-heading">
-                Specify form of \( f_{{index}} (j{{#if include_temporal_function}}, t{{/if}}) \)
-            </div>
+            <a class="btn btn-danger remove-hamiltonian-term-btn">
+                <i class="fa fa-trash-o fa-lg"></i>
+            </a>
 
-            <div class="panel-body">
+            <strong>
+                {{function_description}} (\( {{function_tex_str}} \)) - 
+            </strong>
+            <br><br>
+            Specify form of \( f_{{index}} (j{{#if include_temporal_function}}, t{{/if}}) \)
 
-                <div class="row">
+        </div>
 
-                    <div class="col-md-3">
+        <div class="panel-body">
 
-                        <h3>{{function_description}}</h3>
-                        <p>\[ {{function_tex_str}} \]</p>
+            <div class="row">
 
-                        <btn class="btn btn-danger remove-hamiltonian-term-btn form-control">
-                            <i class="fa fa-trash-o fa-lg"></i> Remove
-                        </btn>
+                <!--<div class="col-md-3">-->
 
-                    </div>
+                    <!--<h3>{{function_description}}</h3>-->
+                    <!--<p>\[ {{function_tex_str}} \]</p>-->
 
-                    <div class="col-md-9">
+                    <!--<btn class="btn btn-danger remove-hamiltonian-term-btn form-control">-->
+                        <!--<i class="fa fa-trash-o fa-lg"></i> Remove-->
+                    <!--</btn>-->
 
-                        <div class="row">
+                <!--</div>-->
 
-                            <div class="col-md-1"></div>
+                <div class="col-md-12">
 
-                            <div class="col-md-5 spatial_parameter_input_div">
+                    <div class="row">
 
-                                <h4>Spatial function <a tabindex="0" 
-           data-toggle="popover" 
-           data-trigger="focus" 
-           data-html="true"
-           data-container="body"
-           data-placement="top"
-           data-content="The spatial function is defined in terms of the site number j. For two-site terms the smallest of the two site numbers is used to set the parameter."
-        >
-            <i class="fa fa-question-circle fa-lg"></i></a></h4>
+                        <div class="col-sm-1"></div>
 
-                                {{spatial_function_input spatial_function}}
+                        <div class="col-sm-5 spatial_parameter_input_div">
 
-                            </div>
+                            <h4>Spatial function <a tabindex="0" 
+                               data-toggle="popover" 
+                               data-trigger="focus" 
+                               data-html="true"
+                               data-container="body"
+                               data-placement="top"
+                               data-content="The spatial function is defined in terms of the site number j. For two-site terms the smallest of the two site numbers is used to set the parameter."
+                            >
+                                <i class="fa fa-question-circle fa-lg"></i></a></h4>
 
-                            <div class="col-md-1"></div>
-
-                            {{#if temporal_function}}
-
-                                <div class="col-md-5 temporal_parameter_input_div">
-
-                                    <h4>Temporal function <a tabindex="0" 
-           data-toggle="popover" 
-           data-trigger="focus" 
-           data-html="true"
-           data-container="body"
-           data-placement="top"
-           data-content="The temporal function is defined in terms of the dimensionless time t, where the time is given by the time step count multiplied by the time step size dt."
-        >
-            <i class="fa fa-question-circle fa-lg"></i></a></h4>
-
-                                    {{temporal_function_input temporal_function}}
-
-                                </div>
-
-                            {{/if}}
+                            {{spatial_function_input spatial_function}}
 
                         </div>
 
-                    </div>  <!-- End of spatial definitions box -->
+                        <div class="col-md-1"></div>
 
-                </div>  <!-- End of row -->
+                        {{#if temporal_function}}
 
-            </div>  <!-- End of panel body -->
+                            <div class="col-sm-5 temporal_parameter_input_div">
 
-        </div>  <!-- End of panel -->
+                                <h4>Temporal function <a tabindex="0" 
+                                   data-toggle="popover" 
+                                   data-trigger="focus" 
+                                   data-html="true"
+                                   data-container="body"
+                                   data-placement="top"
+                                   data-content="The temporal function is defined in terms of the dimensionless time t, where the time is given by the time step count multiplied by the time step size dt."
+                                >
+                                <i class="fa fa-question-circle fa-lg"></i></a></h4>
+
+                                {{temporal_function_input temporal_function}}
+
+                            </div>
+
+                        {{/if}}
+
+                    </div>
+
+                </div>  <!-- End of spatial definitions box -->
+
+            </div>  <!-- End of row -->
+
+        </div>  <!-- End of panel body -->
 
     </div>
 
@@ -136,13 +142,15 @@
 
 <script id="spatial-or-temporal-function-parameter-input-template" type="text/x-handlebars-template"> 
 
-    <p>\[ {{function_tex_str}} \] </p>
+    <hr class="visible-xs">
+
+    <p>Form: \( {{function_tex_str}} \) </p>
 
     <form class="form-horizontal" role="form">
       {{#parameters}}
         <div class="form-group">
-            <label for="inputEmail3" class="col-sm-2 control-label">\({{parameter_tex_str}}\)</label>
-          <div class="col-sm-10">
+            <label for="inputEmail3" class="col-xs-2 control-label">\({{parameter_tex_str}}\)</label>
+          <div class="col-xs-10">
               <input type="number" class="form-control" id="parameter_{{parameter_id}}" data-parameter-id="{{parameter_id}}" placeholder="{{#if value}}{{value}}{{else}}{{parameter_default_value}}{{/if}}" value="{{#if value}}{{value}}{{else}}{{parameter_default_value}}{{/if}}">
           </div>
         </div>
