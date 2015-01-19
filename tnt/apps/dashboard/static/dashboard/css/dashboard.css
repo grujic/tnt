@@ -26,6 +26,10 @@
 }
 
 .btn-group > .btn-primary {
-  color: #ddd; 
+  color: #ccc; 
+}
+
+.btn-group > .btn-primary:hover, .btn-group > .btn-primary:focus, .btn-group > .btn-primary.focus, .btn-group > .btn-primary:active, .btn-group > .btn-primary.active {
+  color: #fff; 
 }
 
