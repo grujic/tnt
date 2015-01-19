@@ -13,7 +13,6 @@
 
     <div class="panel-body">
 
-
       <h4>Calculation name
       	<a tabindex="0" 
            data-toggle="popover" 
@@ -57,21 +56,33 @@
           </div>
       </div>
 
+     <div class="row">
 
-      <hr>
+        <select id="system_type_extra_info_spins_choice" class="form-control">
 
-      <div class="row">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
 
-        <div class="col-md-4">
+        </select>
+     </div>
+
+      <div id="basic_system_dimensions" class="row">
+
+        <hr>
+
+        <div class="col-sm-4">
 
             <div id="system_type_extra_info_spins" style="display: block;" class="system_type_extra_info">
 
                 <h4>Physical dimension \( 2S \) <a tabindex="0" 
-           data-toggle="popover" 
-           data-placement="top"
-           data-trigger="focus" 
-           data-content="Choose the twice magnitude of the spin (i.e. for a spin 1/2 system, choose 1). Note larger values result in longer run times."
-        >
+                    data-toggle="popover" 
+                    data-placement="top"
+                    data-trigger="focus" 
+                    data-content="Choose the twice magnitude of the spin (i.e. for a spin 1/2 system, choose 1). Note larger values result in longer run times."
+                >
             <i class="fa fa-question-circle fa-lg"></i>
         </a></h4>
 
@@ -130,7 +141,7 @@
 
         </div>
 
-        <div class="col-md-4">
+        <div class="col-sm-4">
 
             <h4>
                 System size \( L \)
@@ -150,7 +161,7 @@
 
         </div>
 
-        <div class="col-md-4">
+        <div class="col-sm-4">
 
             <h4>
                 Truncation parameter \( \chi \)
