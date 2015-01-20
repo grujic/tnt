@@ -8,13 +8,14 @@ import requests
 
 import glob
 
+
 from tnt.settings import \
     bose_base_url, \
     json_results_relative_dir, \
     BASE_DIR, \
     MEDIA_ROOT
 
-from django.shortcuts import render
+import tnt.settings as settings
 
 # TNT imports
 from tnt.spatial_and_temporal_functions_defs import fns
@@ -45,6 +46,13 @@ def api_root(request, format=None):
         reverse('api:spatial_and_temporal_functions', \
         request=request, \
         format=format),
+
+        'calculation_templates': \
+        reverse('api:calculation_templates', \
+        request=request, \
+        format=format),
+
+
 
 		'operators': \
         reverse('api:operators', \
@@ -90,6 +98,17 @@ def api_root(request, format=None):
     })
 
 ### START OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
+
+@api_view(['GET'])
+def calculation_templates(request):
+    """
+    Return a list of calculation templates, organised by system type
+    """
+    system_types = [name for name in os.listdir(settings.calculation_template_base_dir) if os.path.isdir(os.path.join(settings.calculation_template_base_dir, name)) ]
+    template_info = [{'system_type': system_type, 'templates': os.listdir(settings.calculation_template_base_dir + system_type)} for system_type in system_types]
+    response = Response({'template_info': template_info}, status=status.HTTP_200_OK)    #
+
+    return response
 
 @api_view(['GET'])
 def spatial_and_temporal_functions(request):

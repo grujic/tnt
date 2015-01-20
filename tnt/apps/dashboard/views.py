@@ -28,15 +28,6 @@ def signup(request):
         affiliation = request.POST.get('affiliation')
         about = request.POST.get('about')
 
-        print("email = ")
-        print(email)
-
-        print("full_name= ")
-        print(full_name)
-
-        print("password = ")
-        print(password)
-
         try:
 
             new_user = MyUser.objects.create_user(email, password=password)

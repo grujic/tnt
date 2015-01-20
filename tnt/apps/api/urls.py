@@ -15,6 +15,11 @@ urlpatterns = patterns('',
         views.spatial_and_temporal_functions, \
         name='spatial_and_temporal_functions'),
 
+    ### Info on available calculation templates ###
+    url(r'^calculation_templates[/]?$', \
+        views.calculation_templates, \
+        name='calculation_templates'),
+
     ### Info on available Hamiltonian operators ###
     url(r'^operators[/]?$', \
         views.operators, \

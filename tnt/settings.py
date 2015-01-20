@@ -128,3 +128,6 @@ STATICFILES_FINDERS = (
 bose_base_url = 'http://bose.physics.ox.ac.uk:8080'    # Bose server
 
 json_results_relative_dir = '/json_results/'
+
+# Where do we store calculation templates?
+calculation_template_base_dir = 'tnt/calculation_templates/'
