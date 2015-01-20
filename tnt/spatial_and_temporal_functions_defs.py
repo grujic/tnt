@@ -1,4 +1,5 @@
 # This file defines the available spatial dependences of operators
+# Largest id = 8
 
 fns = \
 [
@@ -84,12 +85,43 @@ fns = \
 			'parameter_default_value': 1
 		},{
 			'parameter_id': 3, \
-			'parameter_tex_str': 'c', \
+			'parameter_tex_str': 'j_c', \
 			'parameter_name': 'Centre', \
 			'value': None, \
 			'parameter_default_value': 5
 		}]
 	},
+	
+	# Gaussian
+	{
+        'id': 8, \
+        'function_tex_str': 'A\exp[(j-j_c)^2/2w^2]', \
+        'function_description': 'Gaussian', \
+        'use_for_spatial_hamil': True, \
+        'use_for_temporal_hamil': True, \
+        'use_for_sum_modifier': True, \
+        'use_for_product_modifier': False, \
+        'use_for_product_modifier_noncovariant': True, \
+        'parameters': [{
+            'parameter_id': 1, \
+            'parameter_tex_str': 'A', \
+            'parameter_name': 'Amplitude', \
+            'value': None, \
+            'parameter_default_value': 1
+        },{
+            'parameter_id': 2, \
+            'parameter_tex_str': 'j_c', \
+            'parameter_name': 'Centre', \
+            'value': None, \
+            'parameter_default_value': 5
+        },{
+            'parameter_id': 3, \
+            'parameter_tex_str': 'w', \
+            'parameter_name': 'Width', \
+            'value': None, \
+            'parameter_default_value': 3
+        }]
+    },
 
 	# A sin dependence on system size
 	{
@@ -171,7 +203,7 @@ fns = \
 			'parameter_default_value': 1
 		},{
 			'parameter_id': 2, \
-			'parameter_tex_str': 'c', \
+			'parameter_tex_str': 'j_c', \
 			'parameter_name': 'Centre', \
 			'value': None, \
 			'parameter_default_value': 5
@@ -202,7 +234,7 @@ fns = \
 			'parameter_default_value': 1
 		},{
 			'parameter_id': 2, \
-			'parameter_tex_str': 'c', \
+			'parameter_tex_str': 'j_c', \
 			'parameter_name': 'Centre', \
 			'value': None, \
 			'parameter_default_value': 5
