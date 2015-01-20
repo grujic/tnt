@@ -19,16 +19,17 @@ blank_calculation_template = \
 	'setup': {
 
 		'system': {
-			'chi': None,
-			'system_size': None,
+			'chi': 10,
+			'system_size': 10,
             'time': {
                 'time_step': None,
                 'num_time_steps': None,
                 'num_expval_time_steps': None
             },
 			'system_type': {
-				'name': None,
+				'name': "spin",
 				'extra_info': {
+                    "spin_magnitude": 1
 				}
 			},
 			'calculate_ground_state': None,

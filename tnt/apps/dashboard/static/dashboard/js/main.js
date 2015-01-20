@@ -151,6 +151,19 @@ var tnt = {
         tnt.restrict_inputs_to_float($('.float-only'));
     },
 
+    get_system_type: function() {
+        return window.calculation.setup.system.system_type.name;
+    },
+
+    set_system_type: function(system_type) {
+		window
+        .calculation
+        .setup
+        .system
+        .system_type
+        .name = system_type;	// Update the calculation
+    },
+
     get_hamiltonian_operator: function(operator_id) {
         // Assumes operators are loaded and just
         // gets the one with the right ID
@@ -207,16 +220,26 @@ var tnt = {
 
     },
 
+    personalise_calculation: function () {
+        // Associate the logged in user with this calculation
+        window.calculation.meta_info.user.email = window.user.email;
+        window.calculation.meta_info.user.id = window.user.id;
+    },
+
+    go: function() {
+        // Start the show
+        tnt.initialise_blank_calculation();
+    },
+
 	initialise_blank_calculation: function () {
 		// Pull in the blank template for a calculation and set window.calculaton = the template
 		$.get('/api/v1.0/blank_calculation',
 			function (data) {
 				window.calculation = data;
-				window.calculation.meta_info.user.email = window.user.email;
-	  			window.calculation.meta_info.user.id = window.user.id;
+                tnt.personalise_calculation();
 	  			console.log("Initialised blank calculation. \n\n");
 			}
-		);
+		).done(tnt.initialise_new_calculation_basic_setup_step);
 
         // Not quite sure where to put this, we need these definitions eventually..
         tnt.load_spatial_and_temporal_function_definitions();
@@ -526,20 +549,16 @@ var tnt = {
 		$.get("/api/v1.0/initial_base_states",
 			function (data) {
 
-				if (window.calculation.setup.system.system_type === null) {
-					var filtered_data = data;
-				} else {
-					var filtered_data =
-						{
-							'states':
-							_.filter(
-								data.states,
-								function(el) {
-									return ( (el['system_type'] == window.calculation.setup.system.system_type.name ) || (el['system_type'] == 'all') );
-								}
-							)
-						};
-				}
+                var filtered_data =
+                    {
+                        'states':
+                        _.filter(
+                            data.states,
+                            function(el) {
+                                return ( (el['system_type'] == tnt.get_system_type() ) || (el['system_type'] == 'all') );
+                            }
+                        )
+                    };
 
 				window.initial_base_states = filtered_data;
 
@@ -995,19 +1014,27 @@ var tnt = {
         // update list of template a user can choose from for this type
         var select = document.getElementById("calculation_template_choice");
 
-        var templates = get_calculation_templates_for_system_type(system_type);
+        var templates = tnt.get_calculation_templates_for_system_type(system_type).templates;
 
         $(select).empty();
 
-        _.each(_.range(dropdown_min, dropdown_max + 1), function (num) {
-            var option = document.createElement("OPTION");
-            select.options.add(option);
-            option.text = num;
-            option.value = num;
-            if (num == dropdown_default) {
-                option.selected = true;
+        _.each(
+            templates,
+            function(template) {
+                var option = document.createElement('OPTION');
+                select.options.add(option);
+                option.text = template['name'];
             }
-        });
+        );
+
+    },
+
+    update_basic_system_dimensions: function() {
+        // reads off chi, system size etc from window.calculation, updates selects
+        $("#system_size_choice")
+            .val(window.calculation.setup.system.system_size);
+        $("#chi_choice")
+            .val(window.calculation.setup.system.chi);
     },
 
 	// Following is a list of functions that verify data input and also set up the various data input panels for a new calculation
@@ -1020,10 +1047,7 @@ var tnt = {
             '/api/v1.0/calculation_templates',
             function(data) {
                 window.calculation_templates = data.template_info;
-                //TEMP DATA MANUAL ENTRY
-                window.calculation_templates[0].templates = [{'filename': 'test_filename.json', 'name': 'example name 1'}, {'filename': 'test_filename_2.json', 'name': 'example name 2'}]
-                window.calculation_templates[1].templates = [{'filename': 'test_filename.json', 'name': 'example name 1'}, {'filename': 'test_filename_2.json', 'name': 'example name 2'}]
-                window.calculation_templates[2].templates = [{'filename': 'test_filename.json', 'name': 'example name 1'}, {'filename': 'test_filename_2.json', 'name': 'example name 2'}]
+                tnt.update_available_calculation_templates('spin');
             }
         );
 
@@ -1042,6 +1066,32 @@ var tnt = {
             tnt.chi_max,
             tnt.chi_default
         );
+
+        tnt.update_basic_system_dimensions();
+
+        $("#calculation_template_choice")
+            .on(
+                "change",
+                function (e) {
+                    var system_type = tnt.get_system_type()
+                    var possible_templates =
+                        _.filter(
+                            window.calculation_templates,
+                            function(el) {
+                                return (el['system_type'] == system_type);
+                            }
+                        )[0];
+                    var template_calculation =
+                        _.filter(
+                            possible_templates.templates,
+                            function(el) {
+                                return (el['name'] == name);
+                            }
+                        )[0];
+                    window.calculation = JSON.parse(template_calculation.json).calculation;
+                    tnt.update_basic_system_dimensions();
+                }
+            );
 
 		$(".btn-system-type")
 			.click(function(el) {
@@ -1088,12 +1138,7 @@ var tnt = {
 
 		var system_type = $(".btn-system-type.active").data("system-type"); // From the selected button, find system type
 
-		window
-        .calculation
-        .setup
-        .system
-        .system_type
-        .name = system_type;	// Update the calculation
+        tnt.set_system_type(system_type);
 
 		var system_size = parseInt($("#system_size_choice").val());	// How many sites?
 
@@ -1106,11 +1151,7 @@ var tnt = {
 		// Now process any extra info to do with the system type
 		if (system_type == "spin") {
 
-			console.log("System type = spin");
-
 			var spin_magnitude = parseInt($("#system_type_extra_info_spins_choice").val());
-
-			console.log("Spin magnitude = " + spin_magnitude);
 
 			window
             .calculation
@@ -1171,19 +1212,16 @@ var tnt = {
 			function (data) {
 
 				// First filter to operators corresponding to the chosen system type
-				if (window.calculation.setup.system.system_type === null) {
-					var filtered_data = data;
-				} else {
-					var filtered_data =
-						{'operators':
-							_.filter(
-								data.operators,
-								function(el) {
-									return el['term_type'] == window.calculation.setup.system.system_type.name;
-								}
-							)
-						};
-				}
+                var system_type = tnt.get_system_type();
+                var filtered_data =
+                    {'operators':
+                        _.filter(
+                            data.operators,
+                            function(el) {
+                                return el['term_type'] == system_type;
+                            }
+                        )
+                    };
 
 				// Keep this data available:
 				window.all_operators = filtered_data;
@@ -1402,12 +1440,7 @@ var tnt = {
         }
 
         // Initialise the possible choices for the quantum number, depending on system type
-        var system_type = window
-                          .calculation
-                          .setup
-                          .system
-                          .system_type
-                          .name;
+        var system_type = tnt.get_system_type();
 
         var system_size = window.calculation
                             .setup

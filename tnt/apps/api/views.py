@@ -105,7 +105,29 @@ def calculation_templates(request):
     Return a list of calculation templates, organised by system type
     """
     system_types = [name for name in os.listdir(settings.calculation_template_base_dir) if os.path.isdir(os.path.join(settings.calculation_template_base_dir, name)) ]
-    template_info = [{'system_type': system_type, 'templates': os.listdir(settings.calculation_template_base_dir + system_type)} for system_type in system_types]
+    template_info = [{ \
+                        'system_type': system_type, \
+                        'templates': [ \
+                            { \
+                                'file_name': filename
+                            } for filename in os.listdir(settings.calculation_template_base_dir + system_type) if filename.endswith('json') \
+                            ] \
+                    } \
+                    for system_type in system_types]
+
+    for info in template_info:
+        system_type = info['system_type']
+        for template in info['templates']:
+            filename = template["file_name"]
+            if filename.endswith("json"):
+                template['json'] = open(settings.BASE_DIR + '/' + settings.calculation_template_base_dir + system_type + '/' + filename, 'r').read()
+                template_json = json.loads(template['json'])
+                template['name'] = template_json['calculation']['meta_info']['name']
+
+
+    for info in template_info:
+        info["templates"] = [{'name': 'Blank calculation', 'file_name': None}] + info["templates"]
+
     response = Response({'template_info': template_info}, status=status.HTTP_200_OK)    #
 
     return response
