@@ -995,19 +995,28 @@ var tnt = {
         // update list of template a user can choose from for this type
         var select = document.getElementById("calculation_template_choice");
 
-        var templates = get_calculation_templates_for_system_type(system_type);
+        var templates = tnt.get_calculation_templates_for_system_type(system_type).templates;
 
         $(select).empty();
 
-        _.each(_.range(dropdown_min, dropdown_max + 1), function (num) {
-            var option = document.createElement("OPTION");
-            select.options.add(option);
-            option.text = num;
-            option.value = num;
-            if (num == dropdown_default) {
-                option.selected = true;
+        _.each(
+            templates,
+            function(template) {
+                var option = document.createElement('OPTION');
+                select.options.add(option);
+                option.text = template['name'];
             }
-        });
+        );
+
+        //_.each(_.range(dropdown_min, dropdown_max + 1), function (num) {
+            //var option = document.createElement("OPTION");
+            //select.options.add(option);
+            //option.text = num;
+            //option.value = num;
+            //if (num == dropdown_default) {
+                //option.selected = true;
+            //}
+        //});
     },
 
 	// Following is a list of functions that verify data input and also set up the various data input panels for a new calculation
@@ -1023,7 +1032,7 @@ var tnt = {
                 //TEMP DATA MANUAL ENTRY
                 window.calculation_templates[0].templates = [{'filename': 'test_filename.json', 'name': 'example name 1'}, {'filename': 'test_filename_2.json', 'name': 'example name 2'}]
                 window.calculation_templates[1].templates = [{'filename': 'test_filename.json', 'name': 'example name 1'}, {'filename': 'test_filename_2.json', 'name': 'example name 2'}]
-                window.calculation_templates[2].templates = [{'filename': 'test_filename.json', 'name': 'example name 1'}, {'filename': 'test_filename_2.json', 'name': 'example name 2'}]
+                //window.calculation_templates[2].templates = [{'filename': 'test_filename.json', 'name': 'example name 1'}, {'filename': 'test_filename_2.json', 'name': 'example name 2'}]
             }
         );
 
