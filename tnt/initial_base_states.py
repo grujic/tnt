@@ -26,14 +26,6 @@ initial_base_states_list = \
 		'system_type': 'spin'
 	},
 	
-	# Spin system - left half spins up
-	{
-		'initial_base_state_id': 3, \
-		'function_tex_str': '| 	\uparrow \uparrow \cdots \uparrow \downarrow \downarrow \cdots \downarrow >', \
-		'function_description': 'Left half spins up, right half spins down', \
-		'system_type': 'spin'
-	},
-	
 	# Spin system - alternating spins
 	{
 		'initial_base_state_id': 4, \

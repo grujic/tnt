@@ -265,7 +265,7 @@ operators = \
 		'function_description': 'Spin flip', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        	'U1_covariant': False, \
+        'U1_covariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': False, \
@@ -273,6 +273,22 @@ operators = \
 		'two_site': False, \
 		'number_of_terms': 1
 	},
+	
+	# Phase
+	{
+        'operator_id': 18, \
+        'function_tex_str': "\mathrm{exp}(\pi\mathrm{i}\hat{S}_j^z)", \
+        'function_description': 'Spin flip', \
+        'term_type': 'spin', \
+        'U1_invariant': True, \
+        'U1_covariant': True, \
+        'complex': False, \
+        'use_for_hamiltonian': False, \
+        'use_for_expectation': False, \
+        'use_for_transform': True, \
+        'two_site': False, \
+        'number_of_terms': 1
+    },
 
 	###################### Bosonic terms start here ####################################
 
@@ -467,5 +483,21 @@ operators = \
 		'two_site': True, \
 		'number_of_terms': 1
 	}
+	
+	# Phase
+	{
+        'operator_id': 32, \
+        'function_tex_str': "\mathrm{exp}(\pi\mathrm{i}\hat{n}_j)", \
+        'function_description': 'Phase', \
+        'term_type': 'bosonic', \
+        'U1_invariant': True, \
+        'U1_covariant': True, \
+        'complex': False, \
+        'use_for_hamiltonian': False, \
+        'use_for_expectation': False, \
+        'use_for_transform': True, \
+        'two_site': False, \
+        'number_of_terms': 1
+        },
 
 ]
