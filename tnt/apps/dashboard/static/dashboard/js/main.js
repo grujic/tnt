@@ -982,10 +982,50 @@ var tnt = {
 		$(".new-calculation-step").css('display', 'block');
 	},
 
+    get_calculation_templates_for_system_type: function(system_type) {
+        return _.filter(
+            window.calculation_templates,
+            function (el) {
+                return (el['system_type'] == system_type);
+            }
+        )[0];
+    },
+
+    update_available_calculation_templates: function(system_type) {
+        // update list of template a user can choose from for this type
+        var select = document.getElementById("calculation_template_choice");
+
+        var templates = get_calculation_templates_for_system_type(system_type);
+
+        $(select).empty();
+
+        _.each(_.range(dropdown_min, dropdown_max + 1), function (num) {
+            var option = document.createElement("OPTION");
+            select.options.add(option);
+            option.text = num;
+            option.value = num;
+            if (num == dropdown_default) {
+                option.selected = true;
+            }
+        });
+    },
+
 	// Following is a list of functions that verify data input and also set up the various data input panels for a new calculation
 	initialise_new_calculation_basic_setup_step: function () {
 		//
 		console.log("Initialising new calculation basic setup input\n\n");
+
+        // Pull in info on available calculation templates
+        $.get(
+            '/api/v1.0/calculation_templates',
+            function(data) {
+                window.calculation_templates = data.template_info;
+                //TEMP DATA MANUAL ENTRY
+                window.calculation_templates[0].templates = [{'filename': 'test_filename.json', 'name': 'example name 1'}, {'filename': 'test_filename_2.json', 'name': 'example name 2'}]
+                window.calculation_templates[1].templates = [{'filename': 'test_filename.json', 'name': 'example name 1'}, {'filename': 'test_filename_2.json', 'name': 'example name 2'}]
+                window.calculation_templates[2].templates = [{'filename': 'test_filename.json', 'name': 'example name 1'}, {'filename': 'test_filename_2.json', 'name': 'example name 2'}]
+            }
+        );
 
         // Set up the selectors for system size
         tnt.set_up_numeric_range_dropdown(
@@ -1013,6 +1053,9 @@ var tnt = {
 				// Hide all extra input panels
 				$(".system_type_extra_info").css("display", "none");
 
+                // Update available calculation templates
+                tnt.update_available_calculation_templates(chosen_system_type);
+
 				// Choose what extra inputs to reveal:
 				if (chosen_system_type == "spin") {
 					$("#system_type_extra_info_spins").css("display", "block");
@@ -1022,14 +1065,6 @@ var tnt = {
 					$("#system_type_extra_info_fermions").css("display", "block");
                 }
 
-			}
-		);
-
-		// Make sure that we can only have one spin type selected at a time
-		$(".btn-system-type-extra-info-spin")
-			.click(function (el) {
-				$(".btn-system-type-extra-info-spin").removeClass("active");
-				$(this).addClass("active");
 			}
 		);
 
