@@ -257,7 +257,7 @@ operators = \
 		'two_site': True, \
 		'number_of_terms': 1
 	},
-	
+
 	# Rotation
 	{
 		'operator_id': 17, \
@@ -273,7 +273,7 @@ operators = \
 		'two_site': False, \
 		'number_of_terms': 1
 	},
-	
+
 	# Phase
 	{
         'operator_id': 18, \
@@ -482,8 +482,8 @@ operators = \
 		'use_for_transform': False, \
 		'two_site': True, \
 		'number_of_terms': 1
-	}
-	
+	},
+
 	# Phase
 	{
         'operator_id': 32, \
