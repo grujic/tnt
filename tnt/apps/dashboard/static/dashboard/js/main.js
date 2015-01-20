@@ -207,13 +207,18 @@ var tnt = {
 
     },
 
+    personalise_calculation: function () {
+        // Associate the logged in user with this calculation
+        window.calculation.meta_info.user.email = window.user.email;
+        window.calculation.meta_info.user.id = window.user.id;
+    },
+
 	initialise_blank_calculation: function () {
 		// Pull in the blank template for a calculation and set window.calculaton = the template
 		$.get('/api/v1.0/blank_calculation',
 			function (data) {
 				window.calculation = data;
-				window.calculation.meta_info.user.email = window.user.email;
-	  			window.calculation.meta_info.user.id = window.user.id;
+                tnt.personalise_calculation();
 	  			console.log("Initialised blank calculation. \n\n");
 			}
 		);
@@ -1008,15 +1013,6 @@ var tnt = {
             }
         );
 
-        //_.each(_.range(dropdown_min, dropdown_max + 1), function (num) {
-            //var option = document.createElement("OPTION");
-            //select.options.add(option);
-            //option.text = num;
-            //option.value = num;
-            //if (num == dropdown_default) {
-                //option.selected = true;
-            //}
-        //});
     },
 
 	// Following is a list of functions that verify data input and also set up the various data input panels for a new calculation
@@ -1029,10 +1025,7 @@ var tnt = {
             '/api/v1.0/calculation_templates',
             function(data) {
                 window.calculation_templates = data.template_info;
-                //TEMP DATA MANUAL ENTRY
-                window.calculation_templates[0].templates = [{'filename': 'test_filename.json', 'name': 'example name 1'}, {'filename': 'test_filename_2.json', 'name': 'example name 2'}]
-                window.calculation_templates[1].templates = [{'filename': 'test_filename.json', 'name': 'example name 1'}, {'filename': 'test_filename_2.json', 'name': 'example name 2'}]
-                //window.calculation_templates[2].templates = [{'filename': 'test_filename.json', 'name': 'example name 1'}, {'filename': 'test_filename_2.json', 'name': 'example name 2'}]
+                tnt.update_available_calculation_templates('spin');
             }
         );
 
@@ -1115,11 +1108,7 @@ var tnt = {
 		// Now process any extra info to do with the system type
 		if (system_type == "spin") {
 
-			console.log("System type = spin");
-
 			var spin_magnitude = parseInt($("#system_type_extra_info_spins_choice").val());
-
-			console.log("Spin magnitude = " + spin_magnitude);
 
 			window
             .calculation
