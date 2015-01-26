@@ -42,4 +42,9 @@ urlpatterns = patterns('',
         views.faq, \
         name='faq'),
 
+    # Examples page
+    url(r'^examples[/]?$', \
+        views.examples, \
+        name='examples'),
+
 )

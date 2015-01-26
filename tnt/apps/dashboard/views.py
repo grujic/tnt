@@ -81,3 +81,8 @@ def faq(request):
     # Page for FAQ
     return render(request, \
                   'dashboard/faq.html')
+
+def examples(request):
+    # Page for examples
+    return render(request, \
+                  'dashboard/examples.html')

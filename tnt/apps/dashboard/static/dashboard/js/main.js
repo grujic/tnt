@@ -151,6 +151,7 @@ var tnt = {
         tnt.restrict_inputs_to_float($('.float-only'));
     },
 
+    // Getters and setters
     get_system_type: function() {
         return window.calculation.setup.system.system_type.name;
     },
@@ -163,6 +164,38 @@ var tnt = {
         .system_type
         .name = system_type;	// Update the calculation
     },
+
+    get_apply_dynamic_qn: function() {
+        return window.calculation.setup.system.number_conservation.dynamic.apply_qn;
+    },
+
+    set_apply_dynamic_qn: function(val) {
+        return window.calculation.setup.system.number_conservation.dynamic.apply_qn = val;
+    },
+
+    get_apply_ground_qn: function() {
+        return window.calculation.setup.system.number_conservation.ground.apply_qn;
+    },
+
+    set_apply_ground_qn: function(val) {
+        return window.calculation.setup.system.number_conservation.ground.apply_qn = val;
+    },
+
+    get_calculate_time_evolution: function() { return window.calculation.setup.system.calculate_time_evolution; },
+
+    set_calculate_time_evolution: function(val) { window.calculation.setup.system.calculate_time_evolution = val; },
+
+    get_num_time_steps: function() { return window.calculation.setup.system.time.num_time_steps; },
+
+    set_num_time_steps: function(val) { window.calculation.setup.system.time.num_time_steps = val; },
+
+    get_time_step: function() { return window.calculation.setup.system.time.time_step; },
+
+    set_time_step: function(val) { window.calculation.setup.system.time.time_step = val; },
+
+    get_num_expval_time_steps: function() { return window.calculation.setup.system.time.num_expval_time_steps; },
+
+    set_num_expval_time_steps: function(val) { window.calculation.setup.system.time.num_expval_time_steps = val; },
 
     get_hamiltonian_operator: function(operator_id) {
         // Assumes operators are loaded and just
@@ -1743,15 +1776,39 @@ var tnt = {
 
 		$("#new_calculation_time_evolution").css('display', 'block');
 
+        // What does the template say?
+        if (tnt.get_calculate_time_evolution() == 1) {
+            // Fill out values:
+            $("#input_num_time_steps")
+                .val(tnt.get_num_time_steps());
+
+            $("#input_time_step_size")
+                .val(tnt.get_time_step());
+
+            $("#input_num_expval_time_steps")
+                .val(tnt.get_num_expval_time_steps());
+
+            $("#time_evolution_time_step_specification")
+                .css("display", "block");
+
+            // Now QN
+            $("#dynamical_number_conservation_choice label").removeClass("active");
+            var apply_dynamic_qn = tnt.get_apply_dynamic_qn();
+            var selector = '#dynamical_number_conservation_choice label input[data-dynamical-number-conservation="' + apply_dynamic_qn + '"]';
+            $(selector).closest("label").addClass("active");
+
+        } else {
+            $("#time_evolution_time_step_specification")
+                .css("display", "none");
+        }
+
 		// Add a function so that if the user chooses not to calculate time evolution, we don't display inputs for time step info
 		$("#time_evolution_choice input")
 			.change(
 				function () {
 					if ($(this).data('calculate-time-evolution') == 0) {
-						console.log("We're not calculating time evolution");
 						$('#time_evolution_time_step_specification').css('display', 'none');
 					} else {
-						console.log("We are calculating time evolution");
 						$('#time_evolution_time_step_specification').css('display', 'block');
 					}
 				}
@@ -1813,38 +1870,17 @@ var tnt = {
                 return;
             }
 
-			window
-            .calculation
-            .setup
-            .system
-            .time
-            .num_time_steps = num_time_steps;
+            tnt.set_num_time_steps(num_time_steps);
 
-			window
-            .calculation
-            .setup
-            .system
-            .time
-            .time_step = time_step_size;
+            tnt.set_.time_step(time_step_size);
 
-			window
-            .calculation
-            .setup
-            .system
-            .time
-            .num_expval_time_steps = num_expval_time_steps;
+            tnt.set_num_expval_time_steps(num_expval_time_steps);
 
             // Number conservation checks:
             var enforce_dynamical_number_conservation = parseInt($("label.active input", "#dynamical_number_conservation_choice")
                 .data("dynamical-number-conservation"));
 
-            window
-            .calculation
-            .setup
-            .system
-            .number_conservation
-            .dynamic
-            .apply_qn = enforce_dynamical_number_conservation;
+            tnt.set_apply_dynamic_qn = enforce_dynamical_number_conservation;
 
 		}
 
@@ -1866,13 +1902,7 @@ var tnt = {
 
 		tnt.clear_all_new_calculation_stages(); // Clear all panels
 
-        var dynamic_qn = window
-            .calculation
-            .setup
-            .system
-            .number_conservation
-            .dynamic
-            .apply_qn;
+        var dynamic_qn = tnt.get_apply_dynamic_qn();
 
         if (dynamic_qn == 0) {
             // Sum type allowed
