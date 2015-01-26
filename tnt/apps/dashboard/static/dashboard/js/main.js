@@ -1073,7 +1073,7 @@ var tnt = {
             .on(
                 "change",
                 function (e) {
-                    var system_type = tnt.get_system_type()
+                    var system_type = tnt.get_system_type();
                     var possible_templates =
                         _.filter(
                             window.calculation_templates,
@@ -1081,6 +1081,11 @@ var tnt = {
                                 return (el['system_type'] == system_type);
                             }
                         )[0];
+
+                    var name = $(this).val();
+
+                    $("#calculation_name").val(name);
+
                     var template_calculation =
                         _.filter(
                             possible_templates.templates,
@@ -1088,6 +1093,7 @@ var tnt = {
                                 return (el['name'] == name);
                             }
                         )[0];
+
                     window.calculation = JSON.parse(template_calculation.json).calculation;
                     tnt.update_basic_system_dimensions();
                 }
@@ -1099,6 +1105,8 @@ var tnt = {
 				$(this).addClass("active");
 
 				var chosen_system_type = $(this).data("system-type");
+
+                tnt.set_system_type(chosen_system_type);
 
 				// Hide all extra input panels
 				$(".system_type_extra_info").css("display", "none");
@@ -1278,6 +1286,30 @@ var tnt = {
 		$("#new_calculation_define_ground_hamiltonian")
             .css('display', 'block');
 
+        // Render in any terms defined int he template:
+        if (window.calculation.setup.hamiltonian.ground.terms.length != 0) {
+            var terms_to_add = window.calculation.setup.hamiltonian.ground.terms;
+        } else {
+            var terms_to_add = window.calculation.setup.hamiltonian.dynamic.terms;
+        }
+
+        _.each(
+            terms_to_add,
+            function(el) {
+                var el_clone = _.cloneDeep(el);
+                el_clone['include_temporal_function'] = false;
+                tnt.add_hamiltonian_term(
+                    el_clone,
+                    "#ground_hamiltonian_terms_container",
+                    "#no_ground_hamiltonian_terms_added_yet_warning",
+                    "",
+                    "#ground_hamiltonian_tex_str",
+                    false,
+                    true
+                );
+            }
+        );
+
 		$("#new_calculation_define_ground_hamiltonian .btn-next-step")
             .click(
                 tnt.validate_new_calculation_define_ground_hamiltonian
@@ -1434,10 +1466,11 @@ var tnt = {
             select.options.add(option);
             option.text = -i;
             option.value = i;
-            if (i == tnt.log_ground_state_precision_default) {
+            if (i == window.calculation.setup.system.log_ground_state_precision) {
                 option.selected = true;
             }
         }
+
 
         // Initialise the possible choices for the quantum number, depending on system type
         var system_type = tnt.get_system_type();
@@ -1588,9 +1621,41 @@ var tnt = {
 
         tnt.render_mathjax_in_element_with_id("ground_state_quantum_info");
 
+        // Update if our template calculation is calculating ground state
+        $("#ground_state_calculation_choice label").removeClass("active");
+
+        if (window.calculation.setup.system.calculate_ground_state == 0) {
+            $('#ground_state_extra_info_specification')
+                .css('display', 'none');
+
+                $("#ground_state_calculation_choice label input[data-calculate-ground-state=0]")
+                    .closest("label")
+                    .addClass("active");
+
+        } else {
+            $('#ground_state_extra_info_specification')
+                .css('display', 'block');
+
+            $("#ground_state_calculation_choice label input[data-calculate-ground-state=1]")
+                .closest("label")
+                .addClass("active");
+
+            // What about QN conservation?
+            if (window.calculation.setup.system.number_conservation.ground.apply_qn == 0) {
+                $('#ground_state_quantum_number_info')
+                    .css('display', 'none');
+            } else {
+                // Now set whatever the quantum number is:
+                $("#quantum_number_ground_state_choice").val(window.calculation.setup.system.number_conservation.ground.qn);
+                $('#ground_state_quantum_number_info')
+                    .css('display', 'block');
+            }
+
+        }
+
 		$("#new_calculation_ground_state").css('display', 'block');
 
-        $("#ground_state_quantum_number_info").css("display", "none");
+        //$("#ground_state_quantum_number_info").css("display", "none");
 
 		// Navigation
 		$("#new_calculation_ground_state .btn-next-step").click(
