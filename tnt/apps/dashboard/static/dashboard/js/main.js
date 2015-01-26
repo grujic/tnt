@@ -197,6 +197,20 @@ var tnt = {
 
     set_num_expval_time_steps: function(val) { window.calculation.setup.system.time.num_expval_time_steps = val; },
 
+    get_initial_base_state_id: function() { return window.calculation.setup.initial_state.base_state.initial_base_state_id; },
+
+    get_renormalise_wave_function: function() { return window.calculation.setup.initial_state.renormalise; },
+
+    set_renormalise_wave_function: function(val) { window.calculation.setup.initial_state.renormalise = val; },
+
+    get_calculate_overlap_with_ground: function() { return window.calculation.setup.expectation_values.calculate_overlap_with_ground | 0; },
+
+    set_calculate_overlap_with_ground: function(val) { window.calculation.setup.expectation_values.calculate_overlap_with_ground = val; },
+
+    get_calculate_overlap_with_initial: function() { return window.calculation.setup.expectation_values.calculate_overlap_with_initial | 0; },
+
+    set_calculate_overlap_with_initial: function(val) { window.calculation.setup.expectation_values.calculate_overlap_with_intial = val; },
+
     get_hamiltonian_operator: function(operator_id) {
         // Assumes operators are loaded and just
         // gets the one with the right ID
@@ -1872,7 +1886,7 @@ var tnt = {
 
             tnt.set_num_time_steps(num_time_steps);
 
-            tnt.set_.time_step(time_step_size);
+            tnt.set_time_step(time_step_size);
 
             tnt.set_num_expval_time_steps(num_expval_time_steps);
 
@@ -1931,6 +1945,18 @@ var tnt = {
                     }
                 )
             };
+
+        // Loading info from template:
+        // Set initial base state
+        $('.initial-state-btn[data-initial-base-state-id="' + tnt.get_initial_base_state_id() + '"]')
+            .addClass("active");
+
+        // renormalise?
+        $("#renormalise_after_initial_state_modifiers_choice label")
+            .removeClass("active");
+        var renormalise = tnt.get_renormalise_wave_function() | 0;
+        var selector = '#renormalise_after_initial_state_modifiers_choice label input[data-renormalise-initial-state="' + renormalise + '"]';
+        $(selector).closest("label").addClass("active");
 
         $('.add-product-or-sum-modifier-btn')
             .click(function (e) {
@@ -2109,8 +2135,15 @@ var tnt = {
         // If the ground state has been calculated, want to default
         // the dynamic Hamiltonian to the ground state one
         var default_temporal_function = tnt.get_temporal_function(0);
+
+        if (window.calculation.setup.hamiltonian.dynamic.terms.length != 0) {
+            var terms_to_add = window.calculation.setup.hamiltonian.dynamic.terms;
+        } else {
+            var terms_to_add = window.calculation.setup.hamiltonian.ground.terms;
+        }
+
         _.each(
-            window.calculation.setup.hamiltonian.ground.terms,
+            terms_to_add,
             function(el) {
                 var el_clone = _.cloneDeep(el);
                 el_clone['include_temporal_function'] = true;
@@ -2206,6 +2239,28 @@ var tnt = {
 		tnt.render_available_expectation_operators();
 
 		console.log("Rendered available expectation operators");
+
+        // Load template data
+        _.each(
+            window.calculation.setup.expectation_values.operators,
+            function(el) {
+                $('.expectation-operator-btn[data-expectation-operator-id="' + el['operator_id'] + '"]').addClass("active");
+                if (el['two_site'] == true) {
+                    var selector = '.two-site-expectation-type-choice[data-expectation-operator-id="' + el['operator_id'] + '"]';
+                    $(selector).val(el['exp_val_type']);
+                }
+            }
+        );
+
+        $("#calculate_overlap_with_initial_state_choice label")
+            .removeClass("active");
+        var selector = '#calculate_overlap_with_initial_state_choice label input[data-overlap-choice="' + tnt.get_calculate_overlap_with_initial() + '"]';
+        $(selector).closest("label").addClass("active");
+
+        $("#calculate_overlap_with_ground_state_choice label")
+            .removeClass("active");
+        var selector = '#calculate_overlap_with_ground_state_choice label input[data-overlap-choice="' + tnt.get_calculate_overlap_with_ground() + '"]';
+        $(selector).closest("label").addClass("active");
 
 		$("#new_calculation_expectation_operators")
 			.css('display', 'block');
