@@ -125,8 +125,8 @@ def calculation_templates(request):
                 template['name'] = template_json['calculation']['meta_info']['name']
 
 
-    for info in template_info:
-        info["templates"] = [{'name': 'Blank calculation', 'file_name': None}] + info["templates"]
+    #for info in template_info:
+        #info["templates"] = [{'name': 'Blank calculation', 'file_name': None}] + info["templates"]
 
     response = Response({'template_info': template_info}, status=status.HTTP_200_OK)    #
 

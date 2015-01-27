@@ -211,6 +211,28 @@ var tnt = {
 
     set_calculate_overlap_with_initial: function(val) { window.calculation.setup.expectation_values.calculate_overlap_with_intial = val; },
 
+    get_calculation_template: function(system_type, name) {
+
+        var possible_templates =
+            _.filter(
+                window.calculation_templates,
+                function(el) {
+                    return (el['system_type'] == system_type);
+                }
+            )[0];
+
+        var template_calculation =
+            _.filter(
+                possible_templates.templates,
+                function(el) {
+                    return (el['name'] == name);
+                }
+            )[0];
+
+        return JSON.parse(template_calculation.json).calculation;
+
+    },
+
     get_hamiltonian_operator: function(operator_id) {
         // Assumes operators are loaded and just
         // gets the one with the right ID
@@ -1057,8 +1079,9 @@ var tnt = {
         )[0];
     },
 
-    update_available_calculation_templates: function(system_type) {
+    update_available_calculation_templates: function(system_type, name) {
         // update list of template a user can choose from for this type
+        name = name || "";
         var select = document.getElementById("calculation_template_choice");
 
         var templates = tnt.get_calculation_templates_for_system_type(system_type).templates;
@@ -1074,6 +1097,9 @@ var tnt = {
             }
         );
 
+        if (name != "") {
+            $(select).val(name);
+        }
     },
 
     update_basic_system_dimensions: function() {
@@ -1082,6 +1108,15 @@ var tnt = {
             .val(window.calculation.setup.system.system_size);
         $("#chi_choice")
             .val(window.calculation.setup.system.chi);
+    },
+
+    change_calculation_template: function(system_type, name) {
+        //
+        $("#calculation_name").val(name);
+        window.calculation = tnt.get_calculation_template(system_type, name);
+        tnt.update_available_calculation_templates(system_type, name);
+        tnt.update_basic_system_dimensions();
+
     },
 
 	// Following is a list of functions that verify data input and also set up the various data input panels for a new calculation
@@ -1094,7 +1129,12 @@ var tnt = {
             '/api/v1.0/calculation_templates',
             function(data) {
                 window.calculation_templates = data.template_info;
-                tnt.update_available_calculation_templates('spin');
+                // Now set which one is the default calculation:
+                var default_calc_type = "spin";
+                var default_calc_name = "Blank spin calculation";
+
+                tnt.change_calculation_template(default_calc_type, default_calc_name);
+
             }
         );
 
@@ -1121,28 +1161,10 @@ var tnt = {
                 "change",
                 function (e) {
                     var system_type = tnt.get_system_type();
-                    var possible_templates =
-                        _.filter(
-                            window.calculation_templates,
-                            function(el) {
-                                return (el['system_type'] == system_type);
-                            }
-                        )[0];
-
                     var name = $(this).val();
 
-                    $("#calculation_name").val(name);
+                    tnt.change_calculation_template(system_type, name);
 
-                    var template_calculation =
-                        _.filter(
-                            possible_templates.templates,
-                            function(el) {
-                                return (el['name'] == name);
-                            }
-                        )[0];
-
-                    window.calculation = JSON.parse(template_calculation.json).calculation;
-                    tnt.update_basic_system_dimensions();
                 }
             );
 
