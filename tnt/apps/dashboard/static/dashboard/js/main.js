@@ -1084,6 +1084,9 @@ var tnt = {
         name = name || "";
         var select = document.getElementById("calculation_template_choice");
 
+        console.log("UPDATING FOR system_type = " + system_type);
+
+
         var templates = tnt.get_calculation_templates_for_system_type(system_type).templates;
 
         $(select).empty();
