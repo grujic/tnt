@@ -884,6 +884,9 @@ var tnt = {
 		$(no_terms_yet_warning_selector)
             .css('display', 'none');
 
+        console.log("next_calculation_stage_btn_selector = ");
+        console.log(next_calculation_stage_btn_selector);
+
         $(next_calculation_stage_btn_selector)
             .removeAttr("disabled");
 
@@ -1404,7 +1407,7 @@ var tnt = {
                     el_clone,
                     "#ground_hamiltonian_terms_container",
                     "#no_ground_hamiltonian_terms_added_yet_warning",
-                    "",
+                    "#new_calculation_define_ground_hamiltonian .btn-next-step",
                     "#ground_hamiltonian_tex_str",
                     false,
                     true
