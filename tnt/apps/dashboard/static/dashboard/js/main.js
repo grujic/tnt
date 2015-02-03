@@ -16,12 +16,18 @@ var tnt = {
     min_num_time_steps: 1,
     max_num_time_steps: 2000,
 
+    // Helper functions
+
     replaceAll: function(find, replace, str) {
         return str.replace(new RegExp(find, 'g'), replace);
     },
 
     endsWith: function (str, suffix) {
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
+    },
+
+    startsWith: function(str, prefix) {
+        return new RegExp(prefix).test(str);
     },
 
     is_odd: function(number) {
@@ -54,6 +60,8 @@ var tnt = {
 
 	},
 
+    // Helper HTML functions
+
 	render_mathjax: function () {
         MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
         $('[data-toggle="popover"]').popover();
@@ -65,10 +73,6 @@ var tnt = {
         }
         MathJax.Hub.Queue(["Typeset",MathJax.Hub, el_id]);
         $('[data-toggle="popover"]').popover();
-	},
-
-	generate_unique_id: function () {
-		return Math.round(1000000000*Math.random()) + "";
 	},
 
     set_up_numeric_range_dropdown: function(dropdown_id, dropdown_min, dropdown_max, dropdown_default) {
@@ -151,6 +155,32 @@ var tnt = {
         tnt.restrict_inputs_to_float($('.float-only'));
     },
 
+    // Handlebars helpers and template storage
+    get_handlebars_template: function(script_id) {
+        if ( !tnt.startsWith(script_id, "#") ) {
+            script_id = "#" + script_id;
+        }
+        var source = $(script_id).html();
+        return Handlebars.compile(source);
+    },
+
+    // Storage for compiled templates
+    handlebars_templates: {},
+
+    // Store templates:
+    compile_handlebars_templates: function() {
+        tnt.handlebars_templates['initial-state-modifier-sum-or-product-template']
+            = tnt.get_handlebars_template('initial-state-modifier-sum-or-product-template');
+        tnt.handlebars_templates['spatial-or-temporal-function-parameter-input-template']
+            = tnt.get_handlebars_template('spatial-or-temporal-function-parameter-input-template');
+        tnt.handlebars_templates['hamiltonian-term-template']
+            = tnt.get_handlebars_template('hamiltonian-term-template');
+        tnt.handlebars_templates['initial-base-states-template']
+            = tnt.get_handlebars_template('initial-base-states-template');
+        tnt.handlebars_templates['hamiltonian-operator-template']
+            = tnt.get_handlebars_template('hamiltonian-operator-template');
+    },
+
     // Getters and setters
     get_system_type: function() {
         return window.calculation.setup.system.system_type.name;
@@ -180,6 +210,10 @@ var tnt = {
     set_apply_ground_qn: function(val) {
         return window.calculation.setup.system.number_conservation.ground.apply_qn = val;
     },
+
+    get_calculate_ground_state: function() { return window.calculation.setup.system.calculate_ground_state; },
+
+    set_calculate_ground_state: function(val) { window.calculation.setup.system.calculate_ground_state = val; },
 
     get_calculate_time_evolution: function() { return window.calculation.setup.system.calculate_time_evolution; },
 
@@ -310,6 +344,7 @@ var tnt = {
 			}
 		).done(tnt.initialise_new_calculation_basic_setup_step);
 
+
         // Not quite sure where to put this, we need these definitions eventually..
         tnt.load_spatial_and_temporal_function_definitions();
 
@@ -397,9 +432,7 @@ var tnt = {
                 };
         }
 
-        var source = $("#hamiltonian-operator-template").html();
-
-        var template = Handlebars.compile(source);
+        var template = tnt.handlebars_templates["hamiltonian-operator-template"];
 
         $(where_to_render_selector)
             .html(template(hamiltonian_operators_to_render));
@@ -474,9 +507,7 @@ var tnt = {
                 }
             );
 
-            var source = $("#hamiltonian-operator-template").html();
-
-            var template = Handlebars.compile(source);
+            var template = tnt.handlebars_templates["hamiltonian-operator-template"];
 
             $(where_to_render)
                 .html(template(complying_initial_state_modifiers));
@@ -666,8 +697,7 @@ var tnt = {
                     }
                 }
 
-				var source = $("#initial-base-states-template").html();
-				var template = Handlebars.compile(source);
+				var template = tnt.handlebars_templates["initial-base-states-template"];
 
 				$("#new_calculation_available_initial_base_states")
                     .html(template(window.initial_base_states));
@@ -793,8 +823,7 @@ var tnt = {
 
         include_temporal_function = typeof include_temporal_function !== 'undefined' ? include_temporal_function : true;
 
-		var source = $("#hamiltonian-term-template").html();
-		var template = Handlebars.compile(source);
+		var template = tnt.handlebars_templates["hamiltonian-term-template"];
 
         // If there is not already a spatial function attached,
         // put in a default
@@ -1032,8 +1061,7 @@ var tnt = {
 
 				// When clicked, change the input form elements to
                 // the relevant ones for this function choice
-				var source = $("#spatial-or-temporal-function-parameter-input-template").html();
-				var template = Handlebars.compile(source);
+				var template = tnt.handlebars_templates["spatial-or-temporal-function-parameter-input-template"];
 
 				var hamiltonian_term_containing_div
                     = $(this).closest('.hamiltonian-term');
@@ -1140,6 +1168,8 @@ var tnt = {
 
             }
         );
+
+        tnt.compile_handlebars_templates();
 
         // Set up the selectors for system size
         tnt.set_up_numeric_range_dropdown(
@@ -1934,6 +1964,61 @@ var tnt = {
 
 	},
 
+    add_sum_or_product_modifier: function(sum_or_product, terms) {
+
+        terms = terms || [];
+
+        var existing_indices
+            = _.map(
+                $(".initial_state_modifier_sum_or_product"),
+                function(el) {
+                    return $(el).data("index");
+                }
+            );
+
+        var index = tnt.min_int_not_in_array(existing_indices);
+
+        var template = tnt.handlebars_templates["initial-state-modifier-sum-or-product-template"];
+
+        $('#initial_state_modifier_container')
+            .append(
+                template(
+                    {
+                        'sum_or_product': sum_or_product,
+                        'index': index
+                    }
+                )
+            );
+
+        var where_to_render_modifier_operator_btns
+            = $('#initial_state_modifier_container .initial_state_modifier_sum_or_product:last  .initial_state_modifier_operators_container');
+
+        tnt.render_available_intitial_state_modifier_operators(
+            where_to_render_modifier_operator_btns,
+            sum_or_product,
+            "#initial_state_modifiers_tex_str"
+        );
+
+        $('.initial_state_modifier_sum_or_product .remove-initial-state-modifier-btn')
+            .click(function() {
+                $(this)
+                .closest('.initial_state_modifier_sum_or_product')
+                .remove();
+
+                tnt.update_initial_state_modifiers_tex_str(
+                    '#initial_state_modifier_container',
+                    "#initial_state_modifiers_tex_str"
+                );
+            }
+        );
+
+        tnt.update_initial_state_modifiers_tex_str(
+            '#initial_state_modifier_container',
+            "#initial_state_modifiers_tex_str"
+        );
+
+    },
+
 	initialise_new_calculation_initial_state: function () {
 		//
 		console.log("Initialising new calculation initial state input");
@@ -1973,8 +2058,26 @@ var tnt = {
 
         // Loading info from template:
         // Set initial base state
-        $('.initial-state-btn[data-initial-base-state-id="' + tnt.get_initial_base_state_id() + '"]')
+        var template_initial_base_state_id = tnt.get_initial_base_state_id();
+        if ( (template_initial_base_state_id == 0 ) && ( tnt.get_calculate_ground_state() == 0 ) ) {
+            // Template says start with ground, but user not selected a GS calculation
+            // Pick a default
+            template_initial_base_state_id = window.initial_base_states.states[0]['initial_base_state_id'];
+            // Also clear modifiers
+            window.calculation.setup.initial_state.applied_mpos = [];
+        }
+
+        $('.initial-state-btn[data-initial-base-state-id="' + template_initial_base_state_id + '"]')
             .addClass("active");
+
+        // Template modifiers
+        _.each(
+            window.calculation.setup.initial_state.applied_mpos,
+            function (mpo) {
+                console.log(mpo['type']);
+                tnt.add_sum_or_product_modifier(mpo['type']);
+            }
+        );
 
         // renormalise?
         $("#renormalise_after_initial_state_modifiers_choice label")
@@ -1988,56 +2091,7 @@ var tnt = {
 
                 var sum_or_product = $(this).data('sum-product');
 
-                var existing_indices
-                    = _.map(
-                        $(".initial_state_modifier_sum_or_product"),
-                        function(el) {
-                            return $(el).data("index");
-                        }
-                    );
-
-                var index = tnt.min_int_not_in_array(existing_indices);
-
-                var source = $("#initial-state-modifier-sum-or-product-template").html();
-
-                var template = Handlebars.compile(source);
-
-                $('#initial_state_modifier_container')
-                    .append(
-                        template(
-                            {
-                                'sum_or_product': sum_or_product,
-                                'index': index
-                            }
-                        )
-                    );
-
-                var where_to_render_modifier_operator_btns
-                    = $('#initial_state_modifier_container .initial_state_modifier_sum_or_product:last  .initial_state_modifier_operators_container');
-
-                tnt.render_available_intitial_state_modifier_operators(
-                    where_to_render_modifier_operator_btns,
-                    sum_or_product,
-                    "#initial_state_modifiers_tex_str"
-                );
-
-                $('.initial_state_modifier_sum_or_product .remove-initial-state-modifier-btn')
-                    .click(function() {
-                        $(this)
-                        .closest('.initial_state_modifier_sum_or_product')
-                        .remove();
-
-                        tnt.update_initial_state_modifiers_tex_str(
-                            '#initial_state_modifier_container',
-                            "#initial_state_modifiers_tex_str"
-                        );
-                    }
-                );
-
-                tnt.update_initial_state_modifiers_tex_str(
-                    '#initial_state_modifier_container',
-                    "#initial_state_modifiers_tex_str"
-                );
+                tnt.add_sum_or_product_modifier(sum_or_product);
 
         });
 
