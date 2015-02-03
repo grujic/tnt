@@ -528,7 +528,7 @@ var tnt = {
                         '',
                         '',
                         false,
-                        false
+                        true
                     );
                 });
 
@@ -812,13 +812,11 @@ var tnt = {
                                    next_calculation_stage_btn_selector,
                                    hamiltonian_tex_str_el,
                                    include_temporal_function,
-                                   disable_flow_if_no_operators ) {
+                                   update_tex_str ) {
 		// Add a visual representation of a Hamiltonian term to the screen, and render any user input elements necessary (e.g. inputs for spatial parameter values)
         // If the Hamiltonian operator has a spatial_fn field, then
         // set up the element to reflect this
         // if include_temporal_function is false, then don't add in all the temporal stuff
-        console.log("Adding hamiltonian term: \n\n");
-        console.log(hamiltonian_operator);
 
 
         include_temporal_function = typeof include_temporal_function !== 'undefined' ? include_temporal_function : true;
@@ -876,16 +874,15 @@ var tnt = {
             .append(template(hamiltonian_operator));
 
         // Update Hamiltonian str if required
-        tnt.update_hamiltonian_tex_str(
-            term_container_selector,
-            hamiltonian_tex_str_el
-        );
+        if (update_tex_str == true) {
+            tnt.update_hamiltonian_tex_str(
+                term_container_selector,
+                hamiltonian_tex_str_el
+            );
+        }
 
 		$(no_terms_yet_warning_selector)
             .css('display', 'none');
-
-        console.log("next_calculation_stage_btn_selector = ");
-        console.log(next_calculation_stage_btn_selector);
 
         $(next_calculation_stage_btn_selector)
             .removeAttr("disabled");
@@ -1114,9 +1111,6 @@ var tnt = {
         // update list of template a user can choose from for this type
         name = name || "";
         var select = document.getElementById("calculation_template_choice");
-
-        console.log("UPDATING FOR system_type = " + system_type);
-
 
         var templates = tnt.get_calculation_templates_for_system_type(system_type).templates;
 
@@ -1483,6 +1477,7 @@ var tnt = {
             = $(term).find('.spatial_parameter_input_div .spatial_or_temporal_function_parameter_input_form');
 
         // Loop over the spatial function parameters for this term
+
         _.each($(spatial_function_parameter_input_form).find('.form-control'),
 
            function(el) {
@@ -1996,10 +1991,28 @@ var tnt = {
         var where_to_render_modifier_operator_btns
             = $('#initial_state_modifier_container .initial_state_modifier_sum_or_product:last  .initial_state_modifier_operators_container');
 
+        var where_to_render_modifier_operator_terms
+            = $('#initial_state_modifier_container .initial_state_modifier_sum_or_product:last  .initial_state_modifier_operators_terms');
+
         tnt.render_available_intitial_state_modifier_operators(
             where_to_render_modifier_operator_btns,
             sum_or_product,
             "#initial_state_modifiers_tex_str"
+        );
+
+        _.each(
+            terms,
+            function (term) {
+                tnt.add_hamiltonian_term(
+                    term,
+                    $(where_to_render_modifier_operator_terms),
+                    '',
+                    '',
+                    '',
+                    false,
+                    true
+                );
+            }
         );
 
         $('.initial_state_modifier_sum_or_product .remove-initial-state-modifier-btn')
@@ -2078,7 +2091,7 @@ var tnt = {
             window.calculation.setup.initial_state.applied_mpos,
             function (mpo) {
                 console.log(mpo['type']);
-                tnt.add_sum_or_product_modifier(mpo['type']);
+                tnt.add_sum_or_product_modifier(mpo['type'], mpo['applied_operators']);
             }
         );
 

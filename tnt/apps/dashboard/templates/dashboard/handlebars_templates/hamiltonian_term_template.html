@@ -116,7 +116,9 @@
                 <option value="{{id}}" 
                         class="spatial-or-temporal-fn-choice" 
                         data-function-id="{{id}}"
-                        data-function-type="{{type}}">
+                        data-function-type="{{type}}"
+                        {{#if this_is_default_spatial_fn }}selected="selected"{{/if}}
+                        >
 
                     {{function_description}}
 
@@ -125,6 +127,8 @@
             {{/all_function_info.all_functions.fns}}
 
         </select>
+
+        {{all_function_info.default_spatial_function.id}}
 
     </div>
 
@@ -171,6 +175,13 @@ and fills out the form for a given spatial function-->
 
             var template = Handlebars.compile(source);
 
+            window.spatial_fns = {'fns': _.each(
+                window.spatial_fns.fns,
+                function (el) {
+                    el['this_is_default_spatial_fn'] = (spatial_function.id == el.id);
+                }
+            )};
+
             return new Handlebars.SafeString(
             template({
                     'all_function_info': {
@@ -180,6 +191,15 @@ and fills out the form for a given spatial function-->
                 })
             );
 
+        }
+    );
+
+    Handlebars.registerHelper(
+        "spatial_function_default_option",
+        function(spatial_function, default_spatial_function) {
+            if (spatial_function.id == default_spatial_function.id) {
+                return 'selected="selected"';
+            }
         }
     );
 
