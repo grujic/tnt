@@ -1834,6 +1834,8 @@ var tnt = {
 
 	},
 
+    time_evolution_page_first_visit: true,
+
 	initialise_new_calculation_time_evolution: function () {
 		//
 		console.log("Initialising new calculation time evolution input\n");
@@ -1874,6 +1876,10 @@ var tnt = {
         } else {
             $("#time_evolution_time_step_specification")
                 .css("display", "none");
+        }
+
+        if ( (tnt.time_evolution_page_first_visit == false) && (tnt.get_apply_dynamic_qn() == 0) ) {
+            $("#dynamical_number_conservation_choice label").attr("disabled", "disabled")
         }
 
 		// Add a function so that if the user chooses not to calculate time evolution, we don't display inputs for time step info
@@ -1917,6 +1923,8 @@ var tnt = {
 		.system
 		.calculate_time_evolution = calculate_time_evolution_choice;
 
+        tnt.time_evolution_page_first_visit = false;  // If we come back to this page, some behaviour is disabled
+
 		console.log("Are we calculating time evolution? " + calculate_time_evolution_choice);
 
 		if (calculate_time_evolution_choice == 1) {
@@ -1954,7 +1962,7 @@ var tnt = {
             var enforce_dynamical_number_conservation = parseInt($("label.active input", "#dynamical_number_conservation_choice")
                 .data("dynamical-number-conservation"));
 
-            tnt.set_apply_dynamic_qn = enforce_dynamical_number_conservation;
+            tnt.set_apply_dynamic_qn(enforce_dynamical_number_conservation);
 
 		}
 
