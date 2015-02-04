@@ -1551,6 +1551,8 @@ var tnt = {
 
 	},
 
+    ground_state_page_first_visit: true,
+
 	initialise_new_calculation_ground_state: function () {
 		//
 		console.log("Initialising new calculation ground state input");
@@ -1570,7 +1572,6 @@ var tnt = {
                 option.selected = true;
             }
         }
-
 
         // Initialise the possible choices for the quantum number, depending on system type
         var system_type = tnt.get_system_type();
@@ -1703,6 +1704,10 @@ var tnt = {
 				}
 			);
 
+        if ( (tnt.ground_state_page_first_visit == false) && (tnt.get_apply_ground_qn() == 0) ) {
+            $("#ground_number_conservation_choice label").attr("disabled", "disabled")
+        }
+
         // Hiding / displaying quantum number choices
 		$("#ground_number_conservation_choice input")
 			.change(
@@ -1773,6 +1778,8 @@ var tnt = {
 
 		var calculate_ground_state = parseInt($("label.active input", "#ground_state_calculation_choice")
 			.data("calculate-ground-state"));
+
+        tnt.ground_state_page_first_visit = false;  // If we come back to this page, some behaviour is disabled
 
 		window
 		.calculation

@@ -128,8 +128,6 @@
 
         </select>
 
-        {{all_function_info.default_spatial_function.id}}
-
     </div>
 
     <div class="row">
@@ -212,11 +210,7 @@ and fills out the form for a given spatial function-->
             console.log("temporal_function passed to temporal_function_input = ");
             console.log(temporal_function);
 
-            console.log("Hi 3");
-
             var template = Handlebars.compile(source);
-
-            console.log("Hi 4");
 
             return new Handlebars.SafeString(
             template({
