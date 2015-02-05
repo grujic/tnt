@@ -692,9 +692,9 @@ var tnt = {
 				window.initial_base_states = filtered_data;
 
 				// We only display the ground state as a choice if certain conditions are met
-                var calculating_ground_state = window.calculation.setup.system.calculate_ground_state;
-                var ground_qn = window.calculation.setup.system.number_conservation.ground.apply_qn;
-                var dynamic_qn = window.calculation.setup.system.number_conservation.dynamic.apply_qn;
+                var calculating_ground_state = tnt.get_calculate_ground_state();
+                var ground_qn = tnt.get_apply_ground_qn();
+                var dynamic_qn = tnt.get_apply_dynamic_qn();
 
 				if (calculating_ground_state == 0)
                 {
@@ -765,9 +765,9 @@ var tnt = {
 		console.log("Filtered all operators to the expectation operators\n\n");
 
         // Now check if number conservation is being enforced (ground AND dynamic)
-        if ( (parseInt(window.calculation.setup.system.number_conservation.ground.apply_qn) == 1)
+        if ( (parseInt(tnt.get_apply_ground_qn() ) == 1)
              &&
-             (parseInt(window.calculation.setup.system.number_conservation.dynamic.apply_qn) == 1) ) {
+             (parseInt( tnt.get_apply_dynamic_qn() ) == 1) ) {
 
             window.expectation_operators =
                 {'operators':
@@ -1794,12 +1794,12 @@ var tnt = {
                 .addClass("active");
 
             // What about QN conservation?
-            if (window.calculation.setup.system.number_conservation.ground.apply_qn == 0) {
+            if (tnt.get_apply_ground_qn() == 0) {
                 $('#ground_state_quantum_number_info')
                     .css('display', 'none');
             } else {
                 // Now set whatever the quantum number is:
-                $("#quantum_number_ground_state_choice").val(window.calculation.setup.system.number_conservation.ground.qn);
+                $("#quantum_number_ground_state_choice").val(tnt.get_ground_qn());
                 $('#ground_state_quantum_number_info')
                     .css('display', 'block');
             }
@@ -1850,23 +1850,11 @@ var tnt = {
             var enforce_number_conservation = parseInt($("label.active input", "#ground_number_conservation_choice")
                 .data("number-conservation"));
 
-            window
-            .calculation
-            .setup
-            .system
-            .number_conservation
-            .ground
-            .apply_qn = enforce_number_conservation;
+            tnt.set_apply_ground_qn(enforce_number_conservation);
 
             if (enforce_number_conservation == 1) {
                 // Now see which qn chosen, and do checks
-                window
-                .calculation
-                .setup
-                .system
-                .number_conservation
-                .ground
-                .qn = parseInt($("#quantum_number_ground_state_choice").val());
+i               tnt.set_ground_qn( parseInt($("#quantum_number_ground_state_choice").val() ) );
             }
 
         }
@@ -1890,7 +1878,7 @@ var tnt = {
 		tnt.clear_all_new_calculation_stages();
 
         // If no ground state calculation specified then we MUST calculate a time evolution
-        var calculate_ground_state = window.calculation.setup.system.calculate_ground_state;
+        var calculate_ground_state = tnt.get_calculate_ground_state();
         if (calculate_ground_state == 0) {
                 $("#time_evolution_choice label").removeClass('active');
                 $($("#time_evolution_choice label")[0]).addClass('active');
@@ -1947,7 +1935,7 @@ var tnt = {
 		);
 
 		// We work out what to display going backwards
-		if (window.calculation.setup.system.calculate_ground_state == 1) {
+		if (tnt.get_calculate_ground_state() == 1) {
 			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_define_ground_hamiltonian;
 		} else  {
 			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_ground_state;
@@ -2279,7 +2267,7 @@ var tnt = {
 		console.log("All calculation stages cleared..");
 
         tnt.render_available_hamiltonian_operators(
-            parseInt(window.calculation.setup.system.number_conservation.dynamic.apply_qn),
+            parseInt(tnt.get_apply_dynamic_qn()),
             "#new_calculation_available_dynamic_hamiltonian_operators",
             "#dynamic_hamiltonian_terms_container",
             "#no_dynamic_hamiltonian_terms_added_yet_warning",
@@ -2373,17 +2361,17 @@ var tnt = {
 
 		console.log("All calculation stages cleared..");
 
-        if (window.calculation.setup.system.calculate_ground_state == 1) {
+        if (tnt.get_calculate_ground_state() == 1) {
             $("#calculate_overlap_with_ground_state_choice_div").css("display", "block");
         } else {
             $("#calculate_overlap_with_ground_state_choice_div").css("display", "none");
         }
 
-        if (window.calculation.setup.system.calculate_time_evolution == 1)
+        if (tnt.get_calculate_time_evolution() == 1)
         {
             $("#calculate_overlap_with_initial_state_choice_div").css("display", "block");
 
-            if (window.calculation.setup.system.calculate_ground_state == 1) {
+            if (tnt.get_calculate_ground_state() == 1) {
                 $("#calculate_overlap_with_ground_state_choice_div").css("display", "block");
             } else {
                 $("#calculate_overlap_with_ground_state_choice_div").css("display", "none");
@@ -2430,7 +2418,7 @@ var tnt = {
 		);
 
 		// What comes before this stage depends on calculation parameters:
-		if (window.calculation.setup.system.calculate_time_evolution == 1) {
+		if (tnt.get_calculate_time_evolution() == 1) {
 			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_initial_state;
 		} else  {
 			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_time_evolution;
@@ -2448,7 +2436,7 @@ var tnt = {
 		// Check that everything's OK and add the selected exp vals into the calculation JSON structure
 
         // Check if we want to calculate overlap with ground state:
-        if (window.calculation.setup.system.calculate_ground_state == 1) {
+        if (tnt.get_calculate_ground_state() == 1) {
             window
             .calculation
             .setup
@@ -2457,7 +2445,7 @@ var tnt = {
         }
 
         // Check if we want to calculate overlap with initial state:
-        if (window.calculation.setup.system.calculate_time_evolution == 1) {
+        if (tnt.get_calculate_time_evolution() == 1) {
             window
             .calculation
             .setup
