@@ -30,6 +30,19 @@ var tnt = {
         return new RegExp(prefix).test(str);
     },
 
+    closestNumInArray: function (num, arr) {
+        var curr = arr[0];
+        var diff = Math.abs (num - curr);
+        for (var val = 0; val < arr.length; val++) {
+            var newdiff = Math.abs (num - arr[val]);
+            if (newdiff < diff) {
+                diff = newdiff;
+                curr = arr[val];
+            }
+        }
+        return curr;
+    },
+
     is_odd: function(number) {
 
         if (number % 2 == 0) {
@@ -195,6 +208,14 @@ var tnt = {
         .name = system_type;	// Update the calculation
     },
 
+    get_system_size: function() {
+        return window.calculation.setup.system.system_size;
+    },
+
+    set_system_size: function(val) {
+        window.calculation.setup.system.system_size = val;
+    },
+
     get_apply_dynamic_qn: function() {
         return window.calculation.setup.system.number_conservation.dynamic.apply_qn;
     },
@@ -209,6 +230,14 @@ var tnt = {
 
     set_apply_ground_qn: function(val) {
         return window.calculation.setup.system.number_conservation.ground.apply_qn = val;
+    },
+
+    get_ground_qn: function() {
+        return window.calculation.setup.system.number_conservation.ground.qn;
+    },
+
+    set_ground_qn: function(val) {
+        return window.calculation.setup.system.number_conservation.ground.qn = val;
     },
 
     get_calculate_ground_state: function() { return window.calculation.setup.system.calculate_ground_state; },
@@ -1133,7 +1162,7 @@ var tnt = {
     update_basic_system_dimensions: function() {
         // reads off chi, system size etc from window.calculation, updates selects
         $("#system_size_choice")
-            .val(window.calculation.setup.system.system_size);
+            .val(tnt.get_system_size());
         $("#chi_choice")
             .val(window.calculation.setup.system.chi);
     },
@@ -1144,6 +1173,13 @@ var tnt = {
         window.calculation = tnt.get_calculation_template(system_type, name);
         tnt.update_available_calculation_templates(system_type, name);
         tnt.update_basic_system_dimensions();
+
+        // Want to store ratio of QN to L before user changes size
+        if (tnt.get_apply_ground_qn() == 1) {
+            tnt.qn_to_L = tnt.get_ground_qn()/tnt.get_system_size();
+        } else {
+            tnt.qn_to_L = null;
+        }
 
     },
 
@@ -1249,11 +1285,7 @@ var tnt = {
 
 		var system_size = parseInt($("#system_size_choice").val());	// How many sites?
 
-		window
-        .calculation
-        .setup
-        .system
-        .system_size = system_size;	// Update the calculation
+        tnt.set_system_size(system_size);
 
 		// Now process any extra info to do with the system type
 		if (system_type == "spin") {
@@ -1576,10 +1608,7 @@ var tnt = {
         // Initialise the possible choices for the quantum number, depending on system type
         var system_type = tnt.get_system_type();
 
-        var system_size = window.calculation
-                            .setup
-                            .system
-                            .system_size;
+        var system_size = tnt.get_system_size();
 
         // Setup a range of quantities depending on system type
         if (system_type == "spin") {
@@ -1599,7 +1628,6 @@ var tnt = {
 
             var quantum_num_min = -spin_magnitude*system_size;
             var quantum_num_max = +spin_magnitude*system_size;
-            var quantum_num_default = 0;
 
             // We initialise a list holding the range of quantum numbers
             var quantum_num_possibilities = _.range(quantum_num_min, quantum_num_max + 1);
@@ -1637,6 +1665,14 @@ var tnt = {
                 }
             );
 
+            // Set the default QN
+            if (tnt.get_apply_ground_qn() == 1) {
+                var quantum_num_default = tnt.closestNumInArray(tnt.qn_to_L * tnt.get_system_size(), quantum_num_possibilities)
+            } else {
+                var quantum_num_default = 0;
+            }
+
+
         } else if (system_type == "bosonic") {
 
             var qn_conserve_help_content = "Click yes if the ground state you wish to calculate is an eigenstate of the total boson number.";
@@ -1653,9 +1689,15 @@ var tnt = {
 
             var quantum_num_min = 1;
             var quantum_num_max = bosonic_truncation*system_size;
-            var quantum_num_default = quantum_num_max;
 
             var quantum_num_possibilities = _.range(quantum_num_min, quantum_num_max + 1);
+
+            // Set the default QN
+            if (tnt.get_apply_ground_qn() == 1) {
+                var quantum_num_default = tnt.closestNumInArray(tnt.qn_to_L * tnt.get_system_size(), quantum_num_possibilities)
+            } else {
+                var quantum_num_default = quantum_num_max;
+            }
 
         } else if (system_type == "fermionic") {
             // TODO
