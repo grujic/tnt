@@ -1672,7 +1672,6 @@ var tnt = {
                 var quantum_num_default = 0;
             }
 
-
         } else if (system_type == "bosonic") {
 
             var qn_conserve_help_content = "Click yes if the ground state you wish to calculate is an eigenstate of the total boson number.";
@@ -1745,6 +1744,13 @@ var tnt = {
 
 				}
 			);
+
+        // Activate or not the QN conservation options
+        if (tnt.get_apply_ground_qn() == 1) {
+            $("#ground_number_conservation_choice label").removeClass("active");
+            $('#ground_number_conservation_choice label input[data-number-conservation="1"]')
+                .closest("label").addClass("active");
+        }
 
         if ( (tnt.ground_state_page_first_visit == false) && (tnt.get_apply_ground_qn() == 0) ) {
             $("#ground_number_conservation_choice label").attr("disabled", "disabled")
