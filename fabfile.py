@@ -2,13 +2,13 @@ from fabric.api import local, lcd
 import os
 import requests
 
-def deploy:
+def deploy():
     print("Adding and committing all changes...\n")
     local("git add -A")
     local("git commit")
     local("git push")
 
-    with lcd("/webapps/tnt/")
+    with lcd("/webapps/tnt/"):
 
         print("Checking out dev branch...\n")
         local("git checkout dev")
