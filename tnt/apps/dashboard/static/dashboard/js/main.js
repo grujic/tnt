@@ -1854,7 +1854,7 @@ var tnt = {
 
             if (enforce_number_conservation == 1) {
                 // Now see which qn chosen, and do checks
-i               tnt.set_ground_qn( parseInt($("#quantum_number_ground_state_choice").val() ) );
+                tnt.set_ground_qn( parseInt($("#quantum_number_ground_state_choice").val() ) );
             }
 
         }
@@ -2397,6 +2397,10 @@ i               tnt.set_ground_qn( parseInt($("#quantum_number_ground_state_choi
                 }
             }
         );
+
+        if (window.calculation.setup.expectation_values.operators.length > 0) {
+            $("#no_expectation_operators_added_yet_warning").css("display", "none");
+        }
 
         $("#calculate_overlap_with_initial_state_choice label")
             .removeClass("active");
