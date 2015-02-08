@@ -288,10 +288,17 @@ def get_expectation_img_urls(request, calculation_id):
     """
     The URLs at which we will find expectation value images
     """
+    calculation = Calculation.objects.filter(id=calculation_id)
+    calculation_name = ""
+    if len(calculation) > 0:
+        calculation = calculation[0]
+        calculation_name = calculation.name
+
     expectation_value_filenames = glob.glob(MEDIA_ROOT + calculation_id + "/*")
     expectation_value_urls = [{'url': '/media/' + calculation_id + '/' + filename.split('/')[-1]} for filename in expectation_value_filenames]
 
     response = Response({ \
+      'name': calculation_name, \
       'url_data': expectation_value_urls \
       }, \
       status=status.HTTP_200_OK)
