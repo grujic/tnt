@@ -23,7 +23,6 @@ from tnt import operator_defs
 from tnt.blank_calculation import blank_calculation_template
 
 from tnt.initial_base_states import initial_base_states_list
-from tnt.initial_state_modifiers import initial_state_modifiers_list
 
 # Django rest framework imports
 from rest_framework.decorators import api_view
@@ -168,15 +167,6 @@ def initial_base_states(request):
     Return a list of available initial base states
     """
     response = Response({'states': initial_base_states_list}, status=status.HTTP_200_OK)    # R1gt
-
-    return response
-
-@api_view(['GET'])
-def initial_state_modifiers(request):
-    """
-    Return a list of available modifiers to initial base states
-    """
-    response = Response(initial_state_modifiers_list, status=status.HTTP_200_OK)    # R1gt
 
     return response
 

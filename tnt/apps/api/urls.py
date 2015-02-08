@@ -35,11 +35,6 @@ urlpatterns = patterns('',
         views.initial_base_states, \
         name='initial_base_states'),
 
-    ### Info on available initial base states ###
-    url(r'^initial_state_modifiers[/]?$', \
-        views.initial_state_modifiers, \
-        name='initial_state_modifiers'),
-
     ### END OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
 
     ### START OF API CALLS FOR info about calculations ###
