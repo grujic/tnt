@@ -208,6 +208,17 @@ var tnt = {
         .name = system_type;	// Update the calculation
     },
 
+    get_system_truncation: function() {
+        var system_type = tnt.get_system_type();
+		if (system_type == "spin") {
+            return window.calculation.setup.system.system_type.extra_info.spin_magnitude;
+        } else if (system_type == "bosonic") {
+            return window.calculation.setup.system.system_type.extra_info.bosonic_truncation;
+        } else if (system_type == "fermionic") {
+            return window.calculation.setup.system.system_type.extra_info.fermion_type;
+        }
+    },
+
     get_system_size: function() {
         return window.calculation.setup.system.system_size;
     },
@@ -493,7 +504,6 @@ var tnt = {
             // Transformations we can apply to the base state
             // We draw these choices in where_to_render
             // sum_or_product is 'sum' or 'product'
-            console.log("Rendering initial base state modifiers...\n\n");
 
             // First check which ones comply with QN
             var dynamic_qn =
@@ -673,7 +683,7 @@ var tnt = {
 			);
 	},
 
-	render_available_initial_base_states: function () {
+	render_available_initial_base_states: function (default_id) {
 		// Draw in buttons showing available initial states
 		$.get("/api/v1.0/initial_base_states",
 			function (data) {
@@ -731,9 +741,13 @@ var tnt = {
 				$("#new_calculation_available_initial_base_states")
                     .html(template(window.initial_base_states));
 
-				$(".initial-state-btn")
-					.first()
-					.addClass("active");
+                var initial_base_state_selector
+                    = '.initial-state-btn[data-initial-base-state-id="' + default_id + '"]';
+                    //
+                $(initial_base_state_selector).addClass("active");
+				//$(".initial-state-btn")
+					//.first()
+					//.addClass("active");
 
 				tnt.attach_click_fn_to_initial_base_state_choices();
 
@@ -750,7 +764,6 @@ var tnt = {
 
 	render_available_expectation_operators: function () {
 		// render the available expectation value operators
-		console.log("Rendering available expectation value operators...\n\n");
 
 		window.expectation_operators = {
 			'operators':
@@ -1161,6 +1174,8 @@ var tnt = {
 
     update_basic_system_dimensions: function() {
         // reads off chi, system size etc from window.calculation, updates selects
+        $("#system_type_extra_info_bosons_choice")
+            .val(tnt.get_system_truncation());
         $("#system_size_choice")
             .val(tnt.get_system_size());
         $("#chi_choice")
@@ -2089,7 +2104,6 @@ var tnt = {
 	initialise_new_calculation_initial_state: function () {
 		//
 		console.log("Initialising new calculation initial state input");
-		tnt.render_available_initial_base_states(); 	// Draw the choices available
 
 		tnt.clear_all_new_calculation_stages(); // Clear all panels
 
@@ -2134,8 +2148,7 @@ var tnt = {
             window.calculation.setup.initial_state.applied_mpos = [];
         }
 
-        $('.initial-state-btn[data-initial-base-state-id="' + template_initial_base_state_id + '"]')
-            .addClass("active");
+		tnt.render_available_initial_base_states(template_initial_base_state_id); 	// Draw the choices available
 
         // Template modifiers
         _.each(
@@ -2155,11 +2168,8 @@ var tnt = {
 
         $('.add-product-or-sum-modifier-btn')
             .click(function (e) {
-
                 var sum_or_product = $(this).data('sum-product');
-
                 tnt.add_sum_or_product_modifier(sum_or_product);
-
         });
 
 		$("#new_calculation_initial_state").css('display', 'block'); 	// Make this panel visible
