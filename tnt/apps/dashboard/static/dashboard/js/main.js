@@ -1915,11 +1915,14 @@ var tnt = {
 		// We work out what to display going backwards
 		if (tnt.get_calculate_ground_state() == 1) {
             $("#new_calculation_time_evolution .btn-back-step").click(
-                tnt.initialise_new_calculation_define_ground_hamiltonian
+                function () {
+                    console.log("Going back to define ground hamiltonian stage...\n\n");
+                    tnt.initialise_new_calculation_define_ground_hamiltonian();
+                }
             );
 		} else  {
             $("#new_calculation_time_evolution .btn-back-step").click(
-                tnt.initialise_new_calculation_ground_state;
+                tnt.initialise_new_calculation_ground_state
             );
 		}
 
