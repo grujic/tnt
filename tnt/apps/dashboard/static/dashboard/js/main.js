@@ -1154,8 +1154,17 @@ var tnt = {
 
     update_basic_system_dimensions: function() {
         // reads off chi, system size etc from window.calculation, updates selects
-        $("#system_type_extra_info_bosons_choice")
-            .val(tnt.get_system_truncation());
+        var truncation = tnt.get_system_truncation();
+        var system_type = tnt.get_system_type();
+		if (system_type == "spin") {
+            $("#system_type_extra_info_spins_choice")
+                .val(truncation);
+        } else if (system_type == "bosonic") {
+            $("#system_type_extra_info_bosons_choice")
+                .val(truncation);
+        } else if (syste_type == "fermionic") {
+
+        }
         $("#system_size_choice")
             .val(tnt.get_system_size());
         $("#chi_choice")
