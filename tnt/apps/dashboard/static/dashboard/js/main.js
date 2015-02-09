@@ -1432,6 +1432,9 @@ var tnt = {
 		$("#new_calculation_define_ground_hamiltonian")
             .css('display', 'block');
 
+        // Clear any existing terms to stop writing multiple copies
+        $("#ground_hamiltonian_terms_container .hamiltonian-term").remove();
+
         // Render in any terms defined int he template:
         if (window.calculation.setup.hamiltonian.ground.terms.length != 0) {
             var terms_to_add = window.calculation.setup.hamiltonian.ground.terms;
