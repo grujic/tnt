@@ -14,13 +14,52 @@
     <div class="panel-heading" role="tab" id="headingOne">
       <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Collapsible Group Item #1
+        Spin: S=1 Heisenberg Chain
         </a>
       </h4>
     </div>
     <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
       <div class="panel-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      <p> This sets up a similar calculation to that described in <a href="http://link.aps.org/doi/10.1103/PhysRevLett.93.076401" target="_blank">S.R. White and A.E. Feiguin (2004)</a>, but on a smaller scale due to the size limits in TNTgo. 
+      </p>
+      <p>
+      First a ground state calculation is set up for a system with \(S=1\) and the Heisenberg Hamiltonian 
+      \[
+      H_g = \sum_{j=0}^{L-2} \left \{ \frac{1}{2}\left (\hat{S}_j^+ \hat{S}_{j+1}^- + \mathrm{h.c.}\right ) + \hat{S}_j^z \hat{S}_{j+1}^z \right \}.
+      \]
+      Note the form of the terms in the Hamiltonian, which are of course equivalent to \( \hat{\mathbf{S}}_j\cdot\hat{\mathbf{S}}_{j+1} \). On the previous page, we had set quantum number symmetries to be turned on by setting a total spin of zero (since we know the ground state lies in this spin sector). This then requires the Hamiltonian be defined in terms of U(1) invariant operators only, i.e. in terms of hopping and \(z\)-component of spin, rather than as its equivalent of sum of coupling terms in the three axes.
+      </p>
+      <p>
+      We then use this ground state as a base state for time evolution, but first modifying it by applying the operator \(\hat{S}^+\) on a site 20. We do this by applying a site-wide operator, with the delta function chosen as the spatial function. The system is then evolved under the same Heisenberg Hamniltonian as defined above, and like White and Feiguin the local magnetisation is chosen as an observable to track. In addition, we choose to track the overlap with the ground state and initial state as a function of time.
+      </p>
+      <p>
+      Setting this simulation to run leads to the following results:
+      <div class="row">
+      <div class="col-xs-6 col-md-3">
+      <a href="#" class="thumbnail">
+      <img src="/static/dashboard/img/examples/heisenberg_S_1_gs.png" alt="Ground state expectation value of magnetisation">
+      </a>
+      </div>
+      <div class="col-xs-6 col-md-3">
+      <a href="#" class="thumbnail">
+      <img src="/static/dashboard/img/examples/heisenberg_S_1_evolved.png" alt="Time-evolved expectation value of magnetisation">
+      </a>
+      </div>
+      <div class="col-xs-6 col-md-3">
+      <a href="#" class="thumbnail">
+      <img src="/static/dashboard/img/examples/heisenberg_S_1_overlap_is.png" alt="Overlap between initial state and evolved state">
+      </a>
+      </div>
+      <div class="col-xs-6 col-md-3">
+      <a href="#" class="thumbnail">
+      <img src="/static/dashboard/img/examples/heisenberg_S_1_truncerr.png" alt="Truncation error as a function of time">
+      </a>
+      </div>
+      </div>
+      The first thing to note is the alternating magnetisation in the ground state due to the finite size of the system. This is decribed in <a href="http://link.aps.org/doi/10.1103/PhysRevB.48.10345" target="_blank">S. R. White (1993)<a>, as well as how to 'soften' the boundary affects by changing the coupling on the boundaries.
+      
+      As described in White and Feiguin, the localised wave packet at \(t=0\) which spreads out at later times to give irregular oscillations. White and Feiguin are able to evolve to longer times due to a larger maximum internal dimension (\(\chi \) is 150, as opposed to 40 used in this calculation), and a larger system size (\(L\) is 200 as opposed to 40 used in this calculation). If you wish to try using the TNT library code to reproduce these system sizes, or go beyond them, please consider installing the TNT library code on your own machines.
+      </p>
       </div>
     </div>
   </div>
@@ -28,13 +67,15 @@
     <div class="panel-heading" role="tab" id="headingTwo">
       <h4 class="panel-title">
         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          Collapsible Group Item #2
+          Spin: Domain Wall
         </a>
       </h4>
     </div>
     <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
       <div class="panel-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      <p>
+      This creates an \(S=1/2\) start state, with the spins on one side of the system pointing up, and the spins on the other side of the system pointing down. As above, the total spin remains a conserved quantity during the time evolution.
+      </p>
       </div>
     </div>
   </div>
@@ -42,7 +83,7 @@
     <div class="panel-heading" role="tab" id="headingThree">
       <h4 class="panel-title">
         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          Collapsible Group Item #3
+          Boson: Quantum bowling
         </a>
       </h4>
     </div>
@@ -51,43 +92,21 @@
         Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
       </div>
     </div>
+    <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingThree">
+    <h4 class="panel-title">
+    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+    Boson: Harmonically trapped superfluid
+    </a>
+    </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+    <div class="panel-body">
+    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+    </div>
+    </div>
   </div>
 </div>
-
-<h2>Spin templates</h2>
-<p>The templates defined below are for a chain of spins, with open boundary conditions.</p>
-
-<h3>S=1 Heisenberg Chain</h3>
-<p> This sets up a similar calculation to that described in <a href="http://link.aps.org/doi/10.1103/PhysRevLett.93.076401" target="_blank"> S.R. White and A.E. Feiguin (2004)</a>, but on a smaller scale due to the size limits in TNTgo. 
-</p>
-<p>
-First a ground state calculation is set up for a system with \(S=1\) and the Heisenberg Hamiltonian 
-\[
-H_g = \sum_{j=0}^{L-2} \left \{ \frac{1}{2}\left (\hat{S}_j^+ \hat{S}_{j+1}^- + \mathrm{h.c.}\right ) + \hat{S}_j^z \hat{S}_{j+1}^z \right \}.
-\]
-Note the form of the terms in the Hamiltonian, which are of course equivalent to \( \hat{\mathbf{S}}_j\cdot\hat{\mathbf{S}}_{j+1} \). On the previous page, we had set quantum number symmetries to be turned on by setting a total spin of zero (since we know the ground state lies in this spin sector). This then requires the Hamiltonian be defined in terms of U(1) invariant operators only, i.e. in terms of hopping and \(z\)-component of spin, rather than as its equivalent of sum of coupling terms in the three axes.
-</p>
-<p>
-We then use this ground state as a base state for time evolution, but first modifying it by applying the operator \(\hat{S}^+\) on a site 20. We do this by applying a site-wide operator, with the delta function chosen as the spatial function. The system is then evolved under the same Heisenberg Hamniltonian as defined above, and like White and Feiguin the local magnetisation is chosen as an observable to track. In addition, we choose to track the overlap with the ground state and initial state as a function of time.
-</p>
-<p>
-Setting this simulation to run leads to the following results:
-
-
-
-As described in White and Feiguin, the localised wave packet at \(t=0\) which spreads out at later times to give irregular oscillations. White and Feiguin are able to evolve to longer times due to a larger maximum internal dimension (\(\chi \) is 150, as opposed to 40 used in this calculation), and a larger system size (\(L\) is 200 as opposed to 40 used in this calculation). If you wish to try using the TNT library code to reproduce these system sizes, or go beyond them, please consider installing the TNT library code on your own machines.
-</p>
-
-<h3> Domain wall </h3>
-<p>
-This creates an \(S=1/2\) start state, with the spins on one side of the system pointing up, and the spins on the other side of the system pointing down. As above, the total spin remains a conserved quantity during the time evolution.
-</p>
-
-
-<hr>
-
-<h2>Boson templates</h2>
-<p>The templates defined below are for a 1D lattice with a maximum of \(n_\mathrm{max}\) bosons per lattice site, with open boundary conditions.</p>
 
 {% endblock %}
 
