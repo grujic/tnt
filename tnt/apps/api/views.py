@@ -68,11 +68,6 @@ def api_root(request, format=None):
         request=request, \
         format=format),
 
-        'initial_state_modifiers': \
-        reverse('api:initial_state_modifiers', \
-        request=request, \
-        format=format),
-
         ### END OF API CALLS FOR DEFINITIONS, e.g. available Hamiltonian operators etc ###
 
         'save_calculation': \
