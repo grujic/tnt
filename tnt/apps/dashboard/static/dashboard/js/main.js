@@ -380,10 +380,8 @@ var tnt = {
 			function (data) {
 				window.calculation = data;
                 tnt.personalise_calculation();
-	  			console.log("Initialised blank calculation. \n\n");
 			}
 		).done(tnt.initialise_new_calculation_basic_setup_step);
-
 
         // Not quite sure where to put this, we need these definitions eventually..
         tnt.load_spatial_and_temporal_function_definitions();
@@ -396,7 +394,6 @@ var tnt = {
 
 	load_spatial_and_temporal_function_definitions: function() {
 		// Make an API call and pull in these definitions
-		console.log("Loading spatial and temporal function definitions...\n\n");
 
 		$.get('/api/v1.0/spatial_and_temporal_functions',
 			function(data) {
@@ -441,9 +438,7 @@ var tnt = {
                 );
 
 			}
-		).done(function() {
-    		console.log("Loaded spatial and temporal function definitions\n\n");
-  		});
+		);
 
 	},	// End of load_spatial_function_definitions
 
@@ -634,7 +629,6 @@ var tnt = {
     attach_click_fn_to_remove_all_terms: function () {
         $(".remove-all-terms-btn").click(
             function (e) {
-                console.log("Removing all terms...\n\n");
 
                 var hamiltonian_terms_container_super =
                     $(this)
@@ -775,8 +769,6 @@ var tnt = {
 			)
 		};
 
-		console.log("Filtered all operators to the expectation operators\n\n");
-
         // Now check if number conservation is being enforced (ground AND dynamic)
         if ( (parseInt(tnt.get_apply_ground_qn() ) == 1)
              &&
@@ -794,8 +786,6 @@ var tnt = {
 
              }
 
-		console.log("Filtered expectation operators to matching QN status\n\n");
-
 		// Separate operators into single- and two-site expectation operators
 		var single_site_expectation_operators =
 			{
@@ -808,8 +798,6 @@ var tnt = {
 				)
 			};
 
-		console.log("Filtered expectation operators to single site ones\n\n");
-
 		var two_site_expectation_operators =
 			{
 				'operators':
@@ -821,8 +809,6 @@ var tnt = {
 				)
 			};
 
-		console.log("Filtered expectation operators to two site ones\n\n");
-
 		var single_site_source = $("#expectation-operators-single-site-template").html();
 		var single_site_template = Handlebars.compile(single_site_source);
 
@@ -833,16 +819,10 @@ var tnt = {
 		$("#new_calculation_available_expectation_operators_single_site")
 			.html(single_site_template(single_site_expectation_operators));
 
-		console.log("Rendered single site operators\n\n");
-
 		$("#new_calculation_available_expectation_operators_two_site")
 			.html(two_site_template(two_site_expectation_operators));
 
-		console.log("Rendered two site operators\n\n");
-
 		tnt.attach_click_fn_to_expectation_operator_choices();
-
-		console.log("Attached click functions to exp op choices\n\n");
 
 		tnt.render_mathjax();
 
@@ -1200,9 +1180,6 @@ var tnt = {
 
 	// Following is a list of functions that verify data input and also set up the various data input panels for a new calculation
 	initialise_new_calculation_basic_setup_step: function () {
-		//
-		console.log("Initialising new calculation basic setup input\n\n");
-
         // Pull in info on available calculation templates
         $.get(
             '/api/v1.0/calculation_templates',
@@ -1316,11 +1293,7 @@ var tnt = {
 
 		} else if (system_type == "bosonic") {
 
-			console.log("System type = bosonic");
-
 			var bosonic_truncation = parseInt($("#system_type_extra_info_bosons_choice").val());
-
-			console.log("Bosonic truncation parameter = " + bosonic_truncation);
 
 			window
             .calculation
@@ -1331,13 +1304,9 @@ var tnt = {
 
 		} else if (system_type == "fermionic") {
 
-            console.log("System type = fermionic");
-
             var fermion_type = $("label.active input",
                                           "#fermions_spinless_choice")
                                         .data("fermion-type");
-
-            console.log("Fermion type = " + fermion_type);
 
 			window
             .calculation
@@ -1357,11 +1326,7 @@ var tnt = {
         .system
         .chi = chi;
 
-		console.log("Validated new calculation basic setup input");
-
         // We're going to pull in all the operator data we need for the rest of the setup here before we proceed
-        console.log("Pulling in operator data from API...")
-
         $.get("/api/v1.0/operators",
 			function (data) {
 
@@ -1406,7 +1371,6 @@ var tnt = {
 
 			}
 		).done(function () {
-            console.log("Finished loading data from API");
             tnt.initialise_new_calculation_ground_state();
         })
 
@@ -1414,7 +1378,7 @@ var tnt = {
 
 	initialise_new_calculation_define_ground_hamiltonian: function () {
 		//
-		console.log("Initialising new calculation Hamiltonian input");
+        console.log("initialise_new_calculation_define_ground_hamiltonian\n\n");
 
 		tnt.render_available_hamiltonian_operators(
             parseInt(window.calculation.setup.system.number_conservation.ground.apply_qn),
@@ -1605,7 +1569,6 @@ var tnt = {
 
 	initialise_new_calculation_ground_state: function () {
 		//
-		console.log("Initialising new calculation ground state input");
 
 		tnt.clear_all_new_calculation_stages();
 
@@ -1877,8 +1840,6 @@ var tnt = {
 
         }
 
-		console.log("Validated new calculation ground state input");
-
 		// We work out what to display next
 		if (calculate_ground_state == 1) {
 			tnt.initialise_new_calculation_define_ground_hamiltonian();
@@ -1892,7 +1853,6 @@ var tnt = {
 
 	initialise_new_calculation_time_evolution: function () {
 		//
-		console.log("Initialising new calculation time evolution input\n");
 		tnt.clear_all_new_calculation_stages();
 
         // If no ground state calculation specified then we MUST calculate a time evolution
@@ -1954,14 +1914,14 @@ var tnt = {
 
 		// We work out what to display going backwards
 		if (tnt.get_calculate_ground_state() == 1) {
-			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_define_ground_hamiltonian;
+            $("#new_calculation_time_evolution .btn-back-step").click(
+                tnt.initialise_new_calculation_define_ground_hamiltonian
+            );
 		} else  {
-			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_ground_state;
+            $("#new_calculation_time_evolution .btn-back-step").click(
+                tnt.initialise_new_calculation_ground_state;
+            );
 		}
-
-		$("#new_calculation_time_evolution .btn-back-step").click(
-			previous_stage_initialisation_fn
-		);
 
 	},
 
@@ -1978,8 +1938,6 @@ var tnt = {
 		.calculate_time_evolution = calculate_time_evolution_choice;
 
         tnt.time_evolution_page_first_visit = false;  // If we come back to this page, some behaviour is disabled
-
-		console.log("Are we calculating time evolution? " + calculate_time_evolution_choice);
 
 		if (calculate_time_evolution_choice == 1) {
 
@@ -2106,8 +2064,6 @@ var tnt = {
 
 	initialise_new_calculation_initial_state: function () {
 		//
-		console.log("Initialising new calculation initial state input");
-
 		tnt.clear_all_new_calculation_stages(); // Clear all panels
 
         var dynamic_qn = tnt.get_apply_dynamic_qn();
@@ -2157,7 +2113,6 @@ var tnt = {
         _.each(
             window.calculation.setup.initial_state.applied_mpos,
             function (mpo) {
-                console.log(mpo['type']);
                 tnt.add_sum_or_product_modifier(mpo['type'], mpo['applied_operators']);
             }
         );
@@ -2189,12 +2144,10 @@ var tnt = {
 
 	validate_new_calculation_initial_state: function () {
 		//
-		console.log("Validating the initial state choices...");
 
 		var initial_base_state_choice = $(".initial-state-btn.active")
 			.data("initial-base-state-id");
 
-		console.log("initial_base_state_choice: " + initial_base_state_choice);
 
 		var initial_base_state = _.filter(
 			window.initial_base_states.states,
@@ -2202,9 +2155,6 @@ var tnt = {
 				return el['initial_base_state_id'] == initial_base_state_choice;
 			}
 		)[0];
-
-		console.log("initial_base_state: ");
-		console.log(initial_base_state);
 
 		window
         .calculation
@@ -2216,6 +2166,7 @@ var tnt = {
 
         var renorm_initial_state = parseInt($("label.active input", "#renormalise_after_initial_state_modifiers_choice")
         .data("renormalise-initial-state"));
+
         window
         .calculation
         .setup
@@ -2238,8 +2189,6 @@ var tnt = {
 
                 var sum_or_product = $(el).data('sum-or-product');
 
-                console.log("Found a " + sum_or_product + " modifier container...\n");
-
                 var applied_operators_this_modifier = [];
 
                 _.each(
@@ -2247,9 +2196,7 @@ var tnt = {
                     .find('.initial_state_modifier_operators_terms')
                     .find('.hamiltonian-term'),
                     function (term) {
-                        console.log("In this container, found a Ham operator: \n");
                         var hamiltonian_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
-                        console.log(hamiltonian_operator);
                         applied_operators_this_modifier.push(hamiltonian_operator);
                     }
                 );
@@ -2273,11 +2220,7 @@ var tnt = {
 
 	initialise_new_calculation_define_dynamic_hamiltonian: function () {
         //
-		console.log("Initialising new calculation dynamic Hamiltonian specification input");
-
 		tnt.clear_all_new_calculation_stages();
-
-		console.log("All calculation stages cleared..");
 
         tnt.render_available_hamiltonian_operators(
             parseInt(tnt.get_apply_dynamic_qn()),
@@ -2301,9 +2244,13 @@ var tnt = {
             var terms_to_add = window.calculation.setup.hamiltonian.ground.terms;
         }
 
+        $("#dynamic_hamiltonian_terms_container .hamiltonian-term").remove();
+
         _.each(
             terms_to_add,
             function(el) {
+                console.log("ADDING A DYNAMIC HAMILTONIAN TERM: \n\n");
+                console.log(el);
                 var el_clone = _.cloneDeep(el);
                 el_clone['include_temporal_function'] = true;
                 el_clone['temporal_function'] = default_temporal_function;
@@ -2323,8 +2270,6 @@ var tnt = {
 		$("#new_calculation_define_dynamic_hamiltonian")
 			.css('display', 'block');
 
-		console.log("made define dynamic hamiltonian stage visible");
-
 		$("#new_calculation_define_dynamic_hamiltonian .btn-next-step").click(
 			tnt.validate_new_calculation_define_dynamic_hamiltonian
 		);
@@ -2337,8 +2282,6 @@ var tnt = {
 
 	validate_new_calculation_define_dynamic_hamiltonian: function () {
 		//
-		console.log("Validating the definition of the dynamic Hamiltonian...");
-
         window
         .calculation
         .setup
@@ -2368,11 +2311,7 @@ var tnt = {
 
 	initialise_new_calculation_expectation_operators: function () {
 		//
-		console.log("Initialising new calculation expectation value input");
-
 		tnt.clear_all_new_calculation_stages();
-
-		console.log("All calculation stages cleared..");
 
         if (tnt.get_calculate_ground_state() == 1) {
             $("#calculate_overlap_with_ground_state_choice_div").css("display", "block");
@@ -2396,8 +2335,6 @@ var tnt = {
         }
 
 		tnt.render_available_expectation_operators();
-
-		console.log("Rendered available expectation operators");
 
         // Load template data
         _.each(
@@ -2427,8 +2364,6 @@ var tnt = {
 
 		$("#new_calculation_expectation_operators")
 			.css('display', 'block');
-
-		console.log("made exp op stage visible");
 
 		$("#new_calculation_expectation_operators .btn-next-step").click(
 			tnt.validate_new_calculation_expectation_operators
@@ -2506,7 +2441,6 @@ var tnt = {
 
 	initialise_new_calculation_confirmation: function () {
 
-		console.log("Initialising confirmation stage");
 		tnt.clear_all_new_calculation_stages();
 
 		$("#submit_calculation").click(
