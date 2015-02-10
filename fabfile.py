@@ -4,8 +4,11 @@ import requests
 
 def deploy():
     print("Adding and committing all changes...\n")
-    local("git add -A")
-    local("git commit")
+    try:
+        local("git add -A")
+        local("git commit")
+    except:
+        print("Problem with committing locally, maybe nothing's changed!\n\n")
     local("git push")
 
     with lcd("/webapps/tnt/"):
