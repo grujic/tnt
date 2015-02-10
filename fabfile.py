@@ -22,7 +22,7 @@ def deploy():
         print("Merging master with dev...\n")
         local("git merge dev")
         print("Collecting static files...\n")
-        local("python manage.py collectstatic")
+        local("python manage.py collectstatic --noinput")
         print("Restarting supervisord app...\n")
         local("supervisorctl restart tnt")
 
