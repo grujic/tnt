@@ -74,6 +74,16 @@ var tnt = {
 	},
 
     // Helper HTML functions
+    switch_button_group_to_data_val: function (btngroup_id, data_name, switch_data_val) {
+        // Very common to need to switch a button group to a value
+        if (btngroup_id[0] != "#") {
+            btngroup_id = "#" + btngroup_id;
+        }
+        $(btngroup_id + ' label').removeClass("active");
+        $(btngroup_id + ' label input[data-' + data_name + '="' + switch_data_val + '"]')
+            .closest("label").addClass("active");
+
+    },
 
 	render_mathjax: function () {
         MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
@@ -1737,9 +1747,10 @@ var tnt = {
 
         // Activate or not the QN conservation options
         if (tnt.get_apply_ground_qn() == 1) {
-            $("#ground_number_conservation_choice label").removeClass("active");
-            $('#ground_number_conservation_choice label input[data-number-conservation="1"]')
-                .closest("label").addClass("active");
+            tnt.switch_button_group_to_data_val(
+                "ground_state_calculation_choice",
+                "calculate-ground-state", 1
+            );
         }
 
         if ( (tnt.ground_state_page_first_visit == false) && (tnt.get_apply_ground_qn() == 0) ) {
@@ -1768,20 +1779,24 @@ var tnt = {
         $("#ground_state_calculation_choice label").removeClass("active");
 
         if (window.calculation.setup.system.calculate_ground_state == 0) {
+
+            tnt.switch_button_group_to_data_val(
+                "ground_state_calculation_choice",
+                "calculate-ground-state", 0
+            );
+
             $('#ground_state_extra_info_specification')
                 .css('display', 'none');
-
-                $("#ground_state_calculation_choice label input[data-calculate-ground-state=0]")
-                    .closest("label")
-                    .addClass("active");
 
         } else {
             $('#ground_state_extra_info_specification')
                 .css('display', 'block');
 
-            $("#ground_state_calculation_choice label input[data-calculate-ground-state=1]")
-                .closest("label")
-                .addClass("active");
+
+            tnt.switch_button_group_to_data_val(
+                "ground_state_calculation_choice",
+                "calculate-ground-state", 1
+            );
 
             // What about QN conservation?
             if (tnt.get_apply_ground_qn() == 0) {
@@ -1867,10 +1882,10 @@ var tnt = {
         // If no ground state calculation specified then we MUST calculate a time evolution
         var calculate_ground_state = tnt.get_calculate_ground_state();
         if (calculate_ground_state == 0) {
-                $("#time_evolution_choice label").removeClass('active');
-                $($("#time_evolution_choice label")[0]).addClass('active');
-                $("#time_evolution_choice label")
-                    .attr("disabled", "disabled");
+            $("#time_evolution_choice label").removeClass('active');
+            $($("#time_evolution_choice label")[0]).addClass('active');
+            $("#time_evolution_choice label")
+                .attr("disabled", "disabled");
         }
 
 		$("#new_calculation_time_evolution").css('display', 'block');
@@ -1878,6 +1893,11 @@ var tnt = {
         // What does the template say?
         if (tnt.get_calculate_time_evolution() == 1) {
             // Fill out values:
+            tnt.switch_button_group_to_data_val(
+                "time_evolution_choice",
+                "calculate-time-evolution", 1
+            );
+
             $("#input_num_time_steps")
                 .val(tnt.get_num_time_steps());
 
@@ -1897,6 +1917,11 @@ var tnt = {
             $(selector).closest("label").addClass("active");
 
         } else {
+            tnt.switch_button_group_to_data_val(
+                "time_evolution_choice",
+                "calculate-time-evolution", 0
+            );
+
             $("#time_evolution_time_step_specification")
                 .css("display", "none");
         }
