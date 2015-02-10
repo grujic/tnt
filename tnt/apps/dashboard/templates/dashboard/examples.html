@@ -116,7 +116,7 @@
     <p>
     This template calculates the ground state of a system of 30 bosons in a 40 site system, under the Bose-Hubbard Hamiltonian with a small interaction \(J/U = 10\) and a harmonic trap:
     \[
-    H = \sum_{j=0}^{L-2} \left \left -(\hat{b}_{j}^{\dagger}\hat{b}_{j+1}+\mathrm{h.c.}\right ) + \sum_{j=0}^{L-1} \left \{U\hat{n}_{j}(\hat{n}_{j}-1)/2 + [V(j-j_c)^2-\mu]\hat{n}_j\right \}
+    H = \sum_{j=0}^{L-2}  -J\left (\hat{b}_{j}^{\dagger}\hat{b}_{j+1}+\mathrm{h.c.}\right ) + \sum_{j=0}^{L-1} \left \{U\hat{n}_{j}(\hat{n}_{j}-1)/2 + [V(j-j_c)^2-\mu]\hat{n}_j\right \}
     \]
     The size of the chemical potenetial \(\mu\) is defined in the interface by giving an offset to the quadratic spatial function, and \(j_c\) is defined to be the centre of the system, i.e. site 19.5. Since the template specifies that the total boson number should be conserved, and is set to 30, the chemical potential \(\mu\) has no effect other than to offset the ground state energy. However, when number conservation is not turned on its value controls the number of bosons in the ground state, and the value chosen here leads to the same expectation value of total number with and without number conservation turned on.
     </p>
@@ -152,7 +152,7 @@
   <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingFour">
     <h4 class="panel-title">
-    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
     Boson: Quantum bowling
     </a>
     </h4>
