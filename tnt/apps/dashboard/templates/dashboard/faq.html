@@ -4,17 +4,77 @@
 
 <div class="jumbotron">
   <h1>Frequently asked questions</h1>
-  <p>Info on the TNT library and how to get started</p>
+  <p>Info on the TNT library and how to get started.</p>
   
 </div>
 
-<h2>An interesting question</h2>
-<p> What a response!</p>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            Who are the developers of TNTgo?
+            </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+            <p>
+            TNTgo is powered by the TNT library, developed in the Quantum Systems Engineering (QSE) group at the University of Oxford. The TNTgo interface was jointly developed in the (QSE) group and with Thomas Grujic. The main developers of the TNT library are Sarah Al-Assam, Stephen Clark and Dieter Jaksch. We have also received support from the Software Engineering Group at the Rutherford Appleton Lab and from NAG.
+            </p>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingTwo">
+    <h4 class="panel-title">
+    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+    Why is there a limit on the system size?
+    </a>
+    </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+    <div class="panel-body">
+    <p>
+    The calculations are all run on the QSE group cluster in the University of Oxford. System sizes are limited so control the load on these systems. If you wish to simulate larger systems, you can download the TNT library from CCPForge, and run calculations locally.
+    </p>
+    </div>
+    </div>
+    </div>
+    <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingThree">
+    <h4 class="panel-title">
+    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+    Why should I use conserved quantities in my simulations?
+    </a>
+    </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+    <div class="panel-body">
+    <p>For ground state calculations, doing so ensures that the state found will be a state having a definite total spin or boson number, which will not be the case e.g. if using the chemical potential to tune the number of bosons.
+    </p>
+    <p>
+    For time evolution calculations where you know your Hamiltonian conserves total spin/boson number, doing so allows the algorithm to take advantage of the global symmetries present and so can substatially speed up run times.
+    </p>
+    </div>
+    </div>
+    </div>
+    <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingFour">
+    <h4 class="panel-title">
+    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+    What do I do if my calculation ends in an error?
+    </a>
+    </h4>
+    </div>
+    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+    <div class="panel-body">
+    Please first check your simulation parameters to make sure they are physically sensible. If you cannot see an error please email support@tensornetworktheory.org with the calculation id and we will look into this. 
+    </div>
+    </div>
+    </div>
+</div>
 
-<hr>
-
-<h2>An interesting question</h2>
-<p> What a response!</p>
 
 {% endblock %}
 
