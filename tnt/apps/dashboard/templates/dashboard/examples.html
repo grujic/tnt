@@ -4,8 +4,8 @@
 
 <div class="jumbotron">
   <h1>Examples</h1>
-  <p>There are a number of predefined templates that you can use to explore the different features of the TNTgo interface, which can be selected on the forst page of defining a new calculation.<p>
-  <p>Selecting a template will pre-fill the values in the TNTgo interface to simulate certain systems. If you are simply interested in exploring the capabilities of TNTgo, you can run them without making any changes. Alternatively you can use them as a convenient basis for your own calculations, and make changes such as adding Hamiltonian terms or explectation values to calculate, or changing the physical dimension or system size.</p>
+  <p>There are a number of predefined templates that you can use to explore the different features of the TNTgo interface, which can be selected on the first page of defining a new calculation. Click on a template name below to find out more about it.<p>
+  <p>Selecting a template will pre-fill the values in the TNTgo interface. If you are simply interested in exploring the capabilities of TNTgo, you can run them without making any changes. Alternatively you can use them as a convenient basis for your own calculations, and make changes such as adding Hamiltonian terms or explectation values to calculate, or changing the physical dimension or system size.</p>
   
 </div>
 
@@ -18,7 +18,7 @@
         </a>
       </h4>
     </div>
-    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
       <div class="panel-body">
       <p> This sets up a similar calculation to that described in <a href="http://link.aps.org/doi/10.1103/PhysRevLett.93.076401" target="_blank">S.R. White and A.E. Feiguin (2004)</a>, but on a smaller scale due to the size limits in TNTgo. 
       </p>
@@ -62,6 +62,7 @@
       </p>
       </div>
     </div>
+  </div>
   <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingTwo">
       <h4 class="panel-title">
@@ -102,15 +103,15 @@
     </div>
   </div>
   </div>
-    <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingThree">
+  <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingThree">
     <h4 class="panel-title">
     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
         Boson: Harmonically trapped superfluid
     </a>
     </h4>
     </div>
-    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
     <div class="panel-body">
     <p>
     This template calculates the ground state of a system of 30 bosons in a 40 site system, under the Bose-Hubbard Hamiltonian with a small interaction \(J/U = 10\) and a harmonic trap:
@@ -122,24 +123,24 @@
     <p>
     The ground state density and single particle density matrix are calculatedand shown below, and to the right the same observable but this time with \(J/U = 1/3\)
     <div class="row">
-    <div class="col-xs-6 col-md-4">
+    <div class="col-xs-6 col-md-3">
     <a href="#" class="thumbnail">
-    <img src="/static/dashboard/img/examples/density_10.png" alt="Density with J/U=10">
+    <img src="/static/dashboard/img/examples/sfdensity_10.png" alt="Density with J/U=10">
     </a>
     </div>
-    <div class="col-xs-6 col-md-4">
+    <div class="col-xs-6 col-md-3">
     <a href="#" class="thumbnail">
-    <img src="/static/dashboard/img/examples/spdm_10.png" alt="Single particle density matrix with J/U=10">
+    <img src="/static/dashboard/img/examples/sfspdm_10.png" alt="Single particle density matrix with J/U=10">
     </a>
     </div>
-    <div class="col-xs-6 col-md-4">
+    <div class="col-xs-6 col-md-3">
     <a href="#" class="thumbnail">
-    <img src="/static/dashboard/img/examples/density_third.png" alt="Density with J/U=1/3">
+    <img src="/static/dashboard/img/examples/sfdensity_third.png" alt="Density with J/U=1/3">
     </a>
     </div>
-    <div class="col-xs-6 col-md-4">
+    <div class="col-xs-6 col-md-3">
     <a href="#" class="thumbnail">
-    <img src="/static/dashboard/img/examples/spdm_third.png" alt="Single particle density matrix with J/U=1/3">
+    <img src="/static/dashboard/img/examples/sfspdm_third.png" alt="Single particle density matrix with J/U=1/3">
     </a>
     </div>
     </div>
@@ -148,15 +149,15 @@
     </div>
     </div>
     </div>
-    <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingThree">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingFour">
     <h4 class="panel-title">
     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
     Boson: Quantum bowling
     </a>
     </h4>
     </div>
-    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
     <div class="panel-body">
     This sets up a similar to the one described in <a href="http://arxiv.org/abs/1302.2667" target="_blank">M. Ganahl, M. Haque, and H.G. Evertz (2013)</a>.
     </div>
