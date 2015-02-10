@@ -1818,6 +1818,11 @@ var tnt = {
                 $('#ground_state_quantum_number_info')
                     .css('display', 'none');
             } else {
+                tnt.switch_button_group_to_data_val(
+                    "ground_number_conservation_choice",
+                    "number-conservation", 1
+                );
+
                 // Now set whatever the quantum number is:
                 $("#quantum_number_ground_state_choice").val(tnt.get_ground_qn());
                 $('#ground_state_quantum_number_info')
