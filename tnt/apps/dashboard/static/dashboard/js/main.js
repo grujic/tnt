@@ -482,7 +482,9 @@ var tnt = {
         $(where_to_render_selector)
             .html(template(hamiltonian_operators_to_render));
 
-        $(where_to_render_selector + " .hamiltonian-operator-btn")
+        var selector = where_to_render_selector + " .hamiltonian-operator-btn";
+        $(selector).unbind();
+        $(selector)
             .click(function() {
                 tnt.add_hamiltonian_term(
                     tnt.get_hamiltonian_operator($(this).data("operator-id")),
@@ -557,7 +559,9 @@ var tnt = {
                 .html(template(complying_initial_state_modifiers));
 
             // Add behaviour to modifier buttons
-            $(where_to_render).find(".hamiltonian-operator-btn")
+            var where_to_render_btns = $(where_to_render).find(".hamiltonian-operator-btn");
+            $(where_to_render_btns).unbind();
+            $(where_to_render_btns)
                 .click(function() {
 
                     var hamiltonian_operator
@@ -585,6 +589,7 @@ var tnt = {
 
 	attach_click_fn_to_initial_base_state_choices: function () {
 		// When an initial base state is chosen, need to make that button active and all others not
+		$(".initial-state-btn").unbind();
 		$(".initial-state-btn")
 			.click(
 				function (e) {
@@ -600,7 +605,8 @@ var tnt = {
         update_tex_str_fn
     ) {
 		// When an initial base state is chosen, need to make that button active and all others not
-		$(hamiltonian_term_container_selector).find(".remove-hamiltonian-term-btn")
+		var selector = $(hamiltonian_term_container_selector).find(".remove-hamiltonian-term-btn");
+        $(selector)
 			.click(
 
 				function (e) {
@@ -637,6 +643,7 @@ var tnt = {
 	},
 
     attach_click_fn_to_remove_all_terms: function () {
+        $(".remove-all-terms-btn").unbind();
         $(".remove-all-terms-btn").click(
             function (e) {
 
@@ -666,6 +673,7 @@ var tnt = {
 
 	attach_click_fn_to_expectation_operator_choices: function () {
 		// When an expectation operator is chosen, need to toggle it's 'active' class
+		$(".expectation-operator-btn").unbind();
 		$(".expectation-operator-btn")
 			.click(
 				function (e) {
@@ -1245,6 +1253,7 @@ var tnt = {
                 }
             );
 
+		$(".btn-system-type").unbind();
 		$(".btn-system-type")
 			.click(function(el) {
 				$(".btn-system-type").removeClass("active");
@@ -1275,6 +1284,7 @@ var tnt = {
 		tnt.clear_all_new_calculation_stages();
 		$("#new_calculation_basic_setup").css('display', 'block');
 
+		$("#new_calculation_basic_setup .btn-next-step").unbind();
 		$("#new_calculation_basic_setup .btn-next-step").click(
 			tnt.validate_new_calculation_basic_setup_step
 		);
@@ -1399,6 +1409,9 @@ var tnt = {
 		//
         console.log("initialise_new_calculation_define_ground_hamiltonian\n\n");
 
+        // Something really weird happens where this function is called multiple times.
+        // This is a hack to stop it from executing multiple times
+
 		tnt.render_available_hamiltonian_operators(
             parseInt(window.calculation.setup.system.number_conservation.ground.apply_qn),
             "#new_calculation_available_ground_hamiltonian_operators",
@@ -1442,11 +1455,13 @@ var tnt = {
             }
         );
 
+		$("#new_calculation_define_ground_hamiltonian .btn-next-step").unbind();
 		$("#new_calculation_define_ground_hamiltonian .btn-next-step")
             .click(
                 tnt.validate_new_calculation_define_ground_hamiltonian
             );
 
+		$("#new_calculation_define_ground_hamiltonian .btn-back-step").unbind();
 		$("#new_calculation_define_ground_hamiltonian .btn-back-step").click(
 			tnt.initialise_new_calculation_ground_state
 		);
@@ -1816,10 +1831,12 @@ var tnt = {
         //$("#ground_state_quantum_number_info").css("display", "none");
 
 		// Navigation
+		$("#new_calculation_ground_state .btn-next-step").unbind();
 		$("#new_calculation_ground_state .btn-next-step").click(
 			tnt.validate_new_calculation_ground_state
 		);
 
+		$("#new_calculation_ground_state .btn-back-step").unbind();
 		$("#new_calculation_ground_state .btn-back-step").click(
 			tnt.initialise_new_calculation_basic_setup_step
 		);
@@ -1942,12 +1959,14 @@ var tnt = {
 				}
 			);
 
+		$("#new_calculation_time_evolution .btn-next-step").unbind();
 		$("#new_calculation_time_evolution .btn-next-step").click(
 			tnt.validate_new_calculation_time_evolution
 		);
 
 		// We work out what to display going backwards
 		if (tnt.get_calculate_ground_state() == 1) {
+            $("#new_calculation_time_evolution .btn-back-step").unbind();
             $("#new_calculation_time_evolution .btn-back-step").click(
                 function () {
                     console.log("Going back to define ground hamiltonian stage...\n\n");
@@ -1955,6 +1974,7 @@ var tnt = {
                 }
             );
 		} else  {
+            $("#new_calculation_time_evolution .btn-back-step").unbind();
             $("#new_calculation_time_evolution .btn-back-step").click(
                 tnt.initialise_new_calculation_ground_state
             );
@@ -2079,6 +2099,7 @@ var tnt = {
             }
         );
 
+        $('.initial_state_modifier_sum_or_product .remove-initial-state-modifier-btn').unbind();
         $('.initial_state_modifier_sum_or_product .remove-initial-state-modifier-btn')
             .click(function() {
                 $(this)
@@ -2101,6 +2122,8 @@ var tnt = {
 
 	initialise_new_calculation_initial_state: function () {
 		//
+        console.log("Initialising initial state...\n\n");
+
 		tnt.clear_all_new_calculation_stages(); // Clear all panels
 
         var dynamic_qn = tnt.get_apply_dynamic_qn();
@@ -2161,6 +2184,7 @@ var tnt = {
         var selector = '#renormalise_after_initial_state_modifiers_choice label input[data-renormalise-initial-state="' + renormalise + '"]';
         $(selector).closest("label").addClass("active");
 
+        $('.add-product-or-sum-modifier-btn').unbind();
         $('.add-product-or-sum-modifier-btn')
             .click(function (e) {
                 var sum_or_product = $(this).data('sum-product');
@@ -2169,10 +2193,12 @@ var tnt = {
 
 		$("#new_calculation_initial_state").css('display', 'block'); 	// Make this panel visible
 
+		$("#new_calculation_initial_state .btn-next-step").unbind();
 		$("#new_calculation_initial_state .btn-next-step").click(
 			tnt.validate_new_calculation_initial_state
 		);
 
+		$("#new_calculation_initial_state .btn-back-step").unbind();
 		$("#new_calculation_initial_state .btn-back-step").click(
 			tnt.initialise_new_calculation_time_evolution
 		);
@@ -2307,10 +2333,12 @@ var tnt = {
 		$("#new_calculation_define_dynamic_hamiltonian")
 			.css('display', 'block');
 
+		$("#new_calculation_define_dynamic_hamiltonian .btn-next-step").unbind();
 		$("#new_calculation_define_dynamic_hamiltonian .btn-next-step").click(
 			tnt.validate_new_calculation_define_dynamic_hamiltonian
 		);
 
+		$("#new_calculation_define_dynamic_hamiltonian .btn-back-step").unbind();
 		$("#new_calculation_define_dynamic_hamiltonian .btn-back-step").click(
 			tnt.initialise_new_calculation_initial_state
 		);
@@ -2402,6 +2430,7 @@ var tnt = {
 		$("#new_calculation_expectation_operators")
 			.css('display', 'block');
 
+		$("#new_calculation_expectation_operators .btn-next-step").unbind();
 		$("#new_calculation_expectation_operators .btn-next-step").click(
 			tnt.validate_new_calculation_expectation_operators
 		);
@@ -2413,6 +2442,7 @@ var tnt = {
 			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_time_evolution;
 		}
 
+		$("#new_calculation_expectation_operators .btn-back-step").unbind();
 		$("#new_calculation_expectation_operators .btn-back-step").click(
 			//previous_stage_initialisation_fn
             //
@@ -2480,6 +2510,7 @@ var tnt = {
 
 		tnt.clear_all_new_calculation_stages();
 
+		$("#submit_calculation").unbind();
 		$("#submit_calculation").click(
 			function () {
 				$.post(
@@ -2497,6 +2528,7 @@ var tnt = {
 			}
 		);
 
+        $("#cancel_calculation").unbind();
         $("#cancel_calculation").click(
             function () {
                 window.location = '/';
@@ -2505,6 +2537,7 @@ var tnt = {
 
 		$("#new_calculation_confirm").css('display', 'block');
 
+		$("#new_calculation_confirm .btn-back-step").unbind();
 		$("#new_calculation_confirm .btn-back-step").click(
 			tnt.initialise_new_calculation_expectation_operators
 		);
