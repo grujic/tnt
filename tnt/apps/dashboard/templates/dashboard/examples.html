@@ -27,10 +27,10 @@
       \[
       H_g = \sum_{j=0}^{L-2} \left \{ \frac{1}{2}\left (\hat{S}_j^+ \hat{S}_{j+1}^- + \mathrm{h.c.}\right ) + \hat{S}_j^z \hat{S}_{j+1}^z \right \}.
       \]
-      Note the form of the terms in the Hamiltonian, which are of course equivalent to \( \hat{\mathbf{S}}_j\cdot\hat{\mathbf{S}}_{j+1} \). On the previous page, we had set quantum number symmetries to be turned on by setting a total spin of zero (since we know the ground state lies in this spin sector). This then requires the Hamiltonian be defined in terms of U(1) invariant operators only, i.e. in terms of hopping and \(z\)-component of spin, rather than as its equivalent of sum of coupling terms in the three axes.
+      Note the form of the terms in the Hamiltonian, which are of course equivalent to \( \hat{\mathbf{S}}_j\cdot\hat{\mathbf{S}}_{j+1} \). In this template quantum number conservation is turned on by setting a total spin of zero (since we know the ground state lies in this spin sector). This then requires the Hamiltonian be defined in terms of U(1) invariant operators only, i.e. in terms of hopping and \(z\)-component of spin, rather than as its equivalent of sum of coupling terms in the three axes.
       </p>
       <p>
-      We then use this ground state as a base state for time evolution, but first modifying it by applying the operator \(\hat{S}^+\) on a site 20. We do this by applying a site-wide operator, with the delta function chosen as the spatial function. The system is then evolved under the same Heisenberg Hamniltonian as defined above, and like White and Feiguin the local magnetisation is chosen as an observable to track. In addition, we choose to track the overlap with the ground state and initial state as a function of time.
+      The ground state is used as a base state for time evolution, but first modified it by applying the operator \(\hat{S}^+\) on site 20. We do this by applying a site-wide operator, with the delta function chosen as the spatial function. The system is then evolved under the same Heisenberg Hamniltonian as defined above, and like White and Feiguin the local magnetisation is chosen as an observable to track. In addition, the template is set to track the overlap with the ground state and initial state as a function of time.
       </p>
       <p>
       Setting this simulation to run leads to the following results:
@@ -56,13 +56,12 @@
       </a>
       </div>
       </div>
-      The first thing to note is the alternating magnetisation in the ground state due to the finite size of the system. This is decribed in <a href="http://link.aps.org/doi/10.1103/PhysRevB.48.10345" target="_blank">S. R. White (1993)</a>, as well as how to 'soften' the boundary affects by changing the coupling on the boundaries.
+      The first thing to note is the alternating magnetisation in the ground state due to the finite size of the system. This is decribed in <a href="http://link.aps.org/doi/10.1103/PhysRevB.48.10345" target="_blank">S. R. White (1993)</a>, as well as how to 'soften' the boundary effects by changing the coupling on the boundaries.
       
       As described in White and Feiguin, the localised wave packet at \(t=0\) spreads out at later times to give irregular oscillations. White and Feiguin are able to evolve to longer times due to a larger maximum internal dimension (\(\chi \) is 150, as opposed to 40 used in this calculation), and a larger system size (\(L\) is 200 as opposed to 40 used in this calculation). If you wish to try using the TNT library code to reproduce these system sizes, or go beyond them, please consider installing the TNT library code on your own machines.
       </p>
       </div>
     </div>
-  </div>
   <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingTwo">
       <h4 class="panel-title">
@@ -74,35 +73,92 @@
     <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
       <div class="panel-body">
       <p>
-      This creates an \(S=1/2\) start state, with the spins on one side of the system pointing up, and the spins on the other side of the system pointing down. As above, the total spin remains a conserved quantity during the time evolution.
+      This template creates an \(S=1/2\) start state, with the spins on one side of the system pointing up, and the spins on the other side of the system pointing down by using an initial base state of a configuration with all spins point down, then applying the a site-wide operator of a product of \(\hat{S}^+\) with a step function as the spatial function.
+      <p>
+      <p>
+      The system is evolved under the \(XXZ\) Hamiltonian. The total spin remains a conserved quantity during the time evolution, so the template is set to conserve this quantity, and the Hamiltonian must then be expressed in terms of U(1) invariant operators only:
+      \[
+      H_g = \sum_{j=0}^{L-2} \left \{ \frac{1}{2}\left (\hat{S}_j^+ \hat{S}_{j+1}^- + \mathrm{h.c.}\right ) + \Delta\hat{S}_j^z \hat{S}_{j+1}^z \right \}.
+      \]
+      The anisotropy parameter \(\Delta\) represents the interaction strength, and controls how easily the domain wall breaks up. The default value in the template is 1, but you may wish to try varying this to see the effect on the local magnetisation. The results show the evolution for \(\Delta \) = 0.5, 1 and 2 respectively.
       </p>
+      <div class="row">
+      <div class="col-xs-6 col-md-4">
+      <a href="#" class="thumbnail">
+      <img src="/static/dashboard/img/examples/domain_wall_0.5.png" alt="Evolution under XXZ Hamiltonian">
+      </a>
+      </div>
+      <div class="col-xs-6 col-md-4">
+      <a href="#" class="thumbnail">
+      <img src="/static/dashboard/img/examples/domain_wall_1.png" alt="Evolution under XXZ Hamiltonian">
+      </a>
+      </div>
+      <div class="col-xs-6 col-md-4">
+      <a href="#" class="thumbnail">
+      <img src="/static/dashboard/img/examples/domain_wall_2.png" alt="Evolution under XXZ Hamiltonian">
+      </a>
+      </div>
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingThree">
-      <h4 class="panel-title">
-        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          Boson: Quantum bowling
-        </a>
-      </h4>
-    </div>
-    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-      <div class="panel-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-      </div>
-    </div>
+  </div>
     <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingThree">
     <h4 class="panel-title">
     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-    Boson: Harmonically trapped superfluid
+        Boson: Harmonically trapped superfluid
     </a>
     </h4>
     </div>
     <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
     <div class="panel-body">
-    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+    <p>
+    This template calculates the ground state of a system of 30 bosons in a 40 site system, under the Bose-Hubbard Hamiltonian with a small interaction \(J/U = 10\) and a harmonic trap:
+    \[
+    H = \sum_{j=0}^{L-2} \left \left -(\hat{b}_{j}^{\dagger}\hat{b}_{j+1}+\mathrm{h.c.}\right ) + \sum_{j=0}^{L-1} \left \{U\hat{n}_{j}(\hat{n}_{j}-1)/2 + [V(j-j_c)^2-\mu]\hat{n}_j\right \}
+    \]
+    The size of the chemical potenetial \(\mu\) is defined in the interface by giving an offset to the quadratic spatial function, and \(j_c\) is defined to be the centre of the system, i.e. site 19.5. Since the template specifies that the total boson number should be conserved, and is set to 30, the chemical potential \(\mu\) has no effect other than to offset the ground state energy. However, when number conservation is not turned on its value controls the number of bosons in the ground state, and the value chosen here leads to the same expectation value of total number with and without number conservation turned on.
+    </p>
+    <p>
+    The ground state density and single particle density matrix are calculatedand shown below, and to the right the same observable but this time with \(J/U = 1/3\)
+    <div class="row">
+    <div class="col-xs-6 col-md-4">
+    <a href="#" class="thumbnail">
+    <img src="/static/dashboard/img/examples/density_10.png" alt="Density with J/U=10">
+    </a>
+    </div>
+    <div class="col-xs-6 col-md-4">
+    <a href="#" class="thumbnail">
+    <img src="/static/dashboard/img/examples/spdm_10.png" alt="Single particle density matrix with J/U=10">
+    </a>
+    </div>
+    <div class="col-xs-6 col-md-4">
+    <a href="#" class="thumbnail">
+    <img src="/static/dashboard/img/examples/density_third.png" alt="Density with J/U=1/3">
+    </a>
+    </div>
+    <div class="col-xs-6 col-md-4">
+    <a href="#" class="thumbnail">
+    <img src="/static/dashboard/img/examples/spdm_third.png" alt="Single particle density matrix with J/U=1/3">
+    </a>
+    </div>
+    </div>
+    You may wish to try varying the trap strength and interaction parameter to see the effect on the ground state. 
+    </p>
+    </div>
+    </div>
+    </div>
+    <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingThree">
+    <h4 class="panel-title">
+    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+    Boson: Quantum bowling
+    </a>
+    </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+    <div class="panel-body">
+    This sets up a similar to the one described in <a href="http://arxiv.org/abs/1302.2667" target="_blank">M. Ganahl, M. Haque, and H.G. Evertz (2013)</a>.
     </div>
     </div>
   </div>
