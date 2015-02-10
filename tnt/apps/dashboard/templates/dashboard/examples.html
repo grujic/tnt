@@ -74,10 +74,10 @@
     <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
       <div class="panel-body">
       <p>
-      This template creates an \(S=1/2\) start state, with the spins on one side of the system pointing up, and the spins on the other side of the system pointing down by using an initial base state of a configuration with all spins point down, then applying the a site-wide operator of a product of \(\hat{S}^+\) with a step function as the spatial function.
+      This template creates an initial state with the spins (\(S=1/2\)) on one side of the system pointing up, and the spins on the other side of the system pointing down. This is done using the configuration with all spins pointing down as the base state, then applying a site-wide operator of a product of \(\hat{S}^+\) with a step function as the spatial function.
       <p>
       <p>
-      The system is evolved under the \(XXZ\) Hamiltonian. The total spin remains a conserved quantity during the time evolution, so the template is set to conserve this quantity, and the Hamiltonian must then be expressed in terms of U(1) invariant operators only:
+      The system is evolved under the \(XXZ\) Hamiltonian, which conserves the total spin. The template is therefore set to conserve this quantity (leading to faster run-times), and the Hamiltonian must then be expressed in terms of U(1) invariant operators only:
       \[
       H_g = \sum_{j=0}^{L-2} \left \{ \frac{1}{2}\left (\hat{S}_j^+ \hat{S}_{j+1}^- + \mathrm{h.c.}\right ) + \Delta\hat{S}_j^z \hat{S}_{j+1}^z \right \}.
       \]
@@ -121,7 +121,7 @@
     The size of the chemical potenetial \(\mu\) is defined in the interface by giving an offset to the quadratic spatial function, and \(j_c\) is defined to be the centre of the system, i.e. site 19.5. Since the template specifies that the total boson number should be conserved, and is set to 30, the chemical potential \(\mu\) has no effect other than to offset the ground state energy. However, when number conservation is not turned on its value controls the number of bosons in the ground state, and the value chosen here leads to the same expectation value of total number with and without number conservation turned on.
     </p>
     <p>
-    The ground state density and single particle density matrix are calculatedand shown below, and to the right the same observable but this time with \(J/U = 1/3\)
+    The ground state density and single particle density matrix are calculated and shown below, and to the right the same observables but this time with \(J/U = 1/3\)
     <div class="row">
     <div class="col-xs-6 col-md-3">
     <a href="#" class="thumbnail">
@@ -159,7 +159,7 @@
     </div>
     <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
     <div class="panel-body">
-    This sets up a similar to the one described in <a href="http://arxiv.org/abs/1302.2667" target="_blank">M. Ganahl, M. Haque, and H.G. Evertz (2013)</a>.
+    This sets up a similar to the one described in <a href="http://arxiv.org/abs/1302.2667" target="_blank">M. Ganahl, M. Haque, and H.G. Evertz (2013)</a>. 
     </div>
     </div>
   </div>
