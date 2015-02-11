@@ -1168,6 +1168,9 @@ var tnt = {
         if (name != "") {
             $(select).val(name);
         }
+
+        $("#calculation_name").val($(select).val());
+
     },
 
     update_basic_system_dimensions: function() {
