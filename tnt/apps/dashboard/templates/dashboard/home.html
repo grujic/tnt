@@ -6,6 +6,8 @@
   <h1>Your calculations <small>Review your simulations</small></h1>
 </div>
 
+ <div id="refresh_page_info" class="alert alert-info" style="display: none;" role="alert">Refresh the page to restart auto-updating of running calculation status. </div>
+
 <div id="user_calculations">
 
   <div class="alert alert-info" role="alert">Loading your calculations...</div>
@@ -21,111 +23,157 @@
     window.user.id = "{{user.id}}";
     console.log("Stored logged in user details");
 
+    window.running_calculations = false;
+    window.timer_running = false;
+
+    function any_running_calculations() {
+        // Check if any of our calculations are running
+        return _.some(
+                _.map(
+                    window.calculations.calculations, 
+                    function(calculation) {
+                        return (calculation.meta_info['status'] == "running"); 
+                    }
+                )
+              );
+    }
+
+    function update_calculations() {
     $.get('/api/v1.0/calculations', 
-      function (calculations) {
+        function (calculations) {
 
-        window.calculations = calculations;
+            window.calculations = calculations;
 
-        if (calculations.calculations.length == 0) {
-          $("#user_calculations").html("<h1>You don't have any calculations yet</h1><p>They'll appear here once you've set them up</p>");
-        } else {
+            if (calculations.calculations.length == 0) {
+            $("#user_calculations").html("<h1>You don't have any calculations yet</h1><p>They'll appear here once you've set them up</p>");
+            } else {
 
-          var source = $("#user-calculations-template").html();
-          var template = Handlebars.compile(source);
+            var source = $("#user-calculations-template").html();
+            var template = Handlebars.compile(source);
 
-          $("#user_calculations").html(template(calculations));
+            $("#user_calculations").html(template(calculations));
 
-          // Attach functions to 'Run...' buttons
-          $(".run-calculation-button")
-            .click(
-              function(el) {
-                $(this).button('loading');
-                var calculation_id = $(this).data('calculation-id'); 
-                console.log("Running calculation " + calculation_id); 
-                tnt.run_calculation(calculation_id);
-              }
+            // Attach functions to 'Run...' buttons
+            $(".run-calculation-button").unbind();
+            $(".run-calculation-button")
+                .click(
+                function(el) {
+                    $(this).button('loading');
+                    var calculation_id = $(this).data('calculation-id'); 
+                    tnt.run_calculation(calculation_id);
+                }
+                );
+
+            // Attach Download links to 'download' buttons
+            _($(".download-calculation-button"))
+                .each(function(el) {
+                var calculation_id = $(el).data('calculation-id'); 
+                var this_calculation_download_url = '/media/' + calculation_id + '/' + calculation_id + '.mat';
+                $(el).attr("href", this_calculation_download_url);
+                }
             );
 
-          // Attach Download links to 'download' buttons
-          _($(".download-calculation-button"))
-            .each(function(el) {
-              var calculation_id = $(el).data('calculation-id'); 
-              console.log("Attaching download link for calculation " + calculation_id);
-              console.log(calculation_id);
-              var this_calculation_download_url = '/media/' + calculation_id + '/' + calculation_id + '.mat';
-              console.log(this_calculation_download_url);
-              $(el).attr("href", this_calculation_download_url);
             }
-          );
 
-        }
+            // Attach functionality to various buttons
+            $(".update_calculation_name_btn").unbind();
+            $(".update_calculation_name_btn").click(
+                function() {
 
-      }
-    ).done(function() {
+                    var calculation_id = $(this).data("calculation-id");
 
-        // Attach functionality to various buttons
-        $(".update_calculation_name_btn").click(
-            function() {
+                    var new_name_input = $(this)
+                        .closest('.update_name_div')
+                        .find('input');
 
-                var calculation_id = $(this).data("calculation-id");
+                    var new_name = new_name_input 
+                        .val();
 
-                var new_name_input = $(this)
-                    .closest('.update_name_div')
-                    .find('input');
+                    if (new_name != "") {
 
-                var new_name = new_name_input 
-                    .val();
+                        $(this).html("Updating...");
+                        $(this).addClass("updating_name");
 
-                if (new_name != "") {
+                        $.post(
+                            '/api/v1.0/calculation/rename/' + calculation_id + '/' + new_name, 
+                            function(data) {
+                                if (data == "OK") {
+                                    $(new_name_input).attr("placeholder", new_name);
+                                    $(new_name_input).val("");
+                                }
+                            }
+                        ).done(function() {
+                            $(".update_calculation_name_btn").html("Update name");
+                            $(".update_calculation_name_btn").removeClass("updating_name");
+                        });
 
-                    console.log("This button text: " + $(this).html());
-                    $(this).html("Updating...");
-                    $(this).addClass("updating_name");
+                    }
 
-                    console.log("Renaming setup for calculation " + calculation_id + " to " + new_name);
+                }
+            );
+
+
+            $(".btn-delete-calculation").unbind();
+            $(".btn-delete-calculation")
+            .click(
+                function() {
+
+                    var calculation_id = $(this).data("calculation-id");
 
                     $.post(
-                        '/api/v1.0/calculation/rename/' + calculation_id + '/' + new_name, 
-                        function(data) {
-                            if (data == "OK") {
-                                $(new_name_input).attr("placeholder", new_name);
-                                $(new_name_input).val("");
-                            }
-                            console.log(data); 
-                        }
-                    ).done(function() {
-                        $(".update_calculation_name_btn").html("Update name");
-                        $(".update_calculation_name_btn").removeClass("updating_name");
+                    '/api/v1.0/calculation/delete/' + calculation_id, 
+                    function (data) { 
+                    }
+                    ).done(function () {
+                    window.location = '/';
                     });
 
                 }
+            );
+
+        }
+        ).done(function() {
+
+            if (any_running_calculations()) {
+                console.log("There are some running calculations\n\n");
+                if (!window.timer_running) {
+                    window.refresh_count = 0;
+                    window.timer_interval_ms = 20000;
+                    window.max_refresh_count = 15;
+                    window.timer_running = true;
+
+                    window.timer = setInterval(
+                        function() {
+                            console.log("window.refresh_count = " + window.refresh_count + "\n\n"); 
+                            window.refresh_count += 1;
+                            var calculations_are_running = any_running_calculations();
+
+                            if (window.refresh_count > window.max_refresh_count) {
+                                $("#refresh_page_info").css("display", "block");
+                            }
+
+                            // When to stop refreshes
+                            if ( (window.refresh_count > window.max_refresh_count) || (!calculations_are_running) ){
+                                clearInterval(window.timer);
+                            }
+
+
+                            console.log("Updating calculations...\n\n");
+                            update_calculations();
+
+                        }, 
+                        window.timer_interval_ms
+                    );
+                }
 
             }
-        );
 
-
-        $(".btn-delete-calculation")
-          .click(
-            function() {
-
-                var calculation_id = $(this).data("calculation-id");
-
-                console.log("Deleting setup for calculation " + calculation_id);
-
-                $.post(
-                  '/api/v1.0/calculation/delete/' + calculation_id, 
-                  function (data) { 
-                    console.log(data); 
-                  }
-                ).done(function () {
-                  window.location = '/';
-                });
-
-            }
-        );
-    });
+        });
+    }
 
     $("#sidebar_home").addClass("active");
+
+    update_calculations();
 
   </script>
 
