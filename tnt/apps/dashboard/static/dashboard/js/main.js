@@ -74,6 +74,10 @@ var tnt = {
 	},
 
     // Helper HTML functions
+    scroll_to_top: function() {
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
+    },
+
     switch_button_group_to_data_val: function (btngroup_id, data_name, switch_data_val) {
         // Very common to need to switch a button group to a value
         if (btngroup_id[0] != "#") {
@@ -1129,6 +1133,7 @@ var tnt = {
 	},
 
 	clear_all_new_calculation_stages: function() {
+    tnt.scroll_to_top();
 		// Set display: none for each of the 'pages' of the new calculation setup
 		$(".new-calculation-step").css('display', 'none');
 	},
@@ -1210,6 +1215,7 @@ var tnt = {
 
 	// Following is a list of functions that verify data input and also set up the various data input panels for a new calculation
 	initialise_new_calculation_basic_setup_step: function () {
+        tnt.scroll_to_top();
         // Pull in info on available calculation templates
         $.get(
             '/api/v1.0/calculation_templates',
@@ -1285,6 +1291,7 @@ var tnt = {
 		);
 
 		tnt.clear_all_new_calculation_stages();
+        tnt.scroll_to_top();
 		$("#new_calculation_basic_setup").css('display', 'block');
 
 		$("#new_calculation_basic_setup .btn-next-step").unbind();
@@ -1410,10 +1417,7 @@ var tnt = {
 
 	initialise_new_calculation_define_ground_hamiltonian: function () {
 		//
-        console.log("initialise_new_calculation_define_ground_hamiltonian\n\n");
-
-        // Something really weird happens where this function is called multiple times.
-        // This is a hack to stop it from executing multiple times
+        tnt.scroll_to_top();
 
 		tnt.render_available_hamiltonian_operators(
             parseInt(window.calculation.setup.system.number_conservation.ground.apply_qn),
@@ -1427,6 +1431,7 @@ var tnt = {
         tnt.attach_click_fn_to_remove_all_terms();
 
 		tnt.clear_all_new_calculation_stages();
+        tnt.scroll_to_top();
 
 		$("#new_calculation_define_ground_hamiltonian")
             .css('display', 'block');
@@ -1606,8 +1611,8 @@ var tnt = {
 
 	initialise_new_calculation_ground_state: function () {
 		//
-
 		tnt.clear_all_new_calculation_stages();
+        tnt.scroll_to_top();
 
         // Initialise the precision dropdown
         //
@@ -1902,6 +1907,7 @@ var tnt = {
 
 	initialise_new_calculation_time_evolution: function () {
 		//
+        tnt.scroll_to_top();
 		tnt.clear_all_new_calculation_stages();
 
         // If no ground state calculation specified then we MUST calculate a time evolution
@@ -2130,7 +2136,7 @@ var tnt = {
 
 	initialise_new_calculation_initial_state: function () {
 		//
-        console.log("Initialising initial state...\n\n");
+        tnt.scroll_to_top();
 
 		tnt.clear_all_new_calculation_stages(); // Clear all panels
 
@@ -2291,6 +2297,7 @@ var tnt = {
 
 	initialise_new_calculation_define_dynamic_hamiltonian: function () {
         //
+        tnt.scroll_to_top();
 		tnt.clear_all_new_calculation_stages();
 
         tnt.render_available_hamiltonian_operators(
@@ -2385,6 +2392,7 @@ var tnt = {
 	initialise_new_calculation_expectation_operators: function () {
 		//
 		tnt.clear_all_new_calculation_stages();
+        tnt.scroll_to_top();
 
         if (tnt.get_calculate_ground_state() == 1) {
             $("#calculate_overlap_with_ground_state_choice_div").css("display", "block");
