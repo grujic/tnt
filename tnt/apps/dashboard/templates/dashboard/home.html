@@ -135,7 +135,6 @@
         ).done(function() {
 
             if (any_running_calculations()) {
-                console.log("There are some running calculations\n\n");
                 if (!window.timer_running) {
                     window.refresh_count = 0;
                     window.timer_interval_ms = 20000;
@@ -144,7 +143,6 @@
 
                     window.timer = setInterval(
                         function() {
-                            console.log("window.refresh_count = " + window.refresh_count + "\n\n"); 
                             window.refresh_count += 1;
                             var calculations_are_running = any_running_calculations();
 
@@ -157,8 +155,6 @@
                                 clearInterval(window.timer);
                             }
 
-
-                            console.log("Updating calculations...\n\n");
                             update_calculations();
 
                         }, 

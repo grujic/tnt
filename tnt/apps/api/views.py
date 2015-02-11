@@ -272,7 +272,7 @@ def calculations(request):
     check_on_running_calculations(request.user.id)
 
     response = Response({ \
-      'calculations': [json.loads(calculation.setup) for calculation in Calculation.objects.filter(user_id=request.user.id)] \
+      'calculations': [json.loads(calculation.setup) for calculation in sorted(Calculation.objects.filter(user_id=request.user.id), key=lambda x: x.time_created, reverse=True)] \
       }, \
       status=status.HTTP_200_OK)
 
