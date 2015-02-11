@@ -2,6 +2,18 @@
 
 {% block content %}
 
+    <div id="calculation_progress" class="hidden-xs" style="padding-bottom: 20px;">
+        <ol class="progtrckr" data-progtrckr-steps="7">
+            <li class="progtrckr-todo" id="progress_basic">Basic setup</li><!--
+        --><li class="progtrckr-todo" id="progress_ground">Ground state</li><!--
+        --><li class="progtrckr-todo" id="progress_time">Evolution</li><!--
+        --><li class="progtrckr-todo" id="progress_initial">Initial state</li><!--
+        --><li class="progtrckr-todo" id="progress_dynamics">Dynamics</li><!--
+        --><li class="progtrckr-todo" id="progress_expectation">Expectations</li><!--
+        --><li class="progtrckr-todo" id="progress_confirmation">Confirmation</li>
+        </ol>
+    </div>
+
     {% include "dashboard/new_calculation_basic_setup.html" %}
 
     {% include "dashboard/new_calculation_ground_state.html" %}

@@ -3,6 +3,22 @@
 operators = \
 [
 
+	# The Hamiltonian itself, special status
+	{
+		'operator_id': 0, \
+		'function_tex_str': '\hat{H}', \
+		'function_description': 'Hamiltonian', \
+		'term_type': '', \
+		'U1_invariant': True, \
+        'U1_covariant': True, \
+		'complex': False, \
+		'use_for_hamiltonian': False, \
+		'use_for_expectation': False, \
+		'use_for_transform': False, \
+		'two_site': False, \
+		'number_of_terms': 1
+	},
+
 	# Sigma X
 	{
 		'operator_id': 1, \

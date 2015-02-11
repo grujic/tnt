@@ -1376,7 +1376,7 @@ var tnt = {
                         _.filter(
                             data.operators,
                             function(el) {
-                                return el['term_type'] == system_type;
+                                return ( (el['term_type'] == system_type) || (el['term_type'] == "") );
                             }
                         )
                     };
@@ -1410,6 +1410,8 @@ var tnt = {
 
 			}
 		).done(function () {
+            $("#progress_basic").removeClass("progtrckr-todo");
+            $("#progress_basic").addClass("progtrckr-done");
             tnt.initialise_new_calculation_ground_state();
         })
 
@@ -1602,6 +1604,9 @@ var tnt = {
 
 	       }
 		); 	// End of loop over Hamiltonian terms
+
+        $("#progress_ground").removeClass("progtrckr-todo");
+        $("#progress_ground").addClass("progtrckr-done");
 
 		tnt.initialise_new_calculation_time_evolution();
 
@@ -1899,6 +1904,8 @@ var tnt = {
 			tnt.initialise_new_calculation_define_ground_hamiltonian();
 		} else  {
 			tnt.initialise_new_calculation_time_evolution();
+            $("#progress_ground").removeClass("progtrckr-todo");
+            $("#progress_ground").addClass("progtrckr-done");
 		}
 
 	},
@@ -2051,11 +2058,20 @@ var tnt = {
 
         $("#time_evolution_parameter_warning_msg").css("display", "none");
 
+        $("#progress_time").removeClass("progtrckr-todo");
+        $("#progress_time").addClass("progtrckr-done");
+
 		// We work out what to display next
 		if (calculate_time_evolution_choice == 1) {
 			tnt.initialise_new_calculation_initial_state();
 		} else  {
             tnt.initialise_new_calculation_expectation_operators();
+
+            $("#progress_initial").removeClass("progtrckr-todo");
+            $("#progress_initial").addClass("progtrckr-done");
+
+            $("#progress_dynamics").removeClass("progtrckr-todo");
+            $("#progress_dynamics").addClass("progtrckr-done");
 		}
 
 	},
@@ -2291,6 +2307,9 @@ var tnt = {
             }
         );
 
+        $("#progress_initial").removeClass("progtrckr-todo");
+        $("#progress_initial").addClass("progtrckr-done");
+
 		tnt.initialise_new_calculation_define_dynamic_hamiltonian();
 
 	},
@@ -2384,6 +2403,10 @@ var tnt = {
 
 	       }
 		); 	// End of loop over Hamiltonian terms
+
+
+        $("#progress_dynamics").removeClass("progtrckr-todo");
+        $("#progress_dynamics").addClass("progtrckr-done");
 
         tnt.initialise_new_calculation_expectation_operators();
 
@@ -2517,6 +2540,9 @@ var tnt = {
 				}
 			}
 		);
+
+        $("#progress_expectation").removeClass("progtrckr-todo");
+        $("#progress_expectation").addClass("progtrckr-done");
 
 		tnt.initialise_new_calculation_confirmation();
 
