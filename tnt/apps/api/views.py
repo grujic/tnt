@@ -202,66 +202,80 @@ def check_on_running_calculations(user_id):
 
         elif resp.status_code == 200:
 
-            json_save_filename = BASE_DIR + json_results_relative_dir + running_calculation.id + '.json'
+            resp_content = json.loads(resp.content)
 
-            print("Writing JSON results for calculation to file " + json_save_filename + "...")
+            # Calculation still running
+            if resp_content.get('status', 'finished') == 'running':
 
-            open(json_save_filename, 'w').write(resp.content)
+                setup = json.loads(running_calculation.setup)
+                setup['meta_info']['status'] = 'running'
+                setup['meta_info']['log'] = resp_content.get('log', '')
+                running_calculation.setup = json.dumps(setup)
+                running_calculation.save()
 
-            print("Wrote JSON results for calculation to file " + json_save_filename)
+            # Calculation finished
+            else:
 
-            running_calculation.status = 'finished'
+                json_save_filename = BASE_DIR + json_results_relative_dir + running_calculation.id + '.json'
 
-            # Annoying and clunky but also have to update the status in the JSON representation of the calculations
-            setup = json.loads(running_calculation.setup)
-            setup['meta_info']['status'] = 'finished'
+                print("Writing JSON results for calculation to file " + json_save_filename + "...")
 
-            setup['meta_info']['finished'] = json.loads(resp.content)['finish_time']
+                open(json_save_filename, 'w').write(resp.content)
 
-            running_calculation.setup = json.dumps(setup)
+                print("Wrote JSON results for calculation to file " + json_save_filename)
 
-            # We've updated the status of the calculation - now resave it!
-            running_calculation.save()
+                running_calculation.status = 'finished'
 
-            # Now save the images to the MEDIA ROOT
+                # Annoying and clunky but also have to update the status in the JSON representation of the calculations
+                setup = json.loads(running_calculation.setup)
+                setup['meta_info']['status'] = 'finished'
 
-            results = json.loads(resp.content)
+                setup['meta_info']['finished'] = resp_content['finish_time']
 
-            expectation_plot_urls = results['expectation_value_plots']
+                running_calculation.setup = json.dumps(setup)
 
-            print("We have to fetch the following URLs: " + ', \n'.join(expectation_plot_urls))
+                # We've updated the status of the calculation - now resave it!
+                running_calculation.save()
 
-            for expectation_plot_url in expectation_plot_urls:
+                # Now save the images to the MEDIA ROOT
 
-                print("Fetching image for calculation results at " + expectation_plot_url)
+                results = resp_content
 
-                filename = expectation_plot_url.split('/')[-1]
+                expectation_plot_urls = results['expectation_value_plots']
 
-                print("Save filename for this image is " + filename)
+                print("We have to fetch the following URLs: " + ', \n'.join(expectation_plot_urls))
 
+                for expectation_plot_url in expectation_plot_urls:
+
+                    print("Fetching image for calculation results at " + expectation_plot_url)
+
+                    filename = expectation_plot_url.split('/')[-1]
+
+                    print("Save filename for this image is " + filename)
+
+                    save_directory = MEDIA_ROOT + calculation_id + '/'
+
+                    print("Save directory = " + save_directory)
+
+                    if not os.path.exists(save_directory):
+                        print("Creating directory " + save_directory)
+                        os.makedirs(save_directory)
+
+                    save_filename = save_directory + filename
+
+                    print("Saving to " + save_filename)
+
+                    urllib.urlretrieve(expectation_plot_url, save_filename)
+
+                # Now fetch the MAT results
+                print results
+                mat_results_url = results['mat_results_URL']
+                print("Fetching MAT results for calculation results at " + expectation_plot_url)
+                filename = mat_results_url.split('/')[-1]
                 save_directory = MEDIA_ROOT + calculation_id + '/'
-
-                print("Save directory = " + save_directory)
-
-                if not os.path.exists(save_directory):
-                    print("Creating directory " + save_directory)
-                    os.makedirs(save_directory)
-
                 save_filename = save_directory + filename
-
                 print("Saving to " + save_filename)
-
-                urllib.urlretrieve(expectation_plot_url, save_filename)
-
-            # Now fetch the MAT results
-            print results
-            mat_results_url = results['mat_results_URL']
-            print("Fetching MAT results for calculation results at " + expectation_plot_url)
-            filename = mat_results_url.split('/')[-1]
-            save_directory = MEDIA_ROOT + calculation_id + '/'
-            save_filename = save_directory + filename
-            print("Saving to " + save_filename)
-            urllib.urlretrieve(mat_results_url, save_filename)
+                urllib.urlretrieve(mat_results_url, save_filename)
 
 @api_view(['GET'])
 def calculations(request):

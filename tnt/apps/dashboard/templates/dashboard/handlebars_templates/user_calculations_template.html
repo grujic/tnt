@@ -32,6 +32,15 @@
 
     });
 
+    Handlebars.registerHelper("render_log_output", function(status, log) {
+        if (status == 'running') {
+            return new Handlebars.SafeString("<code>" + log + "</code>");
+        } else {
+            return "";
+        }
+    }
+    );
+
     Handlebars.registerHelper("render_action_button", function(status, calculation_id) {
 
         if (status == 'running') {
@@ -114,7 +123,7 @@
             	</div>
 
             	<div class="col-md-6">
-                    <code>This text is meant to be treated as sample output from a computer program.</code>
+                    {{render_log_output meta_info.status meta_info.log}}
             	</div>
 
             </div>
