@@ -1220,6 +1220,10 @@ var tnt = {
 	// Following is a list of functions that verify data input and also set up the various data input panels for a new calculation
 	initialise_new_calculation_basic_setup_step: function () {
         tnt.scroll_to_top();
+
+        //$("#progress_basic").removeClass("progtrckr-todo");
+        //$("#progress_basic").addClass("progtrckr-current");
+
         // Pull in info on available calculation templates
         $.get(
             '/api/v1.0/calculation_templates',
@@ -1435,6 +1439,9 @@ var tnt = {
 		//
         tnt.scroll_to_top();
 
+        //$("#progress_ground").removeClass("progtrckr-todo");
+        //$("#progress_ground").addClass("progtrckr-current");
+
 		tnt.render_available_hamiltonian_operators(
             parseInt(window.calculation.setup.system.number_conservation.ground.apply_qn),
             "#new_calculation_available_ground_hamiltonian_operators",
@@ -1633,6 +1640,9 @@ var tnt = {
 		//
 		tnt.clear_all_new_calculation_stages();
         tnt.scroll_to_top();
+
+        //$("#progress_ground").removeClass("progtrckr-todo");
+        //$("#progress_ground").addClass("progtrckr-current");
 
         // Initialise the precision dropdown
         //
@@ -2083,10 +2093,10 @@ var tnt = {
             tnt.initialise_new_calculation_expectation_operators();
 
             $("#progress_initial").removeClass("progtrckr-todo");
-            $("#progress_initial").addClass("progtrckr-done");
+            $("#progress_initial").addClass("progtrckr-skipped");
 
             $("#progress_dynamics").removeClass("progtrckr-todo");
-            $("#progress_dynamics").addClass("progtrckr-done");
+            $("#progress_dynamics").addClass("progtrckr-skipped");
 		}
 
 	},
