@@ -781,15 +781,19 @@ var tnt = {
 	render_available_expectation_operators: function () {
 		// render the available expectation value operators
 
-		window.expectation_operators = {
-			'operators':
-			_.filter(
-				window.all_operators.operators,
-				function (el) {
-					return (el['use_for_expectation'] == true)
-				}
-			)
-		};
+        // We only want to display the Hamiltonian as a choice if
+        // we're calculating time evolution
+        if (tnt.get_calculate_time_evolution() == 0) {
+            window.expectation_operators =
+                {'operators':
+                    _.filter(
+                        window.expectation_operators.operators,
+                        function (el) {
+                            return el['operator_id'] > 0;
+                        }
+                    )
+                };
+        }
 
         // Now check if number conservation is being enforced (ground AND dynamic)
         if ( (parseInt(tnt.get_apply_ground_qn() ) == 1)
@@ -1407,6 +1411,16 @@ var tnt = {
 							}
 						)
 					};
+
+                window.expectation_operators = {
+                    'operators':
+                    _.filter(
+                        window.all_operators.operators,
+                        function (el) {
+                            return (el['use_for_expectation'] == true)
+                        }
+                    )
+                };
 
 			}
 		).done(function () {
