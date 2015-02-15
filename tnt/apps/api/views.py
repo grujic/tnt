@@ -8,7 +8,6 @@ import requests
 
 import glob
 
-
 from tnt.settings import \
     bose_base_url, \
     json_results_relative_dir, \

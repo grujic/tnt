@@ -1309,6 +1309,24 @@ var tnt = {
 
 	},
 
+    update_spatial_functions: function() {
+        // Update sys size dependent spatial functions
+        var L = tnt.get_system_size();
+        _.each(
+            window.spatial_fns.fns,
+            function(fn) {
+                _.each(
+                    fn.parameters,
+                    function(parameter) {
+                        if (_.has(parameter, "parameter_default_dynamic_value")) {
+                            parameter["parameter_default_value"] = eval(parameter["parameter_default_dynamic_value"]);
+                        }
+                    }
+                )
+            }
+        );
+    },
+
 	validate_new_calculation_basic_setup_step: function () {
 		//
 
@@ -1325,6 +1343,9 @@ var tnt = {
 		var system_size = parseInt($("#system_size_choice").val());	// How many sites?
 
         tnt.set_system_size(system_size);
+
+        // Update any spatial function parameters that depend on system size
+        tnt.update_spatial_functions();
 
 		// Now process any extra info to do with the system type
 		if (system_type == "spin") {

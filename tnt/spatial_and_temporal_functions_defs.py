@@ -88,10 +88,11 @@ fns = \
 			'parameter_tex_str': 'j_c', \
 			'parameter_name': 'Centre', \
 			'value': None, \
-			'parameter_default_value': 5
+			'parameter_default_value': 5, \
+            'parameter_default_dynamic_value': "Math.floor(L/2) + 1"
 		}]
 	},
-	
+
 	# Gaussian
 	{
         'id': 8, \
@@ -113,7 +114,8 @@ fns = \
             'parameter_tex_str': 'j_c', \
             'parameter_name': 'Centre', \
             'value': None, \
-            'parameter_default_value': 5
+            'parameter_default_value': 5, \
+            'parameter_default_dynamic_value': "Math.floor(L/2) + 1"
         },{
             'parameter_id': 3, \
             'parameter_tex_str': 'w', \
@@ -181,7 +183,8 @@ fns = \
 			'parameter_tex_str': 'j_s', \
 			'parameter_name': 'Step position', \
 			'value': None, \
-			'parameter_default_value': 5
+			'parameter_default_value': 5, \
+            'parameter_default_dynamic_value': "Math.floor(L/2) + 1"
 		}]
 	},
 
@@ -237,7 +240,8 @@ fns = \
 			'parameter_tex_str': 'j_c', \
 			'parameter_name': 'Centre', \
 			'value': None, \
-			'parameter_default_value': 5
+			'parameter_default_value': 5, \
+            'parameter_default_dynamic_value': "Math.floor(L/2) + 1"
 		}]
 	}
 ]
