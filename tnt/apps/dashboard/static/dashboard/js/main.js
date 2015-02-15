@@ -495,6 +495,7 @@ var tnt = {
                     hamiltonian_term_container_selector,
                     no_terms_yet_warning_selector,
                     next_calculation_stage_btn_selector,
+                    tnt.update_hamiltonian_tex_str,
                     hamiltonian_tex_str_el,
                     display_temporal_info,
                     true
@@ -517,14 +518,7 @@ var tnt = {
             // sum_or_product is 'sum' or 'product'
 
             // First check which ones comply with QN
-            var dynamic_qn =
-                window
-                .calculation
-                .setup
-                .system
-                .number_conservation
-                .dynamic
-                .apply_qn;
+            var dynamic_qn = tnt.get_apply_dynamic_qn();
 
             var cloned_initial_state_modifiers =
                 _.cloneDeep(
@@ -578,10 +572,17 @@ var tnt = {
                         $(where_to_render).closest('.initial_state_modifier_sum_or_product').find('.initial_state_modifier_operators_terms'),
                         '',
                         '',
-                        '',
+                        tnt.update_initial_state_modifiers_tex_str,
+                        "#initial_state_modifiers_tex_str",
                         false,
                         true
                     );
+
+                    tnt.update_initial_state_modifiers_tex_str(
+                        "#initial_state_modifier_container",
+                        "#initial_state_modifiers_tex_str"
+                    );
+
                 });
 
 
@@ -641,6 +642,9 @@ var tnt = {
                         hamiltonian_term_container_selector,
                         hamiltonian_tex_str_el
                     );
+
+                    // Cheating - this should not be called every time! But it works...
+                    tnt.update_initial_state_modifiers_tex_str("#initial_state_modifier_container", "#initial_state_modifiers_tex_str");
 
 				}
 			);
@@ -858,6 +862,7 @@ var tnt = {
                                    term_container_selector,
                                    no_terms_yet_warning_selector,
                                    next_calculation_stage_btn_selector,
+                                   update_tex_str_fn,
                                    hamiltonian_tex_str_el,
                                    include_temporal_function,
                                    update_tex_str ) {
@@ -923,7 +928,7 @@ var tnt = {
 
         // Update Hamiltonian str if required
         if (update_tex_str == true) {
-            tnt.update_hamiltonian_tex_str(
+            update_tex_str_fn(
                 term_container_selector,
                 hamiltonian_tex_str_el
             );
@@ -980,9 +985,59 @@ var tnt = {
 
         $(tex_str_el).html(tex_str);
 
-        tnt.render_mathjax_in_element_with_id("initial_state_modifiers_tex_str");
+        // Now update tex strings inside each modifier box
+        _.each(
+            $(".initial_state_modifier_sum_or_product"),
+            function (el) {
+                var sum_or_product = $(el).data("sum-or-product");
+                var fns_tex_str = "\\( = ";
+                if (sum_or_product == 'sum') {
+                    var prefix = '\\sum_{j=0}^{L-1} ';
+                } else if (sum_or_product == 'product') {
+                    var prefix = '\\prod_{j=0}^{L-1} ';
+                }
+
+                fns_tex_str += prefix;
+
+                _.each(
+                    $(el).find(".initial_state_modifier_operators_terms .hamiltonian-term"),
+                    function(term) {
+                        var operator_id = $(term).data("hamiltonian-operator-id");
+                        var operator = tnt.get_hamiltonian_operator(operator_id);
+                        var term_index = $(term).data("index");
+                        var operator_tex_str = operator['function_tex_str'];
+                        if (sum_or_product == 'sum') {
+                            var postfix = ' + f_{' + term_index + '} (j) ' + operator_tex_str;
+                        } else if (sum_or_product == 'product') {
+                            var postfix = operator_tex_str + '^{f_{' + term_index + '} (j) }';
+                        }
+                        fns_tex_str += postfix;
+                    }
+                );
+                fns_tex_str += "\\)";
+                //fns_tex_str = fns_tex_str.replace(/\\/g, "\\\\");
+                console.log(fns_tex_str);
+                $(el).find(".modifier_fns_tex_str").html(fns_tex_str);
+            }
+        );
+
+        tnt.render_mathjax();
 
     },
+
+    //update_base_state_modifier_tex_str: function(
+        //term_container_selector,
+        //tex_str_el) {
+        //// Update a tex string showing what the modifier is made up of
+        //var tex_str = "\\(";   // init
+
+
+
+        //tex_str += "\\)";
+
+        //$(tex_str_el).html(tex_str);
+        //tnt.render_mathjax_in_element_with_id("initial_state_modifiers_tex_str");
+    //},
 
     update_hamiltonian_tex_str: function(
         hamiltonian_term_container_selector,
@@ -1500,6 +1555,7 @@ var tnt = {
                     "#ground_hamiltonian_terms_container",
                     "#no_ground_hamiltonian_terms_added_yet_warning",
                     "#new_calculation_define_ground_hamiltonian .btn-next-step",
+                    tnt.update_hamiltonian_tex_str,
                     "#ground_hamiltonian_tex_str",
                     false,
                     true
@@ -2168,6 +2224,7 @@ var tnt = {
                     $(where_to_render_modifier_operator_terms),
                     '',
                     '',
+                    tnt.update_hamiltonian_tex_str,
                     '',
                     false,
                     true
