@@ -25,7 +25,7 @@
 
     <div class="row">
     
-    <div id="basic_qn_ground" class="col-md-6 col-sm-12">
+    <div id="basic_qn_expec" class="col-md-6 col-sm-12">
 
         <div id="basic_info">
             <h4>Basic system information</h4>
@@ -53,7 +53,7 @@
                     </tr>
                     {{#if setup.system.calculate_ground_state}}
                     <tr>
-                        <th class="text-nowrap" scope="row">Calclate ground state?</th>
+                        <th class="text-nowrap" scope="row">Calculate ground state?</th>
                         <td>Yes</td>
                     </tr>
                     {{#if setup.system.number_conservation.ground.apply_qn}}
@@ -100,6 +100,58 @@
             </table>
         </div> <!-- end of div for basic info -->
         <br>
+        <div id="expec_info">
+
+            <h4>Expectation values</h4>
+            <table class="table table-striped table-bordered">
+                <tbody>
+                {{#if setup.system.calculate_time_evolution}}
+                    <tr>
+                        {{#if setup.system.calculate_ground_state}}
+                        <th class="text-nowrap" scope="row">Calculate overlap with ground state?</th>
+                        {{#if setup.expectation_values.calculate_overlap_with_ground}}
+                        <td>Yes</td>
+                        {{else}}
+                        <td>No</td>
+                        {{/if}}
+                        {{/if}}
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Calculate overlap with initial state?</th>
+                        {{#if setup.expectation_values.calculate_overlap_with_intial}}
+                        <td>Yes</td>
+                        {{else}}
+                        <td>No</td>
+                        {{/if}}
+                    </tr>
+                  {{/if}}
+                    <tr>
+                        <th class="text-nowrap" scope="row">Single site operators</th>
+                        <td>
+                        <ul>
+                        {{#setup.expectation_values.operators}}
+                        <li>\( {{this.function_tex_str}} \)</li>
+                        {{/setup.expectation_values.operators}}
+                        </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Two site operators</th>
+                        <td>
+                        <ul>
+                        {{#setup.expectation_values.operators}}
+                        <li>\( {{this.function_tex_str}} \)</li>
+                        {{/setup.expectation_values.operators}}
+                        </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> <!-- end of div for expectation values -->
+        </div> <!-- end of LH div -->
+        
+        
+        <div id="hamils" class="col-md-6 col-sm-12">
         {{#if setup.system.calculate_ground_state}}
         <div id="ground_ham_info">
 
@@ -130,10 +182,7 @@
             </table>
         </div>  <!-- end of div for ground ham info -->
         {{/if}}
-        </div> <!-- end of LH div -->
-        
-        
-        <div id="expec_and_time" class="col-md-6 col-sm-12">
+        <br>
         {{#if setup.system.calculate_time_evolution}}
         <div id="time_info">
 
@@ -199,45 +248,7 @@
 
         </div> <!-- end of div for dynamic ham info -->
         {{/if}}
-        <br>
-        <div id="expec_info">
-
-            <h4>Expectation values</h4>
-            <table class="table table-striped table-bordered">
-                <tbody>
-                {{#if setup.system.calculate_time_evolution}}
-                    <tr>
-                        {{#if setup.system.calculate_ground_state}}
-                        <th class="text-nowrap" scope="row">Calculate overlap with ground state?</th>
-                        {{#if setup.expectation_values.calculate_overlap_with_ground}}
-                        <td>Yes</td>
-                        {{else}}
-                        <td>No</td>
-                        {{/if}}
-                        {{/if}}
-                    </tr>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Calculate overlap with initial state?</th>
-                        {{#if setup.expectation_values.calculate_overlap_with_intial}}
-                        <td>Yes</td>
-                        {{else}}
-                        <td>No</td>
-                        {{/if}}
-                    </tr>
-                  {{/if}}
-                    <tr>
-                        <th class="text-nowrap" scope="row">Operators</th>
-                        <td>
-                        <ul>
-                        {{#setup.expectation_values.operators}}
-                        <li> {{@index}} = \( {{function_tex_str}} \) </li>
-                        {{/setup.expectation_values.operators}}
-                        </ul>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div> <!-- end of div for expectation values -->
+        
         </div> <!-- end of div for RH col -->
         
 
