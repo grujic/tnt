@@ -130,7 +130,9 @@
                         <td>
                         <ul>
                         {{#setup.expectation_values.operators}}
+                        {{#unless this.two_site}}
                         <li>\( {{this.function_tex_str}} \)</li>
+                        {{/unless}}
                         {{/setup.expectation_values.operators}}
                         </ul>
                         </td>
@@ -140,7 +142,9 @@
                         <td>
                         <ul>
                         {{#setup.expectation_values.operators}}
-                        <li>\( {{this.function_tex_str}} \)</li>
+                        {{#if this.two_site}}
+                        <li>\( {{this.function_tex_str}} \) for {{this.exp_val_type}}</li>
+                        {{/if}}
                         {{/setup.expectation_values.operators}}
                         </ul>
                         </td>
