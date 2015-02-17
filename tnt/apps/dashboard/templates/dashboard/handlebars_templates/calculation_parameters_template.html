@@ -28,7 +28,7 @@
     <div id="basic_qn_ground" class="col-md-6 col-sm-12">
 
         <div id="basic_info">
-            <h4>Basic info</h4>
+            <h4>Basic system information</h4>
             <table class="table table-striped table-bordered">
                 <!--<thead>-->
                     <!--<th></th>-->
@@ -51,14 +51,51 @@
                         <th class="text-nowrap" scope="row">Truncation parameter \( \chi \)</th>
                         <td>{{setup.system.chi}}</td>
                     </tr>
+                    {{#if setup.system.calculate_ground_state}}
                     <tr>
-                        <th class="text-nowrap" scope="row">Ground state?</th>
-                        <td>{{setup.system.calculate_ground_state}}</td>
+                        <th class="text-nowrap" scope="row">Calclate ground state?</th>
+                        <td>Yes</td>
+                    </tr>
+                    {{#if setup.system.number_conservation.ground.apply_qn}}
+                    <tr>
+                        <th class="text-nowrap" scope="row">Number conservation for ground state?</th>
+                        <td>Yes</td>
                     </tr>
                     <tr>
-                        <th class="text-nowrap" scope="row">Time evolution?</th>
-                        <td>{{setup.system.calculate_time_evolution}}</td>
+                        <th class="text-nowrap" scope="row">Ground state number</th>
+                        <td>{{setup.system.number_conservation.ground.qn}}</td>
                     </tr>
+                    {{else}}
+                    <tr>
+                        <th class="text-nowrap" scope="row">Number conservation for ground state?</th>
+                        <td>No</td>
+                    </tr>
+                    {{/if}}
+                    {{else}}
+                     <tr>
+                        <th class="text-nowrap" scope="row">Calclate ground state?</th>
+                        <td>No</td>
+                    </tr>
+                    {{/if}}
+                    {{#if setup.system.calculate_time_evolution}}
+                    <tr>
+                        <th class="text-nowrap" scope="row">Calculate time evolution?</th>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Number conservation for time-evolved state?</th>
+                        {{#if setup.system.number_conservation.dynamic.apply_qn}}
+                        <td>Yes</td>
+                        {{else}}
+                        <td>No</td>
+                        {{/if}}
+                    </tr>
+                    {{else}}
+                    <tr>
+                        <th class="text-nowrap" scope="row">Calculate time evolution?</th>
+                        <td>No</td>
+                    </tr>
+                    {{/if}}
                 </tbody>
             </table>
         </div> <!-- end of div for basic info -->
