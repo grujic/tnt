@@ -100,31 +100,6 @@
             </table>
         </div> <!-- end of div for basic info -->
         <br>
-        <div id="qn_info">
-
-            <h4>Number conservation info</h4>
-            <table class="table table-striped table-bordered">
-                <!--<thead>-->
-                    <!--<th></th>-->
-                    <!--<th></th>-->
-                <!--</thead>-->
-                <tbody>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Conservation for ground state?</th>
-                        <td>{{setup.system.number_conservation.ground.apply_qn}}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Ground state number</th>
-                        <td>{{setup.system.number_conservation.ground.qn}}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Conservation for time evolution?</th>
-                        <td>{{setup.system.number_conservation.dynamic.apply_qn}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div> <!-- end of div for qn info -->
-        <br>
         {{#if setup.system.calculate_ground_state}}
         <div id="ground_ham_info">
 
@@ -157,9 +132,9 @@
         {{/if}}
         </div> <!-- end of LH div -->
         
+        
+        <div id="expec_and_time" class="col-md-6 col-sm-12">
         {{#if setup.system.calculate_time_evolution}}
-        <div id="all_time_info" class="col-md-6 col-sm-12">
-
         <div id="time_info">
 
             <h4>Time evolution</h4>
@@ -223,8 +198,47 @@
             </table>
 
         </div> <!-- end of div for dynamic ham info -->
-        </div> <!-- end of div for RH col -->
         {{/if}}
+        <br>
+        <div id="expec_info">
+
+            <h4>Expectation values</h4>
+            <table class="table table-striped table-bordered">
+                <tbody>
+                {{#if setup.system.calculate_time_evolution}}
+                    <tr>
+                        {{#if setup.system.calculate_ground_state}}
+                        <th class="text-nowrap" scope="row">Calculate overlap with ground state?</th>
+                        {{#if setup.expectation_values.calculate_overlap_with_ground}}
+                        <td>Yes</td>
+                        {{else}}
+                        <td>No</td>
+                        {{/if}}
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Calculate overlap with initial state?</th>
+                        {{#if setup.expectation_values.calculate_overlap_with_intial}}
+                        <td>Yes</td>
+                        {{else}}
+                        <td>No</td>
+                        {{/if}}
+                    </tr>
+                  {{/if}}
+                    <tr>
+                        <th class="text-nowrap" scope="row">Operators</th>
+                        <td>
+                        <ul>
+                        {{#setup.expectation_values.operators}}
+                        <li> {{@index}} = \( {{function_tex_str}} \) </li>
+                        {{/setup.expectation_values.operators}}
+                        </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> <!-- end of div for expectation values -->
+        </div> <!-- end of div for RH col -->
+        
 
     </div> <!-- end of row div -->
 
