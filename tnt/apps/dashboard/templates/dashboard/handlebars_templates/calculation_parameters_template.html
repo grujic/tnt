@@ -48,6 +48,10 @@
                         <td>{{setup.system.system_size}}</td>
                     </tr>
                     <tr>
+                        <th class="text-nowrap" scope="row">Truncation parameter \( \chi \)</th>
+                        <td>{{setup.system.chi}}</td>
+                    </tr>
+                    <tr>
                         <th class="text-nowrap" scope="row">Ground state?</th>
                         <td>{{setup.system.calculate_ground_state}}</td>
                     </tr>
@@ -84,6 +88,7 @@
             </table>
         </div> <!-- end of div for qn info -->
         <br>
+        {{#if setup.system.calculate_ground_state}}
         <div id="ground_ham_info">
 
             <h4>Ground Hamiltonian terms</h4>
@@ -112,9 +117,10 @@
                 </tbody>
             </table>
         </div>  <!-- end of div for ground ham info -->
-        
+        {{/if}}
         </div> <!-- end of LH div -->
         
+        {{#if setup.system.calculate_time_evolution}}
         <div id="all_time_info" class="col-md-6 col-sm-12">
 
         <div id="time_info">
@@ -181,7 +187,7 @@
 
         </div> <!-- end of div for dynamic ham info -->
         </div> <!-- end of div for RH col -->
-        
+        {{/if}}
 
     </div> <!-- end of row div -->
 
