@@ -13,7 +13,7 @@ operators = \
         'U1_covariant': True, \
 		'complex': False, \
 		'use_for_hamiltonian': False, \
-		'use_for_expectation': False, \
+		'use_for_expectation': True, \
 		'use_for_transform': False, \
 		'two_site': False, \
 		'number_of_terms': 1

@@ -828,6 +828,9 @@ var tnt = {
 				)
 			};
 
+        console.log("Single site expectation operators = ");
+        console.log(single_site_expectation_operators);
+
 		var two_site_expectation_operators =
 			{
 				'operators':
