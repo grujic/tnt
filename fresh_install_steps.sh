@@ -149,9 +149,29 @@ pip install gunicorn
 sudo aptitude install nginx
 sudo service nginx start
 
-# Want to have the master branch of the project in the /webapps/ folder
+# copy over nginx configuration file
+sudo cp nginx_config_tnt /etc/nginx/sites-available/tnt
 
+# Create a symbolic link in the sites-enabled folder:
+sudo ln -s /etc/nginx/sites-available/tnt /etc/nginx/sites-enabled/tnt
+
+# Want to have the master branch of the project in the /webapps/ folder
+cd /webapps/
+
+# Clone repository again here - will be on master branch
 git clone git@github.com:grujic/tnt.git
+
+mkdir -p /webapps/tnt/log/
+touch /webapps/tnt/log/gunicorn_supervisor.log
+
+sudo service nginx restart
+
+# Change back to other folder
+cd ~/tnt/
+
+# Make some static file folders which are excluded from the repo
+mkdir -p ~/tnt/collectedstatic
+mkdir -o /webapps/tnt/tnt/static/
 
 # Start supervisord
 supervisord

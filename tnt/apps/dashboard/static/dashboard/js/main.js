@@ -785,20 +785,6 @@ var tnt = {
 	render_available_expectation_operators: function () {
 		// render the available expectation value operators
 
-        // We only want to display the Hamiltonian as a choice if
-        // we're calculating time evolution
-        if (tnt.get_calculate_time_evolution() == 0) {
-            window.expectation_operators =
-                {'operators':
-                    _.filter(
-                        window.expectation_operators.operators,
-                        function (el) {
-                            return el['operator_id'] > 0;
-                        }
-                    )
-                };
-        }
-
         // Now check if number conservation is being enforced (ground AND dynamic)
         if ( (parseInt(tnt.get_apply_ground_qn() ) == 1)
              &&
@@ -2532,6 +2518,7 @@ var tnt = {
         if (tnt.get_calculate_time_evolution() == 1)
         {
             $("#calculate_overlap_with_initial_state_choice_div").css("display", "block");
+            $("#calculate_dynamic_energy_choice_div").css("display", "block");
 
             if (tnt.get_calculate_ground_state() == 1) {
                 $("#calculate_overlap_with_ground_state_choice_div").css("display", "block");
@@ -2542,6 +2529,7 @@ var tnt = {
         } else {
             $("#calculate_overlap_with_initial_state_choice_div").css("display", "none");
             $("#calculate_overlap_with_ground_state_choice_div").css("display", "none");
+            $("#calculate_dynamic_energy_choice_div").css("display", "none");
         }
 
 		tnt.render_available_expectation_operators();
@@ -2599,6 +2587,8 @@ var tnt = {
 	validate_new_calculation_expectation_operators: function () {
 		// Check that everything's OK and add the selected exp vals into the calculation JSON structure
 
+        window.calculation.setup.expectation_values.calculate_dynamic_energy = 0;
+
         // Check if we want to calculate overlap with ground state:
         if (tnt.get_calculate_ground_state() == 1) {
             window
@@ -2615,6 +2605,13 @@ var tnt = {
             .setup
             .expectation_values
             .calculate_overlap_with_initial = $("#calculate_overlap_with_initial_state_choice .btn.active input").data("overlap-choice");
+
+            window
+            .calculation
+            .setup
+            .expectation_values
+            .calculate_dynamic_energy = $("#calculate_dynamic_energy_choice_div .btn.active input").data("dynamic-energy-choice");
+
         }
 
 		var selected_expectation_operator_ids = _.map(
