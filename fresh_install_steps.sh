@@ -7,7 +7,15 @@
 # Connect to the EC2 machine like: 
 # ssh -i tnt.pem ubuntu@ec2-54-78-145-48.eu-west-1.compute.amazonaws.com
 
+# Get this file like
+# cd ~
+# wget https://raw.githubusercontent.com/grujic/tnt/dev/fresh_install_steps.sh
+# chmod u+x fresh_install_steps.sh
+
 sudo apt-get update
+
+# 
+sudo apt-get install screen
 
 # Get the text editor vim, for convenience
 sudo apt-get -y install vim
@@ -38,6 +46,8 @@ cat ~/.ssh/id_rsa.pub
 echo "" 
 cd ~
 git clone git@github.com:grujic/tnt.git
+
+git checkout dev
 
 # Let's get pip, the python package manager
 wget https://bootstrap.pypa.io/get-pip.py
@@ -114,6 +124,9 @@ GRANT ALL PRIVILEGES ON DATABASE tnt_database TO tnt;
 # Exit the interactive prompt
 \q
 
+# Go back to the ubuntu user shell
+exit
+
 # Create initial database tables: 
 python manage.py syncdb
 
@@ -132,6 +145,9 @@ sudo chown -R ubuntu /webapps/
 
 # Install dedicated application server called gunicorn
 pip install gunicorn
+
+sudo aptitude install nginx
+sudo service nginx start
 
 # Want to have the master branch of the project in the /webapps/ folder
 
