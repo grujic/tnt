@@ -188,7 +188,6 @@
 
 	$("#sidebar_examples").addClass("active");
     
-    function(data) {
     $('#myModal').on('show.bs.modal', function (event) {
         var img_link = $(event.relatedTarget); // Button that triggered the modal
         var url = img_link.data('url'); // Extract info from data-* attributes
@@ -197,7 +196,6 @@
         var modal = $(this);
         modal.find('.modal-body').html("<img src='" + url + "' class='img-responsive'>");
     });
-    }
 
 </script>
 
