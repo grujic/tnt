@@ -3,13 +3,13 @@
 <script id="results-img-array-template" type="text/x-handlebars-template"> 
 
     {{#url_data}}
+    <div class="col-xs-6 col-md-3">
+        <a href="#" class="thumbnail" data-toggle="modal" data-target="#myModal" data-url="{{url}}">
 
-        <a href="#" class="expval-img-thumbnail" data-toggle="modal" data-target="#myModal" data-url="{{url}}">
-
-            <img src="{{url}}" class='img-responsive col-md-6'>
+            <img src="{{url}}" class="img-responsive">
 
         </a>
-
+    </div>
     {{/url_data}}
 
 </script>
