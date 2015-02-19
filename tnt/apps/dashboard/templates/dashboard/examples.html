@@ -37,22 +37,22 @@
       <div class="row">
       <div class="col-xs-6 col-md-3">
       <a href="#" class="thumbnail" class="expval-img-thumbnail" data-toggle="modal" data-target="#myModal" data-url="/static/dashboard/img/examples/heisenberg_S_1_gs.png">
-      <img src="/static/dashboard/img/examples/heisenberg_S_1_gs.png" alt="Ground state expectation value of magnetisation">
+      <img src="/static/dashboard/img/examples/heisenberg_S_1_gs.png" alt="Ground state expectation value of magnetisation" class="img-responsive">
       </a>
       </div>
       <div class="col-xs-6 col-md-3">
       <a href="#" class="thumbnail" class="expval-img-thumbnail" data-toggle="modal" data-target="#myModal" data-url="/static/dashboard/img/examples/heisenberg_S_1_evolved.png">
-      <img src="/static/dashboard/img/examples/heisenberg_S_1_evolved.png" alt="Time-evolved expectation value of magnetisation">
+      <img src="/static/dashboard/img/examples/heisenberg_S_1_evolved.png" alt="Time-evolved expectation value of magnetisation" class="img-responsive">
       </a>
       </div>
       <div class="col-xs-6 col-md-3">
       <a h<a href="#" class="thumbnail" class="expval-img-thumbnail" data-toggle="modal" data-target="#myModal" data-url="/static/dashboard/img/examples/heisenberg_S_1_overlap_is.png">
-      <img src="/static/dashboard/img/examples/heisenberg_S_1_overlap_is.png" alt="Overlap between initial state and evolved state">
+      <img src="/static/dashboard/img/examples/heisenberg_S_1_overlap_is.png" alt="Overlap between initial state and evolved state" class="img-responsive">
       </a>
       </div>
       <div class="col-xs-6 col-md-3">
       <a href="#" class="thumbnail" class="expval-img-thumbnail" data-toggle="modal" data-target="#myModal" data-url="/static/dashboard/img/examples/heisenberg_S_1_truncerr.png">
-      <img src="/static/dashboard/img/examples/heisenberg_S_1_truncerr.png" alt="Truncation error as a function of time">
+      <img src="/static/dashboard/img/examples/heisenberg_S_1_truncerr.png" alt="Truncation error as a function of time" class="img-responsive">
       </a>
       </div>
       </div>
@@ -86,17 +86,17 @@
       <div class="row">
       <div class="col-xs-6 col-md-4">
       <a href="#" class="thumbnail" class="expval-img-thumbnail" data-toggle="modal" data-target="#myModal" data-url="/static/dashboard/img/examples/domain_wall_0.5.png">
-      <img src="/static/dashboard/img/examples/domain_wall_0.5.png" alt="Evolution under XXZ Hamiltonian">
+      <img src="/static/dashboard/img/examples/domain_wall_0.5.png" alt="Evolution under XXZ Hamiltonian" class="img-responsive">
       </a>
       </div>
       <div class="col-xs-6 col-md-4">
       <a href="#" class="thumbnail" class="expval-img-thumbnail" data-toggle="modal" data-target="#myModal" data-url="/static/dashboard/img/examples/domain_wall_1.png">
-      <img src="/static/dashboard/img/examples/domain_wall_1.png" alt="Evolution under XXZ Hamiltonian">
+      <img src="/static/dashboard/img/examples/domain_wall_1.png" alt="Evolution under XXZ Hamiltonian" class="img-responsive">
       </a>
       </div>
       <div class="col-xs-6 col-md-4">
       <a href="#" class="thumbnail" class="expval-img-thumbnail" data-toggle="modal" data-target="#myModal" data-url="/static/dashboard/img/examples/domain_wall_2.png">
-      <img src="/static/dashboard/img/examples/domain_wall_2.png" alt="Evolution under XXZ Hamiltonian">
+      <img src="/static/dashboard/img/examples/domain_wall_2.png" alt="Evolution under XXZ Hamiltonian" class="img-responsive">
       </a>
       </div>
       </div>
@@ -125,22 +125,22 @@
     <div class="row">
     <div class="col-xs-6 col-md-3">
     <a href="#" class="thumbnail" class="expval-img-thumbnail" data-toggle="modal" data-target="#myModal" data-url="/static/dashboard/img/examples/sfdensity_10.png">
-    <img src="/static/dashboard/img/examples/sfdensity_10.png" alt="Density with J/U=10">
+    <img src="/static/dashboard/img/examples/sfdensity_10.png" alt="Density with J/U=10" class="img-responsive">
     </a>
     </div>
     <div class="col-xs-6 col-md-3">
     <a href="#" class="thumbnail" class="expval-img-thumbnail" data-toggle="modal" data-target="#myModal" data-url="/static/dashboard/img/examples/sfspdm_10.png">
-    <img src="/static/dashboard/img/examples/sfspdm_10.png" alt="Single particle density matrix with J/U=10">
+    <img src="/static/dashboard/img/examples/sfspdm_10.png" alt="Single particle density matrix with J/U=10" class="img-responsive">
     </a>
     </div>
     <div class="col-xs-6 col-md-3">
     <a href="#" class="thumbnail" class="expval-img-thumbnail" data-toggle="modal" data-target="#myModal" data-url="/static/dashboard/img/examples/sfdensity_third.png">
-    <img src="/static/dashboard/img/examples/sfdensity_third.png" alt="Density with J/U=1/3">
+    <img src="/static/dashboard/img/examples/sfdensity_third.png" alt="Density with J/U=1/3" class="img-responsive">
     </a>
     </div>
     <div class="col-xs-6 col-md-3">
     <a href="#" class="thumbnail" class="expval-img-thumbnail" data-toggle="modal" data-target="#myModal" data-url="/static/dashboard/img/examples/sfspdm_third.png">
-    <img src="/static/dashboard/img/examples/sfspdm_third.png" alt="Single particle density matrix with J/U=1/3">
+    <img src="/static/dashboard/img/examples/sfspdm_third.png" alt="Single particle density matrix with J/U=1/3" class="img-responsive">
     </a>
     </div>
     </div>
@@ -187,6 +187,15 @@
 <script>
 
 	$("#sidebar_examples").addClass("active");
+    
+    $('#myModal').on('show.bs.modal', function (event) {
+        var img_link = $(event.relatedTarget); // Button that triggered the modal
+        var url = img_link.data('url'); // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this);
+        modal.find('.modal-body').html("<img src='" + url + "' class='img-responsive'>");
+    }
 
 </script>
 
