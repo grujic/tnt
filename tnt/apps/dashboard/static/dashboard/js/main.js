@@ -981,36 +981,47 @@ var tnt = {
                 var sum_or_product = $(el).data("sum-or-product");
                 var fns_tex_str = "\\( = ";
                 if (sum_or_product == 'sum') {
-                    var prefix = '\\sum_{j=0}^{L-1} ';
+                    var prefix = '\\sum_{j=0}^{L-1} \\left (';
                 } else if (sum_or_product == 'product') {
                     var prefix = '\\prod_{j=0}^{L-1} ';
                 }
 
                 fns_tex_str += prefix;
 
+                var term_count
+
                 _.each(
                     $(el).find(".initial_state_modifier_operators_terms .hamiltonian-term"),
-                    function(term) {
+                    function(term, term_count) {
                         var operator_id = $(term).data("hamiltonian-operator-id");
                         var operator = tnt.get_hamiltonian_operator(operator_id);
                         var term_index = $(term).data("index");
                         var operator_tex_str = operator['function_tex_str'];
+                        var postfix = '';
                         if (sum_or_product == 'sum') {
-                            var postfix = ' + f_{' + term_index + '} (j) ' + operator_tex_str;
+                            if (term_count > 0) {
+                                postfix += ' + ';
+                            }
+                            postfix += ' f_{' + term_index + '} (j) ' + operator_tex_str;
                         } else if (sum_or_product == 'product') {
-                            var postfix = operator_tex_str + '^{f_{' + term_index + '} (j) }';
+                            var postfix = '\\left (' + operator_tex_str + '\\right )' + '^{f_{' + term_index + '} (j) }';
                         }
                         fns_tex_str += postfix;
                     }
                 );
-                fns_tex_str += "\\)";
+
+                if (sum_or_product == 'sum') {
+                    fns_tex_str += " \\right ) \\)";
+                } else if (sum_or_product == 'product') {
+                    fns_tex_str += "\\)";
+                }
                 //fns_tex_str = fns_tex_str.replace(/\\/g, "\\\\");
                 console.log(fns_tex_str);
                 $(el).find(".modifier_fns_tex_str").html(fns_tex_str);
             }
         );
 
-        tnt.render_mathjax();
+        tnt.render_mathjax_in_element_with_id("#new_calculation_initial_state");
 
     },
 
