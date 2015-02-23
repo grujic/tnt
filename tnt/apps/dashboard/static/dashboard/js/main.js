@@ -95,7 +95,6 @@ var tnt = {
 
 	render_mathjax: function () {
         MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-        $('[data-toggle="popover"]').popover();
 	},
 
 	render_mathjax_in_element_with_id: function (el_id) {
@@ -103,7 +102,6 @@ var tnt = {
             el_id = el_id.slice(1, el_id.length);
         }
         MathJax.Hub.Queue(["Typeset",MathJax.Hub, el_id]);
-        $('[data-toggle="popover"]').popover();
 	},
 
     set_up_numeric_range_dropdown: function(dropdown_id, dropdown_min, dropdown_max, dropdown_default) {

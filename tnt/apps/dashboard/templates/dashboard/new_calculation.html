@@ -42,7 +42,11 @@
     $("#sidebar_new_calculation").addClass("active");
 
     // Initialise popovers
-    $('[data-toggle="popover"]').popover();
+    $('[data-toggle="popover"]')
+        .click(function() {
+            $(this).popover().popover("show");
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+        });
 
   </script>
 
