@@ -2250,6 +2250,20 @@ var tnt = {
             }
         );
 
+        $('.initial_state_modifier_sum_or_product .remove-all-terms-btn').unbind();
+        $('.initial_state_modifier_sum_or_product .remove-all-terms-btn')
+            .click(function() {
+                $(this)
+                .closest('.initial_state_modifier_sum_or_product')
+                .find('.initial_state_modifier_operators_terms').empty();
+
+                tnt.update_initial_state_modifiers_tex_str(
+                    '#initial_state_modifier_container',
+                    "#initial_state_modifiers_tex_str"
+                );
+            }
+        );
+
         tnt.update_initial_state_modifiers_tex_str(
             '#initial_state_modifier_container',
             "#initial_state_modifiers_tex_str"

@@ -5,7 +5,7 @@ initial_base_states_list = \
 	# Use the calculated ground state as the initial state
 	{
 		'initial_base_state_id': 0, \
-		'function_tex_str': '|\Psi_{\rm ground} >', \
+		'function_tex_str': '|\Psi_{ground} >', \
 		'function_description': 'Ground state', \
 		'system_type': 'all'
 	},
