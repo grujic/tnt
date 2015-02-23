@@ -2432,10 +2432,9 @@ var tnt = {
             }
         }
 
-        product_str += '| \\Psi_{\\rm base}';
+        product_str += '| \\Psi_{\\rm base} \\rangle';
 
         window.calculation.setup.initial_state.tex_strs.product_str = product_str;
-        console.log(product_str);
 
         $("#progress_initial").removeClass("progtrckr-todo");
         $("#progress_initial").addClass("progtrckr-done");
