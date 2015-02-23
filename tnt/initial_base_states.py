@@ -5,10 +5,10 @@ initial_base_states_list = \
 	# Use the calculated ground state as the initial state
 	{
 		'initial_base_state_id': 0, \
-		'function_tex_str': '|\Psi >', \
+		'function_tex_str': '|\Psi_{\rm ground} >', \
 		'function_description': 'Ground state', \
 		'system_type': 'all'
-	}, 
+	},
 
 	# Spin system - all spins down
 	{
@@ -16,7 +16,7 @@ initial_base_states_list = \
 		'function_tex_str': "| 	\downarrow \downarrow \cdots \downarrow >", \
 		'function_description': 'All spins down', \
 		'system_type': 'spin'
-	}, 
+	},
 
 	# Spin system - all spins up
 	{
@@ -25,30 +25,30 @@ initial_base_states_list = \
 		'function_description': 'All spins up', \
 		'system_type': 'spin'
 	},
-	
+
 	# Spin system - alternating spins
 	{
 		'initial_base_state_id': 4, \
 		'function_tex_str': '| 	\uparrow \downarrow \uparrow \downarrow \cdots \uparrow \downarrow >', \
 		'function_description': 'Alternating spins', \
 		'system_type': 'spin'
-	}, 
-	
+	},
+
 	# Boson system - all sites occupied
 	{
 		'initial_base_state_id': 5, \
 		'function_tex_str': "| 	1 1 \cdots 1 >", \
 		'function_description': 'All sites occupied', \
 		'system_type': 'bosonic'
-	}, 
-	
+	},
+
 	# Boson system - vacuum
 	{
 		'initial_base_state_id': 6, \
 		'function_tex_str': "| 	0 0 \cdots 0 >", \
 		'function_description': 'All sites unoccupied', \
 		'system_type': 'bosonic'
-	}, 
-	
+	},
+
 
 ]
