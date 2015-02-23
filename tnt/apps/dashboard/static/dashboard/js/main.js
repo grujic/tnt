@@ -1971,13 +1971,9 @@ var tnt = {
 
         tnt.ground_state_page_first_visit = false;  // If we come back to this page, some behaviour is disabled
 
-		window
-		.calculation
-		.setup
-		.system
-		.calculate_ground_state = calculate_ground_state;
+        tnt.set_calculate_ground_state(calculate_ground_state);
 
-        if (calculation.setup.system.calculate_ground_state == 1) {
+        if (tnt.get_calculate_ground_state() == 1) {
 
             // Ground state precision:
             var log_ground_state_precision = parseInt($("#input_ground_state_precision_choice").val());
@@ -2007,7 +2003,7 @@ var tnt = {
 		} else  {
 			tnt.initialise_new_calculation_time_evolution();
             $("#progress_ground").removeClass("progtrckr-todo");
-            $("#progress_ground").addClass("progtrckr-done");
+            $("#progress_ground").addClass("progtrckr-skipped");
 		}
 
 	},
@@ -2111,11 +2107,7 @@ var tnt = {
 		var calculate_time_evolution_choice = parseInt($("label.active input", "#time_evolution_choice")
 			.data("calculate-time-evolution"));
 
-		window
-		.calculation
-		.setup
-		.system
-		.calculate_time_evolution = calculate_time_evolution_choice;
+        tnt.set_calculate_time_evolution(calculate_time_evolution_choice);
 
         tnt.time_evolution_page_first_visit = false;  // If we come back to this page, some behaviour is disabled
 
@@ -2161,13 +2153,14 @@ var tnt = {
         $("#time_evolution_parameter_warning_msg").css("display", "none");
 
         $("#progress_time").removeClass("progtrckr-todo");
-        $("#progress_time").addClass("progtrckr-done");
 
 		// We work out what to display next
 		if (calculate_time_evolution_choice == 1) {
 			tnt.initialise_new_calculation_initial_state();
+            $("#progress_time").addClass("progtrckr-done");
 		} else  {
             tnt.initialise_new_calculation_expectation_operators();
+            $("#progress_time").addClass("progtrckr-skipped");
 
             $("#progress_initial").removeClass("progtrckr-todo");
             $("#progress_initial").addClass("progtrckr-skipped");
