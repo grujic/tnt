@@ -43,9 +43,10 @@ echo "TNTgo - Add the following key to the github account:"
 cat ~/.ssh/id_rsa.pub
 
 # Now get the code
-echo "" 
 cd ~
 git clone git@github.com:grujic/tnt.git
+
+cd tnt
 
 git checkout dev
 
@@ -112,7 +113,7 @@ sudo su - postgres
 
 createdb tnt_database
 
-createuser -P
+createuser -P tnt
 
 # At the prompts, create a database user (tnt, tnt)
 
@@ -133,10 +134,11 @@ python manage.py syncdb
 # Running development server:
 python manage.py runserver 0.0.0.0:8000
 
+python manage.py migrate
+
 # Getting the site running under supervisord and nginx setup
 # Loosely following this blog: 
 # http://michal.karzynski.pl/blog/2013/06/09/django-nginx-gunicorn-virtualenv-supervisor/
-
 
 # Make a place to hold the master version of the project
 sudo mkdir -p /webapps/
@@ -171,8 +173,24 @@ cd ~/tnt/
 
 # Make some static file folders which are excluded from the repo
 mkdir -p ~/tnt/collectedstatic
-mkdir -o /webapps/tnt/tnt/static/
+mkdir -p /webapps/tnt/tnt/static/
+
+# Also some results folders
+mkdir -p /webapps/tnt/json_results
+mkdir -p ~/tnt/json_results
 
 # Start supervisord
 supervisord
 sudo supervisorctl reread
+
+sudo rm /etc/nginx/sites-enabled/default
+
+sudo service nginx restart
+
+# Set the development server running in a UNIX screen
+screen -x -R django
+
+python manage.py runserver 0.0.0.0:8000
+
+# To get out of a screen: 
+# Control A - D
