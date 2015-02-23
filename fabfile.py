@@ -7,6 +7,7 @@ def deploy():
     try:
         local("git add -A")
         local("git commit")
+        local("pip freeze > requirements.txt")
     except:
         print("Problem with committing locally, maybe nothing's changed!\n\n")
     local("git push")

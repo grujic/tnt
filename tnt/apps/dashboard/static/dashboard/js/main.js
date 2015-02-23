@@ -785,20 +785,6 @@ var tnt = {
 	render_available_expectation_operators: function () {
 		// render the available expectation value operators
 
-        // We only want to display the Hamiltonian as a choice if
-        // we're calculating time evolution
-        if (tnt.get_calculate_time_evolution() == 0) {
-            window.expectation_operators =
-                {'operators':
-                    _.filter(
-                        window.expectation_operators.operators,
-                        function (el) {
-                            return el['operator_id'] > 0;
-                        }
-                    )
-                };
-        }
-
         // Now check if number conservation is being enforced (ground AND dynamic)
         if ( (parseInt(tnt.get_apply_ground_qn() ) == 1)
              &&
@@ -827,6 +813,9 @@ var tnt = {
 					}
 				)
 			};
+
+        console.log("Single site expectation operators = ");
+        console.log(single_site_expectation_operators);
 
 		var two_site_expectation_operators =
 			{
@@ -992,36 +981,47 @@ var tnt = {
                 var sum_or_product = $(el).data("sum-or-product");
                 var fns_tex_str = "\\( = ";
                 if (sum_or_product == 'sum') {
-                    var prefix = '\\sum_{j=0}^{L-1} ';
+                    var prefix = '\\sum_{j=0}^{L-1} \\left (';
                 } else if (sum_or_product == 'product') {
                     var prefix = '\\prod_{j=0}^{L-1} ';
                 }
 
                 fns_tex_str += prefix;
 
+                var term_count
+
                 _.each(
                     $(el).find(".initial_state_modifier_operators_terms .hamiltonian-term"),
-                    function(term) {
+                    function(term, term_count) {
                         var operator_id = $(term).data("hamiltonian-operator-id");
                         var operator = tnt.get_hamiltonian_operator(operator_id);
                         var term_index = $(term).data("index");
                         var operator_tex_str = operator['function_tex_str'];
+                        var postfix = '';
                         if (sum_or_product == 'sum') {
-                            var postfix = ' + f_{' + term_index + '} (j) ' + operator_tex_str;
+                            if (term_count > 0) {
+                                postfix += ' + ';
+                            }
+                            postfix += ' f_{' + term_index + '} (j) ' + operator_tex_str;
                         } else if (sum_or_product == 'product') {
-                            var postfix = operator_tex_str + '^{f_{' + term_index + '} (j) }';
+                            var postfix = '\\left (' + operator_tex_str + '\\right )' + '^{f_{' + term_index + '} (j) }';
                         }
                         fns_tex_str += postfix;
                     }
                 );
-                fns_tex_str += "\\)";
+
+                if (sum_or_product == 'sum') {
+                    fns_tex_str += " \\right ) \\)";
+                } else if (sum_or_product == 'product') {
+                    fns_tex_str += "\\)";
+                }
                 //fns_tex_str = fns_tex_str.replace(/\\/g, "\\\\");
                 console.log(fns_tex_str);
                 $(el).find(".modifier_fns_tex_str").html(fns_tex_str);
             }
         );
 
-        tnt.render_mathjax();
+        tnt.render_mathjax_in_element_with_id("#new_calculation_initial_state");
 
     },
 
@@ -2529,6 +2529,7 @@ var tnt = {
         if (tnt.get_calculate_time_evolution() == 1)
         {
             $("#calculate_overlap_with_initial_state_choice_div").css("display", "block");
+            $("#calculate_dynamic_energy_choice_div").css("display", "block");
 
             if (tnt.get_calculate_ground_state() == 1) {
                 $("#calculate_overlap_with_ground_state_choice_div").css("display", "block");
@@ -2539,6 +2540,7 @@ var tnt = {
         } else {
             $("#calculate_overlap_with_initial_state_choice_div").css("display", "none");
             $("#calculate_overlap_with_ground_state_choice_div").css("display", "none");
+            $("#calculate_dynamic_energy_choice_div").css("display", "none");
         }
 
 		tnt.render_available_expectation_operators();
@@ -2596,6 +2598,8 @@ var tnt = {
 	validate_new_calculation_expectation_operators: function () {
 		// Check that everything's OK and add the selected exp vals into the calculation JSON structure
 
+        window.calculation.setup.expectation_values.calculate_dynamic_energy = 0;
+
         // Check if we want to calculate overlap with ground state:
         if (tnt.get_calculate_ground_state() == 1) {
             window
@@ -2612,6 +2616,13 @@ var tnt = {
             .setup
             .expectation_values
             .calculate_overlap_with_initial = $("#calculate_overlap_with_initial_state_choice .btn.active input").data("overlap-choice");
+
+            window
+            .calculation
+            .setup
+            .expectation_values
+            .calculate_dynamic_energy = $("#calculate_dynamic_energy_choice_div .btn.active input").data("dynamic-energy-choice");
+
         }
 
 		var selected_expectation_operator_ids = _.map(
