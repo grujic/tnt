@@ -403,6 +403,7 @@ var tnt = {
 
         // Not quite sure where to put this, we need these definitions eventually..
         tnt.load_spatial_and_temporal_function_definitions();
+        tnt.load_initial_base_states();
 
         // Also this should maybe go somewhere else.. restrict the input on numeric fields
         // so people can't enter something wrong
@@ -459,6 +460,29 @@ var tnt = {
 		);
 
 	},	// End of load_spatial_function_definitions
+
+	load_initial_base_states: function() {
+
+		$.get("/api/v1.0/initial_base_states",
+			function (data) {
+
+                var filtered_data =
+                    {
+                        'states':
+                        _.filter(
+                            data.states,
+                            function(el) {
+                                return ( (el['system_type'] == tnt.get_system_type() ) || (el['system_type'] == 'all') );
+                            }
+                        )
+                    };
+
+				window.initial_base_states = filtered_data;
+
+            }
+        );
+
+    },  // End of load_initial_base_states
 
 	render_available_hamiltonian_operators: function (
         qn_enforced,
@@ -709,80 +733,56 @@ var tnt = {
 
 	render_available_initial_base_states: function (default_id) {
 		// Draw in buttons showing available initial states
-		$.get("/api/v1.0/initial_base_states",
-			function (data) {
 
-                var filtered_data =
-                    {
-                        'states':
-                        _.filter(
-                            data.states,
-                            function(el) {
-                                return ( (el['system_type'] == tnt.get_system_type() ) || (el['system_type'] == 'all') );
-                            }
-                        )
-                    };
+        // We only display the ground state as a choice if certain conditions are met
+        var calculating_ground_state = tnt.get_calculate_ground_state();
+        var ground_qn = tnt.get_apply_ground_qn();
+        var dynamic_qn = tnt.get_apply_dynamic_qn();
 
-				window.initial_base_states = filtered_data;
-
-				// We only display the ground state as a choice if certain conditions are met
-                var calculating_ground_state = tnt.get_calculate_ground_state();
-                var ground_qn = tnt.get_apply_ground_qn();
-                var dynamic_qn = tnt.get_apply_dynamic_qn();
-
-				if (calculating_ground_state == 0)
-                {
-					window.initial_base_states =
-					{
-						'states':
-						_.filter(
-							window.initial_base_states.states,
-							function(el) {
-								return el['initial_base_state_id'] > 0;
-							}
-						)
-					};
-				} else {
-                    // We ARE calculating the ground state
-                    if ( (dynamic_qn == 0) || ( (ground_qn == 1) && (dynamic_qn == 1) ) ) {
-                        // Then we can display the ground state
-                    } else {
-                        window.initial_base_states =
-                        {
-                            'states':
-                            _.filter(
-                                window.initial_base_states.states,
-                                function(el) {
-                                    return el['initial_base_state_id'] > 0;
-                                }
-                            )
-                        };
+        if (calculating_ground_state == 0)
+        {
+            window.initial_base_states =
+            {
+                'states':
+                _.filter(
+                    window.initial_base_states.states,
+                    function(el) {
+                        return el['initial_base_state_id'] > 0;
                     }
-                }
+                )
+            };
+        } else {
+            // We ARE calculating the ground state
+            if ( (dynamic_qn == 0) || ( (ground_qn == 1) && (dynamic_qn == 1) ) ) {
+                // Then we can display the ground state
+            } else {
+                window.initial_base_states =
+                {
+                    'states':
+                    _.filter(
+                        window.initial_base_states.states,
+                        function(el) {
+                            return el['initial_base_state_id'] > 0;
+                        }
+                    )
+                };
+            }
+        }
 
-				var template = tnt.handlebars_templates["initial-base-states-template"];
+        var template = tnt.handlebars_templates["initial-base-states-template"];
 
-				$("#new_calculation_available_initial_base_states")
-                    .html(template(window.initial_base_states));
+        $("#new_calculation_available_initial_base_states")
+            .html(template(window.initial_base_states));
 
-                var initial_base_state_selector
-                    = '.initial-state-btn[data-initial-base-state-id="' + default_id + '"]';
-                    //
-                $(initial_base_state_selector).addClass("active");
-				//$(".initial-state-btn")
-					//.first()
-					//.addClass("active");
+        // Make the first initial state selected
+        var initial_base_state_selector
+            = '.initial-state-btn[data-initial-base-state-id="' + default_id + '"]';
+            //
+        $(initial_base_state_selector).addClass("active");
 
-				tnt.attach_click_fn_to_initial_base_state_choices();
+        tnt.attach_click_fn_to_initial_base_state_choices();
 
-				tnt.render_mathjax();
-
-				// Make the first initial state selected
-
-			}
-		).done(function() {
-    		tnt.render_mathjax();
-  		});
+        tnt.render_mathjax();
 
 	}, // End of render_available_initial_base_states
 
