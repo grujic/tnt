@@ -175,6 +175,10 @@ cd ~/tnt/
 mkdir -p ~/tnt/collectedstatic
 mkdir -p /webapps/tnt/tnt/static/
 
+# Also some results folders
+mkdir -p /webapps/tnt/json_results
+mkdir -p ~/tnt/json_results
+
 # Start supervisord
 supervisord
 sudo supervisorctl reread
