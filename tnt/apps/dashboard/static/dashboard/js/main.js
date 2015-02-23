@@ -78,6 +78,10 @@ var tnt = {
         $('html, body').animate({ scrollTop: 0 }, 'fast');
     },
 
+    extract_tex_string_from_mathjax_el: function(el) {
+        return $(el).find('script').html();
+    },
+
     switch_button_group_to_data_val: function (btngroup_id, data_name, switch_data_val) {
         // Very common to need to switch a button group to a value
         if (btngroup_id[0] != "#") {
@@ -1015,8 +1019,6 @@ var tnt = {
                 } else if (sum_or_product == 'product') {
                     fns_tex_str += "\\)";
                 }
-                //fns_tex_str = fns_tex_str.replace(/\\/g, "\\\\");
-                console.log(fns_tex_str);
                 $(el).find(".modifier_fns_tex_str").html(fns_tex_str);
             }
         );
@@ -1138,6 +1140,8 @@ var tnt = {
         $(hamiltonian_tex_str_el).html(hamiltonian_tex_str);
 
         tnt.render_mathjax();
+
+        return hamiltonian_tex_str;
 
     },
 
@@ -1704,6 +1708,13 @@ var tnt = {
 	       }
 		); 	// End of loop over Hamiltonian terms
 
+        // Store tex str
+        window
+        .calculation
+        .setup
+        .hamiltonian.ground
+        .tex_str = tnt.extract_tex_string_from_mathjax_el("#ground_hamiltonian_tex_str");
+
         $("#progress_ground").removeClass("progtrckr-todo");
         $("#progress_ground").addClass("progtrckr-done");
 
@@ -1743,7 +1754,7 @@ var tnt = {
         // Setup a range of quantities depending on system type
         if (system_type == "spin") {
 
-            var qn_conserve_help_content = "Click yes if the ground state you wish to calculate is an eigenstate of the total spin.";
+            var qn_conserve_help_content = "Click yes if the ground state you wish to calculate is an eigenstate of the total spin. Note that this will limit you to operators that conserve total spin when building your Hamiltonian.";
             var qn_magnitude_help_content = "This number gives twice the total spin of the calculated ground state. Only values that are physically possible (given the magnitude of the spin per site and the system size) are displayed in the dropdown.";
             var qn_conserve_prompt = "Conserve total spin";
             var qn_magnitude_prompt = "Total spin \\( \\sum{2S} \\)";
@@ -1804,7 +1815,7 @@ var tnt = {
 
         } else if (system_type == "bosonic") {
 
-            var qn_conserve_help_content = "Click yes if the ground state you wish to calculate is an eigenstate of the total boson number.";
+            var qn_conserve_help_content = "Click yes if the ground state you wish to calculate is an eigenstate of the total boson number. Note that this will limit you to operators that conserve total boson number when building your Hamiltonian.";
             var qn_magnitude_help_content = "This number gives the total boson number of the calculated ground state. Only values that are physically possible (given the maximum number of bosons per site \( n_{\mathrm{max}} \) and the system size \(L\)) are displayed in the dropdown.";
             var qn_conserve_prompt = "Conserve total boson number";
             var qn_magnitude_prompt = "Total boson number N";
@@ -2381,7 +2392,7 @@ var tnt = {
         // Loop over each product or sum operator
         _.each(
             $('#initial_state_modifier_container .initial_state_modifier_sum_or_product'),
-            function(el) {
+            function(el, el_index) {
 
                 var sum_or_product = $(el).data('sum-or-product');
 
@@ -2409,6 +2420,29 @@ var tnt = {
 
             }
         );
+
+        window.calculation.setup.initial_state.tex_strs = {'product_str': '', 'modifier_fns_strs': []};
+
+        window.calculation.setup.initial_state.tex_strs.modifier_fns_strs =
+            _.map(
+                $(".modifier_fns_tex_str"),
+                function(tex_str_el, tex_str_el_index) {
+                    return '\\hat{O}_{' + (tex_str_el_index + 1) + '} ' + tnt.extract_tex_string_from_mathjax_el($(tex_str_el));
+                }
+            );
+
+        var num_modifier_terms = $('#initial_state_modifier_container .initial_state_modifier_sum_or_product').length;
+        if (num_modifier_terms > 0) {
+            var product_str = "| \\Psi \\rangle_{\\rm start} = ";
+            for (var i=num_modifier_terms; i>0; i--) {
+                product_str += '\\hat{O}_{' + i + '}';
+            }
+        }
+
+        product_str += '| \\Psi_{\\rm base}';
+
+        window.calculation.setup.initial_state.tex_strs.product_str = product_str;
+        console.log(product_str);
 
         $("#progress_initial").removeClass("progtrckr-todo");
         $("#progress_initial").addClass("progtrckr-done");
@@ -2462,7 +2496,7 @@ var tnt = {
             }
         );
 
-        tnt.update_hamiltonian_tex_str(
+        var hamiltonian_tex_str = tnt.update_hamiltonian_tex_str(
             "#dynamic_hamiltonian_terms_container",
             "#dynamic_hamiltonian_tex_str"
         );
@@ -2507,6 +2541,12 @@ var tnt = {
 	       }
 		); 	// End of loop over Hamiltonian terms
 
+        // Store tex str
+        window
+        .calculation
+        .setup
+        .hamiltonian.dynamic
+        .tex_str = tnt.extract_tex_string_from_mathjax_el("#dynamic_hamiltonian_tex_str");
 
         $("#progress_dynamics").removeClass("progtrckr-todo");
         $("#progress_dynamics").addClass("progtrckr-done");

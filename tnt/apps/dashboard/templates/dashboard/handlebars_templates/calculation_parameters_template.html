@@ -160,6 +160,11 @@
         <div id="ground_ham_info">
 
             <h4>Ground Hamiltonian terms</h4>
+            {{#if setup.hamiltonian.ground.tex_str}}
+                <p class='text-center'>
+                    \( {{setup.hamiltonian.ground.tex_str}} \)
+                </p>
+            {{/if}}
             <table class="table table-striped table-bordered">
                 <thead>
                     <th>Term type</th>
@@ -188,73 +193,93 @@
         {{/if}}
         <br>
         {{#if setup.system.calculate_time_evolution}}
-        <div id="time_info">
+            <div id="time_info">
 
-            <h4>Time evolution</h4>
-            <table class="table table-striped table-bordered">
-                <!--<thead>-->
-                    <!--<th></th>-->
-                    <!--<th></th>-->
-                <!--</thead>-->
-                <tbody>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Time steps \( N_T \)</th>
-                        <td>{{setup.system.time.num_time_steps}}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Time step size \( \delta t \)</th>
-                        <td>{{setup.system.time.time_step}}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Expectation value time steps \( N_e \)</th>
-                        <td>{{setup.system.time.num_expval_time_steps}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div> <!-- end of div for time info -->
-        <br>
-        <div id="dynamic_ham_info">
+                <h4>Time evolution</h4>
+                <table class="table table-striped table-bordered">
+                    <!--<thead>-->
+                        <!--<th></th>-->
+                        <!--<th></th>-->
+                    <!--</thead>-->
+                    <tbody>
+                        <tr>
+                            <th class="text-nowrap" scope="row">Time steps \( N_T \)</th>
+                            <td>{{setup.system.time.num_time_steps}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap" scope="row">Time step size \( \delta t \)</th>
+                            <td>{{setup.system.time.time_step}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-nowrap" scope="row">Expectation value time steps \( N_e \)</th>
+                            <td>{{setup.system.time.num_expval_time_steps}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> <!-- end of div for time info -->
+            <br>
+            <div id="dynamic_ham_info">
 
-            <h4>Dynamic Hamiltonian terms</h4>
+                <h4>Dynamic Hamiltonian terms</h4>
+                {{#if setup.hamiltonian.dynamic.tex_str}}
+                    <p class='text-center'>
+                        \( {{setup.hamiltonian.dynamic.tex_str}} \)
+                    </p>
+                {{/if}}
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <th>Term type</th>
+                        <th>Spatial dependence</th>
+                        <th>Temporal dependence</th>
+                    </thead>
+                    <tbody>
 
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <th>Term type</th>
-                    <th>Spatial dependence</th>
-                    <th>Temporal dependence</th>
-                </thead>
-                <tbody>
+                    {{#setup.hamiltonian.dynamic.terms}}
 
-                {{#setup.hamiltonian.dynamic.terms}}
-
-                    <tr>
-                        <th class="text-nowrap" scope="row"><div data-toggle="popover" data-placement="bottom" data-trigger="hover" data-html="true" data-content="{{function_description}}">\( {{function_tex_str}} \)</div></th>
-                        <td>{{spatial_function.function_description}} \( {{spatial_function.function_tex_str}} \)
-                        <ul>
-                        {{#spatial_function.parameters}}
-                         <li> \( {{parameter_tex_str}} = {{value}} \) </li>
-                        {{/spatial_function.parameters}}
-                        </ul>
-                        </td>
-                        <td>{{temporal_function.function_description}} \( {{temporal_function.function_tex_str}} \)
-                        <ul>
-                        {{#temporal_function.parameters}}
-                         <li> \( {{parameter_tex_str}} = {{value}} \) </li>
-                        {{/temporal_function.parameters}}
-                        </ul>
-                        </td>
-                    </tr>
-                {{/setup.hamiltonian.dynamic.terms}}
+                        <tr>
+                            <th class="text-nowrap" scope="row"><div data-toggle="popover" data-placement="bottom" data-trigger="hover" data-html="true" data-content="{{function_description}}">\( {{function_tex_str}} \)</div></th>
+                            <td>{{spatial_function.function_description}} \( {{spatial_function.function_tex_str}} \)
+                            <ul>
+                            {{#spatial_function.parameters}}
+                            <li> \( {{parameter_tex_str}} = {{value}} \) </li>
+                            {{/spatial_function.parameters}}
+                            </ul>
+                            </td>
+                            <td>{{temporal_function.function_description}} \( {{temporal_function.function_tex_str}} \)
+                            <ul>
+                            {{#temporal_function.parameters}}
+                            <li> \( {{parameter_tex_str}} = {{value}} \) </li>
+                            {{/temporal_function.parameters}}
+                            </ul>
+                            </td>
+                        </tr>
+                    {{/setup.hamiltonian.dynamic.terms}}
 
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
-        </div> <!-- end of div for dynamic ham info -->
+            </div> <!-- end of div for dynamic ham info -->
+
+            <div id="initial_state_info">
+
+                <h4>Initial state</h4>
+                {{#if setup.initial_state.tex_strs}}
+                    <p class='text-center'>
+                        \( {{setup.initial_state.tex_strs.product_str}} \), where
+                    </p>
+                    <p class='text-center'>
+                        \( {{setup.initial_state.tex_strs.modifier_fns_strs}} \)
+                    </p>
+
+                {{/if}}
+
+
+            </div> <!-- end of div for initial state info -->
+
         {{/if}}
-        
+
         </div> <!-- end of div for RH col -->
-        
 
     </div> <!-- end of row div -->
 
