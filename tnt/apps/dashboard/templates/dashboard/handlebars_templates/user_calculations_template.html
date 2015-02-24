@@ -95,7 +95,7 @@
         <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
           <div class="panel-heading">
               <h3 class="panel-title">
-
+                <div class="row">
                 <div class="input-group update_name_div">
 
                     <input type="text" class="form-control" placeholder="{{meta_info.name}}" value="{{meta_info.name}}">
@@ -105,12 +105,12 @@
                         </button>
                     </span>
                 </div>
-
+                <div class="pull-right">
                     <a role="button" style="color: white;" class="btn btn-danger" data-calculation-id="{{meta_info.id}}" style="display: inline-block;">
                         <i class="fa fa-trash-o fa-lg"></i>
-                        Delete
                     </a>
-
+                </div>
+                </div>
                   <!--<span class="pull-right">ID: {{meta_info.id}}</span>-->
               </h3>
           </div>
@@ -128,7 +128,6 @@
             		<p>Date finished: {{timestamp_to_human_date meta_info.finished}}</p>
 
             		<p>Status: {{render_log_output meta_info.status meta_info.log}}</p>
-
                 </div>
 
                 <div class="col-sm-6">
