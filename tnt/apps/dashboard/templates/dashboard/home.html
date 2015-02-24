@@ -75,6 +75,15 @@
                 }
             );
 
+            // Attach Explore links to 'explore' buttons
+            _($(".explore-calculation-button"))
+                .each(function(el) {
+                var calculation_id = $(el).data('calculation-id'); 
+                var this_calculation_explore_url = '/calculation/explore/' + calculation_id + '/';
+                $(el).attr("href", this_calculation_explore_url);
+                }
+            );
+
             }
 
             // Attach functionality to various buttons
