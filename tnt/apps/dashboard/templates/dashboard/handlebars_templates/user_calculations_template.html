@@ -20,7 +20,7 @@
 
         if ( (timestamp === null) || (timestamp == 0) || (timestamp == false) ) {
 
-            return "None";
+            return "none";
 
         } else {
 
@@ -32,11 +32,23 @@
 
     });
 
-    Handlebars.registerHelper("render_log_output", function(status, log) {
+    Handlebars.registerHelper("render_log_output", function(status, log, timestamp) {
         if (status == 'running') {
-            return new Handlebars.SafeString("<span class='text-primary'>" + log + "</span>");
-        } else {
-            return status;
+            
+            return new Handlebars.SafeString("Status: <span class='text-primary'>" + log + "</span>");
+            
+        } else if (status == 'finished') {
+            
+            var date = new Date(timestamp*1000);
+            
+            return new Handlebars.SafeString("Date finished: " + date.toLocaleString());
+            
+        } else if (status == 'error') {
+            
+            return new Handlebars.SafeString("Status: <span class='text-danger'> error! </span>");
+            
+        } else if (status == 'saved') {
+            return new Handlebars.SafeString("Status: saved")
         }
 
         tnt.render_mathjax();
@@ -95,21 +107,24 @@
         <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
           <div class="panel-heading">
               <h3 class="panel-title">
+		<div class="row">
+		 <div class="col-xs-11">
+                  <div class="input-group update_name_div">
 
-                <div class="input-group update_name_div">
-
-                    <a role="button" style="color: white;" class="btn btn-danger input-group-addon btn-delete-calculation" data-calculation-id="{{meta_info.id}}">
-                        <i class="fa fa-trash-o fa-lg"></i>
-                        Delete
-                    </a>
                     <input type="text" class="form-control" placeholder="{{meta_info.name}}" value="{{meta_info.name}}">
                     <span class="input-group-btn">
                         <button class="btn btn-default update_calculation_name_btn" type="button" data-calculation-id="{{meta_info.id}}">
                             Update name
                         </button>
                     </span>
+		    </div>
+                    </div>
+                    <div class="col-xs-1 text-right">
+                      <a role="button" style="color: white;" class="btn btn-danger btn-delete-calculation" data-calculation-id="{{meta_info.id}}" style="display: inline-block;">
+                          <i class="fa fa-trash-o fa-lg"></i>
+                      </a>
+                    </div>
                 </div>
-
                   <!--<span class="pull-right">ID: {{meta_info.id}}</span>-->
               </h3>
           </div>
@@ -124,10 +139,7 @@
 
             		<p>Date run: {{timestamp_to_human_date meta_info.date_run}}</p>
 
-            		<p>Date finished: {{timestamp_to_human_date meta_info.finished}}</p>
-
-            		<p>Status: {{render_log_output meta_info.status meta_info.log}}</p>
-
+            		<p>{{render_log_output meta_info.status meta_info.log meta_info.finished}}</p>
                 </div>
 
                 <div class="col-sm-6">
@@ -148,6 +160,8 @@
                             </a>
 
                         </div>
+
+                    </div>
 
                 </div>
 
