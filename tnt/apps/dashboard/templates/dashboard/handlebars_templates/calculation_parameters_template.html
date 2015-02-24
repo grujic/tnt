@@ -29,15 +29,11 @@
 
     <div class="row">
     
-    <div id="basic_qn_expec" class="col-md-6 col-sm-12">
+    <div id="basic_qn_expec" class="col-lg-6 col-md-12">
 
         <div id="basic_info">
             <h4>Basic system information</h4>
             <table class="table table-striped table-bordered">
-                <!--<thead>-->
-                    <!--<th></th>-->
-                    <!--<th></th>-->
-                <!--</thead>-->
                 <tbody>
                     <tr>
                         <th class="text-nowrap" scope="row">Calculation name</th>
@@ -55,10 +51,19 @@
                         <th class="text-nowrap" scope="row">Truncation parameter \( \chi \)</th>
                         <td>{{setup.system.chi}}</td>
                     </tr>
+                </tbody>
+            </table>
+            <h4>Calculation set-up</h4>
+                <table class="table table-striped table-bordered">
+                    <tbody>
                     {{#if setup.system.calculate_ground_state}}
                     <tr>
                         <th class="text-nowrap" scope="row">Calculate ground state?</th>
                         <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Ground state precision</th>
+                        <td>\( 10^{- {{setup.system.log_ground_state_precision}} } \)</td>
                     </tr>
                     {{#if setup.system.number_conservation.ground.apply_qn}}
                     <tr>
@@ -94,6 +99,18 @@
                         <td>No</td>
                         {{/if}}
                     </tr>
+                    <tr>
+                    <th class="text-nowrap" scope="row">Time steps \( N_T \)</th>
+                    <td>{{setup.system.time.num_time_steps}}</td>
+                    </tr>
+                    <tr>
+                    <th class="text-nowrap" scope="row">Time step size \( \delta t \)</th>
+                    <td>{{setup.system.time.time_step}}</td>
+                    </tr>
+                    <tr>
+                    <th class="text-nowrap" scope="row">Expectation value time steps \( N_e \)</th>
+                    <td>{{setup.system.time.num_expval_time_steps}}</td>
+                    </tr>
                     {{else}}
                     <tr>
                         <th class="text-nowrap" scope="row">Calculate time evolution?</th>
@@ -123,6 +140,14 @@
                     <tr>
                         <th class="text-nowrap" scope="row">Calculate overlap with initial state?</th>
                         {{#if setup.expectation_values.calculate_overlap_with_intial}}
+                        <td>Yes</td>
+                        {{else}}
+                        <td>No</td>
+                        {{/if}}
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">Calculate energy of time-evolved state?</th>
+                        {{#if setup.expectation_values.calculate_dynamic_energy}}
                         <td>Yes</td>
                         {{else}}
                         <td>No</td>
@@ -163,7 +188,7 @@
         {{#if setup.system.calculate_ground_state}}
         <div id="ground_ham_info">
 
-            <h4>Ground Hamiltonian terms</h4>
+            <h4>Ground state Hamiltonian</h4>
             {{#if setup.hamiltonian.ground.tex_str}}
                 <p class='text-center'>
                     \( {{setup.hamiltonian.ground.tex_str}} \)
@@ -171,7 +196,7 @@
             {{/if}}
             <table class="table table-striped table-bordered">
                 <thead>
-                    <th>Term type</th>
+                    <th>Term</th>
                     <th>Spatial dependence</th>
                 </thead>
                 <tbody>
@@ -197,30 +222,11 @@
         {{/if}}
         <br>
         {{#if setup.system.calculate_time_evolution}}
-            <div id="time_info">
 
-                <h4>Time evolution</h4>
-                <table class="table table-striped table-bordered">
-                    <tbody>
-                        <tr>
-                            <th class="text-nowrap" scope="row">Time steps \( N_T \)</th>
-                            <td>{{setup.system.time.num_time_steps}}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-nowrap" scope="row">Time step size \( \delta t \)</th>
-                            <td>{{setup.system.time.time_step}}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-nowrap" scope="row">Expectation value time steps \( N_e \)</th>
-                            <td>{{setup.system.time.num_expval_time_steps}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div> <!-- end of div for time info -->
             <br>
             <div id="dynamic_ham_info">
 
-                <h4>Dynamic Hamiltonian terms</h4>
+                <h4>Dynamic Hamiltonian</h4>
                 {{#if setup.hamiltonian.dynamic.tex_str}}
                     <p class='text-center'>
                         \( {{setup.hamiltonian.dynamic.tex_str}} \)
