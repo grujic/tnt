@@ -34,10 +34,12 @@
 
     Handlebars.registerHelper("render_log_output", function(status, log) {
         if (status == 'running') {
-            return new Handlebars.SafeString("<code>" + log + "</code>");
+            return new Handlebars.SafeString("<span class='text-primary'>" + log + "</span>");
         } else {
-            return "";
+            return new Handlebars.SafeString("<span class='text-primary'>" + status + "</span>");
         }
+
+        tnt.render_mathjax();
     }
     );
 
@@ -108,9 +110,6 @@
 
           <div class="panel-body">
 
-            <div class="row">
-
-            	<div class="col-md-6">
 
             		<p>Date created: {{timestamp_to_human_date meta_info.date_created}}</p>
 
@@ -118,15 +117,7 @@
 
             		<p>Date finished: {{timestamp_to_human_date meta_info.finished}}</p>
 
-            		<p>Status: {{meta_info.status}}</p>
-
-            	</div>
-
-            	<div class="col-md-6">
-                    {{render_log_output meta_info.status meta_info.log}}
-            	</div>
-
-            </div>
+            		<p>Status: {{render_log_output meta_info.status meta_info.log}}</p>
 
             <hr>
 
