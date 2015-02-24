@@ -103,7 +103,7 @@ def calculation_templates(request):
                         'templates': [ \
                             { \
                                 'file_name': filename
-                            } for filename in os.listdir(settings.calculation_template_base_dir + system_type) if filename.endswith('json') \
+                            } for filename in sorted(os.listdir(settings.calculation_template_base_dir + system_type)) if filename.endswith('json') \
                             ] \
                     } \
                     for system_type in system_types]
