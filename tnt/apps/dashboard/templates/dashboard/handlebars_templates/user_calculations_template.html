@@ -98,10 +98,6 @@
 
                 <div class="input-group update_name_div">
 
-                    <a role="button" style="color: white;" class="btn btn-danger input-group-addon btn-delete-calculation" data-calculation-id="{{meta_info.id}}">
-                        <i class="fa fa-trash-o fa-lg"></i>
-                        Delete
-                    </a>
                     <input type="text" class="form-control" placeholder="{{meta_info.name}}" value="{{meta_info.name}}">
                     <span class="input-group-btn">
                         <button class="btn btn-default update_calculation_name_btn" type="button" data-calculation-id="{{meta_info.id}}">
@@ -109,6 +105,11 @@
                         </button>
                     </span>
                 </div>
+
+                    <a role="button" style="color: white;" class="btn btn-danger" data-calculation-id="{{meta_info.id}}" style="display: inline-block;">
+                        <i class="fa fa-trash-o fa-lg"></i>
+                        Delete
+                    </a>
 
                   <!--<span class="pull-right">ID: {{meta_info.id}}</span>-->
               </h3>
@@ -148,6 +149,8 @@
                             </a>
 
                         </div>
+
+                    </div>
 
                 </div>
 
