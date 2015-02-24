@@ -401,7 +401,6 @@ var tnt = {
 
         // Not quite sure where to put this, we need these definitions eventually..
         tnt.load_spatial_and_temporal_function_definitions();
-        tnt.load_initial_base_states();
 
         // Also this should maybe go somewhere else.. restrict the input on numeric fields
         // so people can't enter something wrong
@@ -1726,6 +1725,9 @@ var tnt = {
 		//
 		tnt.clear_all_new_calculation_stages();
         tnt.scroll_to_top();
+
+        // This has to be done somewhere after the system type has been chosen, here is good enough?
+        tnt.load_initial_base_states();
 
         //$("#progress_ground").removeClass("progtrckr-todo");
         //$("#progress_ground").addClass("progtrckr-current");
