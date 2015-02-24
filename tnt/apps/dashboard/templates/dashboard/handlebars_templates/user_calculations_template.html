@@ -34,11 +34,11 @@
 
     Handlebars.registerHelper("render_log_output", function(status, log) {
         if (status == 'running') {
-            return new Handlebars.SafeString("<span class='log_output'>" + log + "</span>");
+            return new Handlebars.SafeString("<span class='text-primary'>" + log + "</span>");
         } else {
-            return status;
+            return new Handlebars.SafeString("<span class='text-primary'>" + status + "</span>");
         }
-        
+
         tnt.render_mathjax();
     }
     );

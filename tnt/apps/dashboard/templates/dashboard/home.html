@@ -53,6 +53,8 @@
 
             $("#user_calculations").html(template(calculations));
 
+            tnt.render_mathjax();
+
             // Attach functions to 'Run...' buttons
             $(".run-calculation-button").unbind();
             $(".run-calculation-button")
