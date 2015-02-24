@@ -95,8 +95,9 @@
         <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
           <div class="panel-heading">
               <h3 class="panel-title">
-                <div class="row">
-                <div class="input-group update_name_div">
+		<div class="row">
+		 <div class="col-xs-11">
+                  <div class="input-group update_name_div">
 
                     <input type="text" class="form-control" placeholder="{{meta_info.name}}" value="{{meta_info.name}}">
                     <span class="input-group-btn">
@@ -104,12 +105,13 @@
                             Update name
                         </button>
                     </span>
-                </div>
-                <div class="pull-right">
-                    <a role="button" style="color: white;" class="btn btn-danger" data-calculation-id="{{meta_info.id}}" style="display: inline-block;">
-                        <i class="fa fa-trash-o fa-lg"></i>
-                    </a>
-                </div>
+		    </div>
+                    </div>
+                    <div class="col-xs-1">
+                      <a role="button" style="color: white;" class="btn btn-danger" data-calculation-id="{{meta_info.id}}" style="display: inline-block;">
+                          <i class="fa fa-trash-o fa-lg"></i>
+                      </a>
+                    </div>
                 </div>
                   <!--<span class="pull-right">ID: {{meta_info.id}}</span>-->
               </h3>
