@@ -36,9 +36,9 @@
         if (status == 'running') {
             return new Handlebars.SafeString("<span class='text-primary'>" + log + "</span>");
         } else {
-            return new Handlebars.SafeString("<span class='text-primary'>" + status + "</span>");
+            return status;
         }
-
+        
         tnt.render_mathjax();
     }
     );
