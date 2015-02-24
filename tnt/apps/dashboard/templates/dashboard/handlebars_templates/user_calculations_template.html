@@ -20,7 +20,7 @@
 
         if ( (timestamp === null) || (timestamp == 0) || (timestamp == false) ) {
 
-            return "None";
+            return "none";
 
         } else {
 
@@ -32,11 +32,23 @@
 
     });
 
-    Handlebars.registerHelper("render_log_output", function(status, log) {
+    Handlebars.registerHelper("render_log_output", function(status, log, timestamp) {
         if (status == 'running') {
-            return new Handlebars.SafeString("<span class='text-primary'>" + log + "</span>");
-        } else {
-            return status;
+            
+            return new Handlebars.SafeString("Status: <span class='text-primary'>" + log + "</span>");
+            
+        } else if (status == 'finished') {
+            
+            var date = new Date(timestamp*1000);
+            
+            return new Handlebars.SafeString("Date finished: " + date.toLocaleString());
+            
+        } else if (status == 'error') {
+            
+            return new Handlebars.SafeString("Status: <span class='text-danger'> error! </span>");
+            
+        } else if (status == 'saved') {
+            return new Handlebars.SafeString("Status: saved")
         }
 
         tnt.render_mathjax();
@@ -107,7 +119,7 @@
                     </span>
 		    </div>
                     </div>
-                    <div class="col-xs-1">
+                    <div class="col-xs-1 pull-right">
                       <a role="button" style="color: white;" class="btn btn-danger" data-calculation-id="{{meta_info.id}}" style="display: inline-block;">
                           <i class="fa fa-trash-o fa-lg"></i>
                       </a>
@@ -127,9 +139,7 @@
 
             		<p>Date run: {{timestamp_to_human_date meta_info.date_run}}</p>
 
-            		<p>Date finished: {{timestamp_to_human_date meta_info.finished}}</p>
-
-            		<p>Status: {{render_log_output meta_info.status meta_info.log}}</p>
+            		<p>{{render_log_output meta_info.status meta_info.log meta_info.finished}}</p>
                 </div>
 
                 <div class="col-sm-6">
