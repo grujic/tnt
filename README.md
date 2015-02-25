@@ -34,3 +34,16 @@ Occasionally, if any ‘static files’ (i.e. CSS files, images etc.)
 are not showing up properly on the development server, you may need to stop it and run 
 `python manage.py collectstatic`.
 
+### Database
+Django provides a nice abstraction around the underlying database storing user information, 
+calculation details, etc. The database backend we are using is Postgres. 
+Here we show some basic ways to use Django’s ORM (object relational model) to 
+interact with the database. 
+
+To open up an interactive prompt set with the right Django environment variables: 
+`python manage.py shell`. 
+
+#### Working with system Users
+Import our custom User model:
+```from userprofile.models import MyUser```
+
