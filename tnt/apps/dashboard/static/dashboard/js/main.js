@@ -2627,7 +2627,7 @@ var tnt = {
 
 		// What comes before this stage depends on calculation parameters:
 		if (tnt.get_calculate_time_evolution() == 1) {
-			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_initial_state;
+			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_define_dynamic_hamiltonian;
 		} else  {
 			var previous_stage_initialisation_fn = tnt.initialise_new_calculation_time_evolution;
 		}
