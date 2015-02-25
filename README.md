@@ -93,3 +93,29 @@ Get the Calculation with a specific ID, e.g.:
 Calculation.objects.filter(id=’10d740a5-8112-42e8-aa0c-0ba0a937a98b’)[0]
 ```
 You can play around with an individual Calculation object to see the fields it has defined. 
+
+Technologies TNTgo works with
+-----------------------------
+We use a few Javascript and Python libraries. 
+Here we give a brief overview of what they are and how they help. 
+
+### Javascript libraries
+
+1. JQuery [http://jquery.com/] JQuery is almost mandatory in any modern web application. 
+It makes manipulation of web page elements very simple. 
+
+2. Underscore.js [underscorejs.org] This library can be seen as a complement to JQuery in many ways.
+It provides  useful ways to iterate over, filter and construct Javascript lists. 
+
+3. Handlebars [handlebarsjs.com] This library allows for easy and flexible HTML templating, 
+i.e. mapping some JSON data to rendered HTML. Very useful for client-side (i.e. in the browser)
+templating. 
+
+### Python libraries
+4. JSON. [http://pymotw.com/2/json/] We heavily rely on this data interchange format to pass around all kinds of data in TNTgo. 
+JSON maps one-to-one to both Javascript and Python representations of objects and dictionaries, 
+making it a good match for us. 
+
+5. Fabic [http://www.fabfile.org/] A way to streamline system administration tasks. 
+We use it to simplify all the steps required to push changes from development code
+to a central Git repository, and a master production code branch, along with restarting servers etc.
