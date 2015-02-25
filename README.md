@@ -13,8 +13,10 @@ Structure
 ---------
 
 We’ve built TNTgo into two more or less separable ‘apps’. One is an API 
-(Application Programming Interface) which serves up calculation data etc., and 
-the other is responsible for the ‘GUI’ of the user facing ‘dashboard’. 
+(Application Programming Interface) which serves up calculation data etc., 
+some of whose functionality can be seen at [http://www.tntgo.org/api/v1.0/]
+
+The other is responsible for the ‘GUI’ of the user facing ‘dashboard’ found at root [http://www.tntgo.org] 
 The dashboard app serves up HTML and javascript which calls on the API behind the 
 scenes. 
 
@@ -52,7 +54,9 @@ Here we show some basic ways to use Django’s ORM (object relational model) to
 interact with the database. 
 
 To open up an interactive prompt set with the right Django environment variables: 
-`python manage.py shell`. 
+```
+python manage.py shell
+```
 
 #### Working with system Users
 Import our custom User model:
