@@ -7,18 +7,47 @@ Installation
 Step by step instructions for intalling the TNTgo front end can be found in `fresh_install_steps.sh`. 
 These have been tested on a clean Ubuntu 14.04 Amazon EC2 instance. 
 
-NB this is not an actual shell script despite the .sh extension
+NB this is not an actual shell script despite the .sh extension.
 
 Structure
 ---------
 
 We’ve built TNTgo into two more or less separable ‘apps’. One is an API 
 (Application Programming Interface) which serves up calculation data etc., 
-some of whose functionality can be seen at [http://www.tntgo.org/api/v1.0/]
+some of whose functionality can be seen at [http://www.tntgo.org/api/v1.0/]. 
+This app has root directory `tnt/apps/api/`
 
 The other is responsible for the ‘GUI’ of the user facing ‘dashboard’ found at root [http://www.tntgo.org] 
 The dashboard app serves up HTML and javascript which calls on the API behind the 
 scenes. 
+This app has root directory `tnt/apps/dashboard/`
+
+Where are the most important parts of the project?
+--------------------------------------------------
+For convenience, we give a quick outline of the ‘moving parts’ of TNTgo. 
+We can break things down into the HTML that gets served up, the javascript and javascript templates 
+that do all the dynamic work, and the python backend code that listens for requests. 
+
+### HTML
+Most of the HTML skeletons can be found in `tnt/apps/dashboard/templates/dashboard/`. 
+Filenames are mostly self-explanatory. 
+However, the ‘new calculation’ page is so large that we’ve broken it up into multiple smaller files
+which get included into one main `new_calculation.html` file. 
+Many pages share a common ‘template’, `page_template.html` which defines menu bars etc. 
+
+### Javascript
+Almost all the workhorse Javascript is in a single file, 
+`tnt/apps/dashboard/static/dashboard/js/main.js`
+
+This main file relies on Handlebars templates (see below) to dynamically render data into HTML. 
+These templates are found in `tnt/apps/dashboard/templates/dashboard/handlebars_templates/`
+
+### Main python code
+While there are numerous Python files making up the Django project, most logic is taken care of in
+two so-called view files. These receive HTTP requests, do some stuff, 
+then work out what to return (e.g. data or web pages). 
+There is a view file for the API app at `tnt/apps/api/views.py` and one for the dashboard app at 
+`tnt/apps/dashboard/views.py`
 
 Notes on Git
 ------------
@@ -104,18 +133,21 @@ Here we give a brief overview of what they are and how they help.
 1. JQuery [http://jquery.com/] JQuery is almost mandatory in any modern web application. 
 It makes manipulation of web page elements very simple. 
 
-2. Underscore.js [underscorejs.org] This library can be seen as a complement to JQuery in many ways.
+2. Underscore.js [http://www.underscorejs.org] This library can be seen as a complement to JQuery in many ways.
 It provides  useful ways to iterate over, filter and construct Javascript lists. 
 
-3. Handlebars [handlebarsjs.com] This library allows for easy and flexible HTML templating, 
+3. Handlebars [http://handlebarsjs.com] This library allows for easy and flexible HTML templating, 
 i.e. mapping some JSON data to rendered HTML. Very useful for client-side (i.e. in the browser)
 templating. 
 
 ### Python libraries
-4. JSON. [http://pymotw.com/2/json/] We heavily rely on this data interchange format to pass around all kinds of data in TNTgo. 
-JSON maps one-to-one to both Javascript and Python representations of objects and dictionaries, 
+4. JSON [http://pymotw.com/2/json/] We heavily rely on this data interchange format to pass around all kinds of data in TNTgo. 
+JSON (Javascript object notation) maps one-to-one to both Javascript and Python representations of objects and dictionaries, 
 making it a good match for us. 
 
 5. Fabic [http://www.fabfile.org/] A way to streamline system administration tasks. 
 We use it to simplify all the steps required to push changes from development code
 to a central Git repository, and a master production code branch, along with restarting servers etc.
+
+6. requests [http://docs.python-requests.org/en/latest/] A library that makes performing HTTP calls
+very simple. 
