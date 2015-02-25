@@ -10,6 +10,9 @@ def deploy():
         local("pip freeze > requirements.txt")
     except:
         print("Problem with committing locally, maybe nothing's changed!\n\n")
+    local("git checkout master")
+    local("git pull")
+    local("git checkout dev")
     local("git push")
 
     with lcd("/webapps/tnt/"):

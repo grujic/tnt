@@ -45,5 +45,32 @@ To open up an interactive prompt set with the right Django environment variables
 
 #### Working with system Users
 Import our custom User model:
-```from userprofile.models import MyUser```
-
+```python
+from userprofile.models import MyUser
+```
+Get a list of all Users:
+```python
+MyUser.objects.all()
+```
+Manually create a new User:
+```python
+MyUser.objects.create_user(email=’XXX@abc.com’, password=’XXX’)
+```
+Delete the first User:
+```python
+MyUser.objects.all().delete()
+```
+#### Working with Calculation objects
+Import the object representation of a Calculation:
+```python
+from tnt.apps.api.models import Calculation
+```
+Get all Calculations from user with ID 1:
+```python
+Calculation.objects.filter(user_id=1)
+```
+Get the Calculation with a specific ID, e.g.:
+```python
+Calculation.objects.filter(id=’10d740a5-8112-42e8-aa0c-0ba0a937a98b’)[0]
+```
+You can play around with an individual Calculation object to see the fields it has defined. 
