@@ -18,6 +18,17 @@ the other is responsible for the ‘GUI’ of the user facing ‘dashboard’.
 The dashboard app serves up HTML and javascript which calls on the API behind the 
 scenes. 
 
+Notes on Git
+------------
+The project is set up with two branches, ‘dev’ for development and ‘master’ for production. 
+It’s intended that the Git repo at `~/tnt` is on the dev branch, while the repo at /webapps/tnt/ 
+is on the master branch. 
+
+Changes should be made in ~/tnt on the dev branch, and when they are satisfactory, can be 
+pushed to production using the automated Fabric script invoked with
+```
+fab deploy
+```
 
 Notes on using Django
 ---------------------
@@ -51,6 +62,10 @@ from userprofile.models import MyUser
 Get a list of all Users:
 ```python
 MyUser.objects.all()
+```
+Get a User with a particular email address:
+```
+MyUser.objects.get(email=’XXX@abc.com’)
 ```
 Manually create a new User:
 ```python
