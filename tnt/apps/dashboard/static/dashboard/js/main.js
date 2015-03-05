@@ -1295,130 +1295,128 @@ var tnt = {
 
     },
 
+    basic_setup_page_first_visit: true,
+
 	// Following is a list of functions that verify data input and also set up the various data input panels for a new calculation
 	initialise_new_calculation_basic_setup_step: function () {
         tnt.scroll_to_top();
 
-        //$("#progress_basic").removeClass("progtrckr-todo");
-        //$("#progress_basic").addClass("progtrckr-current");
+        if (tnt.basic_setup_page_first_visit == true) {
+            //$("#progress_basic").removeClass("progtrckr-todo");
+            //$("#progress_basic").addClass("progtrckr-current");
 
-        // Pull in info on available calculation templates
-        $.get(
-            '/api/v1.0/calculation_templates',
-            function(data) {
-                window.calculation_templates = data.template_info;
-                // Now set which one is the default calculation:
-                var default_calc_type = "spin";
-                var default_calc_name = "Blank spin calculation";
+            // Pull in info on available calculation templates
+            $.get(
+                '/api/v1.0/calculation_templates',
+                function(data) {
+                    window.calculation_templates = data.template_info;
+                    // Now set which one is the default calculation:
+                    var default_calc_type = "spin";
+                    var default_calc_name = "Blank spin calculation";
 
-                if (tnt.copy_calculation.copy_calculation == true) {
-                    //
-                    $.get(
-                        '/api/v1.0/calculation/show/' + tnt.copy_calculation.copy_calculation_id,
-                        function(data) {
-                            console.log("1");
-                            tnt.copy_calculation.calculation = data.calculation;
-                            window.calculation = _.cloneDeep(tnt.copy_calculation.calculation);
-                            console.log("2");
-                            var copy_calculation_system_type = tnt.copy_calculation.calculation.setup.system.system_type.name;
-                            console.log("3");
-                            tnt.set_system_type(copy_calculation_system_type);
-                            console.log("4");
-                            var templates_this_system_type =
-                                _.filter(
-                                    window.calculation_templates,
-                                    function (template) {
-                                        return template['system_type'] == copy_calculation_system_type;
-                                    }
-                                )[0].templates;
-                            console.log("5");
-                            var new_template = {
-                                'file_name': '',
-                                'json': JSON.stringify(
-                                    {
-                                        'calculation': tnt.copy_calculation.calculation
-                                    }
-                                ),
-                                'name': "COPY OF " + tnt.copy_calculation.calculation.meta_info.name
-                            };
-                            console.log("6");
-                            templates_this_system_type.push(new_template);
-                            console.log("7");
+                    if (tnt.copy_calculation.copy_calculation == true) {
+                        //
+                        $.get(
+                            '/api/v1.0/calculation/show/' + tnt.copy_calculation.copy_calculation_id,
+                            function(data) {
+                                tnt.copy_calculation.calculation = data.calculation;
+                                window.calculation = _.cloneDeep(tnt.copy_calculation.calculation);
+                                var copy_calculation_system_type = tnt.copy_calculation.calculation.setup.system.system_type.name;
+                                tnt.set_system_type(copy_calculation_system_type);
+                                var templates_this_system_type =
+                                    _.filter(
+                                        window.calculation_templates,
+                                        function (template) {
+                                            return template['system_type'] == copy_calculation_system_type;
+                                        }
+                                    )[0].templates;
+                                var new_template = {
+                                    'file_name': '',
+                                    'json': JSON.stringify(
+                                        {
+                                            'calculation': tnt.copy_calculation.calculation
+                                        }
+                                    ),
+                                    'name': "COPY OF " + tnt.copy_calculation.calculation.meta_info.name
+                                };
+                                templates_this_system_type.push(new_template);
 
-                            $(".btn-system-type").removeClass("active");
-                            $('.btn-system-type[data-system-type="' + copy_calculation_system_type + '"]').addClass('active');
-                            $(this).addClass("active");
+                                $(".btn-system-type").removeClass("active");
+                                $('.btn-system-type[data-system-type="' + copy_calculation_system_type + '"]').addClass('active');
+                                $(this).addClass("active");
 
-                            console.log("A1");
+                                tnt.change_calculation_template(
+                                    copy_calculation_system_type,
+                                    new_template['name']
+                                );
 
-                            tnt.change_calculation_template(
-                                copy_calculation_system_type,
-                                new_template['name']
-                            );
-                            console.log("A2");
+                                tnt.update_basic_system_dimensions();
 
-                            tnt.update_basic_system_dimensions();
+                            }
+                        );
 
-                        }
+                    } else {
+
+                        tnt.change_calculation_template(default_calc_type, default_calc_name);
+                        tnt.update_basic_system_dimensions();
+
+                    }
+
+                    // Set up the selectors for system size
+                    tnt.set_up_numeric_range_dropdown(
+                        "system_size_choice",
+                        tnt.system_size_min,
+                        tnt.system_size_max,
+                        tnt.system_size_default
                     );
 
-                } else {
+                    // Set up the selectors for chi
+                    tnt.set_up_numeric_range_dropdown(
+                        "chi_choice",
+                        tnt.chi_min,
+                        tnt.chi_max,
+                        tnt.chi_default
+                    );
 
-                    tnt.change_calculation_template(default_calc_type, default_calc_name);
-                    tnt.update_basic_system_dimensions();
-
-                }
-
-                // Set up the selectors for system size
-                tnt.set_up_numeric_range_dropdown(
-                    "system_size_choice",
-                    tnt.system_size_min,
-                    tnt.system_size_max,
-                    tnt.system_size_default
-                );
-
-                // Set up the selectors for chi
-                tnt.set_up_numeric_range_dropdown(
-                    "chi_choice",
-                    tnt.chi_min,
-                    tnt.chi_max,
-                    tnt.chi_default
-                );
-
-
-            }
-        );
-
-        $("#calculation_template_choice")
-            .on(
-                "change",
-                function (e) {
-                    var system_type = tnt.get_system_type();
-                    var name = $(this).val();
-
-                    tnt.change_calculation_template(system_type, name);
 
                 }
             );
 
-		$(".btn-system-type").unbind();
-		$(".btn-system-type")
-			.click(function(el) {
-				$(".btn-system-type").removeClass("active");
-				$(this).addClass("active");
+            $("#calculation_template_choice").unbind();
+            $("#calculation_template_choice")
+                .on(
+                    "change",
+                    function (e) {
+                        var system_type = tnt.get_system_type();
+                        var name = $(this).val();
 
-				var chosen_system_type = $(this).data("system-type");
+                        tnt.change_calculation_template(system_type, name);
 
-                tnt.set_system_type(chosen_system_type);
+                    }
+                );
 
-				// Hide all extra input panels
-				$(".system_type_extra_info").css("display", "none");
+            $(".btn-system-type").unbind();
+            $(".btn-system-type")
+                .click(function(el) {
+                    $(".btn-system-type").removeClass("active");
+                    $(this).addClass("active");
 
-                // Update available calculation templates
-                tnt.update_available_calculation_templates(chosen_system_type);
+                    var chosen_system_type = $(this).data("system-type");
 
-			}
-		);
+                    tnt.set_system_type(chosen_system_type);
+
+                    // Hide all extra input panels
+                    $(".system_type_extra_info").css("display", "none");
+
+                    // Update available calculation templates
+                    tnt.update_available_calculation_templates(chosen_system_type);
+
+                }
+            );
+
+            tnt.basic_setup_page_first_visit = false;
+
+        }
 
 		tnt.clear_all_new_calculation_stages();
         tnt.scroll_to_top();
