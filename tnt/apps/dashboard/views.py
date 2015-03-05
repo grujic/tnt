@@ -58,10 +58,11 @@ def home(request):
                   'dashboard/home.html')
 
 @login_required
-def new_calculation(request):
+def new_calculation(request, calculation_id=None):
     # Page to define a new calculation
     return render(request, \
-                  'dashboard/new_calculation.html')
+                  'dashboard/new_calculation.html', \
+                  {'copy_calculation_id': calculation_id})
 
 @login_required
 def explore_calculation(request, calculation_id):

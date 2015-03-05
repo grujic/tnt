@@ -53,6 +53,8 @@
 
             $("#user_calculations").html(template(calculations));
 
+            $('[data-toggle="tooltip"]').tooltip();
+
             tnt.render_mathjax();
 
             // Attach functions to 'Run...' buttons

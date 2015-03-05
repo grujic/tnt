@@ -133,7 +133,7 @@
 
             <div class="row">
 
-                <div class="col-sm-6">
+                <div class="col-sm-5">
 
             		<p>Date created: {{timestamp_to_human_date meta_info.date_created}}</p>
 
@@ -142,16 +142,16 @@
             		<p>{{render_log_output meta_info.status meta_info.log meta_info.finished}}</p>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-sm-7">
 
                     <div class="row">
 
-                        <div class="col-xs-6">
+                        <div class="col-xs-4">
 
                             {{render_action_button meta_info.status meta_info.id}}
 
                         </div>
-                        <div class="col-xs-6">
+                        <div class="col-xs-4">
 
                             <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default form-control calculation-action-btns">
                                 <br>
@@ -160,7 +160,20 @@
                             </a>
 
                         </div>
+                        <div class="col-xs-4">
 
+                            <a href="/new_calculation/{{meta_info.id}}" 
+                               role="button" 
+                               class="btn btn-default form-control calculation-action-btns"
+                               data-toggle="tooltip"
+                               data-placement="bottom"
+                               title="Use as template for a new calculation">
+                                <br>
+                                <i class="fa fa-files-o fa-lg"></i>
+                                Clone
+                            </a>
+
+                        </div>
                     </div>
 
                 </div>

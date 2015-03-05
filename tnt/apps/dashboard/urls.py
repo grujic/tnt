@@ -1,6 +1,4 @@
-from django.views.generic import RedirectView
-from django.conf.urls import patterns, include, url
-from django.contrib.auth.decorators import login_required
+from django.conf.urls import patterns, url
 import views
 
 urlpatterns = patterns('',
@@ -24,6 +22,11 @@ urlpatterns = patterns('',
 
     # Set up a new calculationne
     url(r'^new_calculation[/]?$', \
+        views.new_calculation, \
+        name='new_calculation'),
+
+    # Set up a new calculationne from an existing one
+    url(r'^new_calculation/(?P<calculation_id>[^/]+)[/]?$', \
         views.new_calculation, \
         name='new_calculation'),
 

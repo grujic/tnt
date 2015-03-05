@@ -302,7 +302,8 @@ var tnt = {
     set_calculate_overlap_with_initial: function(val) { window.calculation.setup.expectation_values.calculate_overlap_with_intial = val; },
 
     get_calculation_template: function(system_type, name) {
-
+        // Return the data structure for a particular template
+        // OR a presaved calculation
         var possible_templates =
             _.filter(
                 window.calculation_templates,
@@ -387,17 +388,27 @@ var tnt = {
 
     go: function() {
         // Start the show
-        tnt.initialise_blank_calculation();
+        tnt.compile_handlebars_templates();
+        tnt.initialise_calculation();
     },
 
-	initialise_blank_calculation: function () {
+	initialise_calculation: function (copy_calculation_id) {
 		// Pull in the blank template for a calculation and set window.calculaton = the template
-		$.get('/api/v1.0/blank_calculation',
-			function (data) {
-				window.calculation = data;
-                tnt.personalise_calculation();
-			}
-		).done(tnt.initialise_new_calculation_basic_setup_step);
+        // But first check if we're copying an existing calculation
+        if (_.contains([undefined, "None", "", 0], window.copy_calculation_id) ) {
+            // We're not copying an existing calculation
+            tnt.copy_calculation =
+                {'copy_calculation': false};
+        } else {
+            // We're copying an existing calculation
+            tnt.copy_calculation =
+                {
+                    'copy_calculation': true,
+                    'copy_calculation_id': window.copy_calculation_id
+                };
+        }
+
+        tnt.initialise_new_calculation_basic_setup_step();
 
         // Not quite sure where to put this, we need these definitions eventually..
         tnt.load_spatial_and_temporal_function_definitions();
@@ -406,7 +417,7 @@ var tnt = {
         // so people can't enter something wrong
         tnt.enforce_numeric_restrictions_to_inputs();
 
-	}, // End of initialise_blank_calculation
+	}, // End of initialise_calculation
 
 	load_spatial_and_temporal_function_definitions: function() {
 		// Make an API call and pull in these definitions
@@ -1240,8 +1251,11 @@ var tnt = {
 
     update_basic_system_dimensions: function() {
         // reads off chi, system size etc from window.calculation, updates selects
+        console.log("C1");
         var truncation = tnt.get_system_truncation();
+        console.log("C2");
         var system_type = tnt.get_system_type();
+        console.log("C3");
 		if (system_type == "spin") {
             $("#system_type_extra_info_spins_choice")
                 .val(truncation);
@@ -1289,30 +1303,73 @@ var tnt = {
                 var default_calc_type = "spin";
                 var default_calc_name = "Blank spin calculation";
 
-                tnt.change_calculation_template(default_calc_type, default_calc_name);
+                if (tnt.copy_calculation.copy_calculation == true) {
+                    //
+                    $.get(
+                        '/api/v1.0/calculation/show/' + tnt.copy_calculation.copy_calculation_id,
+                        function(data) {
+                            tnt.copy_calculation.calculation = data.calculation;
+                            var copy_calculation_system_type = tnt.copy_calculation.calculation.setup.system.system_type.name;
+                            var templates_this_system_type =
+                                _.filter(
+                                    window.calculation_templates,
+                                    function (template) {
+                                        return template['system_type'] == copy_calculation_system_type;
+                                    }
+                                )[0].templates;
+                            var new_template = {
+                                'file_name': '',
+                                'json': JSON.stringify(
+                                    {
+                                        'calculation': tnt.copy_calculation.calculation
+                                    }
+                                ),
+                                'name': "COPY OF " + tnt.copy_calculation.calculation.meta_info.name
+                            };
+                            templates_this_system_type.push(new_template);
+
+                            $(".btn-system-type").removeClass("active");
+                            $('.btn-system-type[data-system-type="' + copy_calculation_system_type + '"]').addClass('active');
+                            $(this).addClass("active");
+
+                            console.log("A1");
+
+                            tnt.change_calculation_template(
+                                copy_calculation_system_type,
+                                new_template['name']
+                            );
+                            console.log("A2");
+                        }
+                    );
+
+                } else {
+
+                    tnt.change_calculation_template(default_calc_type, default_calc_name);
+
+                }
+
+                // Set up the selectors for system size
+                tnt.set_up_numeric_range_dropdown(
+                    "system_size_choice",
+                    tnt.system_size_min,
+                    tnt.system_size_max,
+                    tnt.system_size_default
+                );
+
+                // Set up the selectors for chi
+                tnt.set_up_numeric_range_dropdown(
+                    "chi_choice",
+                    tnt.chi_min,
+                    tnt.chi_max,
+                    tnt.chi_default
+                );
+                console.log("B1");
+
+                tnt.update_basic_system_dimensions();
+                console.log("B2");
 
             }
         );
-
-        tnt.compile_handlebars_templates();
-
-        // Set up the selectors for system size
-        tnt.set_up_numeric_range_dropdown(
-            "system_size_choice",
-            tnt.system_size_min,
-            tnt.system_size_max,
-            tnt.system_size_default
-        );
-
-        // Set up the selectors for chi
-        tnt.set_up_numeric_range_dropdown(
-            "chi_choice",
-            tnt.chi_min,
-            tnt.chi_max,
-            tnt.chi_default
-        );
-
-        tnt.update_basic_system_dimensions();
 
         $("#calculation_template_choice")
             .on(
@@ -2715,6 +2772,7 @@ var tnt = {
 		$("#submit_calculation").unbind();
 		$("#submit_calculation").click(
 			function () {
+                tnt.personalise_calculation();
 				$.post(
 					'/api/v1.0/calculation/save',
 					{
