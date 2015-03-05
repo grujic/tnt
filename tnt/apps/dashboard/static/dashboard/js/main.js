@@ -222,6 +222,17 @@ var tnt = {
         .system
         .system_type
         .name = system_type;	// Update the calculation
+
+        // Choose what extra inputs to reveal:
+        $('.system_type_extra_info').css('display', 'none');
+        if (system_type == "spin") {
+            $("#system_type_extra_info_spins").css("display", "block");
+        } else if (system_type == "bosonic") {
+            $("#system_type_extra_info_bosons").css("display", "block");
+        } else if (system_type == "fermionic") {
+            $("#system_type_extra_info_fermions").css("display", "block");
+        }
+
     },
 
     get_system_truncation: function() {
@@ -1251,11 +1262,8 @@ var tnt = {
 
     update_basic_system_dimensions: function() {
         // reads off chi, system size etc from window.calculation, updates selects
-        console.log("C1");
         var truncation = tnt.get_system_truncation();
-        console.log("C2");
         var system_type = tnt.get_system_type();
-        console.log("C3");
 		if (system_type == "spin") {
             $("#system_type_extra_info_spins_choice")
                 .val(truncation);
@@ -1308,8 +1316,14 @@ var tnt = {
                     $.get(
                         '/api/v1.0/calculation/show/' + tnt.copy_calculation.copy_calculation_id,
                         function(data) {
+                            console.log("1");
                             tnt.copy_calculation.calculation = data.calculation;
+                            window.calculation = _.cloneDeep(tnt.copy_calculation.calculation);
+                            console.log("2");
                             var copy_calculation_system_type = tnt.copy_calculation.calculation.setup.system.system_type.name;
+                            console.log("3");
+                            tnt.set_system_type(copy_calculation_system_type);
+                            console.log("4");
                             var templates_this_system_type =
                                 _.filter(
                                     window.calculation_templates,
@@ -1317,6 +1331,7 @@ var tnt = {
                                         return template['system_type'] == copy_calculation_system_type;
                                     }
                                 )[0].templates;
+                            console.log("5");
                             var new_template = {
                                 'file_name': '',
                                 'json': JSON.stringify(
@@ -1326,7 +1341,9 @@ var tnt = {
                                 ),
                                 'name': "COPY OF " + tnt.copy_calculation.calculation.meta_info.name
                             };
+                            console.log("6");
                             templates_this_system_type.push(new_template);
+                            console.log("7");
 
                             $(".btn-system-type").removeClass("active");
                             $('.btn-system-type[data-system-type="' + copy_calculation_system_type + '"]').addClass('active');
@@ -1339,12 +1356,16 @@ var tnt = {
                                 new_template['name']
                             );
                             console.log("A2");
+
+                            tnt.update_basic_system_dimensions();
+
                         }
                     );
 
                 } else {
 
                     tnt.change_calculation_template(default_calc_type, default_calc_name);
+                    tnt.update_basic_system_dimensions();
 
                 }
 
@@ -1363,10 +1384,7 @@ var tnt = {
                     tnt.chi_max,
                     tnt.chi_default
                 );
-                console.log("B1");
 
-                tnt.update_basic_system_dimensions();
-                console.log("B2");
 
             }
         );
@@ -1398,15 +1416,6 @@ var tnt = {
 
                 // Update available calculation templates
                 tnt.update_available_calculation_templates(chosen_system_type);
-
-				// Choose what extra inputs to reveal:
-				if (chosen_system_type == "spin") {
-					$("#system_type_extra_info_spins").css("display", "block");
-				} else if (chosen_system_type == "bosonic") {
-					$("#system_type_extra_info_bosons").css("display", "block");
-				} else if (chosen_system_type == "fermionic") {
-					$("#system_type_extra_info_fermions").css("display", "block");
-                }
 
 			}
 		);
@@ -1470,7 +1479,7 @@ var tnt = {
             .setup
             .system
             .system_type
-            .extra_info['spin_magnitude'] = spin_magnitude;
+            .extra_info = {'spin_magnitude': spin_magnitude};
 
 		} else if (system_type == "bosonic") {
 
@@ -1481,7 +1490,7 @@ var tnt = {
             .setup
             .system
             .system_type
-            .extra_info['bosonic_truncation'] = bosonic_truncation;
+            .extra_info = {'bosonic_truncation': bosonic_truncation};
 
 		} else if (system_type == "fermionic") {
 
@@ -1494,7 +1503,7 @@ var tnt = {
             .setup
             .system
             .system_type
-            .extra_info['fermion_type'] = fermion_type;
+            .extra_info = {'fermion_type': fermion_type};
 
         }
 
