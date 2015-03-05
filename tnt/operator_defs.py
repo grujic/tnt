@@ -26,7 +26,7 @@ operators = \
 		'function_description': 'Sx', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': False, \
+        	'U1_covariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
@@ -42,8 +42,8 @@ operators = \
 		'function_description': 'Sy', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': False, \
-		'complex': True, \
+        	'U1_covariant': False, \
+		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
@@ -75,7 +75,7 @@ operators = \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
         	'U1_covariant': True, \
-		'complex': False, \
+		'complex': True, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': False, \
 		'use_for_transform': True, \
@@ -90,7 +90,7 @@ operators = \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
         	'U1_covariant': True, \
-		'complex': False, \
+		'complex': True, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': False, \
 		'use_for_transform': True, \
@@ -170,7 +170,7 @@ operators = \
 		'term_type': 'spin', \
 		'U1_invariant': True, \
         	'U1_covariant': True, \
-		'complex': True, \
+		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': False, \
 		'use_for_transform': False, \
@@ -186,7 +186,7 @@ operators = \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
         	'U1_covariant': False, \
-		'complex': True, \
+		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
@@ -202,7 +202,7 @@ operators = \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
         	'U1_covariant': False, \
-		'complex': True, \
+		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
@@ -218,7 +218,7 @@ operators = \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
         	'U1_covariant': False, \
-		'complex': True, \
+		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
@@ -234,7 +234,7 @@ operators = \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
         	'U1_covariant': False, \
-		'complex': True, \
+		'complex': False, \
 		'use_for_hamiltonian': True, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
@@ -281,7 +281,7 @@ operators = \
 		'function_description': 'Spin flip', \
 		'term_type': 'spin', \
 		'U1_invariant': False, \
-        'U1_covariant': False, \
+        	'U1_covariant': False, \
 		'complex': False, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': False, \
@@ -396,7 +396,7 @@ operators = \
 		'term_type': 'bosonic', \
 		'U1_invariant': False, \
         	'U1_covariant': True, \
-		'complex': False, \
+		'complex': True, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': False, \
 		'use_for_transform': True, \
@@ -412,7 +412,7 @@ operators = \
 		'term_type': 'bosonic', \
 		'U1_invariant': False, \
         	'U1_covariant': True, \
-		'complex': False, \
+		'complex': True, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': False, \
 		'use_for_transform': True, \
@@ -492,7 +492,7 @@ operators = \
 		'term_type': 'bosonic', \
 		'U1_invariant': True, \
         	'U1_covariant': True, \
-		'complex': False, \
+		'complex': True, \
 		'use_for_hamiltonian': False, \
 		'use_for_expectation': True, \
 		'use_for_transform': False, \
