@@ -37,16 +37,23 @@
     window.user.id = "{{user.id}}";
     console.log("Stored logged in user details");
 
-    tnt.go();
+    window.copy_calculation_id = "{{copy_calculation_id}}";
 
-    $("#sidebar_new_calculation").addClass("active");
+    $(document).ready(
+        function() {
 
-    // Initialise popovers
-    $('[data-toggle="popover"]')
-        .click(function() {
-            $(this).popover().popover("show");
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-        });
+            tnt.go();
+
+            $("#sidebar_new_calculation").addClass("active");
+
+            // Initialise popovers
+            $('[data-toggle="popover"]')
+                .click(function() {
+                    $(this).popover().popover("show");
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+                });
+                }
+            );
 
   </script>
 

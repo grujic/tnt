@@ -106,7 +106,7 @@ MyUser.objects.create_user(email=’XXX@abc.com’, password=’XXX’)
 ```
 Delete the first User:
 ```python
-MyUser.objects.all().delete()
+MyUser.objects.all()[0].delete()
 ```
 #### Working with Calculation objects
 Import the object representation of a Calculation:
