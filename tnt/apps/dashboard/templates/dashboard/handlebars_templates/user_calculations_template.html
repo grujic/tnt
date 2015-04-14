@@ -41,7 +41,7 @@
             
             var date = new Date(timestamp*1000);
             
-            return new Handlebars.SafeString("Finished " + date.toLocaleString());
+            return new Handlebars.SafeString("Finished: " + date.toLocaleString());
             
         } else if (status == 'error') {
             
@@ -104,6 +104,7 @@
 <script id="user-calculations-template" type="text/x-handlebars-template"> 
     {{#calculations}}
     <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
+    <div class="panel-body">
         <div class="row">
             <div class="col-xs-12 col-sm-8">
                 <div class="input-group update_name_div">
@@ -134,16 +135,16 @@
         </div>
         <div class="row">
             <div class="col-sm-4 col-xs-12 pull-left">
-                    <p>Date created: {{timestamp_to_human_date meta_info.date_created}}</p>
+                    <p>Created: {{timestamp_to_human_date meta_info.date_created}}</p>
             </div>
             <div class="col-sm-4 col-xs-12 center-block">
-                <p>Date run: {{timestamp_to_human_date meta_info.date_run}}</p>
+                <p>Run: {{timestamp_to_human_date meta_info.date_run}}</p>
             </div>
             <div class="col-sm-4 col-xs-12 pull-right">
                 <p>{{render_log_output meta_info.status meta_info.log meta_info.finished}}</p>
             </div>
         </div> <!-- End of panel body -->
-
+    </div>
     </div>  <!-- End of panel -->
 
 {{/calculations}}
