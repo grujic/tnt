@@ -48,7 +48,7 @@
             return new Handlebars.SafeString("<span class='text-danger'> Error! </span>");
             
         } else if (status == 'saved') {
-            return new Handlebars.SafeString("Saved - press <i class='fa fa-list fa-lg'></i> to run")
+            return new Handlebars.SafeString("Saved - press <i class='fa fa-play'></i> to run")
         }
 
         tnt.render_mathjax();
@@ -105,49 +105,44 @@
     {{#calculations}}
     <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
         <div class="panel-heading">
-            <h3 class="panel-title">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-8">
-                        <div class="input-group update_name_div">
-                            <input type="text" class="form-control" placeholder="{{meta_info.name}}" value="{{meta_info.name}}">
-                            <span class="input-group-btn">
-                            <button class="btn btn-default update_calculation_name_btn" type="button" data-calculation-id="{{meta_info.id}}">
-                            Update name
-                            </button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-4 text-right">
-                    
-                        {{render_action_button meta_info.status meta_info.id}}
-                    
-                        <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default form-control calculation-action-btns" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Parameters">
-                        <i class="fa fa-list fa-lg"></i>
-                        </a>
-                        
-                        <a href="/new_calculation/{{meta_info.id}}" role="button" class="btn btn-default form-control calculation-action-btns" data-toggle="tooltip" data-placement="top" title="Use as template">
-                        <i class="fa fa-files-o fa-lg"></i>
-                        </a>
-                        
-                        <a role="button" style="color: white;" class="btn btn-danger btn-delete-calculation" data-calculation-id="{{meta_info.id}}" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Delete">
-                        <i class="fa fa-trash-o fa-lg"></i>
-                        </a>
-                    </div>
-                </div>
-            </h3>
-        </div>
-
-        <div class="panel-body">
             <div class="row">
-            <div class="col-sm-3 col-xs-12 pull-left">
+                <div class="col-xs-12 col-sm-8">
+                    <div class="input-group update_name_div">
+                        <input type="text" class="form-control" placeholder="{{meta_info.name}}" value="{{meta_info.name}}">
+                        <span class="input-group-btn">
+                        <button class="btn btn-default update_calculation_name_btn" type="button" data-calculation-id="{{meta_info.id}}">
+                        Update name
+                        </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-4 text-right">
+                
+                    {{render_action_button meta_info.status meta_info.id}}
+                
+                    <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Parameters">
+                    <i class="fa fa-list fa-lg"></i>
+                    </a>
+                    
+                    <a href="/new_calculation/{{meta_info.id}}" role="button" class="btn btn-default calculation-action-btns" data-toggle="tooltip" data-placement="top" title="Use as template">
+                    <i class="fa fa-files-o fa-lg"></i>
+                    </a>
+                    
+                    <a role="button" style="color: white;" href="#" class="btn btn-danger btn-delete-calculation" data-calculation-id="{{meta_info.id}}" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Delete">
+                    <i class="fa fa-trash-o fa-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 col-xs-12 pull-left">
                     <p>Date created: {{timestamp_to_human_date meta_info.date_created}}</p>
-                </div>
-                <div class="col-sm-3 col-xs-12 center-block">
-                    <p>Date run: {{timestamp_to_human_date meta_info.date_run}}</p>
-                </div>
-                <div class="col-sm-3 col-xs-12 pull-right">
-                    <p>{{render_log_output meta_info.status meta_info.log meta_info.finished}}</p>
-                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12 center-block">
+                <p>Date run: {{timestamp_to_human_date meta_info.date_run}}</p>
+            </div>
+            <div class="col-sm-4 col-xs-12 pull-right">
+                <p>{{render_log_output meta_info.status meta_info.log meta_info.finished}}</p>
             </div>
         </div> <!-- End of panel body -->
 
