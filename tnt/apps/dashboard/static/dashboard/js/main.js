@@ -1403,10 +1403,10 @@ var tnt = {
 
                     var chosen_system_type = $(this).data("system-type");
 
-                    tnt.set_system_type(chosen_system_type);
-
                     // Hide all extra input panels
                     $(".system_type_extra_info").css("display", "none");
+                    
+                    tnt.set_system_type(chosen_system_type);
 
                     // Update available calculation templates
                     tnt.update_available_calculation_templates(chosen_system_type);
