@@ -84,7 +84,7 @@
 
         }
 
-        var action_button_html = '<a role="button" class="btn form-control calculation-action-btns ' + action_button_classes + 
+        var action_button_html = '<a role="button" class="btn calculation-action-btns ' + action_button_classes + 
             '" data-loading-text="' + action_button_data_loading_text + 
             '" data-calculation-id="' + calculation_id;
 
@@ -104,34 +104,32 @@
 <script id="user-calculations-template" type="text/x-handlebars-template"> 
     {{#calculations}}
     <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
-        <div class="panel-heading">
-            <div class="row">
-                <div class="col-xs-12 col-sm-8">
-                    <div class="input-group update_name_div">
-                        <input type="text" class="form-control" placeholder="{{meta_info.name}}" value="{{meta_info.name}}">
-                        <span class="input-group-btn">
-                        <button class="btn btn-default update_calculation_name_btn" type="button" data-calculation-id="{{meta_info.id}}">
-                        Update name
-                        </button>
-                        </span>
-                    </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-8">
+                <div class="input-group update_name_div">
+                    <input type="text" class="form-control" placeholder="{{meta_info.name}}" value="{{meta_info.name}}">
+                    <span class="input-group-btn">
+                    <button class="btn btn-default update_calculation_name_btn" type="button" data-calculation-id="{{meta_info.id}}">
+                    Update name
+                    </button>
+                    </span>
                 </div>
-                <div class="col-xs-12 col-sm-4 text-right">
+            </div>
+            <div class="col-xs-12 col-sm-4 text-right">
+            
+                {{render_action_button meta_info.status meta_info.id}}
+            
+                <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Parameters">
+                <i class="fa fa-list fa-lg"></i>
+                </a>
                 
-                    {{render_action_button meta_info.status meta_info.id}}
+                <a href="/new_calculation/{{meta_info.id}}" role="button" class="btn btn-default calculation-action-btns" data-toggle="tooltip" data-placement="top" title="Use as template">
+                <i class="fa fa-files-o fa-lg"></i>
+                </a>
                 
-                    <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Parameters">
-                    <i class="fa fa-list fa-lg"></i>
-                    </a>
-                    
-                    <a href="/new_calculation/{{meta_info.id}}" role="button" class="btn btn-default calculation-action-btns" data-toggle="tooltip" data-placement="top" title="Use as template">
-                    <i class="fa fa-files-o fa-lg"></i>
-                    </a>
-                    
-                    <a role="button" style="color: white;" href="#" class="btn btn-danger btn-delete-calculation" data-calculation-id="{{meta_info.id}}" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Delete">
-                    <i class="fa fa-trash-o fa-lg"></i>
-                    </a>
-                </div>
+                <a role="button" style="color: white;" href="#" class="btn btn-danger btn-delete-calculation" data-calculation-id="{{meta_info.id}}" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Delete">
+                <i class="fa fa-trash-o fa-lg"></i>
+                </a>
             </div>
         </div>
         <div class="row">
