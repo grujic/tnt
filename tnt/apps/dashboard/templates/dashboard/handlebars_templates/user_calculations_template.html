@@ -35,20 +35,20 @@
     Handlebars.registerHelper("render_log_output", function(status, log, timestamp) {
         if (status == 'running') {
             
-            return new Handlebars.SafeString("Status: <span class='text-primary'>" + log + "</span>");
+            return new Handlebars.SafeString("<span class='text-primary'>" + log + "</span>");
             
         } else if (status == 'finished') {
             
             var date = new Date(timestamp*1000);
             
-            return new Handlebars.SafeString("Date finished: " + date.toLocaleString());
+            return new Handlebars.SafeString("Finished " + date.toLocaleString());
             
         } else if (status == 'error') {
             
-            return new Handlebars.SafeString("Status: <span class='text-danger'> error! </span>");
+            return new Handlebars.SafeString("<span class='text-danger'> Error! </span>");
             
         } else if (status == 'saved') {
-            return new Handlebars.SafeString("Status: saved")
+            return new Handlebars.SafeString("Saved - press <i class='fa fa-list fa-lg'></i> to run")
         }
 
         tnt.render_mathjax();
@@ -93,7 +93,7 @@
             action_button_html = action_button_html + '" disabled="disabled" ';
         }
 
-        action_button_html = action_button_html + '">' + '<br><i class="fa ' + action_button_icon + ' fa-lg"></i> ' + action_button_text + '</a>';
+        action_button_html = action_button_html + '"  data-toggle="tooltip" data-placement="top" title="' + action_button_text + '">' + '<i class="fa ' + action_button_icon + ' fa-lg"></i></a>';
 
         return new Handlebars.SafeString(action_button_html);
 
@@ -102,89 +102,58 @@
 </script>
 
 <script id="user-calculations-template" type="text/x-handlebars-template"> 
-
     {{#calculations}}
-        <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
-          <div class="panel-heading">
-              <h3 class="panel-title">
-		<div class="row">
-		 <div class="col-xs-10 col-sm-11">
-                  <div class="input-group update_name_div">
-
-                    <input type="text" class="form-control" placeholder="{{meta_info.name}}" value="{{meta_info.name}}">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default update_calculation_name_btn" type="button" data-calculation-id="{{meta_info.id}}">
+    <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="input-group update_name_div">
+                            <input type="text" class="form-control" placeholder="{{meta_info.name}}" value="{{meta_info.name}}">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default update_calculation_name_btn" type="button" data-calculation-id="{{meta_info.id}}">
                             Update name
-                        </button>
-                    </span>
-		    </div>
+                            </button>
+                            </span>
+                        </div>
                     </div>
-                    <div class="col-xs-2 col-sm-1 text-right">
-                      <a role="button" style="color: white;" class="btn btn-danger btn-delete-calculation" data-calculation-id="{{meta_info.id}}" style="display: inline-block;">
-                          <i class="fa fa-trash-o fa-lg"></i>
-                      </a>
+                    <div class="col-xs-12 col-sm-4 text-right">
+                    
+                        {{render_action_button meta_info.status meta_info.id}}
+                    
+                        <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default form-control calculation-action-btns" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Parameters">
+                        <i class="fa fa-list fa-lg"></i>
+                        </a>
+                        
+                        <a href="/new_calculation/{{meta_info.id}}" role="button" class="btn btn-default form-control calculation-action-btns" data-toggle="tooltip" data-placement="top" title="Use as template">
+                        <i class="fa fa-files-o fa-lg"></i>
+                        </a>
+                        
+                        <a role="button" style="color: white;" class="btn btn-danger btn-delete-calculation" data-calculation-id="{{meta_info.id}}" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Delete">
+                        <i class="fa fa-trash-o fa-lg"></i>
+                        </a>
                     </div>
                 </div>
-                  <!--<span class="pull-right">ID: {{meta_info.id}}</span>-->
-              </h3>
-          </div>
+            </h3>
+        </div>
 
-          <div class="panel-body">
-
+        <div class="panel-body">
             <div class="row">
-
-                <div class="col-sm-5">
-
-            		<p>Date created: {{timestamp_to_human_date meta_info.date_created}}</p>
-
-            		<p>Date run: {{timestamp_to_human_date meta_info.date_run}}</p>
-
-            		<p>{{render_log_output meta_info.status meta_info.log meta_info.finished}}</p>
+            <div class="col-sm-3 col-xs-12 pull-left">
+                    <p>Date created: {{timestamp_to_human_date meta_info.date_created}}</p>
                 </div>
-
-                <div class="col-sm-7">
-
-                    <div class="row">
-
-                        <div class="col-xs-4">
-
-                            {{render_action_button meta_info.status meta_info.id}}
-
-                        </div>
-                        <div class="col-xs-4">
-
-                            <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default form-control calculation-action-btns">
-                                <br>
-                                <i class="fa fa-list fa-lg"></i>
-                                Parameters
-                            </a>
-
-                        </div>
-                        <div class="col-xs-4">
-
-                            <a href="/new_calculation/{{meta_info.id}}" 
-                               role="button" 
-                               class="btn btn-default form-control calculation-action-btns"
-                               data-toggle="tooltip"
-                               data-placement="bottom"
-                               title="Use as template for a new calculation">
-                                <br>
-                                <i class="fa fa-files-o fa-lg"></i>
-                                Clone
-                            </a>
-
-                        </div>
-                    </div>
-
+                <div class="col-sm-3 col-xs-12 center-block">
+                    <p>Date run: {{timestamp_to_human_date meta_info.date_run}}</p>
                 </div>
-
+                <div class="col-sm-3 col-xs-12 pull-right">
+                    <p>{{render_log_output meta_info.status meta_info.log meta_info.finished}}</p>
+                </div>
             </div>
+        </div> <!-- End of panel body -->
 
-          </div> <!-- End of panel body -->
+    </div>  <!-- End of panel -->
 
-        </div>  <!-- End of panel -->
-
-    {{/calculations}}
+{{/calculations}}
 
 </script>
 
