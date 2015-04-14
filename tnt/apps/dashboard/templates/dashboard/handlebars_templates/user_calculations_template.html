@@ -133,17 +133,9 @@
                 </a>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-4 col-xs-12 pull-left">
-                    <p>Created: {{timestamp_to_human_date meta_info.date_created}}</p>
-            </div>
-            <div class="col-sm-4 col-xs-12 center-block">
-                <p>Run: {{timestamp_to_human_date meta_info.date_run}}</p>
-            </div>
-            <div class="col-sm-4 col-xs-12 pull-right">
-                <p>{{render_log_output meta_info.status meta_info.log meta_info.finished}}</p>
-            </div>
-        </div> <!-- End of panel body -->
+    </div>
+    <div class="panel-footer">
+        <p>Created {{timestamp_to_human_date meta_info.date_created}}, run {{timestamp_to_human_date meta_info.date_run}}, {render_log_output meta_info.status meta_info.log meta_info.finished}}</p>
     </div>
     </div>  <!-- End of panel -->
 
