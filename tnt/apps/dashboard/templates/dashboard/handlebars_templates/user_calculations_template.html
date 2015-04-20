@@ -116,26 +116,28 @@
                     </span>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-4 text-right">
-            
+            <div class="col-xs-3 col-sm-1 text-right">
                 {{render_action_button meta_info.status meta_info.id}}
-            
-                <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Parameters">
+            </div>
+            <div class="col-xs-3 col-sm-1 text-right">
+                <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Parameters">
                 <i class="fa fa-list fa-lg"></i>
                 </a>
-                
+            </div>    
+            <div class="col-xs-3 col-sm-1 text-right">
                 <a href="/new_calculation/{{meta_info.id}}" role="button" class="btn btn-default calculation-action-btns" data-toggle="tooltip" data-placement="top" title="Use as template">
                 <i class="fa fa-files-o fa-lg"></i>
                 </a>
-                
-                <a role="button" style="color: white;" href="#" class="btn btn-danger btn-delete-calculation" data-calculation-id="{{meta_info.id}}" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Delete">
+            </div>     
+            <div class="col-xs-3 col-sm-1 text-right">
+                <a href="#" role="button" style="color: white;" class="btn btn-danger btn-delete-calculation" data-calculation-id="{{meta_info.id}}" data-toggle="tooltip" data-placement="top" title="Delete">
                 <i class="fa fa-trash-o fa-lg"></i>
                 </a>
             </div>
         </div>
     </div>
     <div class="panel-footer">
-        <p>Created {{timestamp_to_human_date meta_info.date_created}}, run {{timestamp_to_human_date meta_info.date_run}}, {render_log_output meta_info.status meta_info.log meta_info.finished}}</p>
+        <p>Created {{timestamp_to_human_date meta_info.date_created}}, run {{timestamp_to_human_date meta_info.date_run}}, {{render_log_output meta_info.status meta_info.log meta_info.finished}}</p>
     </div>
     </div>  <!-- End of panel -->
 
