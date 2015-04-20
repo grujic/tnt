@@ -93,8 +93,8 @@
             action_button_html = action_button_html + '" disabled="disabled" ';
         }
 
-        action_button_html = action_button_html + '"  data-toggle="tooltip" data-placement="top" title="' + action_button_text + '">' + '<i class="fa ' + action_button_icon + ' fa-lg"></i></a>';
-        action_button_html = action_button_html + ' <span class="visible-lg-inline visible-xs-inline">' + action_button_text + '</span>';
+        action_button_html = action_button_html + '"  data-toggle="tooltip" data-placement="top" title="' + action_button_text + '">' + '<i class="fa ' + action_button_icon + ' fa-lg"></i>';
+        action_button_html = action_button_html + ' <span class="visible-lg-inline visible-xs-inline">' + action_button_text + '</span></a>';
 
         return new Handlebars.SafeString(action_button_html);
 
@@ -107,17 +107,17 @@
     <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
     <div class="panel-body">
         <div class="row">
-            <div class="col-xs-10 col-sm-8">
+            <div class="col-xs-11 col-sm-8 col-lg-6">
                 <div class="input-group update_name_div">
                     <input type="text" class="form-control" placeholder="{{meta_info.name}}" value="{{meta_info.name}}">
                     <span class="input-group-btn">
                     <button class="btn btn-default update_calculation_name_btn" type="button" data-calculation-id="{{meta_info.id}}">
-                    <i class="fa fa-save fa-lg"></i><span class="visible-md-inline"> Update name </span>
+                    <i class="fa fa-save fa-lg"></i><span class="visible-lg-inline"> Update name </span>
                     </button>
                     </span>
                 </div>
             </div>
-            <div class="col-xs-2 col-sm-4 text-right">
+            <div class="col-xs-1 col-sm-4  col-lg-6 text-right">
             <div class="hidden-xs">
                 {{render_action_button meta_info.status meta_info.id}}
                 
@@ -134,15 +134,14 @@
                 </a>
             </div>
             <div class="row visible-xs">
-                <div class="col-xs-4">
+                <div class="col-xs-12 btn-group" role="group">
+                
                     {{render_action_button meta_info.status meta_info.id}}
-                </div>
-                <div class="col-xs-4">
+
                     <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Parameters">
                     <i class="fa fa-list fa-lg"></i> <span class="visible-lg-inline visible-xs-inline">Parameters</span>
                     </a>
-                </div>
-                <div class="col-xs-4">
+
                     <a href="/new_calculation/{{meta_info.id}}" role="button" class="btn btn-default calculation-action-btns" data-toggle="tooltip" data-placement="top" title="Use as template">
                     <i class="fa fa-files-o fa-lg"></i> <span class="visible-lg-inline visible-xs-inline">Use as template</span>
                     </a>
