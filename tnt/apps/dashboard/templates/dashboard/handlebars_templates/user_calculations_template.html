@@ -111,25 +111,22 @@
                     <input type="text" class="form-control" placeholder="{{meta_info.name}}" value="{{meta_info.name}}">
                     <span class="input-group-btn">
                     <button class="btn btn-default update_calculation_name_btn" type="button" data-calculation-id="{{meta_info.id}}">
-                    Update name
+                    <i class="fa fa-save fa-lg"></i><span class="visible-md-inline"> Update name </span>
                     </button>
                     </span>
                 </div>
             </div>
-            <div class="col-xs-3 col-sm-1 text-right">
+            <div class="col-xs-12 col-sm-4 text-right">
                 {{render_action_button meta_info.status meta_info.id}}
-            </div>
-            <div class="col-xs-3 col-sm-1 text-right">
+                
                 <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Parameters">
-                <i class="fa fa-list fa-lg"></i>
+                <i class="fa fa-list fa-lg"></i><span class="visible-md-inline">Parameters</span>
                 </a>
-            </div>    
-            <div class="col-xs-3 col-sm-1 text-right">
+
                 <a href="/new_calculation/{{meta_info.id}}" role="button" class="btn btn-default calculation-action-btns" data-toggle="tooltip" data-placement="top" title="Use as template">
-                <i class="fa fa-files-o fa-lg"></i>
+                <i class="fa fa-files-o fa-lg"></i><span class="visible-md-inline">Use as template</span>
                 </a>
-            </div>     
-            <div class="col-xs-3 col-sm-1 text-right">
+
                 <a href="#" role="button" style="color: white;" class="btn btn-danger btn-delete-calculation" data-calculation-id="{{meta_info.id}}" data-toggle="tooltip" data-placement="top" title="Delete">
                 <i class="fa fa-trash-o fa-lg"></i>
                 </a>
