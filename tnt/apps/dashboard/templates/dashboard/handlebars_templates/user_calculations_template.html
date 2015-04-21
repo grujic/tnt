@@ -60,40 +60,40 @@
         if (status == 'running') {
 
             var action_button_classes = 'btn-default download-calculation-button';
-            var action_button_data_loading_text = 'Starting...';
-            var action_button_text = 'Running';
+            var action_button_data_loading_text = 'starting...';
+            var action_button_text = 'running';
             var action_button_icon = 'fa-clock-o';
         } else if (status == 'saved') {
 
             var action_button_classes = 'btn-info run-calculation-button';
-            var action_button_data_loading_text = 'Starting...';
-            var action_button_text = 'Run';
+            var action_button_data_loading_text = 'starting...';
+            var action_button_text = 'run';
             var action_button_icon = 'fa-play';
         } else if (status == 'finished') {
 
             var action_button_classes = 'btn-default explore-calculation-button';
-            var action_button_data_loading_text = 'Exploring...';
-            var action_button_text = 'Explore';
+            var action_button_data_loading_text = 'exploring...';
+            var action_button_text = 'explore';
             var action_button_icon = 'fa-area-chart';
         } else if (status == 'error') {
 
             var action_button_classes = 'btn-default download-calculation-button';
-            var action_button_data_loading_text = 'Error!';
-            var action_button_text = 'Error!';
+            var action_button_data_loading_text = 'error!';
+            var action_button_text = 'error!';
             var action_button_icon = 'fa-exclamation-triangle';
 
         }
 
         var action_button_html = '<a role="button" class="btn calculation-action-btns ' + action_button_classes + 
             '" data-loading-text="' + action_button_data_loading_text + 
-            '" data-calculation-id="' + calculation_id;
+            '" data-calculation-id="' + calculation_id + '"';
 
         // Want some buttons to be disabled 
         if ( (status == 'error') || (status == 'running') ) {
-            action_button_html = action_button_html + '" disabled="disabled" ';
+            action_button_html = action_button_html + ' disabled="disabled" ';
         }
 
-        action_button_html = action_button_html + '"  data-toggle="tooltip" data-placement="top" title="' + action_button_text + '">' + '<i class="fa ' + action_button_icon + ' fa-lg"></i>';
+        action_button_html = action_button_html + '>' + '<i class="fa ' + action_button_icon + ' fa-lg"></i>';
         action_button_html = action_button_html + ' <span class="visible-lg-inline visible-xs-inline">' + action_button_text + '</span></a>';
 
         return new Handlebars.SafeString(action_button_html);
@@ -107,50 +107,38 @@
     <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
     <div class="panel-body">
         <div class="row">
-            <div class="col-xs-11 col-sm-8 col-lg-6">
+            <div class="col-xs-12 col-sm-6 col-lg-8">
                 <div class="input-group update_name_div">
                     <input type="text" class="form-control" placeholder="{{meta_info.name}}" value="{{meta_info.name}}">
                     <span class="input-group-btn">
                     <button class="btn btn-default update_calculation_name_btn" type="button" data-calculation-id="{{meta_info.id}}">
-                    <i class="fa fa-save fa-lg"></i><span class="visible-lg-inline"> Update name </span>
+                    <i class="fa fa-save fa-lg"></i><span class="visible-lg-inline"> update name </span>
                     </button>
                     </span>
                 </div>
             </div>
-            <div class="col-xs-1 col-sm-4  col-lg-6 text-right">
-            <div class="hidden-xs">
-                {{render_action_button meta_info.status meta_info.id}}
+            <div class="col-xs-12 col-sm-6 col-lg-4">
+                <div class="btn-group" style="width:100%;"  role="group">
                 
-                <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Parameters">
-                <i class="fa fa-list fa-lg"></i> <span class="visible-lg-inline">Parameters</span>
-                </a>
+                    {{render_action_button meta_info.status meta_info.id }}
 
-                <a href="/new_calculation/{{meta_info.id}}" role="button" class="btn btn-default calculation-action-btns" data-toggle="tooltip" data-placement="top" title="Use as template">
-                <i class="fa fa-files-o fa-lg"></i> <span class="visible-lg-inline">Use as template</span>
-                </a>
-            </div>
-                <a href="#" role="button" style="color: white;" class="btn btn-danger btn-delete-calculation" data-calculation-id="{{meta_info.id}}" data-toggle="tooltip" data-placement="top" title="Delete">
-                <i class="fa fa-trash-o fa-lg"></i>
-                </a>
-            </div>
-            <div class="row visible-xs">
-                <div class="col-xs-12 btn-group form-control" role="group">
-                
-                    {{render_action_button meta_info.status meta_info.id}}
-
-                    <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Parameters">
-                    <i class="fa fa-list fa-lg"></i> <span class="visible-lg-inline visible-xs-inline">Parameters</span>
+                    <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default">
+                    <i class="fa fa-list fa-lg"></i> <span class="visible-lg-inline visible-xs-inline">parameters</span>
                     </a>
 
-                    <a href="/new_calculation/{{meta_info.id}}" role="button" class="btn btn-default calculation-action-btns" data-toggle="tooltip" data-placement="top" title="Use as template">
-                    <i class="fa fa-files-o fa-lg"></i> <span class="visible-lg-inline visible-xs-inline">Use as template</span>
+                    <a href="/new_calculation/{{meta_info.id}}" role="button" class="btn btn-default calculation-action-btns">
+                    <i class="fa fa-files-o fa-lg"></i> <span class="visible-lg-inline visible-xs-inline">clone</span>
                     </a>
                 </div>
             </div>
         </div>
     </div>
     <div class="panel-footer">
-        <p>Created {{timestamp_to_human_date meta_info.date_created}}, run {{timestamp_to_human_date meta_info.date_run}}, {{render_log_output meta_info.status meta_info.log meta_info.finished}}</p>
+        Created {{timestamp_to_human_date meta_info.date_created}}, run {{timestamp_to_human_date meta_info.date_run}}, {{render_log_output meta_info.status meta_info.log meta_info.finished}}
+        <a href="#" role="button" style="color: white;" class="btn btn-danger btn-delete-calculation" data-calculation-id="{{meta_info.id}}">
+        <i class="fa fa-trash-o fa-lg"></i>
+        </a>
+    
     </div>
     </div>  <!-- End of panel -->
 
