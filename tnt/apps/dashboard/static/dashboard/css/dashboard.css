@@ -16,10 +16,6 @@
   height: 60px;
 }
 
-.calculation-action-btns {
-    height: 75px;
-}
-
 .btn-default.active {
   background-color: #a95700;
   border-color: #9f5100;

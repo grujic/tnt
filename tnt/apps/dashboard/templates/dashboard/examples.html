@@ -166,12 +166,12 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog">
 <div class="modal-content">
 <div class="modal-header">
 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-<h4 class="modal-title" id="myModalLabel">Full size image</h4>
+<h4 class="modal-title" id="exampleModalLabel">Full size image</h4>
 </div>
 <div class="modal-body">
 ...
@@ -188,7 +188,7 @@
 
 	$("#sidebar_examples").addClass("active");
     
-    $('#myModal').on('show.bs.modal', function (event) {
+    $('#exampleModal').on('show.bs.modal', function (event) {
         var img_link = $(event.relatedTarget); // Button that triggered the modal
         var url = img_link.data('url'); // Extract info from data-* attributes
         // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
