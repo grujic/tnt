@@ -31,26 +31,40 @@
         }
 
     });
+    
+    Handlebars.registerHelper("render_time_info", function(status, created_timestamp, run_timestamp, finished_timestamp) {
+    
+        var created_date = new Date(created_timestamp*1000);
+        var time_html = "Created " + created_date.toLocaleString() + "<span class='hidden-xs'>. </span>";
+        
+        if (status != 'saved') {
+            
+            var run_date = new Date(run_timestamp*1000);
+            time_html = time_html + "<br class='visible-xs' />Run " + run_date.toLocaleString() + "<span class='hidden-xs'>. </span>";
+            
+        } 
+        if ((status == 'finished')||(status == 'error')) {
+            
+            var finished_date = new Date(finished_timestamp*1000);
+            time_html = time_html + "<br class='visible-xs' />Finished " + finished_date.toLocaleString() + "<span class='hidden-xs'>. </span>";
+            
+        } 
+        
+        return new Handlebars.SafeString(time_html);
+    }
+    );
 
-    Handlebars.registerHelper("render_log_output", function(status, log, timestamp) {
+    Handlebars.registerHelper("render_log_output", function(status, log) {
         if (status == 'running') {
             
-            return new Handlebars.SafeString("<span class='text-primary'>" + log + "</span>");
-            
-        } else if (status == 'finished') {
-            
-            var date = new Date(timestamp*1000);
-            
-            return new Handlebars.SafeString("Finished: " + date.toLocaleString());
+            return new Handlebars.SafeString("<p class='bg-primary'><samp>" + log + "</samp></p>");
             
         } else if (status == 'error') {
             
-            return new Handlebars.SafeString("<span class='text-danger'> Error! </span>");
+            return new Handlebars.SafeString("<p class='bg-danger'><samp> Error! </samp></p>");
             
-        } else if (status == 'saved') {
-            return new Handlebars.SafeString("Saved - press <i class='fa fa-play'></i> to run")
         }
-
+        
         tnt.render_mathjax();
     }
     );
@@ -60,26 +74,26 @@
         if (status == 'running') {
 
             var action_button_classes = 'btn-default download-calculation-button';
-            var action_button_data_loading_text = 'starting...';
-            var action_button_text = 'running';
+            var action_button_data_loading_text = 'Starting...';
+            var action_button_text = 'Running';
             var action_button_icon = 'fa-clock-o';
         } else if (status == 'saved') {
 
             var action_button_classes = 'btn-info run-calculation-button';
-            var action_button_data_loading_text = 'starting...';
-            var action_button_text = 'run';
+            var action_button_data_loading_text = 'Starting...';
+            var action_button_text = 'Run';
             var action_button_icon = 'fa-play';
         } else if (status == 'finished') {
 
             var action_button_classes = 'btn-default explore-calculation-button';
-            var action_button_data_loading_text = 'exploring...';
-            var action_button_text = 'explore';
+            var action_button_data_loading_text = 'Exploring...';
+            var action_button_text = 'Explore';
             var action_button_icon = 'fa-area-chart';
         } else if (status == 'error') {
 
             var action_button_classes = 'btn-default download-calculation-button';
-            var action_button_data_loading_text = 'error!';
-            var action_button_text = 'error!';
+            var action_button_data_loading_text = 'Error!';
+            var action_button_text = 'Error!';
             var action_button_icon = 'fa-exclamation-triangle';
 
         }
@@ -94,7 +108,7 @@
         }
 
         action_button_html = action_button_html + '>' + '<i class="fa ' + action_button_icon + ' fa-lg"></i>';
-        action_button_html = action_button_html + ' <span class="visible-lg-inline visible-xs-inline">' + action_button_text + '</span></a>';
+        action_button_html = action_button_html + ' <span class="hidden-xs">' + action_button_text + '</span></a>';
 
         return new Handlebars.SafeString(action_button_html);
 
@@ -107,38 +121,44 @@
     <div class="panel panel-default panel-calculation-info" data-calculation-id="{{meta_info.id}}">
     <div class="panel-body">
         <div class="row">
-            <div class="col-xs-12 col-sm-6 col-lg-8">
+            <div class="col-sm-12 col-md-8 col-lg-9">
                 <div class="input-group update_name_div">
                     <input type="text" class="form-control" placeholder="{{meta_info.name}}" value="{{meta_info.name}}">
                     <span class="input-group-btn">
                     <button class="btn btn-default update_calculation_name_btn" type="button" data-calculation-id="{{meta_info.id}}">
-                    <i class="fa fa-save fa-lg"></i><span class="visible-lg-inline"> update name </span>
+                    <i class="fa fa-save fa-lg"></i><span class="hidden-xs"> Update name </span>
                     </button>
                     </span>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-lg-4">
+            <div class="col-sm-12 col-md-4 col-lg-3">
                 <div class="btn-group" style="width:100%;"  role="group">
                 
                     {{render_action_button meta_info.status meta_info.id }}
 
                     <a href="/calculation/parameters/{{meta_info.id}}" role="button" class="btn btn-default">
-                    <i class="fa fa-list fa-lg"></i> <span class="visible-lg-inline visible-xs-inline">parameters</span>
+                    <i class="fa fa-list fa-lg"></i> <span class="hidden-xs">Parameters</span>
                     </a>
 
                     <a href="/new_calculation/{{meta_info.id}}" role="button" class="btn btn-default calculation-action-btns">
-                    <i class="fa fa-files-o fa-lg"></i> <span class="visible-lg-inline visible-xs-inline">clone</span>
+                    <i class="fa fa-files-o fa-lg"></i> <span class="hidden-xs">Clone</span>
                     </a>
                 </div>
             </div>
         </div>
+        {{render_log_output meta_info.status meta_info.log}}
     </div>
     <div class="panel-footer">
-        Created {{timestamp_to_human_date meta_info.date_created}}, run {{timestamp_to_human_date meta_info.date_run}}, {{render_log_output meta_info.status meta_info.log meta_info.finished}}
-        <a href="#" role="button" style="color: white;" class="btn btn-danger btn-delete-calculation" data-calculation-id="{{meta_info.id}}">
-        <i class="fa fa-trash-o fa-lg"></i>
-        </a>
-    
+        <div class="row">
+            <div class="col-xs-10 col-sm-11">
+                {{render_time_info meta_info.status meta_info.date_created meta_info.date_run meta_info.finished}}
+            </div>
+            <div class="col-xs-2 col-sm-1 text-right">
+                <a href="#" role="button" style="color: white;" class="btn btn-danger btn-delete-calculation" data-calculation-id="{{meta_info.id}}">
+                <i class="fa fa-trash-o fa-lg"></i>
+                </a>
+            </div>
+        </div>
     </div>
     </div>  <!-- End of panel -->
 
