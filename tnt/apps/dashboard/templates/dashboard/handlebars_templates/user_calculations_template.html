@@ -57,11 +57,11 @@
     Handlebars.registerHelper("render_log_output", function(status, log) {
         if (status == 'running') {
             
-            return new Handlebars.SafeString("<p class='bg-primary'><samp>" + log + "</samp></p>");
+        return new Handlebars.SafeString("<div class='alert alert-success' role='alert' style='margin-top:10px; margin-bottom:0;'><samp>" + log + "</samp></div>");
             
         } else if (status == 'error') {
             
-            return new Handlebars.SafeString("<p class='bg-danger'><samp> Error! </samp></p>");
+            return new Handlebars.SafeString("<div class='alert alert-danger' role='alert' style='margin-top:10px; margin-bottom:0;'><samp> Error! </samp></div>");
             
         }
         
