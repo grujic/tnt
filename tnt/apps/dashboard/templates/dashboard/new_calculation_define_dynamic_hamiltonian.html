@@ -4,13 +4,13 @@
     <div class="panel-heading">
       <h3 class="panel-title">Dynamic Hamiltonian</h3>
     </div>
-
+<!--
       <div class="progress visible-xs">
         <div class="progress-bar" role="progressbar" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100" style="width: 28%;">
             Setup progress
         </div>
       </div>
-    <div class="panel-body">
+    <div class="panel-body"> -->
 
       <h4>Available operators
       <a tabindex="0" 
@@ -43,7 +43,7 @@
       <div id="no_dynamic_hamiltonian_terms_added_yet_warning" class="alert alert-info no-terms-added" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
 
       <div id="dynamic_hamiltonian_terms_container_super" class="hamiltonian_terms_container_super">
-
+<!--
         <p>
 
             <btn class="btn btn-danger remove-all-terms-btn">
@@ -51,7 +51,7 @@
             </btn>
             <span id="dynamic_hamiltonian_tex_str" class="hamiltonian_tex_str"></span>
 
-        </p>
+        </p> -->
 
 
         <div id="dynamic_hamiltonian_terms_container" class="hamiltonian_terms_container">
@@ -63,11 +63,13 @@
 
       <div class="row new-calculation-step-navigation">  <!-- back next controls -->
           <div class="col-xs-6">
-              <button type="button" class="btn btn-default btn-back-step btn-back-step form-control ">Back</button>
+              <a href="#" role="button" class="btn-back-step btn-back-step form-control"> <i class="fa fa-arrow-left fa-2x"></i> </a>
+              <!-- <button type="button" class="btn btn-default btn-back-step btn-back-step form-control ">Back</button> -->
           </div>
 
           <div class="col-xs-6">
-              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
+              <a href="#" role="button" class="btn-next-step form-control"> <i class="fa fa-arrow-right fa-2x"></i> </a>
+              <!--<button type="button" class="btn btn-success btn-next-step form-control ">Next</button> -->
           </div>
       </div>  <!-- End of back next controls -->
 
