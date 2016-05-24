@@ -16,45 +16,25 @@
     <!--</div>-->
 
     <div class="col-xs-12 col-sm-12 panel panel-default alert alert-dismissible">
-
         <div class="panel-heading">
-
-            <a class="btn btn-danger remove-hamiltonian-term-btn">
-                <i class="fa fa-trash-o fa-lg"></i>
-            </a>
-
-            <strong>
-                {{function_description}} (\( {{function_tex_str}} \)) - 
-            </strong>
-            <br><br>
-            Specify form of \( f_{{index}} (j{{#if include_temporal_function}}, t{{/if}}) \)
-
+            <div class="col-xs-11">
+                \( {{function_tex_str}} \)
+            <div>
+            <div class="col-xs-1" style="position:absolute; right:0; bottom: -6px">
+                <a class="btn btn-danger remove-hamiltonian-term-btn">
+                    <i class="fa fa-trash-o fa-lg"></i>
+                </a>
+            </div>
         </div>
 
         <div class="panel-body">
-
             <div class="row">
-
-                <!--<div class="col-md-3">-->
-
-                    <!--<h3>{{function_description}}</h3>-->
-                    <!--<p>\[ {{function_tex_str}} \]</p>-->
-
-                    <!--<btn class="btn btn-danger remove-hamiltonian-term-btn form-control">-->
-                        <!--<i class="fa fa-trash-o fa-lg"></i> Remove-->
-                    <!--</btn>-->
-
-                <!--</div>-->
-
                 <div class="col-md-12">
-
                     <div class="row">
-
                         <div class="col-sm-1"></div>
-
                         <div class="col-sm-5 spatial_parameter_input_div">
 
-                            <h4>Spatial function <a tabindex="0" 
+                            <h4>Spatial function \( f_{{index}} (j{{#if include_temporal_function}}, t{{/if}}) \) <a tabindex="0" 
                                data-toggle="popover" 
                                data-trigger="focus" 
                                data-html="true"
