@@ -2,24 +2,33 @@
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Confirmation - If you're happy with this calculation, hit Save. You can then run it at your leisure. </h3>
+      <h3 class="panel-title">Confirmation</h3>
     </div>
 
     <div class="panel-body">
-
-      <div class="progress visible-xs">
-        <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-            Setup progress
-        </div>
-      </div>
-
+    <p>
+    If you're happy with this calculation then save it to run it at a later time. 
+    </p>
+    <p>
+    Otherwise you can go back to change certain parameters or delete this calculation and start again.
+    </p>
+    <hr>
       <div class="row">
-          <div class="col-xs-6">
-              <button type="button" id="cancel_calculation" class="btn btn-default form-control ">Cancel</button>
+          <div class="col-xs-4">
+                <a href="#" role="button" class="btn-back-step btn-back-step"> <i class="fa fa-arrow-left fa-3x" title="Back"></i> </a>
           </div>
-
-          <div class="col-xs-6">
-              <button type="button" id="submit_calculation" class="btn btn-success btn-next-step form-control ">Save</button>
+          <div class="col-xs-4">
+            <div class="text-center">
+                <a href="#" role="button" id="cancel_calculation"> <i class="fa fa-trash-o fa-3x" title="Cancel"></i> </a>
+            </div>
+                <!-- 
+                <button type="button" id="cancel_calculation" class="btn btn-default form-control ">Cancel</button> -->
+          </div>
+          <div class="col-xs-4">
+          <div class="pull-right">
+              <a href="#" role="button" id="submit_calculation"> <i class="fa fa-floppy-o fa-3x" title="Save"></i> </a>
+              <!-- <button type="button" id="submit_calculation" class="btn btn-success btn-next-step form-control ">Save</button> -->
+          </div>
           </div>
       </div>
 

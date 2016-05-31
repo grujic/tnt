@@ -17,14 +17,18 @@
 
     <div class="col-xs-12 col-sm-12 panel panel-default alert alert-dismissible">
         <div class="panel-heading">
+        <div class="row">
             <div class="col-xs-11">
                 Modify term \( {{function_tex_str}} \):
-            <div>
-            <div class="col-xs-1" style="position:absolute; right:0; top: 6px">
-                <a class="btn btn-danger remove-hamiltonian-term-btn">
-                    <i class="fa fa-trash-o fa-lg"></i>
-                </a>
             </div>
+            <div class="col-xs-1">
+                <div class="pull-right">
+                    <a class="btn btn-danger remove-hamiltonian-term-btn">
+                        <i class="fa fa-trash-o fa-lg" title="Remove term"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
         </div>
 
         <div class="panel-body">
@@ -34,7 +38,7 @@
                         <div class="col-sm-1"></div>
                         <div class="col-sm-5 spatial_parameter_input_div">
 
-                            <h4>Spatial function \( f_{{index}} (j{{#if include_temporal_function}}, t{{/if}}) \) <a tabindex="0" 
+                            <h4>Spatial function \( f_{{index}} (j) \) <a tabindex="0" 
                                data-toggle="popover" 
                                data-trigger="focus" 
                                data-html="true"
@@ -54,7 +58,7 @@
 
                             <div class="col-sm-5 temporal_parameter_input_div">
 
-                                <h4>Temporal function <a tabindex="0" 
+                                <h4>Temporal function \( g_{{index}} (t) \) <a tabindex="0" 
                                    data-toggle="popover" 
                                    data-trigger="focus" 
                                    data-html="true"

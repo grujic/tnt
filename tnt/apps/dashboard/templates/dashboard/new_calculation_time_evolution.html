@@ -14,7 +14,7 @@
 
     <div class="panel-body">
 
-      <p>Do you want to calculate dynamical evolution of your system?</p>
+      <h4>Calculate dynamical evolution</h4>
 
       <div id="time_evolution_choice" class="btn-group" data-toggle="buttons">
         <label class="btn btn-primary active">
@@ -40,19 +40,19 @@
 
             <form class="form-horizontal" role="form">
                 <div class="form-group">
-                    <label for="input_num_time_steps" class="col-sm-5 control-label">Number of time steps</label>
+                    <label for="input_num_time_steps" class="col-sm-5 control-label">Time steps</label>
                     <div class="col-sm-7">
                     <input type="number" class="form-control integer-only" id="input_num_time_steps" placeholder="100" value="100">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="input_time_step_size" class="col-sm-5 control-label">Time step size</label>
+                    <label for="input_time_step_size" class="col-sm-5 control-label">Step size</label>
                     <div class="col-sm-7">
                     <input type="number" class="form-control float-only" id="input_time_step_size" placeholder="0.01" value="0.01">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="input_num_expval_time_steps" class="col-sm-5 control-label">Number of time steps for expectation value evaluations</label>
+                    <label for="input_num_expval_time_steps" class="col-sm-5 control-label">Time steps for expectation values</label>
                     <div class="col-sm-7">
                     <input type="number" class="form-control integer-only" id="input_num_expval_time_steps" placeholder="10" value="10">
                     </div>
@@ -64,7 +64,7 @@
 
             <div class="col-md-5"
 
-                <p>Enforce quantum number conservation on the dynamical evolution?</p>
+                <h4><span class="prompt-text">Enforce quantum number conservation?</span></h4>
 
                 <div id="dynamical_number_conservation_choice" class="btn-group" data-toggle="buttons">
                     <label class="btn btn-primary">
@@ -82,15 +82,17 @@
 
       <hr>
 
-      <div class="row new-calculation-step-navigation">
+      <div class="row new-calculation-step-navigation">  <!-- back next controls -->
           <div class="col-xs-6">
-              <button type="button" class="btn btn-default btn-back-step form-control ">Back</button>
+              <a href="#" role="button" class="btn-back-step btn-back-step"> <i class="fa fa-arrow-left fa-3x"></i> </a>
           </div>
 
           <div class="col-xs-6">
-              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
+          <div class="pull-right">
+              <a href="#" role="button" class="btn-next-step"> <i class="fa fa-arrow-right fa-3x"></i> </a>
           </div>
-      </div>
+          </div>
+      </div>  <!-- End of back next controls -->
 
     </div> <!-- End of panel body -->
 

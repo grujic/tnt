@@ -677,7 +677,7 @@ var tnt = {
                         $(this)
                         .closest(".new-calculation-step")
                         .find(".new-calculation-step-navigation .btn-next-step")
-                        .attr("disabled", true);
+                        .css("display", "none");
 
 
 					} else {
@@ -882,7 +882,8 @@ var tnt = {
         // If the Hamiltonian operator has a spatial_fn field, then
         // set up the element to reflect this
         // if include_temporal_function is false, then don't add in all the temporal stuff
-
+        console.log("Adding a hamiltonian term...\n\n");
+        console.log(next_calculation_stage_btn_selector);
 
         include_temporal_function = typeof include_temporal_function !== 'undefined' ? include_temporal_function : true;
 
@@ -950,7 +951,7 @@ var tnt = {
             .css('display', 'none');
 
         $(next_calculation_stage_btn_selector)
-            .removeAttr("disabled");
+            .css('display', 'inline');
 
 		tnt.attach_click_fn_to_remove_hamiltonian_terms(
             term_container_selector,
@@ -2528,7 +2529,7 @@ var tnt = {
 
         tnt.render_available_hamiltonian_operators(
             parseInt(tnt.get_apply_dynamic_qn()),
-            "#new_calculation_available_dynamic_hamiltonian_operators",
+             "#new_calculation_available_dynamic_hamiltonian_operators",
             "#dynamic_hamiltonian_terms_container",
             "#no_dynamic_hamiltonian_terms_added_yet_warning",
             "#new_calculation_define_dynamic_hamiltonian .btn-next-step",
@@ -2561,7 +2562,8 @@ var tnt = {
                 tnt.add_hamiltonian_term(
                     el_clone,
                     "#dynamic_hamiltonian_terms_container",
-                    "#no_dynamic_hamiltonian_terms_added_yet_warning"
+                    "#no_dynamic_hamiltonian_terms_added_yet_warning",
+                    "#new_calculation_define_dynamic_hamiltonian .btn-next-step"
                 );
             }
         );

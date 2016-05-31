@@ -127,15 +127,17 @@
 
       </div> <!-- End of ground_state_extra_info_specification -->
 
-      <div class="row new-calculation-step-navigation">
+      <div class="row new-calculation-step-navigation">  <!-- back next controls -->
           <div class="col-xs-6">
-              <button type="button" class="btn btn-default btn-back-step form-control ">Back</button>
+              <a href="#" role="button" class="btn-back-step btn-back-step"> <i class="fa fa-arrow-left fa-3x"></i> </a>
           </div>
 
           <div class="col-xs-6">
-              <button type="button" class="btn btn-success btn-next-step form-control ">Next</button>
+          <div class="pull-right">
+              <a href="#" role="button" class="btn-next-step"> <i class="fa fa-arrow-right fa-3x"></i> </a>
           </div>
-      </div>
+          </div>
+      </div>  <!-- End of back next controls -->
 
     </div>
   </div>
@@ -183,8 +185,8 @@
 
            <!-- <btn class="btn btn-danger remove-all-terms-btn">
                 <i class="fa fa-trash-o fa-lg"></i> Remove all terms
-            </btn>
-            <span id="ground_hamiltonian_tex_str" class="hamiltonian_tex_str"></span> -->
+            </btn> -->
+            <span id="ground_hamiltonian_tex_str" class="hamiltonian_tex_str"></span>
 
             
 
@@ -197,11 +199,13 @@
 
       <div class="row new-calculation-step-navigation">  <!-- back next controls -->
           <div class="col-xs-6">
-              <button type="button" class="btn btn-default btn-back-step btn-back-step form-control ">Back</button>
+              <a href="#" role="button" class="btn-back-step"> <i class="fa fa-arrow-left fa-3x"></i> </a>
           </div>
 
           <div class="col-xs-6">
-              <button type="button" disabled="disabled" class="btn btn-success btn-next-step form-control ">Next</button>
+          <div class="pull-right">
+                <a href="#" role="button" class="btn-next-step" style="display:none"> <i class="fa fa-arrow-right fa-3x"></i> </a>
+          </div>
           </div>
       </div>  <!-- End of back next controls -->
 
