@@ -8,10 +8,10 @@
 
 	    <div class="row">
 	        {{#operators}}
-		        <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" style="padding-bottom: 10px;" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="{{function_description}}">
+		        <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 hamiltonian-operator-col" style="padding-bottom: 10px;" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="{{function_description}}">
 		            <button
 		             type="button" 
-		             class="btn btn-default form-control hamiltonian-operator-btn" 
+		             class="hamiltonian-operator-btn btn btn-default form-control" 
 		             data-operator-id="{{operator_id}}"
                      data-sum-or-product="{{sum_or_product}}">
 		              \[ {{function_tex_str }} \]

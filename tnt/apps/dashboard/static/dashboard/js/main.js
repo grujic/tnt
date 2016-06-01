@@ -1060,6 +1060,8 @@ var tnt = {
         //$(tex_str_el).html(tex_str);
         //tnt.render_mathjax_in_element_with_id("initial_state_modifiers_tex_str");
     //},
+    
+    
 
     update_hamiltonian_tex_str: function(
         hamiltonian_term_container_selector,
@@ -1108,15 +1110,25 @@ var tnt = {
                 function (hamiltonian_operator, index) {
                     var possible_new_line = ( ( (index) % 3 == 0 ) && (index != 0) ) ? "\\\\" : "";
                     var possible_plus_sign = (index == 0) ? "" : " + ";
-                    var function_arguments = (hamiltonian_operator['include_temporal_function'] == true) ? "(j, t)" : "(j)";
+                    var spatial_function_string = tnt.write_spatial_function_string(hamiltonian_operator['spatial_function']);
+                    var temporal_function_string = "";
+                    if (hamiltonian_operator['include_temporal_function'] == true) {
+                        temporal_function_string = tnt.write_spatial_function_string(hamiltonian_operator['temporal_function']);
+                        temporal_function_string = temporal_function_string.replace("j","t");
+                        if ((spatial_function_string.length > 0) && (spatial_function_string != "-")) {
+                            if (temporal_function_string.length > 0) {
+                                temporal_function_string = "\\cdot" + temporal_function_string;
+                            }
+                        }
+                    }
                     var possible_left_bracket = (hamiltonian_operator['number_of_terms'] > 1) ? "\\left (" : "";
                     var possible_right_bracket = (hamiltonian_operator['number_of_terms'] > 1) ? "\\right )" : "";
 
                     hamiltonian_tex_str = hamiltonian_tex_str
                                         + possible_new_line
                                         + possible_plus_sign
-                                        + "f_{" + hamiltonian_operator["index"] + "}"
-                                        + function_arguments
+                                        + spatial_function_string
+                                        + temporal_function_string
                                         + possible_left_bracket
                                         + hamiltonian_operator["function_tex_str"]
                                         + possible_right_bracket;
@@ -1136,15 +1148,25 @@ var tnt = {
                 function (hamiltonian_operator, index) {
                     var possible_new_line = ( ( (index) % 3 == 0 ) && (index != 0) ) ? "\\\\" : "";
                     var possible_plus_sign = (index == 0) ? "" : " + ";
-                    var function_arguments = (hamiltonian_operator['include_temporal_function'] == true) ? "(j, t)" : "(j)";
+                    var spatial_function_string = tnt.write_spatial_function_string(hamiltonian_operator['spatial_function']);
+                    var temporal_function_string = "";
+                    if (hamiltonian_operator['include_temporal_function'] == true) {
+                        temporal_function_string = tnt.write_spatial_function_string(hamiltonian_operator['temporal_function']);
+                        temporal_function_string = temporal_function_string.replace("j","t");
+                        if ((spatial_function_string.length > 0) && (spatial_function_string != "-")) {
+                            if (temporal_function_string.length > 0) {
+                                temporal_function_string = "\\cdot" + temporal_function_string;
+                            }
+                        }
+                    }
                     var possible_left_bracket = (hamiltonian_operator['number_of_terms'] > 1) ? "\\left (" : "";
                     var possible_right_bracket = (hamiltonian_operator['number_of_terms'] > 1) ? "\\right )" : "";
 
                     hamiltonian_tex_str = hamiltonian_tex_str
                                         + possible_new_line
                                         + possible_plus_sign
-                                        + "f_{" + hamiltonian_operator["index"] + "}"
-                                        + function_arguments + " "
+                                        + spatial_function_string
+                                        + temporal_function_string
                                         + possible_left_bracket
                                         + hamiltonian_operator["function_tex_str"]
                                         + possible_right_bracket;
@@ -1164,22 +1186,98 @@ var tnt = {
         return hamiltonian_tex_str;
 
     },
+    
+    write_spatial_function_string: function (spatial_function) {
+        
+        var spatial_function_string = spatial_function["function_tex_str"];
+
+        var spatial_parameter;
+        var param_tex_str;
+        var param_value;
+        var numterms = 1;
+        
+        //spatial_function_string = spatial_function_string.replace("function_")
+        
+        for (i = 0; i < spatial_function["parameters"].length; i++) {
+            
+            spatial_parameter = spatial_function["parameters"][i];
+            param_tex_str = spatial_parameter["parameter_tex_str"];
+            param_value = spatial_parameter["value"];
+            
+            if (param_tex_str == "A") {
+                if (param_value == 1) {
+                    spatial_function_string = spatial_function_string.replace(param_tex_str,"");
+                } else if (param_value == -1) {
+                    spatial_function_string = spatial_function_string.replace(param_tex_str,"-");
+                } else {
+                    spatial_function_string = spatial_function_string.replace(param_tex_str,param_value);
+                }
+            } else if (param_tex_str == "b") {
+                if (param_value == 0) {
+                    spatial_function_string = spatial_function_string.replace("+b","");
+                } else if (param_value < 0) {
+                    spatial_function_string = spatial_function_string.replace("+b",param_value);
+                    numterms = numterms + 1;
+                } else {
+                    spatial_function_string = spatial_function_string.replace("b",param_value);
+                    numterms = numterms + 1;
+                }
+            } else if (param_tex_str == "j_c") {
+                if (param_value == 0) {
+                    spatial_function_string = spatial_function_string.replace("-j_c","");
+                } else if (param_value < 0) {
+                    var varnum = parseFloat(param_value);
+                    varnum = -1*varnum;
+                    spatial_function_string = spatial_function_string.replace("-j_c","+"+varnum);
+                } else {
+                    spatial_function_string = spatial_function_string.replace("j_c",param_value);
+                }
+            } else if (param_tex_str == "\\phi") {
+                if (param_value == 0) {
+                    spatial_function_string = spatial_function_string.replace("+\\phi)]",")");
+                    spatial_function_string = spatial_function_string.replace("[2\\pi(","(2\\pi\\times");
+                } else if (param_value < 0) {
+                    spatial_function_string = spatial_function_string.replace("+\\phi",param_value);
+                    numterms = numterms + 1;
+                } else {
+                    spatial_function_string = spatial_function_string.replace("\\phi",param_value);
+                    numterms = numterms + 1;
+                }
+            } else if (param_tex_str == "\\sigma") {
+                var varnum = parseFloat(param_value);
+                varnum = 2*varnum*varnum;
+                spatial_function_string = spatial_function_string.replace("2\\sigma^2",varnum);
+            } else if (param_tex_str == "w") {
+                if (param_value == 1) {
+                    spatial_function_string = spatial_function_string.replace("}{w}","");
+                    spatial_function_string = spatial_function_string.replace("\\frac{","");
+                } else {
+                    spatial_function_string = spatial_function_string.replace(param_tex_str,param_value);
+                }
+            } else {
+                console.log(param_tex_str);
+                spatial_function_string = spatial_function_string.replace(param_tex_str,param_value);
+            }
+        }
+        
+        if (numterms > 1) {
+            spatial_function_string = "(" + spatial_function_string + ")";
+        }
+        
+        return spatial_function_string;
+        
+    },
 
 	attach_click_fn_to_spatial_and_temporal_fn_choices: function () {
 		// Attach a click listener to the list elements representing different spatial function variations, updating parameter input fields accordingly
 		$(".spatial-or-temporal-function-btn-group").on("change",
-
-			function (e) {
+            function (e) {
 
 				var selected_function_id = $(this).val();
 
 				// Get info on the selected function
                 // Is is a spatial or temporal function?
-
-                var spatial_or_temporal
-                = $("option:selected", this)
-                    .data('function-type')
-;
+                var spatial_or_temporal = $("option:selected", this).data('function-type');
                 if (spatial_or_temporal == 'spatial') {
     				var relevant_function = tnt.get_spatial_function(selected_function_id);
                 } else if (spatial_or_temporal == 'temporal') {
@@ -1190,29 +1288,46 @@ var tnt = {
                 // the relevant ones for this function choice
 				var template = tnt.handlebars_templates["spatial-or-temporal-function-parameter-input-template"];
 
-				var hamiltonian_term_containing_div
-                    = $(this).closest('.hamiltonian-term');
-
+				var hamiltonian_term_containing_div = $(this).closest('.hamiltonian-term');
                 if (spatial_or_temporal == 'spatial') {
-
                     var function_parameter_input_form = $(hamiltonian_term_containing_div)
                         .find('.spatial_parameter_input_div .spatial_or_temporal_function_parameter_input_form');
-
                 } else if (spatial_or_temporal == 'temporal') {
-
                     var function_parameter_input_form = $(hamiltonian_term_containing_div)
                         .find('.temporal_parameter_input_div .spatial_or_temporal_function_parameter_input_form');
-
                 }
 
-				$(function_parameter_input_form)
-                .html(template(relevant_function));
-
-				tnt.render_mathjax();
-
-				e.preventDefault();
-			}
-		)
+				$(function_parameter_input_form).html(template(relevant_function));
+                
+                var hamiltonian_terms_container_super = $(this).closest(".hamiltonian_terms_container_super");
+                var hamiltonian_terms_container = $(hamiltonian_terms_container_super).find(".hamiltonian_terms_container");
+                var hamiltonian_tex_str = $(hamiltonian_terms_container_super).find(".hamiltonian_tex_str");
+                
+                tnt.update_hamiltonian_tex_str(hamiltonian_terms_container, hamiltonian_tex_str);
+                
+                $(".spatial_or_temporal_function_parameter_input_field").on("change",
+                    function (e) {
+                        var hamiltonian_terms_container_super = $(this).closest(".hamiltonian_terms_container_super");
+                        var hamiltonian_terms_container = $(hamiltonian_terms_container_super).find(".hamiltonian_terms_container");
+                        var hamiltonian_tex_str = $(hamiltonian_terms_container_super).find(".hamiltonian_tex_str");
+                        
+                        tnt.update_hamiltonian_tex_str(hamiltonian_terms_container,hamiltonian_tex_str);
+                        tnt.render_mathjax();
+                    }
+                );
+            }
+        );
+        
+        $(".spatial_or_temporal_function_parameter_input_field").on("change",
+            function (e) {
+                var hamiltonian_terms_container_super = $(this).closest(".hamiltonian_terms_container_super");
+                var hamiltonian_terms_container = $(hamiltonian_terms_container_super).find(".hamiltonian_terms_container");
+                var hamiltonian_tex_str = $(hamiltonian_terms_container_super).find(".hamiltonian_tex_str");
+                
+                tnt.update_hamiltonian_tex_str(hamiltonian_terms_container,hamiltonian_tex_str);
+                tnt.render_mathjax();
+            }
+        );  
 	},
 
 	clear_all_new_calculation_stages: function() {

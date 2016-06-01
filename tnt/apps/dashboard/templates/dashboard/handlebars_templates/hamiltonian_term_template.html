@@ -9,20 +9,14 @@
          data-index={{index}}
          class="row hamiltonian-term">
 
-    <!--<div class="col-sm-1 hidden-xs" style="padding-top: 70px;">-->
-
-        <!--<i class="fa fa-{{sum-or-product sum_or_product}}-circle fa-5x"></i> -->
-
-    <!--</div>-->
-
-    <div class="col-xs-12 col-sm-12 panel panel-default alert alert-dismissible">
-        <div class="panel-heading">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="padding:0px 15px">
         <div class="row">
             <div class="col-xs-11">
-                Modify term \( {{function_tex_str}} \):
+                <h4> Modify term \( {{function_tex_str}} \) </h4>
             </div>
             <div class="col-xs-1">
-                <div class="pull-right">
+                <div class="pull-right" style="margin: 5px -5px">
                     <a class="btn btn-danger remove-hamiltonian-term-btn">
                         <i class="fa fa-trash-o fa-lg" title="Remove term"></i>
                     </a>
@@ -31,67 +25,35 @@
         </div>
         </div>
 
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-sm-1"></div>
-                        <div class="col-sm-5 spatial_parameter_input_div">
+        <div class="panel-body" style="padding:15px">
+        
+            <div class="spatial_parameter_input_div">
+            
+                <div class="row">
+                    <div class="col-xs-6"> 
+                    <p> <b>Spatial Function:</b> </p>
 
-                            <h4>Spatial function \( f_{{index}} (j) \) <a tabindex="0" 
-                               data-toggle="popover" 
-                               data-trigger="focus" 
-                               data-html="true"
-                               data-container="body"
-                               data-placement="top"
-                               data-content="The spatial function is defined in terms of the site number j. For two-site terms the smallest of the two site numbers is used to set the parameter."
-                            >
-                                <i class="fa fa-question-circle fa-lg"></i></a></h4>
-
-                            {{spatial_function_input spatial_function}}
-
-                        </div>
-
-                        <div class="col-md-1"></div>
-
-                        {{#if include_temporal_function}}
-
-                            <div class="col-sm-5 temporal_parameter_input_div">
-
-                                <h4>Temporal function \( g_{{index}} (t) \) <a tabindex="0" 
-                                   data-toggle="popover" 
-                                   data-trigger="focus" 
-                                   data-html="true"
-                                   data-container="body"
-                                   data-placement="top"
-                                   data-content="The temporal function is defined in terms of the dimensionless time t, where the time is given by the time step count multiplied by the time step size dt."
-                                >
-                                <i class="fa fa-question-circle fa-lg"></i></a></h4>
-
-                                {{temporal_function_input temporal_function}}
-
-                            </div>
-
-                        {{/if}}
-
+                    {{spatial_function_input spatial_function}}
+                    
                     </div>
-
-                </div>  <!-- End of spatial definitions box -->
-
-            </div>  <!-- End of row -->
-
+            </div>
+            {{#if include_temporal_function}}
+            <hr>
+            <div class="row">
+                    <div class="col-xs-6"> 
+                    <p> <b>Temporal Function:</b> </p>
+                    {{temporal_function_input temporal_function}}
+                    </div>
+            </div>
+            {{/if}}
         </div>  <!-- End of panel body -->
-
-    </div>
-
+    </div>  <!-- End of panel -->
     </div>  <!-- End of A Hamiltonian term representation -->
 
 </script>
 
 <!-- Just the little dropdown to choose functions -->
 <script id="spatial-or-temporal-function-input-template" type="text/x-handlebars-template"> 
-
-    <div class="row">
 
         <select class="spatial-or-temporal-function-btn-group form-control">
 
@@ -112,9 +74,8 @@
 
         </select>
 
-    </div>
-
-    <div class="row">
+    </div> <!-- end of div for column started in template above -->
+    <div class="col-xs-6">
 
         <div class="spatial_or_temporal_function_parameter_input_form">
 
@@ -122,26 +83,32 @@
 
         </div>
 
-    </div>
-
 </script>
 
 <script id="spatial-or-temporal-function-parameter-input-template" type="text/x-handlebars-template"> 
 
-    <hr class="visible-xs">
+    <p> \( {{function_tex_str}} \) </p>
+    <form class="form-inline" role="form">
+        {{#parameters}}
+        <div class="form-group">
+            <div class="input-group">
+            <div class="input-group-addon">\({{parameter_tex_str}}\)</div>
+                <input type="number" class="form-control spatial_or_temporal_function_parameter_input_field" id="parameter_{{parameter_id}}" data-parameter-id="{{parameter_id}}" placeholder="{{#if value}}{{value}}{{else}}{{parameter_default_value}}{{/if}}" value="{{#if value}}{{value}}{{else}}{{parameter_default_value}}{{/if}}">
+            </div>
+        </div>
+        {{/parameters}}
+    </form>
 
-    <p>Form: \( {{function_tex_str}} \) </p>
-
-    <form class="form-horizontal" role="form">
+   <!-- <form class="form-horizontal" role="form">
       {{#parameters}}
         <div class="form-group">
             <label for="inputEmail3" class="col-xs-2 control-label">\({{parameter_tex_str}}\)</label>
           <div class="col-xs-10">
-              <input type="number" class="form-control" id="parameter_{{parameter_id}}" data-parameter-id="{{parameter_id}}" placeholder="{{#if value}}{{value}}{{else}}{{parameter_default_value}}{{/if}}" value="{{#if value}}{{value}}{{else}}{{parameter_default_value}}{{/if}}">
+          <input type="number" class="form-control spatial_or_temporal_function_parameter_input_field" id="parameter_{{parameter_id}}" data-parameter-id="{{parameter_id}}" placeholder="{{#if value}}{{value}}{{else}}{{parameter_default_value}}{{/if}}" value="{{#if value}}{{value}}{{else}}{{parameter_default_value}}{{/if}}">
           </div>
         </div>
       {{/parameters}}
-    </form>
+    </form> -->
 
 </script>
 

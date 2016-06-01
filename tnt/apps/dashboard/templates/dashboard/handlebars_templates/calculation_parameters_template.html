@@ -27,70 +27,67 @@
 
 <script id="calculation-parameters-template" type="text/x-handlebars-template"> 
 
-    <div class="row">
-    
-    <div id="basic_qn_expec" class="col-lg-6 col-md-12">
-
-        <div id="basic_info">
-            <h4>Basic system information</h4>
-            <table class="table table-striped table-bordered">
-                <tbody>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Calculation name</th>
-                        <td>{{meta_info.name}}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-nowrap" scope="row">System type</th>
-                        <td>{{setup.system.system_type.name}}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-nowrap" scope="row">System size \( L \)</th>
-                        <td>{{setup.system.system_size}}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Truncation parameter \( \chi \)</th>
-                        <td>{{setup.system.chi}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <h4>Calculation set-up</h4>
+    <div class="row" style="padding:15px">
+        <h4>Basic system information</h4>
+        <table class="table table-striped table-bordered">
+            <tbody>
+                <tr>
+                    <th class="text-nowrap" scope="row">Calculation name</th>
+                    <td>{{meta_info.name}}</td>
+                </tr>
+                <tr>
+                    <th class="text-nowrap" scope="row">System type</th>
+                    <td>{{setup.system.system_type.name}}</td>
+                </tr>
+                <tr>
+                    <th class="text-nowrap" scope="row">System size \( L \)</th>
+                    <td>{{setup.system.system_size}}</td>
+                </tr>
+                <tr>
+                    <th class="text-nowrap" scope="row">Truncation parameter \( \chi \)</th>
+                    <td>{{setup.system.chi}}</td>
+                </tr>
+            </tbody>
+        </table>
+            
+        {{#if setup.system.calculate_ground_state}}
+        <h4>Ground State Calculation</h4>
+        <table class="table table-striped table-bordered">
+            <tbody>
+                <tr>
+                    <th class="text-nowrap" scope="row">Ground state precision</th>
+                    <td>\( 10^{- {{setup.system.log_ground_state_precision}} } \)</td>
+                </tr>
+                {{#if setup.system.number_conservation.ground.apply_qn}}
+                <tr>
+                    <th class="text-nowrap" scope="row">Number conservation for ground state?</th>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <th class="text-nowrap" scope="row">Ground state number</th>
+                    <td>{{setup.system.number_conservation.ground.qn}}</td>
+                </tr>
+                {{else}}
+                <tr>
+                    <th class="text-nowrap" scope="row">Number conservation for ground state?</th>
+                    <td>No</td>
+                </tr>
+                {{/if}}
+                <tr>
+                <th class="text-nowrap" scope="row">Hamiltonian</th>
+                <td>
+                {{#if setup.hamiltonian.ground.tex_str}}
+                \( {{setup.hamiltonian.ground.tex_str}} \)
+                {{/if}}
+                </td>
+            </tbody>
+        </table>
+        {{/if}}
+        
+        {{#if setup.system.calculate_time_evolution}}
+            <h4>Time Evolution</h4>
                 <table class="table table-striped table-bordered">
                     <tbody>
-                    {{#if setup.system.calculate_ground_state}}
-                    <tr>
-                        <th class="text-nowrap" scope="row">Calculate ground state?</th>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Ground state precision</th>
-                        <td>\( 10^{- {{setup.system.log_ground_state_precision}} } \)</td>
-                    </tr>
-                    {{#if setup.system.number_conservation.ground.apply_qn}}
-                    <tr>
-                        <th class="text-nowrap" scope="row">Number conservation for ground state?</th>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <th class="text-nowrap" scope="row">Ground state number</th>
-                        <td>{{setup.system.number_conservation.ground.qn}}</td>
-                    </tr>
-                    {{else}}
-                    <tr>
-                        <th class="text-nowrap" scope="row">Number conservation for ground state?</th>
-                        <td>No</td>
-                    </tr>
-                    {{/if}}
-                    {{else}}
-                     <tr>
-                        <th class="text-nowrap" scope="row">Calclate ground state?</th>
-                        <td>No</td>
-                    </tr>
-                    {{/if}}
-                    {{#if setup.system.calculate_time_evolution}}
-                    <tr>
-                        <th class="text-nowrap" scope="row">Calculate time evolution?</th>
-                        <td>Yes</td>
-                    </tr>
                     <tr>
                         <th class="text-nowrap" scope="row">Number conservation for time-evolved state?</th>
                         {{#if setup.system.number_conservation.dynamic.apply_qn}}
@@ -111,17 +108,66 @@
                     <th class="text-nowrap" scope="row">Expectation value time steps \( N_e \)</th>
                     <td>{{setup.system.time.num_expval_time_steps}}</td>
                     </tr>
-                    {{else}}
                     <tr>
-                        <th class="text-nowrap" scope="row">Calculate time evolution?</th>
-                        <td>No</td>
-                    </tr>
+                    <th class="text-nowrap" scope="row">Hamiltonian</th>
+                    <td>{{#if setup.hamiltonian.dynamic.tex_str}}
+                    \( {{setup.hamiltonian.dynamic.tex_str}} \)
                     {{/if}}
+                    </td>
+                    </tr>
                 </tbody>
             </table>
-        </div> <!-- end of div for basic info -->
-        <br>
-        <div id="expec_info">
+            
+            <h4>Initial state</h4>
+
+                {{#if setup.initial_state.applied_mpos}}
+
+                    <p class='text-center'>
+                        \( {{setup.initial_state.tex_strs.product_str}} \), where
+                    </p>
+
+                    <p class='text-center'>
+                        \( | \Psi_{\mathrm{base}} \rangle = {{setup.initial_state.base_state.function_tex_str}} \), and
+                    </p>
+
+                    {{#each setup.initial_state.tex_strs.modifier_fns_strs}}
+                        <p class='text-center'>
+                            \( {{this}} \)
+                        </p>
+                    {{/each}}
+
+                    {{#each setup.initial_state.applied_mpos}}
+                        <table class="table table-striped table-bordered">
+                            <caption>\( \hat{O}_{{plusOne @index}} \) details</caption></caption>
+                            <thead>
+                                <th>Function</th>
+                                <th>Spatial dependence</th>
+                            </thead>
+                            <tbody>
+
+                            {{#applied_operators}}
+
+                                <tr>
+                                    <th class="text-nowrap" scope="row">\( f_{{plusOne @index}} (j) \)</th>
+                                    <td>{{spatial_function.function_description}} \( {{spatial_function.function_tex_str}} \)
+                                    <ul>
+                                    {{#spatial_function.parameters}}
+                                    <li> \( {{parameter_tex_str}} = {{value}} \) </li>
+                                    {{/spatial_function.parameters}}
+                                    </ul>
+                                    </td>
+                                </tr>
+                            {{/applied_operators}}
+
+
+                            </tbody>
+                        </table>
+                    {{/each}}
+
+                {{else}}
+                    \( | \Psi_{\rm start} \rangle = {{setup.initial_state.base_state.function_tex_str}} \)
+                {{/if}}
+        {{/if}}
 
             <h4>Expectation values</h4>
             <table class="table table-striped table-bordered">
@@ -180,152 +226,7 @@
                     </tr>
                 </tbody>
             </table>
-        </div> <!-- end of div for expectation values -->
-        </div> <!-- end of LH div -->
-        
-        
-        <div id="hamils" class="col-md-6 col-sm-12">
-        {{#if setup.system.calculate_ground_state}}
-        <div id="ground_ham_info">
-
-            <h4>Ground state Hamiltonian</h4>
-            {{#if setup.hamiltonian.ground.tex_str}}
-                <p class='text-center'>
-                    \( {{setup.hamiltonian.ground.tex_str}} \)
-                </p>
-            {{/if}}
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <th>Term</th>
-                    <th>Spatial dependence</th>
-                </thead>
-                <tbody>
-
-                {{#setup.hamiltonian.ground.terms}}
-
-                    <tr>
-                        <th class="text-nowrap" scope="row">\( {{function_tex_str}} \)</th>
-                        <td>{{spatial_function.function_description}} \( {{spatial_function.function_tex_str}} \)
-                        <ul>
-                        {{#spatial_function.parameters}}
-                         <li> \( {{parameter_tex_str}} = {{value}} \) </li>
-                        {{/spatial_function.parameters}}
-                        </ul>
-                        </td>
-                    </tr>
-                {{/setup.hamiltonian.ground.terms}}
-
-
-                </tbody>
-            </table>
-        </div>  <!-- end of div for ground ham info -->
-        {{/if}}
-        <br>
-        {{#if setup.system.calculate_time_evolution}}
-
-            <br>
-            <div id="dynamic_ham_info">
-
-                <h4>Dynamic Hamiltonian</h4>
-                {{#if setup.hamiltonian.dynamic.tex_str}}
-                    <p class='text-center'>
-                        \( {{setup.hamiltonian.dynamic.tex_str}} \)
-                    </p>
-                {{/if}}
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <th>Term type</th>
-                        <th>Spatial dependence</th>
-                        <th>Temporal dependence</th>
-                    </thead>
-                    <tbody>
-
-                    {{#setup.hamiltonian.dynamic.terms}}
-
-                        <tr>
-                            <th class="text-nowrap" scope="row"><div data-toggle="popover" data-placement="bottom" data-trigger="hover" data-html="true" data-content="{{function_description}}">\( {{function_tex_str}} \)</div></th>
-                            <td>{{spatial_function.function_description}} \( {{spatial_function.function_tex_str}} \)
-                            <ul>
-                            {{#spatial_function.parameters}}
-                            <li> \( {{parameter_tex_str}} = {{value}} \) </li>
-                            {{/spatial_function.parameters}}
-                            </ul>
-                            </td>
-                            <td>{{temporal_function.function_description}} \( {{temporal_function.function_tex_str}} \)
-                            <ul>
-                            {{#temporal_function.parameters}}
-                            <li> \( {{parameter_tex_str}} = {{value}} \) </li>
-                            {{/temporal_function.parameters}}
-                            </ul>
-                            </td>
-                        </tr>
-                    {{/setup.hamiltonian.dynamic.terms}}
-
-
-                    </tbody>
-                </table>
-
-            </div> <!-- end of div for dynamic ham info -->
-
-            <div id="initial_state_info">
-
-                <h4>Initial state</h4>
-
-                {{#if setup.initial_state.applied_mpos}}
-
-                    <p class='text-center'>
-                        \( {{setup.initial_state.tex_strs.product_str}} \), where
-                    </p>
-
-                    <p class='text-center'>
-                        \( | \Psi_{\rm base} \rangle = {{setup.initial_state.base_state.function_tex_str}} \), and
-                    </p>
-
-                    {{#each setup.initial_state.tex_strs.modifier_fns_strs}}
-                        <p class='text-center'>
-                            \( {{this}} \)
-                        </p>
-                    {{/each}}
-
-                    {{#each setup.initial_state.applied_mpos}}
-                        <table class="table table-striped table-bordered">
-                            <caption>\( \hat{O}_{{plusOne @index}} \) details</caption></caption>
-                            <thead>
-                                <th>Function</th>
-                                <th>Spatial dependence</th>
-                            </thead>
-                            <tbody>
-
-                            {{#applied_operators}}
-
-                                <tr>
-                                    <th class="text-nowrap" scope="row">\( f_{{plusOne @index}} (j) \)</th>
-                                    <td>{{spatial_function.function_description}} \( {{spatial_function.function_tex_str}} \)
-                                    <ul>
-                                    {{#spatial_function.parameters}}
-                                    <li> \( {{parameter_tex_str}} = {{value}} \) </li>
-                                    {{/spatial_function.parameters}}
-                                    </ul>
-                                    </td>
-                                </tr>
-                            {{/applied_operators}}
-
-
-                            </tbody>
-                        </table>
-                    {{/each}}
-
-                {{else}}
-                    \( | \Psi_{\rm start} \rangle = {{setup.initial_state.base_state.function_tex_str}} \)
-                {{/if}}
-
-            </div> <!-- end of div for initial state info -->
-
-        {{/if}}
-
-        </div> <!-- end of div for RH col -->
-
-    </div> <!-- end of row div -->
+    </div>
 
 </script>
 

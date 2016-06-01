@@ -57,13 +57,9 @@
     Handlebars.registerHelper("render_log_output", function(status, log) {
         if (status == 'running') {
             
-        return new Handlebars.SafeString("<div class='alert alert-success' role='alert' style='margin-top:10px; margin-bottom:0;'><samp>" + log + "</samp></div>");
+        return new Handlebars.SafeString("<div style='margin-top:15px; margin-bottom:-5px; margin-left:20px'><p class='text-primary'><i class='fa fa-spinner fa-spin fa-2x fa-fw'></i>" + log + "</p></div>");
             
-        } else if (status == 'error') {
-            
-            return new Handlebars.SafeString("<div class='alert alert-danger' role='alert' style='margin-top:10px; margin-bottom:0;'><samp> Error! </samp></div>");
-            
-        }
+        } 
         
         tnt.render_mathjax();
     }
@@ -91,9 +87,9 @@
             var action_button_icon = 'fa-area-chart';
         } else if (status == 'error') {
 
-            var action_button_classes = 'btn-default download-calculation-button';
-            var action_button_data_loading_text = 'Error!';
-            var action_button_text = 'Error!';
+            var action_button_classes = 'btn-danger download-calculation-button';
+            var action_button_data_loading_text = 'Error';
+            var action_button_text = 'Error';
             var action_button_icon = 'fa-exclamation-triangle';
 
         }

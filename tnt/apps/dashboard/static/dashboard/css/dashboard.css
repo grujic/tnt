@@ -1,7 +1,51 @@
 
 /* Our TNT styles */
+.btn-default {
+    background-color: #fff;
+    background-image:none;
+    filter:none;
+    border-color: #9f5100;
+    color: #9f5100;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
+    text-shadow: 0 0px 0 rgba(0, 0, 0, 0.2);
+}
+
+
+.btn-default.active {
+    background-color: #a95700;
+    border-color: #9f5100;
+    color: #fff;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    text-shadow: 0 -1px 0 rgba(230, 118, 0, 0.6);
+}
+
+.btn-default:hover {
+    border-color: #e67600;
+    background-color: #fff;
+    outline: 0;
+    color: #9f5100;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(230, 118, 0, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(230, 118, 0, 0.6);
+}
+
+.btn-group > .btn-primary {
+    color: #914B00; 
+}
+
+.btn-group > .btn-primary:hover, .btn-group > .btn-primary:focus, .btn-group > .btn-primary.focus, .btn-group > .btn-primary:active, .btn-group > .btn-primary.active {
+    color: #fff; 
+}
+
 .hamiltonian-operator-btn {
-  height: 60px;
+    height: 50px;
+    color: #000;
+    padding-top: 0px;
+}
+
+.hamiltonian-operator-col {
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .initial-state-btn {
@@ -16,22 +60,7 @@
   height: 60px;
 }
 
-.btn-default.active {
-  background-color: #a95700;
-  border-color: #9f5100;
-  color: #fff;
-  text-shadow: 0 1px 0 #e0e0e0;
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-}
 
-.btn-group > .btn-primary {
-  color: #914B00; 
-}
-
-.btn-group > .btn-primary:hover, .btn-group > .btn-primary:focus, .btn-group > .btn-primary.focus, .btn-group > .btn-primary:active, .btn-group > .btn-primary.active {
-  color: #fff; 
-}
 
 ol.progtrckr {
     margin: 0;
