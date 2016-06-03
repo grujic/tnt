@@ -144,56 +144,39 @@
 </div> <!-- End of Ground state calculation specification -->
 
 <div id="new_calculation_define_ground_hamiltonian" class="new-calculation-step" style="display: none;">
-
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Ground state Hamiltonian</h3>
+      <h2 class="panel-title">Ground state Hamiltonian</h2>
     </div>
 
     <div class="panel-body">
+        <div id="ground_hamiltonian_terms_container_super" class="hamiltonian_terms_container_super">
+        
+            <div id="no_ground_hamiltonian_terms_added_yet_warning" class="alert alert-info no-terms-added" role="alert"> 
+                <p> No terms added to the Hamiltonian yet. Add one or more term below to proceed. </p>
+            </div>
+            
+            <span id="ground_hamiltonian_tex_str" class="hamiltonian_tex_str"></span>
+        
+            <hr>
       
-      <h4>Available operators
-      <a tabindex="0" 
+            <h4>Add a term <a tabindex="0" 
                     data-toggle="popover" 
                     data-trigger="focus" 
                     data-content="Build the ground state Hamiltonian by clicking on one of the predefined operators below, then choosing a functional form for its coefficients in the box that appears below. Your currently defined Hamiltonian will be displayed as it is created."
-                    >
-                        <i class="fa fa-question-circle fa-lg"></i>
-                    </a>
+                    ><i class="fa fa-question-circle fa-lg"></i></a>
                     	
-      </h4>
+            </h4>
 
-      <div id="new_calculation_available_ground_hamiltonian_operators">
+            <div id="new_calculation_available_ground_hamiltonian_operators">
+                   <!--- All the buttons for available terms to add will be placed in here -->
+            </div>
 
-      </div>
+            <div id="ground_hamiltonian_terms_container" class="hamiltonian_terms_container">
+            <!-- The boxes to modify each term will be added in here -->
+            </div>
 
-      <hr>
-	 <h4>Current Hamiltonian
-      <a tabindex="0" 
-                    data-toggle="popover" 
-                    data-trigger="focus" 
-                    data-content="This Hamiltonian will be used to find the ground state. The spatially varying functions can be modified be specifying the function type and parameters in the box for each term below."
-                    >
-                        <i class="fa fa-question-circle fa-lg"></i>
-                    </a>
-
-      </h4>
-
-      <div id="no_ground_hamiltonian_terms_added_yet_warning" class="alert alert-info no-terms-added" role="alert">You haven't added any terms to the Hamiltonian yet!</div>
-
-      <div id="ground_hamiltonian_terms_container_super" class="hamiltonian_terms_container_super">
-
-           <!-- <btn class="btn btn-danger remove-all-terms-btn">
-                <i class="fa fa-trash-o fa-lg"></i> Remove all terms
-            </btn> -->
-            <span id="ground_hamiltonian_tex_str" class="hamiltonian_tex_str"></span>
-
-            
-
-        <div id="ground_hamiltonian_terms_container" class="hamiltonian_terms_container">
-        </div>
-
-      </div>
+      </div> <!-- End of div for hamiltonian_terms_container_super -->
 
       <hr>
 

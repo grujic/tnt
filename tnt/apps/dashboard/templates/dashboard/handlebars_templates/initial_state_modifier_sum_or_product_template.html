@@ -3,45 +3,33 @@
 <!-- Template for when we add a new sum or product modifier -->
 <script id="initial-state-modifier-sum-or-product-template" type="text/x-handlebars-template"> 
 
+<div class="initial_state_modifier_sum_or_product" data-sum-or-product="{{sum_or_product}}" data-index={{index}}>
+<hr>    
     <div class="row">
-
-        <div class="panel panel-default initial_state_modifier_sum_or_product"
-             data-sum-or-product="{{sum_or_product}}"
-             data-index={{index}}>
-
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <btn class="btn btn-danger remove-initial-state-modifier-btn">
-                      <i class="fa fa-trash-o fa-lg"></i> 
-                    </btn>
-                    Choose term(s) for {{sum-or-product-str sum_or_product}} operator 
-                </h3>
-            </div>
-
-            <div class="panel-body">
-
-                <div class="initial_state_modifier_operators_container">
-                </div>
-
-                <hr>
-
-                <btn class="btn btn-danger remove-all-terms-btn" style="margin-bottom: 10px; display: inline-block;">
-                    <i class="fa fa-trash-o fa-lg"></i> Remove all terms
-                </btn>
-                <span class='text-center'>
-                    <strong>Current operator: </strong>\( \hat{O}_{ {{index}} } \) <span class="modifier_fns_tex_str"></span>
-                </span>
-
-                <!-- When an operator is chosen we render spatial function details 
-                for that operator in here, adding -->
-                <div class="initial_state_modifier_operators_terms">
-                </div>
-
-            </div>
-
+        <div class="col-xs-11">
+            <h4> 
+                Choose term(s) for {{sum-or-product-str sum_or_product}} operator \( \hat{O}_{ {{index}} } \) 
+                <span class="modifier_fns_tex_str"></span> 
+            </h4>
         </div>
-
+        <div class="col-xs-1">
+            <div class="pull-right" style="margin: 7px">
+                <a class="btn btn-danger remove-initial-state-modifier-btn">
+                    <i class="fa fa-trash-o fa-lg" title="Remove term"></i>
+                </a>
+            </div>
+        </div>
     </div>
+    <div class="initial_state_modifier_operators_container">
+    <!-- buttons for the terms to add for the operator will go here -->
+    </div>
+
+    
+    <div class="initial_state_modifier_operators_terms">
+    <!-- When an operator is chosen we render spatial function details for that operator in here, adding -->
+    </div>
+
+</div>
 
 </script>
 

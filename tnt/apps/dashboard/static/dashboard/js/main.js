@@ -10,8 +10,8 @@ var tnt = {
     chi_default: 10,
 
     log_ground_state_precision_min: 1,
-    log_ground_state_precision_max: 14,
-    log_ground_state_precision_default: 4,
+    log_ground_state_precision_max: 12,
+    log_ground_state_precision_default: 6,
 
     min_num_time_steps: 1,
     max_num_time_steps: 2000,
@@ -647,6 +647,11 @@ var tnt = {
 				function (e) {
 					$(".initial-state-btn").removeClass("active");
 					$(this).addClass("active");
+                    
+                    tnt.update_initial_state_modifiers_tex_str(
+                        "#initial_state_modifier_container",
+                        "#initial_state_modifiers_tex_str"
+                    );
 				}
 			);
 	},
@@ -970,9 +975,20 @@ var tnt = {
         tex_str_el) {
         // When an initial state modifier is added,
         // we update a tex string
-        var tex_str = "\\(";   // init
+        
+        var initial_base_state_choice = $(".initial-state-btn.active")
+        .data("initial-base-state-id");
+        
+        var initial_base_state = _.filter(
+            window.initial_base_states.states,
+            function (el) {
+                return el['initial_base_state_id'] == initial_base_state_choice;
+            }
+        )[0];
+        
+        var tex_str = "\\[ \\begin{align} ";   // init
 
-        tex_str = tex_str +  "| \\Psi \\rangle_{\\mathrm\{start\}} = ";
+        tex_str = tex_str +  "| \\Psi_{\\mathrm\{start\}} \\rangle & = ";
 
         // actual work
         var operator_indices
@@ -992,58 +1008,75 @@ var tnt = {
             }
         );
 
-        tex_str = tex_str + " | \\Psi \\rangle_{\\mathrm\{base\}}"
+        tex_str = tex_str + initial_base_state['function_tex_str'];
+        
+        tex_str = tex_str + "\\\\ & = ";
 
-        tex_str = tex_str + "\\)";
-
-        $(tex_str_el).html(tex_str);
-
+        var all_funcs_str = '';
         // Now update tex strings inside each modifier box
         _.each(
             $(".initial_state_modifier_sum_or_product"),
             function (el) {
+                var this_index = $(el).data("index");
                 var sum_or_product = $(el).data("sum-or-product");
-                var fns_tex_str = "\\( = ";
+                var fns_tex_str = "";
+                
                 if (sum_or_product == 'sum') {
                     var prefix = '\\sum_{j=0}^{L-1} \\left (';
                 } else if (sum_or_product == 'product') {
                     var prefix = '\\prod_{j=0}^{L-1} ';
                 }
-
-                fns_tex_str += prefix;
+                
 
                 var term_count
 
                 _.each(
                     $(el).find(".initial_state_modifier_operators_terms .hamiltonian-term"),
                     function(term, term_count) {
-                        var operator_id = $(term).data("hamiltonian-operator-id");
-                        var operator = tnt.get_hamiltonian_operator(operator_id);
-                        var term_index = $(term).data("index");
-                        var operator_tex_str = operator['function_tex_str'];
-                        var postfix = '';
+                        var modifier_operator = tnt.convert_operator_gui_element_into_hamiltonian_term_json(term);
+                        var possible_plus_sign = (term_count == 0) ? "" : " + ";
+                        var spatial_function_string = tnt.write_spatial_function_string(modifier_operator['spatial_function']);
+                        var possible_left_bracket = (modifier_operator['number_of_terms'] > 1) ? "\\left (" : "";
+                        var possible_right_bracket = (modifier_operator['number_of_terms'] > 1) ? "\\right )" : "";
+
                         if (sum_or_product == 'sum') {
-                            if (term_count > 0) {
-                                postfix += ' + ';
-                            }
-                            postfix += ' f_{' + term_index + '} (j) ' + operator_tex_str;
+                            var postfix = possible_plus_sign 
+                                        + spatial_function_string 
+                                        + possible_left_bracket
+                                        + modifier_operator["function_tex_str"]
+                                        + possible_right_bracket;
                         } else if (sum_or_product == 'product') {
-                            var postfix = '\\left (' + operator_tex_str + '\\right )' + '^{f_{' + term_index + '} (j) }';
+                            var postfix = "\\left ("
+                                        + modifier_operator["function_tex_str"]
+                                        + "\\right )"
+                                        + '^{' + spatial_function_string  + '}';
                         }
                         fns_tex_str += postfix;
                     }
                 );
-
+                
+                fns_tex_str = prefix + fns_tex_str;
                 if (sum_or_product == 'sum') {
-                    fns_tex_str += " \\right ) \\)";
-                } else if (sum_or_product == 'product') {
-                    fns_tex_str += "\\)";
+                    fns_tex_str += " \\right )";
                 }
+                
+                all_funcs_str = "\\left[" + fns_tex_str + "\\right]" + all_funcs_str;
+                
+                fns_tex_str = "\\[ \\hat{O}_" + this_index + " = " + fns_tex_str + "\\]";
                 $(el).find(".modifier_fns_tex_str").html(fns_tex_str);
+                
+                
             }
         );
+        
+        
+        tex_str = tex_str + all_funcs_str  + initial_base_state['function_tex_str'] + "\\end{align} \\]";
+        
+        $(tex_str_el).html(tex_str);
+        
+        tnt.render_mathjax();
 
-        tnt.render_mathjax_in_element_with_id("#new_calculation_initial_state");
+      //  tnt.render_mathjax_in_element_with_id("#new_calculation_initial_state");
 
     },
 
@@ -1103,12 +1136,15 @@ var tnt = {
 
         if (two_site_terms.length > 0) {
 
-            hamiltonian_tex_str = hamiltonian_tex_str + "\\sum_{j=0}^{L-2} \\left \\{";
+            hamiltonian_tex_str = hamiltonian_tex_str + "\\sum_{j=0}^{L-2}";
+            
+            if (two_site_terms.length > 1) {
+                hamiltonian_tex_str = hamiltonian_tex_str + "\\left \\{";
+            }
 
             _.each(
                 two_site_terms,
                 function (hamiltonian_operator, index) {
-                    var possible_new_line = ( ( (index) % 3 == 0 ) && (index != 0) ) ? "\\\\" : "";
                     var possible_plus_sign = (index == 0) ? "" : " + ";
                     var spatial_function_string = tnt.write_spatial_function_string(hamiltonian_operator['spatial_function']);
                     var temporal_function_string = "";
@@ -1125,7 +1161,6 @@ var tnt = {
                     var possible_right_bracket = (hamiltonian_operator['number_of_terms'] > 1) ? "\\right )" : "";
 
                     hamiltonian_tex_str = hamiltonian_tex_str
-                                        + possible_new_line
                                         + possible_plus_sign
                                         + spatial_function_string
                                         + temporal_function_string
@@ -1135,22 +1170,32 @@ var tnt = {
                 }
             );
 
-            hamiltonian_tex_str = hamiltonian_tex_str + "\\right \\}";
+            if (two_site_terms.length > 1) {
+                hamiltonian_tex_str = hamiltonian_tex_str + "\\right \\}";
+            }
 
         }
 
         if (single_site_terms.length > 0) {
+            
+            if (two_site_terms.length > 0) {
+                hamiltonian_tex_str = hamiltonian_tex_str + " + ";
+            }
 
-            hamiltonian_tex_str = hamiltonian_tex_str + "\\\\ + \\sum_{j=0}^{L-1} \\left \\{";
+            hamiltonian_tex_str = hamiltonian_tex_str + "\\sum_{j=0}^{L-1}";
+            
+            if (single_site_terms.length > 1) {
+                hamiltonian_tex_str = hamiltonian_tex_str + "\\left \\{";
+            }
 
             _.each(
                 single_site_terms,
                 function (hamiltonian_operator, index) {
-                    var possible_new_line = ( ( (index) % 3 == 0 ) && (index != 0) ) ? "\\\\" : "";
                     var possible_plus_sign = (index == 0) ? "" : " + ";
                     var spatial_function_string = tnt.write_spatial_function_string(hamiltonian_operator['spatial_function']);
                     var temporal_function_string = "";
                     if (hamiltonian_operator['include_temporal_function'] == true) {
+                        ground_state_hamil = false;
                         temporal_function_string = tnt.write_spatial_function_string(hamiltonian_operator['temporal_function']);
                         temporal_function_string = temporal_function_string.replace("j","t");
                         if ((spatial_function_string.length > 0) && (spatial_function_string != "-")) {
@@ -1163,7 +1208,6 @@ var tnt = {
                     var possible_right_bracket = (hamiltonian_operator['number_of_terms'] > 1) ? "\\right )" : "";
 
                     hamiltonian_tex_str = hamiltonian_tex_str
-                                        + possible_new_line
                                         + possible_plus_sign
                                         + spatial_function_string
                                         + temporal_function_string
@@ -1172,12 +1216,15 @@ var tnt = {
                                         + possible_right_bracket;
                 }
             );
-
-            hamiltonian_tex_str = hamiltonian_tex_str + "\\right \\}";
+            
+            if (single_site_terms.length > 1) {
+                hamiltonian_tex_str = hamiltonian_tex_str + "\\right \\}";
+            }
+            
 
         }
-
-        var hamiltonian_tex_str = "\\[ H = " + hamiltonian_tex_str + "\\]";
+        
+        hamiltonian_tex_str = "\\[ H = " + hamiltonian_tex_str + "\\]";
 
         $(hamiltonian_tex_str_el).html(hamiltonian_tex_str);
 
@@ -1719,7 +1766,7 @@ var tnt = {
         // Clear any existing terms to stop writing multiple copies
         $("#ground_hamiltonian_terms_container .hamiltonian-term").remove();
 
-        // Render in any terms defined int he template:
+        // Render in any terms defined in the template:
         if (window.calculation.setup.hamiltonian.ground.terms.length != 0) {
             var terms_to_add = window.calculation.setup.hamiltonian.ground.terms;
         } else {
@@ -1886,11 +1933,10 @@ var tnt = {
 		); 	// End of loop over Hamiltonian terms
 
         // Store tex str
-        window
-        .calculation
-        .setup
-        .hamiltonian.ground
-        .tex_str = tnt.extract_tex_string_from_mathjax_el("#ground_hamiltonian_tex_str");
+        var hamiltonian_string = tnt.extract_tex_string_from_mathjax_el("#ground_hamiltonian_tex_str");
+        var n = hamiltonian_string.indexOf("=");  
+        
+        window.calculation.setup.hamiltonian.ground.tex_str = hamiltonian_string.slice(n+1);
 
         $("#progress_ground").removeClass("progtrckr-todo");
         $("#progress_ground").addClass("progtrckr-done");
@@ -2393,6 +2439,9 @@ var tnt = {
 
         var where_to_render_modifier_operator_terms
             = $('#initial_state_modifier_container .initial_state_modifier_sum_or_product:last  .initial_state_modifier_operators_terms');
+            
+        var where_to_render_modifier_tex_str
+            = $('#initial_state_modifier_container .initial_state_modifier_sum_or_product:last .modifier_fns_tex_str');
 
         tnt.render_available_intitial_state_modifier_operators(
             where_to_render_modifier_operator_btns,
@@ -2409,7 +2458,7 @@ var tnt = {
                     '',
                     '',
                     tnt.update_hamiltonian_tex_str,
-                    '',
+                    $(where_to_render_modifier_tex_str),
                     false,
                     true
                 );
@@ -2456,9 +2505,11 @@ var tnt = {
         tnt.scroll_to_top();
 
 		tnt.clear_all_new_calculation_stages(); // Clear all panels
+        
+        tnt.scroll_to_top();
+        $("#new_calculation_initial_state").css('display', 'block');    // Make this panel visible
 
         var dynamic_qn = tnt.get_apply_dynamic_qn();
-
         if (dynamic_qn == 0) {
             // Sum type allowed
         } else {
@@ -2493,7 +2544,7 @@ var tnt = {
         if ( (template_initial_base_state_id == 0 ) && ( tnt.get_calculate_ground_state() == 0 ) ) {
             // Template says start with ground, but user not selected a GS calculation
             // Pick a default
-            template_initial_base_state_id = window.initial_base_states.states[0]['initial_base_state_id'];
+            template_initial_base_state_id = window.initial_base_states.states[1]['initial_base_state_id'];
             // Also clear modifiers
             window.calculation.setup.initial_state.applied_mpos = [];
         }
@@ -2507,6 +2558,12 @@ var tnt = {
                 tnt.add_sum_or_product_modifier(mpo['type'], mpo['applied_operators']);
             }
         );
+        
+        // Clear any existing terms to stop writing multiple copies
+        $("#initial_state_modifier_container #initial_state_modifiers_tex_str").remove();
+        
+        // Write out the current initial state
+        tnt.update_initial_state_modifiers_tex_str('#initial_state_modifier_container', "#initial_state_modifiers_tex_str");
 
         // renormalise?
         $("#renormalise_after_initial_state_modifiers_choice label")
@@ -2522,7 +2579,7 @@ var tnt = {
                 tnt.add_sum_or_product_modifier(sum_or_product);
         });
 
-		$("#new_calculation_initial_state").css('display', 'block'); 	// Make this panel visible
+        
 
 		$("#new_calculation_initial_state .btn-next-step").unbind();
 		$("#new_calculation_initial_state .btn-next-step").click(
@@ -2614,21 +2671,17 @@ var tnt = {
             _.map(
                 $(".modifier_fns_tex_str"),
                 function(tex_str_el, tex_str_el_index) {
-                    return '\\hat{O}_{' + (tex_str_el_index + 1) + '} ' + tnt.extract_tex_string_from_mathjax_el($(tex_str_el));
+                    return tnt.extract_tex_string_from_mathjax_el($(tex_str_el));
                 }
             );
+        
+        var initial_state_string = tnt.extract_tex_string_from_mathjax_el("#initial_state_modifiers_tex_str");
+        var n = initial_state_string.lastIndexOf("& =");  
+        var m = initial_state_string.lastIndexOf("align");
+            
+        window.calculation.setup.initial_state.tex_strs.product_str = initial_state_string.slice(n+3,m-5);
+        console.log(window.calculation.setup.initial_state.tex_strs.product_str);
 
-        var num_modifier_terms = $('#initial_state_modifier_container .initial_state_modifier_sum_or_product').length;
-        if (num_modifier_terms > 0) {
-            var product_str = "| \\Psi \\rangle_{\\rm start} = ";
-            for (var i=num_modifier_terms; i>0; i--) {
-                product_str += '\\hat{O}_{' + i + '}';
-            }
-        }
-
-        product_str += '| \\Psi_{\\rm base} \\rangle';
-
-        window.calculation.setup.initial_state.tex_strs.product_str = product_str;
 
         $("#progress_initial").removeClass("progtrckr-todo");
         $("#progress_initial").addClass("progtrckr-done");
@@ -2729,11 +2782,10 @@ var tnt = {
 		); 	// End of loop over Hamiltonian terms
 
         // Store tex str
-        window
-        .calculation
-        .setup
-        .hamiltonian.dynamic
-        .tex_str = tnt.extract_tex_string_from_mathjax_el("#dynamic_hamiltonian_tex_str");
+        var hamiltonian_string = tnt.extract_tex_string_from_mathjax_el("#dynamic_hamiltonian_tex_str");
+        var n = hamiltonian_string.indexOf("=");  
+        
+        window.calculation.setup.hamiltonian.dynamic.tex_str = hamiltonian_string.slice(n+1);
 
         $("#progress_dynamics").removeClass("progtrckr-todo");
         $("#progress_dynamics").addClass("progtrckr-done");
